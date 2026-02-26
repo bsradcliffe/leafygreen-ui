@@ -1,70 +1,58 @@
-import { css, cx } from '@leafygreen-ui/emotion';
 import { Theme } from '@leafygreen-ui/lib';
 import {
   BaseFontSize,
   borderRadius,
   boxShadows,
+  color,
   InteractionState,
   spacing,
   transitionDuration,
   Variant,
 } from '@leafygreen-ui/tokens';
-import { color } from '@leafygreen-ui/tokens';
+
+import { cn } from '../cn';
 
 const CONTAINER_MAX_WIDTH = 500;
 const SECTION_HEIGHT = 52;
 const INPUT_WIDTH = 240;
 const INPUT_MIN_WIDTH = 120;
 
-const getBaseContainerStyles = (
-  theme: Theme,
-  baseFontSize: BaseFontSize,
-) => css`
-  background-color: ${color[theme].background[Variant.Secondary][
-    InteractionState.Default
-  ]};
-  font-size: ${baseFontSize}px;
-  border-right: 1px solid
-    ${color[theme].border[Variant.Secondary][InteractionState.Default]};
-  border-bottom-left-radius: ${borderRadius[150]}px;
-  border-bottom-right-radius: ${borderRadius[150]}px;
-  width: 100%;
-  max-width: ${CONTAINER_MAX_WIDTH}px;
-  position: relative;
-  display: grid;
-  grid-template-rows: ${SECTION_HEIGHT}px 0fr;
-  transition: grid-template-rows ${transitionDuration.slower}ms ease-in-out;
-  z-index: 1;
+const baseContainerStyle = [
+  `rounded-bl-[${borderRadius[150]}px]`,
+  `rounded-br-[${borderRadius[150]}px]`,
+  'w-full',
+  `max-w-[${CONTAINER_MAX_WIDTH}px]`,
+  'relative',
+  'grid',
+  `grid-rows-[${SECTION_HEIGHT}px_0fr]`,
+  `transition-[grid-template-rows] duration-[${transitionDuration.slower}ms] ease-in-out`,
+  'z-[1]',
+  // ::after pseudo-element for shadow with clipped right edge
+  "after:content-['']",
+  'after:absolute',
+  'after:top-0',
+  'after:left-0',
+  'after:w-full',
+  'after:h-full',
+  'after:rounded-[inherit]',
+  'after:-z-[1]',
+  'after:[clip-path:inset(-20px_0px_-20px_-20px)]',
+].join(' ');
 
-  /** Add a shadow to the container while clipping the right edge*/
-  &::after {
-    content: '';
+const containerThemeStyles: Record<Theme, string> = {
+  [Theme.Light]: [
+    `bg-[${color[Theme.Light].background[Variant.Secondary][InteractionState.Default]}]`,
+    `border-r border-solid border-r-[${color[Theme.Light].border[Variant.Secondary][InteractionState.Default]}]`,
+    `after:shadow-[${boxShadows[Theme.Light][1].replace(/, /g, ',_')}]`,
+  ].join(' '),
+  [Theme.Dark]: [
+    `bg-[${color[Theme.Dark].background[Variant.Secondary][InteractionState.Default]}]`,
+    `border-r border-solid border-r-[${color[Theme.Dark].border[Variant.Secondary][InteractionState.Default]}]`,
+    'after:shadow-none',
+  ].join(' '),
+};
 
-    /** Position the pseudo-element to match the parent's size and location */
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-
-    /** Apply the shadow to the pseudo-element */
-    box-shadow: ${boxShadows[theme][1]};
-
-    /** Negative values expand the clipping area outward, revealing the shadow. */
-    /** A zero value clips the shadow exactly at the element's edge. */
-    clip-path: inset(-20px 0px -20px -20px);
-
-    /** Match the parent's border-radius for consistency */
-    border-radius: inherit;
-
-    /** Places the pseudo-element behind the parent element */
-    z-index: -1;
-  }
-`;
-
-const openContainerStyles = css`
-  grid-template-rows: ${SECTION_HEIGHT}px 1fr;
-`;
+const openContainerStyle = `grid-rows-[${SECTION_HEIGHT}px_1fr]`;
 
 export const getContainerStyles = ({
   theme,
@@ -77,87 +65,77 @@ export const getContainerStyles = ({
   baseFontSize: BaseFontSize;
   hasPanel: boolean;
 }) =>
-  cx(getBaseContainerStyles(theme, baseFontSize), {
-    [openContainerStyles]: isOpen,
-    [css`
-      border-top-right-radius: ${borderRadius[300]}px;
-    `]: !hasPanel,
-  });
+  cn(
+    baseContainerStyle,
+    `text-[${baseFontSize}px]`,
+    containerThemeStyles[theme],
+    isOpen && openContainerStyle,
+    !hasPanel && `rounded-tr-[${borderRadius[300]}px]`,
+  );
 
-export const findSectionStyles = css`
-  display: flex;
-  align-items: center;
-  padding: ${spacing[200]}px;
-`;
+export const findSectionStyles = [
+  'flex',
+  'items-center',
+  `p-[${spacing[200]}px]`,
+].join(' ');
 
-export const replaceSectionStyles = css`
-  min-height: 0;
-  overflow: hidden;
-`;
+export const replaceSectionStyles = 'min-h-0 overflow-hidden';
 
 /**
  * Inner section used for padding and border so that the outer section can
  * fully close to 0px when set to 0fr.
  */
-export const getReplaceInnerSectionStyles = (theme: Theme) => css`
-  display: flex;
-  align-items: center;
-  padding: ${spacing[200]}px ${spacing[200]}px ${spacing[200]}px
-    ${spacing[1000]}px;
-  border-top: 1px solid
-    ${color[theme].border[Variant.Secondary][InteractionState.Default]};
-`;
+const replaceInnerSectionThemeStyles: Record<Theme, string> = {
+  [Theme.Light]: `border-t-[${color[Theme.Light].border[Variant.Secondary][InteractionState.Default]}]`,
+  [Theme.Dark]: `border-t-[${color[Theme.Dark].border[Variant.Secondary][InteractionState.Default]}]`,
+};
 
-export const toggleButtonStyles = css`
-  margin-right: ${spacing[100]}px;
-`;
+export const getReplaceInnerSectionStyles = (theme: Theme) =>
+  [
+    'flex',
+    'items-center',
+    `pt-[${spacing[200]}px] pr-[${spacing[200]}px] pb-[${spacing[200]}px] pl-[${spacing[1000]}px]`,
+    'border-t border-solid',
+    replaceInnerSectionThemeStyles[theme],
+  ].join(' ');
 
-const toggleIconStyles = css`
-  transform: rotate(-180deg);
-  transition: transform ${transitionDuration.slower}ms ease-in-out;
-`;
+export const toggleButtonStyles = `mr-[${spacing[100]}px]`;
 
-const openToggleIconStyles = css`
-  transform: rotate(0deg);
-`;
+const toggleIconStyle = [
+  '-rotate-180',
+  `transition-transform duration-[${transitionDuration.slower}ms] ease-in-out`,
+].join(' ');
+
+const openToggleIconStyle = 'rotate-0';
 
 export const getToggleIconStyles = (isOpen: boolean) =>
-  cx(toggleIconStyles, {
-    [openToggleIconStyles]: isOpen,
-  });
+  cn(toggleIconStyle, isOpen && openToggleIconStyle);
 
-export const findInputContainerStyles = css`
-  position: relative;
-  flex: 1 1 ${INPUT_WIDTH}px;
-  min-width: ${INPUT_MIN_WIDTH}px;
-  max-width: ${INPUT_WIDTH}px;
-  margin-right: ${spacing[100]}px;
+export const findInputContainerStyles = [
+  'relative',
+  `flex-[1_1_${INPUT_WIDTH}px]`,
+  `min-w-[${INPUT_MIN_WIDTH}px]`,
+  `max-w-[${INPUT_WIDTH}px]`,
+  `mr-[${spacing[100]}px]`,
+  `[&_input]:pr-[${spacing[1200]}px]`,
+].join(' ');
 
-  & input {
-    padding-right: ${spacing[1200]}px;
-  }
-`;
+export const closeButtonStyles = 'ml-auto';
 
-export const closeButtonStyles = css`
-  margin-left: auto;
-`;
+export const findOptionsContainerStyles = [
+  'absolute',
+  `right-[${spacing[100]}px]`,
+  `top-[${spacing[100]}px]`,
+  'flex',
+  'items-center',
+].join(' ');
 
-export const findOptionsContainerStyles = css`
-  position: absolute;
-  right: ${spacing[100]}px;
-  top: ${spacing[100]}px;
-  display: flex;
-  align-items: center;
-`;
+export const replaceInputContainerStyles = [
+  'relative',
+  `flex-[1_1_${INPUT_WIDTH}px]`,
+  'min-w-[100px]',
+  `max-w-[${INPUT_WIDTH}px]`,
+  'w-full',
+].join(' ');
 
-export const replaceInputContainerStyles = css`
-  position: relative;
-  flex: 1 1 ${INPUT_WIDTH}px;
-  min-width: 100px;
-  max-width: ${INPUT_WIDTH}px;
-  width: 100%;
-`;
-
-export const replaceButtonStyles = css`
-  margin-left: ${spacing[100]}px;
-`;
+export const replaceButtonStyles = `ml-[${spacing[100]}px]`;

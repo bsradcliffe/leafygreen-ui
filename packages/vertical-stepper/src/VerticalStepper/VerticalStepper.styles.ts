@@ -1,7 +1,5 @@
-import { css } from '@leafygreen-ui/emotion';
-
-export const baseStyles = css`
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-`;
+export const baseStyles = [
+  'list-none',
+  'p-0',
+  'm-0',
+].join(' ');

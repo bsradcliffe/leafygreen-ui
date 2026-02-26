@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { cx } from '@leafygreen-ui/emotion';
 import { useDarkMode } from '@leafygreen-ui/leafygreen-provider';
 import { Size } from '@leafygreen-ui/tokens';
 import { Body, useUpdatedBaseFontSize } from '@leafygreen-ui/typography';
@@ -16,6 +15,10 @@ import {
   getWrapperStyles,
 } from './Spinner.styles';
 import { SpinnerDirection, SpinnerProps } from './Spinner.types';
+
+function cn(...classes: Array<string | false | undefined | null>): string {
+  return classes.filter(Boolean).join(' ');
+}
 
 /**
  * SVG-based spinner loading indicator
@@ -45,13 +48,13 @@ export const Spinner = ({
 
   return (
     <div
-      className={cx(getWrapperStyles({ direction, size }), className)}
+      className={cn(getWrapperStyles({ direction, size }), className)}
       data-lgid={getLgIds(lgid).spinner}
       data-testid={getLgIds(lgid).spinner}
       {...rest}
     >
       <svg
-        className={cx(
+        className={cn(
           getSvgStyles({ size, disableAnimation }),
           svgProps?.className,
         )}

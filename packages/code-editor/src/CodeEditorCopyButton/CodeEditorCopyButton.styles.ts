@@ -1,12 +1,68 @@
-import { css, cx } from '@leafygreen-ui/emotion';
 import { Theme } from '@leafygreen-ui/lib';
 import { palette } from '@leafygreen-ui/palette';
 import { color, transitionDuration } from '@leafygreen-ui/tokens';
+
+import { cn } from '../cn';
 
 import {
   CodeEditorCopyButtonProps,
   CopyButtonVariant,
 } from './CodeEditorCopyButton.types';
+
+const baseStyle = [
+  'self-center',
+  `[&[aria-disabled='false']]:text-[--ce-icon-color]`,
+  '[&_div[role=tooltip]_svg]:w-[26px]',
+  '[&_div[role=tooltip]_svg]:h-[26px]',
+  `[&]:transition-all [&]:duration-[${transitionDuration.default}ms] [&]:ease-in-out`,
+  `[&>div>svg]:transition-all [&>div>svg]:duration-[${transitionDuration.default}ms] [&>div>svg]:ease-in-out`,
+].join(' ');
+
+/**
+ * Theme-specific styles applied when the button is in the "copied" state.
+ * Shows green background and white text to indicate successful copy operation.
+ */
+export const copiedThemeStyle: Record<Theme, string> = {
+  [Theme.Light]: [
+    `[&]:text-[${palette.white}] [&>div>svg]:text-[${palette.white}]`,
+    `[&:focus]:text-[${palette.white}] [&:hover]:text-[${palette.white}]`,
+    `[&>div>svg:focus]:text-[${palette.white}] [&>div>svg:hover]:text-[${palette.white}]`,
+    `bg-[${palette.green.dark1}]`,
+    `[&:focus]:text-[${palette.white}] [&:focus]:bg-[${palette.green.dark1}]`,
+    `[&:hover]:text-[${palette.white}] [&:hover]:bg-[${palette.green.dark1}]`,
+    `[&:focus]::before:bg-[${palette.green.dark1}]`,
+    `[&:hover]::before:bg-[${palette.green.dark1}]`,
+  ].join(' '),
+  [Theme.Dark]: [
+    `[&]:text-[${palette.gray.dark3}] [&>div>svg]:text-[${palette.gray.dark3}]`,
+    `[&:focus]:text-[${palette.gray.dark3}] [&:hover]:text-[${palette.gray.dark3}]`,
+    `[&>div>svg:focus]:text-[${palette.gray.dark3}] [&>div>svg:hover]:text-[${palette.gray.dark3}]`,
+    `bg-[${palette.green.base}]`,
+    `[&:focus]:text-[${palette.gray.dark3}] [&:focus]:bg-[${palette.green.base}]`,
+    `[&:hover]:text-[${palette.gray.dark3}] [&:hover]:bg-[${palette.green.base}]`,
+    `[&:focus]::before:bg-[${palette.green.base}]`,
+    `[&:hover]::before:bg-[${palette.green.base}]`,
+  ].join(' '),
+};
+
+/**
+ * Generates styles for the minimal button variant when in copied state.
+ * Used for minimal/hover copy buttons outside of panels.
+ */
+export const getMinimalButtonCopiedStyles = ({
+  theme,
+}: {
+  theme: Theme;
+}) => `border-[${color[theme].icon.primary.default}]`;
+
+/**
+ * Theme-specific styles for the minimal button variant.
+ * Applied when the copy button is not in a panel (showPanel = false).
+ */
+export const minimalButtonThemeStyle: Record<Theme, string> = {
+  [Theme.Light]: `border-[${palette.gray.base}]`,
+  [Theme.Dark]: `border-[${palette.gray.light2}]`,
+};
 
 /**
  * Generates the CSS styles for the CodeEditorCopyButton component.
@@ -29,108 +85,9 @@ export const getCopyButtonStyles = ({
   variant: CodeEditorCopyButtonProps['variant'];
   className?: string;
 }) =>
-  cx(
-    css`
-      align-self: center;
-
-      &[aria-disabled='false'] {
-        color: ${color[theme].icon.primary.default};
-      }
-
-      div[role='tooltip'] svg {
-        width: 26px;
-        height: 26px;
-      }
-
-      &,
-      & > div > svg {
-        transition: all ${transitionDuration.default}ms ease-in-out;
-      }
-    `,
-    {
-      [copiedThemeStyle[theme]]: copied,
-      [minimalButtonThemeStyle[theme]]: variant === CopyButtonVariant.Button,
-    },
+  cn(
+    baseStyle,
+    copied && copiedThemeStyle[theme],
+    variant === CopyButtonVariant.Button && minimalButtonThemeStyle[theme],
     className,
   );
-
-/**
- * Theme-specific styles applied when the button is in the "copied" state.
- * Shows green background and white text to indicate successful copy operation.
- */
-export const copiedThemeStyle: Record<Theme, string> = {
-  [Theme.Light]: css`
-    &,
-    & > div > svg {
-      color: ${palette.white};
-
-      &:focus,
-      &:hover {
-        color: ${palette.white};
-      }
-    }
-
-    background-color: ${palette.green.dark1};
-
-    &:focus,
-    &:hover {
-      color: ${palette.white};
-      background-color: ${palette.green.dark1};
-
-      &::before {
-        background-color: ${palette.green.dark1};
-      }
-    }
-  `,
-  [Theme.Dark]: css`
-    &,
-    & > div > svg {
-      color: ${palette.gray.dark3};
-
-      &:focus,
-      &:hover {
-        color: ${palette.gray.dark3};
-      }
-    }
-
-    background-color: ${palette.green.base};
-
-    &:focus,
-    &:hover {
-      color: ${palette.gray.dark3};
-      background-color: ${palette.green.base};
-
-      &::before {
-        background-color: ${palette.green.base};
-      }
-    }
-  `,
-};
-
-/**
- * Generates styles for the minimal button variant when in copied state.
- * Used for minimal/hover copy buttons outside of panels.
- *
- * @param theme - The current theme
- * @returns CSS styles for the minimal copied state
- */
-export const getMinimalButtonCopiedStyles = ({
-  theme,
-}: {
-  theme: Theme;
-}) => css`
-  border-color: ${color[theme].icon.primary.default};
-`;
-
-/**
- * Theme-specific styles for the minimal button variant.
- * Applied when the copy button is not in a panel (showPanel = false).
- */
-export const minimalButtonThemeStyle: Record<Theme, string> = {
-  [Theme.Light]: css`
-    border-color: ${palette.gray.base};
-  `,
-  [Theme.Dark]: css`
-    border-color: ${palette.gray.light2};
-  `,
-};

@@ -1,16 +1,18 @@
 import React from 'react';
 
-import { cx } from '@leafygreen-ui/emotion';
-
 import ButtonIcon from '../ButtonIcon/ButtonIcon';
 
 import {
-  buttonContentSizeStyle,
-  buttonContentStyle,
-  leftGlyphStyles,
-  rightGlyphStyles,
+  buttonContentClassName,
+  buttonContentSizeClassName,
+  leftGlyphClassName,
+  rightGlyphClassName,
 } from './ButtonContent.styles';
 import { DefaultContentProps } from './ButtonContent.types';
+
+function cn(...classes: Array<string | false | undefined | null>): string {
+  return classes.filter(Boolean).join(' ');
+}
 
 /**
  * Default internal contents of a Button
@@ -30,16 +32,16 @@ const DefaultContent = ({
   const iconProps = { variant, size, darkMode, disabled, isIconOnlyButton };
   return (
     <div
-      className={cx(
-        buttonContentStyle,
-        buttonContentSizeStyle[size],
+      className={cn(
+        buttonContentClassName,
+        buttonContentSizeClassName[size],
         className,
       )}
     >
       {leftGlyph && (
         <ButtonIcon
           glyph={leftGlyph}
-          className={leftGlyphStyles}
+          className={leftGlyphClassName}
           {...iconProps}
         />
       )}
@@ -49,7 +51,7 @@ const DefaultContent = ({
       {rightGlyph && (
         <ButtonIcon
           glyph={rightGlyph}
-          className={rightGlyphStyles}
+          className={rightGlyphClassName}
           {...iconProps}
         />
       )}

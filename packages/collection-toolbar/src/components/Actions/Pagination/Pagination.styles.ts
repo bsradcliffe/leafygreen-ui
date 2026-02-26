@@ -1,10 +1,11 @@
-import { css, cx } from '@leafygreen-ui/emotion';
 import { spacing } from '@leafygreen-ui/tokens';
 
-const baseStyles = css`
-  width: max-content;
-  margin-left: ${spacing[500]}px;
-`;
+import { cn } from '../../../cn';
+
+const baseStyles = [
+  'w-max',
+  `ml-[${spacing[500]}px]`,
+].join(' ');
 
 export const getPaginationStyles = ({ className }: { className?: string }) =>
-  cx(baseStyles, className);
+  cn(baseStyles, className);

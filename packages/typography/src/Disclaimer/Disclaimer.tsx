@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { cx } from '@leafygreen-ui/emotion';
 import { useDarkMode } from '@leafygreen-ui/leafygreen-provider';
 
 import { baseTypographyStyles } from '../styles';
+import { cn } from '../utils/cn';
 
 import { disclaimerStyles, disclaimerTextColor } from './Disclaimer.styles';
 import { DisclaimerProps } from './Disclaimer.types';
@@ -19,7 +19,7 @@ export function Disclaimer({
   return (
     <small
       {...rest}
-      className={cx(
+      className={cn(
         baseTypographyStyles,
         disclaimerStyles,
         disclaimerTextColor[theme],

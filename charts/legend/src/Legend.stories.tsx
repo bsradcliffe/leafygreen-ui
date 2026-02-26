@@ -7,7 +7,6 @@ import {
 } from '@lg-tools/storybook-utils';
 import { StoryFn, StoryObj } from '@storybook/react';
 
-import { css } from '@leafygreen-ui/emotion';
 import { Icon } from '@leafygreen-ui/icon';
 import { spacing } from '@leafygreen-ui/tokens';
 
@@ -46,12 +45,8 @@ export default {
 const TemplateComponent: StoryFn<LegendProps> = ({ ...props }) => {
   return (
     <SeriesProvider series={lineData.map(({ name }) => name)}>
-      <div
-        className={css`
-          display: flex;
-          flex-direction: column;
-        `}
-      >
+      <div className="flex flex-col">
+
         <Legend {...props} series={lineData.map(({ name }) => name)} />
         <Chart>
           {lineData.map(({ data, name }) => (
@@ -77,13 +72,7 @@ export const CustomFormat: StoryObj<LegendProps> = {
   args: {
     seriesNameFormatter: (name: SeriesName) => {
       return (
-        <div
-          className={css`
-            display: flex;
-            align-items: center;
-            gap: ${spacing[100]}px;
-          `}
-        >
+        <div className={`flex items-center gap-[${spacing[100]}px]`}>
           <Icon glyph="Secondary" />
           <span>{name}</span>
         </div>

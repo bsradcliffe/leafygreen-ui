@@ -29,7 +29,6 @@
     "url": "https://jira.mongodb.org/projects/PD/summary"
   },
   "devDependencies": {
-    "@leafygreen-ui/emotion": "workspace:^",
     "@lg-tools/build": "workspace:^",
     "@lg-tools/storybook-utils": "workspace:^",
     "@types/react-test-renderer": "^18.0.0",

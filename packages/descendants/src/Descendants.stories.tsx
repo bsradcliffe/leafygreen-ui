@@ -8,7 +8,6 @@ import range from 'lodash/range';
 import shuffle from 'lodash/shuffle';
 
 import { Button } from '@leafygreen-ui/button';
-import { css, cx } from '@leafygreen-ui/emotion';
 import LeafyGreenProvider from '@leafygreen-ui/leafygreen-provider';
 import { Popover } from '@leafygreen-ui/popover';
 
@@ -22,20 +21,16 @@ import {
 import { TestSelectionContext } from './testUtils/testSelectionContext';
 import { useInitDescendants } from '.';
 
+function cn(...classes: Array<string | false | undefined | null>): string {
+  return classes.filter(Boolean).join(' ');
+}
+
 faker.seed(0);
 
-const testItemStyle = css`
-  &::before {
-    content: attr(data-index);
-    color: gray;
-    padding-right: 4px;
-    font-family: monospace;
-  }
-`;
+const testItemStyle =
+  'before:content-[attr(data-index)] before:text-gray-500 before:pr-[4px] before:font-mono';
 
-const nestedItemStyle = css`
-  padding-left: 8px;
-`;
+const nestedItemStyle = 'pl-[8px]';
 
 const meta: StoryMetaType<ElementType<unknown>> = {
   title: 'Internal/Hooks/Descendants',
@@ -147,7 +142,7 @@ export const Nested = () => {
                   ? person.animals.map((animal, j) => (
                       <TestDescendant
                         key={person.name + i + animal + j}
-                        className={cx(nestedItemStyle, testItemStyle)}
+                        className={cn(nestedItemStyle, testItemStyle)}
                       >
                         {animal}
                       </TestDescendant>
@@ -170,10 +165,10 @@ export const MultipleContexts = () => {
       <TestDescendant className={testItemStyle}>
         Peppers
         <TestParent2>
-          <TestDescendant2 className={cx(nestedItemStyle, testItemStyle)}>
+          <TestDescendant2 className={cn(nestedItemStyle, testItemStyle)}>
             Anaheim
           </TestDescendant2>
-          <TestDescendant2 className={cx(nestedItemStyle, testItemStyle)}>
+          <TestDescendant2 className={cn(nestedItemStyle, testItemStyle)}>
             Habanero
           </TestDescendant2>
         </TestParent2>

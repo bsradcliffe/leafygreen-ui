@@ -10,10 +10,11 @@ import LeafyGreenProvider, {
 import {
   childContainerStyles,
   getContainerStyles,
-  getExpandableChildrenContainerStyles,
-  getExpandableWrapperStyles,
+  getExpandableChildrenContainerStyle,
+  getExpandableWrapperStyle,
+  getExpandButtonStyle,
   getExpandButtonStyles,
-  getVisibleChildrenContainerStyles,
+  getVisibleChildrenContainerStyle,
 } from './ExpandableGrid.styles';
 import { ExpandableGridProps } from './ExpandableGrid.types';
 
@@ -43,6 +44,7 @@ export const ExpandableGrid = forwardRef<HTMLDivElement, ExpandableGridProps>(
                 ? 'View less'
                 : `View ${numberOfExpandableChildren} more`,
               className: getExpandButtonStyles(theme),
+              style: getExpandButtonStyle(theme),
               onClick: () => setIsExpanded(!isExpanded),
               rightGlyph: isExpanded ? <ChevronUp /> : <ChevronDown />,
               size: Size.Small,
@@ -57,7 +59,7 @@ export const ExpandableGrid = forwardRef<HTMLDivElement, ExpandableGridProps>(
         <div className={getContainerStyles(className)} ref={fwdRef} {...rest}>
           {/* First row - always visible */}
           <div
-            className={getVisibleChildrenContainerStyles({
+            style={getVisibleChildrenContainerStyle({
               repeatCount: maxColumns,
             })}
           >
@@ -71,13 +73,13 @@ export const ExpandableGrid = forwardRef<HTMLDivElement, ExpandableGridProps>(
           {/* Expandable rows */}
           {isExpandable && (
             <div
-              className={getExpandableWrapperStyles({
+              style={getExpandableWrapperStyle({
                 isExpanded,
               })}
               aria-hidden={!isExpanded}
             >
               <div
-                className={getExpandableChildrenContainerStyles({
+                style={getExpandableChildrenContainerStyle({
                   repeatCount: maxColumns,
                 })}
               >

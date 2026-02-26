@@ -29,13 +29,11 @@
   },
   "dependencies": {
     "@leafygreen-ui/button": "workspace:^",
-    "@leafygreen-ui/emotion": "workspace:^",
     "@leafygreen-ui/hooks": "workspace:^",
     "@leafygreen-ui/icon": "workspace:^",
     "@leafygreen-ui/lib": "workspace:^",
     "@leafygreen-ui/tokens": "workspace:^",
-    "@lg-tools/test-harnesses": "workspace:^",
-    "polished": "^4.2.2"
+    "@lg-tools/test-harnesses": "workspace:^"
   },
   "devDependencies": {
     "@faker-js/faker": "^8.0.2",

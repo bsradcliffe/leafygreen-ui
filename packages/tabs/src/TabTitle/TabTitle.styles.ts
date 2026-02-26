@@ -1,92 +1,78 @@
-import { css, cx } from '@leafygreen-ui/emotion';
 import { Theme } from '@leafygreen-ui/lib';
-import { palette } from '@leafygreen-ui/palette';
-import {
-  BaseFontSize,
-  borderRadius,
-  fontFamilies,
-  fontWeights,
-  spacing,
-  transitionDuration,
-  typeScales,
-} from '@leafygreen-ui/tokens';
+import { BaseFontSize } from '@leafygreen-ui/tokens';
 import { bodyTypeScaleStyles } from '@leafygreen-ui/typography';
 
+import { cn } from '../cn';
 import { Size } from '../Tabs';
 
 const BODY_1_HEIGHT = 44;
 const BODY_2_HEIGHT = 52;
 const MAX_WIDTH = 300;
 const SMALL_HEIGHT = 32;
-const TRANSITION_DURATION = transitionDuration.default;
 
-const baseStyles = css`
-  font-family: ${fontFamilies.default};
-  font-weight: ${fontWeights.medium};
-  position: relative;
-  display: inline-flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-  max-width: ${MAX_WIDTH}px;
-  width: min-content;
-  padding: ${spacing[300]}px ${spacing[400]}px;
-  background-color: transparent;
-  border: 0;
-  margin: 0;
-  text-decoration: none;
-  transition-property: color, font-weight;
-  transition-duration: ${TRANSITION_DURATION}ms;
-  transition-timing-function: ease-in-out;
+/**
+ * Base styles for the tab title element.
+ *
+ * Includes pseudo-element setup for:
+ *  - `::before` — invisible bold-width text to prevent layout shift on hover
+ *  - `::after` — bottom indicator bar with animated transform/color
+ */
+const baseStyles = [
+  // Layout & box model
+  "font-[family-name:'Euclid_Circular_A',Helvetica_Neue,Helvetica,Arial,sans-serif]",
+  'font-medium',
+  'relative',
+  'inline-flex',
+  'flex-col',
+  'items-start',
+  'justify-center',
+  `max-w-[${MAX_WIDTH}px]`,
+  'w-min',
+  'py-[12px]',
+  'px-[16px]',
+  'bg-transparent',
+  'border-0',
+  'm-0',
+  'no-underline',
+  'transition-[color,font-weight]',
+  'duration-[150ms]',
+  'ease-in-out',
 
-  &:focus:not(:disabled) {
-    outline: none;
-    font-weight: ${fontWeights.semiBold};
-  }
+  // Focus (not disabled)
+  'focus:[&:not(:disabled)]:outline-none',
+  'focus:[&:not(:disabled)]:font-semibold',
 
-  // We create a pseudo element that's the width of the bolded text
-  // This way there's no layout shift on hover when the text is bolded.
-  &::before {
-    content: attr(data-text);
-    height: 0;
-    font-weight: ${fontWeights.semiBold};
-    visibility: hidden;
-    overflow: hidden;
-    user-select: none;
-    pointer-events: none;
-  }
+  // ::before pseudo-element — bold-width reservation to prevent layout shift
+  'before:content-[attr(data-text)]',
+  'before:h-0',
+  'before:font-semibold',
+  'before:invisible',
+  'before:overflow-hidden',
+  'before:select-none',
+  'before:pointer-events-none',
 
-  &::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    height: 4px;
-    border-radius: ${borderRadius[100]}px ${borderRadius[100]}px 0 0;
-    transition-property: background-color, transform;
-    transition-duration: ${TRANSITION_DURATION}ms;
-    transition-timing-function: ease-in-out;
-    background-color: transparent;
-    transform: scaleX(0.8);
-  }
+  // ::after pseudo-element — bottom indicator bar
+  "after:content-['']",
+  'after:absolute',
+  'after:left-0',
+  'after:right-0',
+  'after:bottom-0',
+  'after:h-[4px]',
+  'after:rounded-t-[4px]',
+  'after:transition-[background-color,transform]',
+  'after:duration-[150ms]',
+  'after:ease-in-out',
+  'after:bg-transparent',
+  'after:scale-x-[0.8]',
 
-  &:hover::after {
-    transform: scaleX(0.95);
-  }
-
-  &:active::after {
-    transform: scaleX(1);
-  }
-`;
+  // ::after hover / active transforms
+  'hover:after:scale-x-[0.95]',
+  'active:after:scale-x-100',
+].join(' ');
 
 export const defaultSizeHeightStyles: Record<BaseFontSize, string> = {
-  [BaseFontSize.Body1]: css`
-    height: ${BODY_1_HEIGHT}px;
-  `,
-  [BaseFontSize.Body2]: css`
-    height: ${BODY_2_HEIGHT}px;
-  `,
+  [BaseFontSize.Body1]: `h-[${BODY_1_HEIGHT}px]`,
+  [BaseFontSize.Body2]: `h-[${BODY_2_HEIGHT}px]`,
 };
 
 interface ListTitleMode {
@@ -98,100 +84,80 @@ interface ListTitleMode {
 }
 
 const modeStyles: Record<Theme, ListTitleMode> = {
-  light: {
-    base: css`
-      color: ${palette.gray.dark1};
-    `,
-    hover: css`
-      &:hover {
-        cursor: pointer;
-        color: ${palette.gray.dark3};
-        &::after {
-          background-color: ${palette.gray.light2};
-        }
-      }
-    `,
-    focus: css`
-      &:focus-visible {
-        color: ${palette.blue.base};
-
-        &::after {
-          background-color: ${palette.blue.light1};
-        }
-      }
-    `,
-    selected: css`
-      &,
-      &:hover {
-        color: ${palette.green.dark2};
-        font-weight: ${fontWeights.semiBold};
-
-        &::after {
-          transform: scaleX(1);
-          background-color: ${palette.green.dark1};
-        }
-      }
-    `,
-    disabled: css`
-      cursor: not-allowed;
-      color: ${palette.gray.light1};
-    `,
+  [Theme.Light]: {
+    // gray.dark1
+    base: 'text-[#5C6C75]',
+    hover: [
+      'hover:cursor-pointer',
+      // gray.dark3
+      'hover:text-[#1C2D38]',
+      // gray.light2
+      'hover:after:bg-[#E8EDEB]',
+    ].join(' '),
+    focus: [
+      // blue.base
+      'focus-visible:text-[#016BF8]',
+      // blue.light1
+      'focus-visible:after:bg-[#0498EC]',
+    ].join(' '),
+    selected: [
+      // green.dark2
+      'text-[#00684A]',
+      'font-semibold',
+      'after:scale-x-100',
+      // green.dark1
+      'after:bg-[#00A35C]',
+      'hover:text-[#00684A]',
+      'hover:font-semibold',
+      'hover:after:scale-x-100',
+      'hover:after:bg-[#00A35C]',
+    ].join(' '),
+    // gray.light1
+    disabled: 'cursor-not-allowed text-[#C1C7C6]',
   },
-
-  dark: {
-    base: css`
-      color: ${palette.gray.light1};
-    `,
-    hover: css`
-      &:hover {
-        cursor: pointer;
-        color: ${palette.white};
-
-        &::after {
-          background-color: ${palette.gray.dark2};
-        }
-      }
-    `,
-    focus: css`
-      &:focus-visible {
-        color: ${palette.blue.light1};
-
-        &::after {
-          background-color: ${palette.blue.light1};
-        }
-      }
-    `,
-    selected: css`
-      &,
-      &:hover {
-        color: ${palette.gray.light2};
-        font-weight: ${fontWeights.semiBold};
-
-        &::after {
-          transform: scaleX(1);
-          background-color: ${palette.green.dark1};
-        }
-      }
-    `,
-    disabled: css`
-      cursor: not-allowed;
-      color: ${palette.gray.dark2};
-    `,
+  [Theme.Dark]: {
+    // gray.light1
+    base: 'text-[#C1C7C6]',
+    hover: [
+      'hover:cursor-pointer',
+      // white
+      'hover:text-[#FFFFFF]',
+      // gray.dark2
+      'hover:after:bg-[#3D4F58]',
+    ].join(' '),
+    focus: [
+      // blue.light1
+      'focus-visible:text-[#0498EC]',
+      // blue.light1
+      'focus-visible:after:bg-[#0498EC]',
+    ].join(' '),
+    selected: [
+      // gray.light2
+      'text-[#E8EDEB]',
+      'font-semibold',
+      'after:scale-x-100',
+      // green.dark1
+      'after:bg-[#00A35C]',
+      'hover:text-[#E8EDEB]',
+      'hover:font-semibold',
+      'hover:after:scale-x-100',
+      'hover:after:bg-[#00A35C]',
+    ].join(' '),
+    // gray.dark2
+    disabled: 'cursor-not-allowed text-[#3D4F58]',
   },
 };
 
 const sizeStyles: Record<Size, string> = {
-  small: css`
-    padding: ${spacing[150]}px ${spacing[200]}px;
-    font-size: ${typeScales.body1.fontSize}px;
-    line-height: ${typeScales.body1.lineHeight}px;
-    height: ${SMALL_HEIGHT}px;
-
-    &::after {
-      height: 2px;
-    }
-  `,
-  default: css``,
+  small: [
+    'py-[6px]',
+    'px-[8px]',
+    'text-[13px]',
+    'leading-[20px]',
+    `h-[${SMALL_HEIGHT}px]`,
+    'after:h-[2px]',
+  ].join(' '),
+  default: '',
 };
 
 export const getStyles = ({
@@ -203,36 +169,31 @@ export const getStyles = ({
   theme,
 }: {
   baseFontSize: BaseFontSize;
-  className: string;
+  className?: string;
   disabled: boolean;
   isSelected: boolean;
   size: Size;
   theme: Theme;
 }) =>
-  cx(
+  cn(
     baseStyles,
     bodyTypeScaleStyles[baseFontSize],
     defaultSizeHeightStyles[baseFontSize],
     modeStyles[theme].base,
     sizeStyles[size],
-    {
-      [modeStyles[theme].selected]: !disabled && isSelected,
-      [modeStyles[theme].hover]: !disabled && !isSelected,
-      [modeStyles[theme].disabled]: disabled,
-    },
+    !disabled && isSelected && modeStyles[theme].selected,
+    !disabled && !isSelected && modeStyles[theme].hover,
+    disabled && modeStyles[theme].disabled,
     modeStyles[theme].focus,
     className,
   );
 
-export const childrenContainerStyles = css`
-  width: 100%;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-
+export const childrenContainerStyles = [
+  'w-full',
+  'whitespace-nowrap',
+  'overflow-hidden',
+  'text-ellipsis',
   // Cannot use flexbox here to center children because it breaks text-overflow: ellipsis
-  > svg {
-    vertical-align: text-bottom;
-    margin-right: ${spacing[100]}px;
-  }
-`;
+  '[&>svg]:align-text-bottom',
+  '[&>svg]:mr-[4px]',
+].join(' ');

@@ -1,10 +1,10 @@
 import React from 'react';
 
-import { cx } from '@leafygreen-ui/emotion';
 import LeafyGreenProvider, {
   useDarkMode,
 } from '@leafygreen-ui/leafygreen-provider';
 
+import { cn } from '../cn';
 import { EllipsesStep } from '../EllipsesStep';
 import { InternalStep } from '../InternalStep';
 import { StepStates } from '../types';
@@ -68,7 +68,7 @@ export const Stepper = ({
 
   return (
     <LeafyGreenProvider darkMode={darkMode}>
-      <ol className={cx(baseStyles, className)} aria-label="progress" {...rest}>
+      <ol className={cn(baseStyles, className)} aria-label="progress" {...rest}>
         {hasPriorSteps && (
           <EllipsesStep
             state={StepStates.CompletedMultiple}

@@ -1,5 +1,3 @@
-import { transparentize } from 'polished';
-
 import { palette } from '@leafygreen-ui/palette';
 
 export const DEFAULT_WIDTH_ANIMATION_DURATION = 300;
@@ -38,15 +36,22 @@ export const getDeterminateAnimatedGradient = (selectedColorStyle: {
           ${selectedColorStyle.bar} 0%,
           ${selectedColorStyle.shimmerFade} 50%,
           ${selectedColorStyle.bar} 100%
-        );`;
+        )`;
 
+/**
+ * Generates the indeterminate gradient, replacing polished `transparentize` with
+ * pre-computed hex+alpha color strings.
+ *
+ * transparentize(0.25, color) = 75% alpha => hex suffix BF
+ * transparentize(0, color) = 100% alpha => no suffix needed (fully opaque)
+ */
 export const getIndeterminateGradient = (selectedColorStyle: {
-  bar: any;
+  bar: string;
 }) => `linear-gradient(
         90deg,
         ${palette.transparent} 0%,
-        ${transparentize(0.25, selectedColorStyle.bar)} 25%,
-        ${transparentize(0, selectedColorStyle.bar)} 50%,
-        ${transparentize(0.25, selectedColorStyle.bar)} 75%,
+        ${selectedColorStyle.bar}BF 25%,
+        ${selectedColorStyle.bar} 50%,
+        ${selectedColorStyle.bar}BF 75%,
         ${palette.transparent} 100%
-      );`;
+      )`;

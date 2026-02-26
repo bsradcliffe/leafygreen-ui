@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect, useRef } from 'react';
 import { renderToString } from 'react-dom/server';
 
-import { cx } from '@leafygreen-ui/emotion';
 import { useDarkMode } from '@leafygreen-ui/leafygreen-provider';
 
 import { useChartContext } from '../ChartContext';
+import { cn } from '../cn';
 import {
   useChartGroupHoverContext,
   useChartGroupStableContext,
@@ -160,11 +160,10 @@ export function ChartTooltip({
 
         /* STYLING PROPERTIES */
         /**
-         * using `extraCssText` instead of `className` because emotion-defined class
-         * didn't have high-enough specificity
-         *
+         * using `extraCssText` instead of `className` because a class-based
+         * approach didn't have high-enough specificity
          */
-        className: cx(CHART_TOOLTIP_CLASSNAME, className),
+        className: cn(CHART_TOOLTIP_CLASSNAME, className),
         extraCssText: getRootStylesText(theme),
         borderWidth: 0,
         padding: 0,

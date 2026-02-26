@@ -1,27 +1,15 @@
-import { css, cx } from '@leafygreen-ui/emotion';
-import { spacing } from '@leafygreen-ui/tokens';
+import { cn } from '../cn';
 
-export const baseStyles = css`
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-
-  > div:first-child {
-    justify-content: flex-start;
-  }
-  > div:last-child {
-    justify-content: flex-end;
-  }
-`;
+export const baseStyles = [
+  'flex',
+  'justify-between',
+  'w-full',
+  '[&>div:first-child]:justify-start',
+  '[&>div:last-child]:justify-end',
+].join(' ');
 
 export const getSectionStyles = ({ className }: { className?: string }) =>
-  cx(
-    css`
-      flex: 1;
-      display: flex;
-      gap: ${spacing[100]}px;
-      align-items: center;
-      justify-content: center;
-    `,
+  cn(
+    'flex-1 flex gap-[4px] items-center justify-center',
     className,
   );

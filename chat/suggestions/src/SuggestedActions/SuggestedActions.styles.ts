@@ -1,4 +1,3 @@
-import { css, cx } from '@leafygreen-ui/emotion';
 import { Theme } from '@leafygreen-ui/lib';
 import {
   borderRadius,
@@ -7,39 +6,45 @@ import {
   typeScales,
 } from '@leafygreen-ui/tokens';
 
-export const baseContainerStyles = css`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: ${spacing[400]}px;
-`;
+import { cn } from '../cn';
+
+export const baseContainerStyles = [
+  'w-full',
+  'flex',
+  'flex-col',
+  `gap-[${spacing[400]}px]`,
+].join(' ');
 
 export const getContainerStyles = (className?: string) =>
-  cx(baseContainerStyles, className);
+  cn(baseContainerStyles, className);
 
-export const getSuggestedActionsWrapperStyles = (theme: Theme) => css`
-  background-color: ${color[theme].background.secondary.default};
-  border: 1px solid ${color[theme].border.secondary.default};
-  border-radius: ${borderRadius[300]}px;
-  width: 100%;
-  padding: ${spacing[300]}px;
-  display: flex;
-  flex-direction: column;
-  gap: ${spacing[200]}px;
-`;
+export const getSuggestedActionsWrapperStyles = (theme: Theme) =>
+  [
+    `bg-[${color[theme].background.secondary.default}]`,
+    'border',
+    `border-[${color[theme].border.secondary.default}]`,
+    `rounded-[${borderRadius[300]}px]`,
+    'w-full',
+    `p-[${spacing[300]}px]`,
+    'flex',
+    'flex-col',
+    `gap-[${spacing[200]}px]`,
+  ].join(' ');
 
-export const tableStyles = css`
-  width: 100%;
-  gap: ${spacing[200]}px;
-  line-height: ${typeScales.body1.lineHeight}px;
-`;
+export const tableStyles = [
+  'w-full',
+  `gap-[${spacing[200]}px]`,
+  `leading-[${typeScales.body1.lineHeight}px]`,
+].join(' ');
 
-export const tableHeaderStyles = css`
-  text-align: left;
-  padding: ${spacing[50]}px 0;
-`;
+export const tableHeaderStyles = [
+  'text-left',
+  `py-[${spacing[50]}px]`,
+  'px-0',
+].join(' ');
 
-export const tableCellStyles = css`
-  text-align: right;
-  padding: ${spacing[50]}px 0;
-`;
+export const tableCellStyles = [
+  'text-right',
+  `py-[${spacing[50]}px]`,
+  'px-0',
+].join(' ');

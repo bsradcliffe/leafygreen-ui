@@ -1,4 +1,3 @@
-import { css } from '@leafygreen-ui/emotion';
 import { Theme } from '@leafygreen-ui/lib';
 import { palette } from '@leafygreen-ui/palette';
 import { transitionDuration } from '@leafygreen-ui/tokens';
@@ -128,55 +127,38 @@ export const variantColor: Record<
   },
 };
 
-export const dismissButtonBaseStyle = css`
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  outline: none;
-  border: none;
-  background-color: transparent;
-  cursor: pointer;
-  transition: background-color ${transitionDuration.faster}ms ease-in-out;
-  padding: 0 2px;
-  align-self: stretch;
-`;
+export const dismissButtonBaseStyle = [
+  'relative',
+  'flex',
+  'items-center',
+  'justify-center',
+  'w-full',
+  'outline-none',
+  'border-none',
+  'bg-transparent',
+  'cursor-pointer',
+  `[transition:background-color_${transitionDuration.faster}ms_ease-in-out]`,
+  'px-[2px]',
+  'py-0',
+  'self-stretch',
+].join(' ');
 
-export const dismissButtonThemeStyle = (variant: Variant, theme: Theme) => css`
-  color: ${variantColor[variant][theme].color};
+export const dismissButtonThemeStyle = (variant: Variant, theme: Theme) =>
+  [
+    `text-[${variantColor[variant][theme].color}]`,
+    `[&:not(:disabled)]:hover:bg-[${variantColor[variant][theme].hoverBgColor}]`,
+    `[&:not(:disabled)]:hover:text-[${variantColor[variant][theme].hoverFocusColor}]`,
+    `focus-visible:text-[${variantColor[variant][theme].hoverFocusColor}]`,
+    `focus-visible:bg-[${variantColor[variant][theme].focusBgColor}]`,
+    `focus-visible:[&:not(:disabled)]:hover:bg-[${variantColor[variant][theme].hoverBgColor}]`,
+  ].join(' ');
 
-  &:not(:disabled):hover {
-    background-color: ${variantColor[variant][theme].hoverBgColor};
-    color: ${variantColor[variant][theme].hoverFocusColor};
-  }
-
-  &:focus-visible {
-    color: ${variantColor[variant][theme].hoverFocusColor};
-    background-color: ${variantColor[variant][theme].focusBgColor};
-
-    &:not(:disabled):hover {
-      background-color: ${variantColor[variant][theme].hoverBgColor};
-    }
-  }
-`;
-
-export const dismissButtonBaseDisabledStyles = css`
-  &:disabled {
-    cursor: not-allowed;
-    pointer-events: none;
-  }
-`;
+export const dismissButtonBaseDisabledStyles = [
+  'disabled:cursor-not-allowed',
+  'disabled:pointer-events-none',
+].join(' ');
 
 export const dismissButtonDisabledStyle: Record<Theme, string> = {
-  [Theme.Light]: css`
-    &:disabled {
-      color: ${palette.gray.light1};
-    }
-  `,
-  [Theme.Dark]: css`
-    &:disabled {
-      color: ${palette.gray.dark2};
-    }
-  `,
+  [Theme.Light]: `disabled:text-[${palette.gray.light1}]`,
+  [Theme.Dark]: `disabled:text-[${palette.gray.dark2}]`,
 };

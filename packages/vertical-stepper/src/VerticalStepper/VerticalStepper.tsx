@@ -4,11 +4,11 @@ import {
   DescendantsProvider,
   useInitDescendants,
 } from '@leafygreen-ui/descendants';
-import { cx } from '@leafygreen-ui/emotion';
 import LeafyGreenProvider, {
   useDarkMode,
 } from '@leafygreen-ui/leafygreen-provider';
 
+import { cn } from '../cn';
 import { LGIDS_VERTICAL_STEPPER } from '../constants';
 import {
   VerticalStepperDescendantsContext,
@@ -58,7 +58,7 @@ export const VerticalStepper = React.forwardRef<
           <VerticalStepperProvider {...providerData}>
             <ol
               ref={forwardRef}
-              className={cx(baseStyles, className)}
+              className={cn(baseStyles, className)}
               data-lgid={dataLgId}
               data-testid={dataLgId}
             >

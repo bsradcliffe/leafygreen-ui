@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { cx } from '@leafygreen-ui/emotion';
 import { useDarkMode } from '@leafygreen-ui/leafygreen-provider';
 import { Description } from '@leafygreen-ui/typography';
 
@@ -19,6 +18,10 @@ import {
 import { useInputOptionContext } from '../InputOptionContext';
 
 import { InputOptionContentProps } from './InputOptionContent.types';
+
+function cn(...classes: Array<string | false | undefined | null>): string {
+  return classes.filter(Boolean).join(' ');
+}
 
 /**
  * @internal
@@ -40,7 +43,7 @@ export const InputOptionContent = ({
   const { theme } = useDarkMode(darkMode);
   return (
     <div
-      className={cx(
+      className={cn(
         inputOptionContentClassName,
         getContentWrapperStyles({
           hasLeftGlyph: !!leftGlyph || preserveIconSpace,
@@ -52,7 +55,7 @@ export const InputOptionContent = ({
     >
       {leftGlyph && (
         <div
-          className={cx(
+          className={cn(
             leftGlyphClassName,
             getLeftGlyphStyles({ theme, disabled, highlighted }),
           )}
@@ -62,7 +65,7 @@ export const InputOptionContent = ({
       )}
       <div className={textContainerStyles}>
         <div
-          className={cx(
+          className={cn(
             titleClassName,
             getTitleStyles({ theme, highlighted, disabled }),
           )}
@@ -71,7 +74,7 @@ export const InputOptionContent = ({
         </div>
         {description && (
           <Description
-            className={cx(descriptionClassName, getDescriptionStyles())}
+            className={cn(descriptionClassName, getDescriptionStyles())}
             darkMode={darkMode}
             disabled={disabled}
           >

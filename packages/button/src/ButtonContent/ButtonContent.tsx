@@ -1,22 +1,25 @@
 import React, { useEffect, useRef } from 'react';
 
-import { cx } from '@leafygreen-ui/emotion';
 import { useDarkMode } from '@leafygreen-ui/leafygreen-provider';
 import { registerRipple } from '@leafygreen-ui/ripple';
 
 import {
-  buttonContentSizeStyle,
-  buttonContentStyle,
+  buttonContentClassName,
+  buttonContentSizeClassName,
   buttonSpinnerSize,
-  centeredSpinnerContainerStyles,
-  centeredSpinnerStyles,
-  hiddenContentStyles,
+  centeredSpinnerClassName,
+  centeredSpinnerContainerClassName,
+  hiddenContentClassName,
+  rippleClassName,
   rippleColors,
-  rippleStyle,
   spinnerColor,
 } from './ButtonContent.styles';
 import { ButtonContentProps } from './ButtonContent.types';
 import DefaultContent from './DefaultContent';
+
+function cn(...classes: Array<string | false | undefined | null>): string {
+  return classes.filter(Boolean).join(' ');
+}
 
 /**
  * Internal contents of a Button
@@ -54,10 +57,8 @@ export const ButtonContent = (props: ButtonContentProps) => {
     loadingIndicator &&
     React.cloneElement(loadingIndicator, {
       ...loadingIndicator.props,
-      className: cx(
-        {
-          [centeredSpinnerStyles]: !loadingText,
-        },
+      className: cn(
+        !loadingText ? centeredSpinnerClassName : undefined,
         loadingIndicator.props?.className,
       ),
       sizeOverride: buttonSpinnerSize[size],
@@ -69,9 +70,11 @@ export const ButtonContent = (props: ButtonContentProps) => {
     return (
       <>
         <div
-          className={cx(buttonContentStyle, buttonContentSizeStyle[size], {
-            [centeredSpinnerContainerStyles]: !loadingText,
-          })}
+          className={cn(
+            buttonContentClassName,
+            buttonContentSizeClassName[size],
+            !loadingText ? centeredSpinnerContainerClassName : undefined,
+          )}
         >
           {spinner}
 
@@ -80,7 +83,7 @@ export const ButtonContent = (props: ButtonContentProps) => {
         {!loadingText && (
           <DefaultContent
             {...props}
-            className={cx(hiddenContentStyles, className)}
+            className={cn(hiddenContentClassName, className)}
           />
         )}
       </>
@@ -90,7 +93,7 @@ export const ButtonContent = (props: ButtonContentProps) => {
   return (
     <>
       {/* Ripple cannot wrap children, otherwise components that rely on children to render dropdowns will not be rendered due to the overflow:hidden rule. */}
-      <div className={rippleStyle} ref={rippleRef} />
+      <div className={rippleClassName} ref={rippleRef} />
       <DefaultContent {...props} />
     </>
   );

@@ -1,4 +1,3 @@
-import { css, cx } from '@leafygreen-ui/emotion';
 import { Theme } from '@leafygreen-ui/lib';
 import { palette } from '@leafygreen-ui/palette';
 import {
@@ -8,62 +7,52 @@ import {
   transitionDuration,
 } from '@leafygreen-ui/tokens';
 
-const baseStyles = css`
-  display: block;
-  padding: ${spacing[200]}px ${spacing[300]}px;
-  border: 1px solid ${palette.green.dark2};
-  border-radius: 12px;
-  transition: all ${transitionDuration.slower}ms ease;
-  box-shadow: none;
-  outline: none;
-  text-align: left;
-  &[aria-disabled='false'][aria-pressed='false'] {
-    cursor: pointer;
-  }
-`;
+import { cn } from '../cn';
+
+const baseStyles = [
+  'block',
+  `py-[${spacing[200]}px]`,
+  `px-[${spacing[300]}px]`,
+  'border',
+  `border-[${palette.green.dark2}]`,
+  'rounded-[12px]',
+  `transition-all`,
+  `duration-[${transitionDuration.slower}ms]`,
+  'ease-[ease]',
+  'shadow-none',
+  'outline-none',
+  'text-left',
+  "[&[aria-disabled='false'][aria-pressed='false']]:cursor-pointer",
+].join(' ');
 
 const themeStyles: Record<Theme, string> = {
-  [Theme.Dark]: css`
-    background: ${palette.black};
-    color: ${palette.gray.light2};
-
-    &[aria-pressed='false'][aria-disabled='false']:hover {
-      box-shadow: ${hoverRing.dark.green};
-    }
-
-    &[aria-pressed='false'][aria-disabled='false']:focus-visible {
-      box-shadow: ${focusRing.dark.default};
-    }
-  `,
-  [Theme.Light]: css`
-    background: ${palette.white};
-    color: ${palette.gray.dark3};
-
-    &[aria-pressed='false'][aria-disabled='false']:hover {
-      box-shadow: ${hoverRing.light.green};
-    }
-
-    &[aria-pressed='false'][aria-disabled='false']:focus-visible {
-      box-shadow: ${focusRing.light.default};
-    }
-  `,
+  [Theme.Dark]: [
+    `bg-[${palette.black}]`,
+    `text-[${palette.gray.light2}]`,
+    `[&[aria-pressed='false'][aria-disabled='false']:hover]:shadow-[${hoverRing.dark.green}]`,
+    `[&[aria-pressed='false'][aria-disabled='false']:focus-visible]:shadow-[${focusRing.dark.default}]`,
+  ].join(' '),
+  [Theme.Light]: [
+    `bg-[${palette.white}]`,
+    `text-[${palette.gray.dark3}]`,
+    `[&[aria-pressed='false'][aria-disabled='false']:hover]:shadow-[${hoverRing.light.green}]`,
+    `[&[aria-pressed='false'][aria-disabled='false']:focus-visible]:shadow-[${focusRing.light.default}]`,
+  ].join(' '),
 };
 
 const disabledStyles: Record<Theme, string> = {
-  [Theme.Dark]: css`
-    border-color: ${palette.gray.dark1};
-    color: ${palette.gray.dark1};
-    background: ${palette.gray.dark3};
-  `,
-  [Theme.Light]: css`
-    border-color: ${palette.gray.base};
-    color: ${palette.gray.base};
-  `,
+  [Theme.Dark]: [
+    `border-[${palette.gray.dark1}]`,
+    `text-[${palette.gray.dark1}]`,
+    `bg-[${palette.gray.dark3}]`,
+  ].join(' '),
+  [Theme.Light]: [
+    `border-[${palette.gray.base}]`,
+    `text-[${palette.gray.base}]`,
+  ].join(' '),
 };
 
-const selectedStyles = css`
-  box-shadow: 0 0 0 2px ${palette.green.dark1};
-`;
+const selectedStyles = `shadow-[0_0_0_2px_${palette.green.dark1}]`;
 
 export const getButtonStyles = ({
   className,
@@ -76,7 +65,7 @@ export const getButtonStyles = ({
   selected?: boolean;
   theme: Theme;
 }) =>
-  cx(
+  cn(
     baseStyles,
     themeStyles[theme],
     {

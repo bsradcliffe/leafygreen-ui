@@ -19,7 +19,6 @@ import isNull from 'lodash/isNull';
 import isString from 'lodash/isString';
 import isUndefined from 'lodash/isUndefined';
 
-import { cx } from '@leafygreen-ui/emotion';
 import { DEFAULT_MESSAGES, FormFieldFeedback } from '@leafygreen-ui/form-field';
 import {
   useAutoScroll,
@@ -48,11 +47,13 @@ import {
 import { Description, Label } from '@leafygreen-ui/typography';
 
 import { ComboboxChip } from '../ComboboxChip';
+import { chipSizeStyleTag } from '../ComboboxChip/ComboboxChip.styles';
 import { ComboboxContext } from '../ComboboxContext';
 import { InternalComboboxGroup } from '../ComboboxGroup';
 import { ComboboxMenu } from '../ComboboxMenu';
 import { OptionObject } from '../ComboboxOption';
 import { InternalComboboxOption } from '../ComboboxOption';
+import { optionStyleTag } from '../ComboboxOption/ComboboxOption.styles';
 import {
   ComboboxElement,
   ComboboxSize,
@@ -76,30 +77,36 @@ import { doesSelectionExist } from '../utils/doesSelectionExist';
 import { isValueCurrentSelection } from './utils/isValueCurrentSelection';
 import {
   baseComboboxStyles,
-  baseInputElementStyle,
+  baseInputElementClassName,
   clearButtonStyle,
-  comboboxFocusStyle,
-  comboboxOverflowShadowStyles,
+  comboboxFocusClassName,
+  comboboxOverflowShadowClassName,
   comboboxParentStyle,
-  comboboxSizeStyles,
-  comboboxThemeStyles,
+  comboboxSizeStyle,
+  comboboxStyleTag,
+  comboboxThemeStyle,
   getCaretIconDisabledFill,
   getCaretIconFill,
-  getComboboxDisabledStyles,
-  getComboboxStateStyles,
+  getComboboxBorderStyle,
+  getComboboxDisabledStyle,
   iconStyle,
-  iconsWrapperBaseStyles,
-  iconsWrapperSizeStyles,
-  inputElementDisabledThemeStyle,
+  iconsWrapperBaseClassName,
+  iconsWrapperSizeStyle,
+  inputElementDisabledThemeClassName,
   inputElementSizeStyle,
-  inputElementThemeStyle,
-  inputElementTransitionStyles,
+  inputElementThemeClassName,
+  inputElementTransitionStyle,
   inputWrapperStyle,
+  labelDescriptionContainerClassName,
   labelDescriptionContainerStyle,
-  labelDescriptionLargeStyles,
+  labelDescriptionLargeStyle,
   multiselectInputElementStyle,
 } from './Combobox.styles';
 import { ComboboxProps } from './Combobox.types';
+
+function cn(...classes: Array<string | false | undefined | null>): string {
+  return classes.filter(Boolean).join(' ');
+}
 
 /**
  * Combobox is a combination of a Select and TextInput,
@@ -1184,6 +1191,26 @@ export function Combobox<M extends boolean>({
     successMessage,
   } as const;
 
+  // Compute inputWrapper style and className
+  const inputWrapperComputed = inputWrapperStyle({ size, overflow });
+
+  // Compute combobox wrapper styles
+  const comboboxWrapperStyle: React.CSSProperties = {
+    ...comboboxThemeStyle(theme),
+    ...comboboxSizeStyle(size, isMultiselectWithSelections),
+    ...getComboboxBorderStyle(theme, state),
+    ...(disabled ? getComboboxDisabledStyle(theme) : {}),
+  };
+
+  // Compute input element styles
+  const inputElementStyle: React.CSSProperties = {
+    ...inputElementSizeStyle(size),
+    ...inputElementTransitionStyle(isOpen),
+    ...(isMultiselect(selection)
+      ? multiselectInputElementStyle(size, inputValue)
+      : {}),
+  };
+
   return (
     <LeafyGreenProvider darkMode={darkMode}>
       <ComboboxContext.Provider
@@ -1202,18 +1229,32 @@ export function Combobox<M extends boolean>({
           popoverZIndex,
         }}
       >
-        <div className={cx(comboboxParentStyle(size), className)} {...rest}>
+        {/* Inject style tags for pseudo-element and nested selectors */}
+        <style>{comboboxStyleTag}</style>
+        <style>{chipSizeStyleTag}</style>
+        <style>{optionStyleTag}</style>
+
+        <div
+          className={cn(className)}
+          style={comboboxParentStyle(size)}
+          {...rest}
+        >
           {(label || description) && (
-            <div className={labelDescriptionContainerStyle}>
+            <div
+              className={cn(labelDescriptionContainerClassName)}
+              style={labelDescriptionContainerStyle}
+            >
               {label && (
                 <Label
                   id={labelId}
                   htmlFor={inputId}
                   darkMode={darkMode}
                   disabled={disabled}
-                  className={cx({
-                    [labelDescriptionLargeStyles]: size === ComboboxSize.Large,
-                  })}
+                  style={
+                    size === ComboboxSize.Large
+                      ? labelDescriptionLargeStyle
+                      : undefined
+                  }
                 >
                   {label}
                 </Label>
@@ -1222,9 +1263,11 @@ export function Combobox<M extends boolean>({
                 <Description
                   darkMode={darkMode}
                   disabled={disabled}
-                  className={cx({
-                    [labelDescriptionLargeStyles]: size === ComboboxSize.Large,
-                  })}
+                  style={
+                    size === ComboboxSize.Large
+                      ? labelDescriptionLargeStyle
+                      : undefined
+                  }
                 >
                   {description}
                 </Description>
@@ -1244,27 +1287,20 @@ export function Combobox<M extends boolean>({
             onFocus={handleComboboxFocus}
             onKeyDown={handleKeyDown}
             onTransitionEnd={handleTransitionEnd}
-            className={cx(
+            className={cn(
               baseComboboxStyles,
-              comboboxThemeStyles[theme],
-              comboboxSizeStyles(size, isMultiselectWithSelections),
-              getComboboxStateStyles(theme)[state],
-              {
-                [comboboxFocusStyle[theme]]: isElementFocused(
-                  ComboboxElement.Input,
-                ),
-                [getComboboxDisabledStyles(theme)]: disabled,
-                [comboboxOverflowShadowStyles[theme]]: shouldShowOverflowShadow,
-              },
+              isElementFocused(ComboboxElement.Input) &&
+                comboboxFocusClassName[theme],
+              shouldShowOverflowShadow &&
+                comboboxOverflowShadowClassName[theme],
             )}
+            style={comboboxWrapperStyle}
           >
             <div
               onScroll={handleOnScroll}
               ref={inputWrapperRef}
-              className={inputWrapperStyle({
-                size,
-                overflow,
-              })}
+              className={inputWrapperComputed.className}
+              style={inputWrapperComputed.style}
             >
               {renderedChips}
               <input
@@ -1274,17 +1310,12 @@ export function Combobox<M extends boolean>({
                 aria-labelledby={labelId}
                 ref={inputRef}
                 id={inputId}
-                className={cx(
-                  baseInputElementStyle,
-                  inputElementSizeStyle(size),
-                  inputElementThemeStyle[theme],
-                  inputElementTransitionStyles(isOpen),
-                  {
-                    [multiselectInputElementStyle(size, inputValue)]:
-                      isMultiselect(selection),
-                    [inputElementDisabledThemeStyle[theme]]: disabled,
-                  },
+                className={cn(
+                  baseInputElementClassName,
+                  inputElementThemeClassName[theme],
+                  disabled && inputElementDisabledThemeClassName[theme],
                 )}
+                style={inputElementStyle}
                 placeholder={placeholderValue}
                 aria-disabled={disabled}
                 readOnly={disabled}
@@ -1294,10 +1325,8 @@ export function Combobox<M extends boolean>({
               />
             </div>
             <div
-              className={cx(
-                iconsWrapperBaseStyles,
-                iconsWrapperSizeStyles[size],
-              )}
+              className={cn(iconsWrapperBaseClassName)}
+              style={iconsWrapperSizeStyle(size)}
             >
               {clearable && doesSelectionExist(selection) && !disabled && (
                 <IconButton
@@ -1306,7 +1335,7 @@ export function Combobox<M extends boolean>({
                   ref={clearButtonRef}
                   onClick={handleClearButtonClick}
                   onFocus={handleClearButtonFocus}
-                  className={cx(clearButtonStyle)}
+                  style={clearButtonStyle}
                   darkMode={darkMode}
                 >
                   <Icon glyph="XWithCircle" />
@@ -1314,11 +1343,12 @@ export function Combobox<M extends boolean>({
               )}
               <Icon
                 glyph="CaretDown"
-                className={iconStyle}
-                fill={cx({
-                  [getCaretIconFill(theme)]: !disabled,
-                  [getCaretIconDisabledFill(theme)]: disabled,
-                })}
+                style={iconStyle}
+                fill={
+                  disabled
+                    ? getCaretIconDisabledFill(theme)
+                    : getCaretIconFill(theme)
+                }
               />
             </div>
           </div>
@@ -1397,8 +1427,3 @@ export function Combobox<M extends boolean>({
     if (comboboxRef.current?.contains(element)) return ComboboxElement.Combobox;
   }
 }
-
-/**
- * Why'd you have to go and make things so complicated?
- * - Avril; and also me to myself about this component
- */

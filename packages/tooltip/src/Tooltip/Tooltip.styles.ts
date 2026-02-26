@@ -1,93 +1,86 @@
-import { transparentize } from 'polished';
-
-import { css, cx } from '@leafygreen-ui/emotion';
 import { Theme } from '@leafygreen-ui/lib';
 import { palette } from '@leafygreen-ui/palette';
 import {
   color,
   InteractionState,
-  spacing,
   Variant as ColorVariant,
 } from '@leafygreen-ui/tokens';
 
-import { TooltipVariant } from './Tooltip.types';
-import {
-  borderRadiuses,
-  NOTCH_WIDTH,
-  TOOLTIP_MAX_WIDTH,
-} from './tooltipConstants';
+import { cn } from '../cn';
 
 /**
  * Try to fit all the content on one line (until it hits max-width)
  * Overrides default behavior, which is to set width to size of the trigger.
  */
-export const tooltipPopoverStyles = css`
-  width: max-content;
-`;
+export const tooltipPopoverStyles = 'w-max';
 
-const getBaseStyles = (theme: Theme) => css`
-  display: flex;
-  align-items: center;
-  border-radius: ${borderRadiuses[TooltipVariant.Default]}px;
-  padding: ${spacing[300]}px ${spacing[400]}px;
-  box-shadow: 0px 2px 4px -1px ${transparentize(0.85, palette.black)};
-  cursor: default;
-  width: fit-content;
-  max-width: ${TOOLTIP_MAX_WIDTH}px;
-  background-color: ${color[theme].background[ColorVariant.InversePrimary][
-    InteractionState.Default
-  ]};
-  color: ${theme === Theme.Dark ? palette.black : palette.gray.light1};
-`;
+/**
+ * borderRadius[400] = 16, borderRadius[150] = 6
+ * spacing[300] = 12, spacing[400] = 16
+ * spacing[100] = 4, spacing[150] = 6
+ * TOOLTIP_MAX_WIDTH = 256
+ * palette.black = #001E2B
+ * transparentize(0.85, palette.black) = rgba(0, 30, 43, 0.15)
+ */
 
-const minSize = NOTCH_WIDTH + 2 * borderRadiuses[TooltipVariant.Default];
-const minHeightStyle = css`
-  min-height: ${minSize}px;
-`;
+const baseStyles = [
+  'flex',
+  'items-center',
+  'rounded-[16px]',
+  'py-[12px]',
+  'px-[16px]',
+  'shadow-[0px_2px_4px_-1px_rgba(0,30,43,0.15)]',
+  'cursor-default',
+  'w-fit',
+  'max-w-[256px]',
+].join(' ');
 
-const compactStyles = css`
-  border-radius: ${borderRadiuses[TooltipVariant.Compact]}px;
-  padding: ${spacing[100]}px ${spacing[150]}px;
-`;
+const themeStyles: Record<Theme, string> = {
+  [Theme.Light]: `bg-[${palette.black}] text-[${palette.gray.light1}]`,
+  [Theme.Dark]: `bg-[${palette.gray.light2}] text-[${palette.black}]`,
+};
+
+/**
+ * minSize = NOTCH_WIDTH + 2 * borderRadius[400] = 26 + 32 = 58
+ */
+const minHeightStyle = 'min-h-[58px]';
+
+const compactStyles = 'rounded-[6px] py-[4px] px-[6px]';
 
 export const getTooltipStyles = ({
   className,
   isCompact,
   isLeftOrRightAligned,
-  tooltipAdjustmentStyles,
   theme,
 }: {
   className?: string;
   isCompact: boolean;
   isLeftOrRightAligned: boolean;
-  tooltipAdjustmentStyles: string;
   theme: Theme;
 }) =>
-  cx(
-    getBaseStyles(theme),
+  cn(
+    baseStyles,
+    themeStyles[theme],
     {
-      [tooltipAdjustmentStyles]: !isCompact,
-      [minHeightStyle]: !isCompact && isLeftOrRightAligned,
       [compactStyles]: isCompact,
+      [minHeightStyle]: !isCompact && isLeftOrRightAligned,
     },
     className,
   );
 
-export const textStyles = css`
-  width: 100%;
-  overflow-wrap: anywhere;
-  text-transform: none;
-  color: inherit;
-`;
+export const textStyles = [
+  'w-full',
+  '[overflow-wrap:anywhere]',
+  'normal-case',
+  'text-inherit',
+].join(' ');
 
 export const getNotchFill = (theme: Theme) =>
   color[theme].background[ColorVariant.InversePrimary][
     InteractionState.Default
   ];
 
-const baseTriggerStyles = css`
-  position: relative;
-`;
+export const baseTriggerStyles = 'relative';
 
 export const getTriggerStyles = (className?: string) =>
-  cx(baseTriggerStyles, className);
+  cn(baseTriggerStyles, className);

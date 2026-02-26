@@ -11,7 +11,7 @@ import {
 } from '@leafygreen-ui/table';
 import { Body } from '@leafygreen-ui/typography';
 
-import { AmountTextStyles, getContainerStyles } from './ListDatabases.styles';
+import { amountTextStyles, getContainerStyles } from './ListDatabases.styles';
 import { ListDatabasesProps } from './ListDatabases.types';
 
 function formatBytes(bytes: number): string {
@@ -30,7 +30,7 @@ export const ListDatabases = ({
 }: ListDatabasesProps): ReactElement | null => {
   return (
     <div className={getContainerStyles(darkMode)}>
-      <Body className={AmountTextStyles} darkMode={darkMode}>
+      <Body className={amountTextStyles} darkMode={darkMode}>
         Your cluster has{' '}
         <strong>
           {databases.length} {databases.length === 1 ? 'database' : 'databases'}

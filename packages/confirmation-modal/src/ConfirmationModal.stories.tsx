@@ -7,7 +7,6 @@ import {
 import { StoryFn } from '@storybook/react';
 
 import { Button } from '@leafygreen-ui/button';
-import { css } from '@leafygreen-ui/emotion';
 import { CloseIconColor } from '@leafygreen-ui/modal';
 
 import ConfirmationModal, { ConfirmationModalProps, Variant } from '.';
@@ -27,9 +26,7 @@ const meta: StoryMetaType<typeof ConfirmationModal> = {
     buttonText: 'Confirm',
     children:
       'This is some description text, and it is extra long so it fills up this modal. Another thing about the modals here. This is some description text, and it is extra long so it fills up this modal. Another thing about the modals here.',
-    className: css`
-      z-index: 1;
-    `,
+    className: 'z-[1]',
     closeIconColor: 'default',
     variant: 'primary',
   },
@@ -87,11 +84,7 @@ export const Basic: StoryFn<ConfirmationModalProps> = ({
   ...args
 }) => {
   return (
-    <div
-      className={css`
-        height: 100vh;
-      `}
-    >
+    <div className="h-screen">
       <ConfirmationModal {...args} open={true} darkMode={darkMode} />;
     </div>
   );

@@ -1,4 +1,5 @@
-import { css } from '@leafygreen-ui/emotion';
+import { CSSProperties } from 'react';
+
 import { createUniqueClassName, Theme } from '@leafygreen-ui/lib';
 import { palette } from '@leafygreen-ui/palette';
 import {
@@ -9,106 +10,99 @@ import {
   typeScales,
 } from '@leafygreen-ui/tokens';
 
-import { canvasHeaderClassname } from '../CanvasHeader/CanvasHeader.styles';
+import { cn } from '../cn';
 
 export const resourceNameButtonClassName = createUniqueClassName(
   'canvas-header-resource',
 );
 
-export const resourceBaseStyles = css`
-  line-break: anywhere;
-  position: relative;
-  display: inline;
-`;
+export const resourceBaseStyles = [
+  '[line-break:anywhere]',
+  'relative',
+  'inline',
+].join(' ');
 
-export const resourceIconBaseStyles = css`
-  display: inline-block;
-  color: ${palette.gray.base};
-  padding-right: ${spacing[200]}px;
+export const resourceIconBaseStyles = [
+  'inline-block',
+  `text-[${palette.gray.base}]`,
+  `pr-[${spacing[200]}px]`,
+  '[&_svg]:relative',
+  '[&_svg]:top-[2px]',
+].join(' ');
 
-  svg {
-    position: relative;
-    top: 2px;
-  }
-`;
+export const getResourceNameButtonStyles = (theme: Theme): string =>
+  cn(
+    'inline',
+    'cursor-pointer',
+    'rounded-[6px]',
+  );
 
-export const getResourceNameButtonStyles = (theme: Theme) => css`
-  display: inline;
-  cursor: pointer;
-  border-radius: 6px;
-  color: ${color[theme].text.secondary?.default};
+export const getResourceNameButtonStyle = (theme: Theme): CSSProperties => ({
+  color: color[theme].text.secondary?.default,
+});
 
-  &:focus-visible,
-  .${canvasHeaderClassname}[data-focus="true"] & {
-    outline: 1px solid white;
-    box-shadow: ${focusRing[theme].default};
-  }
-`;
+export const getResourceNameButtonFocusStyle = (theme: Theme): CSSProperties => ({
+  outline: '1px solid white',
+  boxShadow: focusRing[theme].default,
+});
 
-export const getResourceNameStyles = (theme: Theme) => css`
-  display: inline;
-  color: inherit;
-  font-size: ${typeScales.body2.fontSize}px;
-  line-height: ${typeScales.body2.lineHeight}px;
-  transition: border-color ${transitionDuration.default}ms ease-in-out;
-  border-bottom: 2px solid;
-  border-color: transparent;
-  padding-bottom: 2px;
+export const getResourceNameStyles = (): string =>
+  cn(
+    'inline',
+    'text-inherit',
+    `text-[${typeScales.body2.fontSize}px]`,
+    `leading-[${typeScales.body2.lineHeight}px]`,
+    `transition-[border-color]`,
+    `duration-[${transitionDuration.default}ms]`,
+    'ease-in-out',
+    'border-b-2',
+    'border-b-transparent',
+    'pb-[2px]',
+  );
 
-  .${resourceNameButtonClassName}:hover &,
-    .${canvasHeaderClassname}[data-hover="true"] & {
-    border-color: ${color[theme].border.secondary?.default};
-  }
-`;
+export const getResourceNameHoverStyle = (theme: Theme): CSSProperties => ({
+  borderColor: color[theme].border.secondary?.default,
+});
 
-export const getResourceCopyIconWrapperStyles = (theme: Theme) => css`
-  position: relative;
-  right: 0;
-  margin-left: -24px;
-  opacity: 0;
-  transition: ${transitionDuration.default}ms ease-in-out;
-  transition-property: border-color, opacity;
-  background-color: ${color[theme].background.primary.default};
-  padding-inline: ${spacing[100]}px;
-  border-radius: 0 ${spacing[150]}px ${spacing[150]}px 0;
+export const getResourceCopyIconWrapperStyles = (): string =>
+  cn(
+    'relative',
+    'right-0',
+    'ml-[-24px]',
+    'opacity-0',
+    `transition-[border-color,opacity]`,
+    `duration-[${transitionDuration.default}ms]`,
+    'ease-in-out',
+    `px-[${spacing[100]}px]`,
+    `rounded-r-[${spacing[150]}px]`,
+    'rounded-l-0',
+    '[&_svg]:relative',
+    `[&_svg]:top-[${spacing[150] / 2}px]`,
+  );
 
-  svg {
-    position: relative;
-    top: ${spacing[150] / 2}px;
-  }
+export const getResourceCopyIconWrapperStyle = (theme: Theme): CSSProperties => ({
+  backgroundColor: color[theme].background.primary.default,
+});
 
-  .${resourceNameButtonClassName}:hover &,
-  .${resourceNameButtonClassName}:focus-visible &, 
-  .${canvasHeaderClassname}[data-hover="true"] &,
-  .${canvasHeaderClassname}[data-focus="true"] & {
-    opacity: 1;
-  }
+export const getResourceCopyIconBeforeStyle = (theme: Theme): CSSProperties => ({
+  content: '""',
+  position: 'absolute' as const,
+  display: 'inline-block',
+  left: `-${spacing[300]}px`,
+  top: 0,
+  width: `${spacing[300]}px`,
+  height: '100%',
+  background: `linear-gradient(to right, ${palette.transparent}, ${color[theme].background.primary.default})`,
+});
 
-  // Add a linear gradient over the resource name
-  &:before {
-    content: '';
-    position: absolute;
-    display: inline-block;
-    left: -${spacing[300]}px;
-    top: 0;
-    width: ${spacing[300]}px;
-    height: 100%;
-    background: linear-gradient(
-      to right,
-      ${palette.transparent},
-      ${color[theme].background.primary.default}
-    );
-  }
-`;
+export const resourceCopiedStyles = 'opacity-100';
 
-export const resourceCopiedStyles = css`
-  opacity: 1;
-`;
+export const resourceVisibleStyles = 'opacity-100';
 
-export const resourceBadgeStyles = css`
-  position: relative;
-  display: inline-flex;
-  flex-shrink: 0;
-  gap: ${spacing[200]}px;
-  padding-left: ${spacing[200]}px;
-`;
+export const resourceBadgeStyles = [
+  'relative',
+  'inline-flex',
+  'shrink-0',
+  `gap-[${spacing[200]}px]`,
+  `pl-[${spacing[200]}px]`,
+].join(' ');

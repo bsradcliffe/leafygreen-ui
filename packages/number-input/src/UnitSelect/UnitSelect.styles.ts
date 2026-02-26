@@ -1,32 +1,24 @@
-import { css } from '@leafygreen-ui/emotion';
 import { Theme } from '@leafygreen-ui/lib';
-import { color, fontWeights, typeScales } from '@leafygreen-ui/tokens';
 
-export const wrapperBaseStyles = css`
-  margin-left: -1px;
+export const wrapperBaseStyles = [
+  '-ml-px',
+  '[&:hover]:z-[2]',
+  '[&:focus-within]:z-[2]',
+].join(' ');
 
-  &:hover,
-  &:focus-within {
-    z-index: 2;
-  }
-`;
+// background.disabled.default: light = #E8EDEB, dark = #1C2D38
+// border.disabled.default: light = #C1C7C6, dark = #3D4F58
+export const getSelectDisabledStyles = (theme: Theme) =>
+  theme === Theme.Light
+    ? '[&_button]:bg-[#E8EDEB] [&_button]:border-[#C1C7C6]'
+    : '[&_button]:bg-[#1C2D38] [&_button]:border-[#3D4F58]';
 
-export const getSelectDisabledStyles = (theme: Theme) => css`
-  button {
-    background-color: ${color[theme].background.disabled.default};
-    border-color: ${color[theme].border.disabled.default};
-  }
-`;
-
-export const selectStyles = css`
-  > div {
-    display: flex;
-  }
-
-  button {
-    font-size: ${typeScales.body1.fontSize}px;
-    font-weight: ${fontWeights.semiBold};
-    line-height: ${typeScales.body1.lineHeight}px;
-    text-transform: none;
-  }
-`;
+// typeScales.body1.fontSize = 13, lineHeight = 20
+// fontWeights.semiBold = 600
+export const selectStyles = [
+  '[&>div]:flex',
+  '[&_button]:text-[13px]',
+  '[&_button]:font-semibold',
+  '[&_button]:leading-[20px]',
+  '[&_button]:normal-case',
+].join(' ');

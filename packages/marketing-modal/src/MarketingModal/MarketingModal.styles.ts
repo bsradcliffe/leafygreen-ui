@@ -1,63 +1,54 @@
-import { css, cx } from '@leafygreen-ui/emotion';
 import { Theme } from '@leafygreen-ui/lib';
 import { palette } from '@leafygreen-ui/palette';
 import { spacing, typeScales } from '@leafygreen-ui/tokens';
 
-export const titleStyle = css`
-  margin-bottom: ${spacing[1]}px;
-`;
+import { cn } from '../cn';
 
-export const baseModalStyle = css`
-  width: 600px;
-  padding: initial;
-  overflow: hidden;
-`;
+export const titleStyle = `mb-[${spacing[1]}px]`;
 
-export const wrapperStyle = css`
-  text-align: center;
-  padding: 0 20px 32px;
-  max-width: 476px;
-  margin: 0 auto;
-`;
+export const baseModalStyle = 'w-[600px] p-0 overflow-hidden';
 
-const contentStyle = css`
-  font-size: ${typeScales.body1.fontSize}px;
-  line-height: ${typeScales.body1.lineHeight}px;
-`;
+export const wrapperStyle = [
+  'text-center',
+  'px-[20px]',
+  'pb-[32px]',
+  'pt-0',
+  'max-w-[476px]',
+  'mx-auto',
+].join(' ');
+
+const contentStyle = [
+  `text-[${typeScales.body1.fontSize}px]`,
+  `leading-[${typeScales.body1.lineHeight}px]`,
+].join(' ');
 
 const contentThemeStyle: Record<Theme, string> = {
-  [Theme.Light]: css`
-    color: ${palette.black};
-  `,
-  [Theme.Dark]: css`
-    color: ${palette.gray.light1};
-  `,
+  [Theme.Light]: `text-[${palette.black}]`,
+  [Theme.Dark]: `text-[${palette.gray.light1}]`,
 };
 
 export const getContentStyles = (theme: Theme) =>
-  cx(contentStyle, contentThemeStyle[theme]);
+  cn(contentStyle, contentThemeStyle[theme]);
 
-export const footerContentStyle = css`
-  line-height: 24px;
-  padding-bottom: 40px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-`;
+export const footerContentStyle = [
+  'leading-[24px]',
+  'pb-[40px]',
+  'flex',
+  'flex-col',
+  'items-center',
+  'justify-center',
+].join(' ');
 
-const baseButtonStyles = css`
-  min-width: 200px;
-`;
+const baseButtonStyles = 'min-w-[200px]';
 
 export const getButtonStyles = (className?: string) =>
-  cx(baseButtonStyles, className);
+  cn(baseButtonStyles, className);
 
-export const linkStyle = css`
-  margin-top: ${spacing[3]}px;
-`;
+export const linkStyle = `mt-[${spacing[3]}px]`;
 
-export const disclaimerStyles = css`
-  padding: ${spacing[5]}px ${spacing[5] + spacing[3]}px 0px;
-  color: ${palette.gray.dark1};
-`;
+export const disclaimerStyles = [
+  `pt-[${spacing[5]}px]`,
+  `px-[${spacing[5] + spacing[3]}px]`,
+  'pb-0',
+  `text-[${palette.gray.dark1}]`,
+].join(' ');

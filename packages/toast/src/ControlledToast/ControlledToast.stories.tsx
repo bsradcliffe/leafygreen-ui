@@ -6,7 +6,6 @@ import {
 import { StoryFn } from '@storybook/react';
 
 import { Button } from '@leafygreen-ui/button';
-import { css } from '@leafygreen-ui/emotion';
 
 import { ToastProvider, Variant } from '..';
 
@@ -28,9 +27,7 @@ const meta: StoryMetaType<typeof Toast> = {
     open: true,
     variant: Variant.Note,
     progress: 0,
-    className: css`
-      z-index: 1;
-    `,
+    className: 'z-[1]',
   },
   argTypes: {
     variant: {

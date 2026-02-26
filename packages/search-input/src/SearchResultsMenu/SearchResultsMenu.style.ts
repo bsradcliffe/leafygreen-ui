@@ -1,15 +1,26 @@
-import { css, cx } from '@leafygreen-ui/emotion';
 import { Theme } from '@leafygreen-ui/lib';
-import {
-  borderRadius,
-  boxShadows,
-  color,
-  spacing,
-} from '@leafygreen-ui/tokens';
+import { color } from '@leafygreen-ui/tokens';
 
-const searchResultsMenuStyles = css`
-  border-radius: ${borderRadius[300]}px;
-`;
+function cn(
+  ...classes: Array<string | false | undefined | null>
+): string {
+  return classes.filter(Boolean).join(' ');
+}
+
+/**
+ * borderRadius[300] = 12px
+ * spacing[300] = 12px
+ *
+ * color.light.background.primary.default = #FFFFFF
+ * color.light.border.secondary.default = #E8EDEB
+ * color.dark.background.primary.default = #001E2B
+ * color.dark.border.secondary.default = #3D4F58
+ *
+ * boxShadows.light[1] = 0px 2px 4px 1px color-mix(in srgb, #001E2B 15%, transparent)
+ * boxShadows.dark[1] = unset
+ */
+
+const searchResultsMenuStyles = 'rounded-[12px]';
 
 export const getSearchResultsMenuStyles = ({
   theme,
@@ -18,33 +29,32 @@ export const getSearchResultsMenuStyles = ({
   theme: Theme;
   menuWidth: number;
 }) =>
-  cx(
+  cn(
     searchResultsMenuStyles,
-    css`
-      width: ${menuWidth}px;
-      min-width: ${menuWidth}px;
-      background-color: ${color[theme].background.primary.default};
-      border: 1px solid ${color[theme].border.secondary.default};
-      box-shadow: ${boxShadows[theme][1]};
-    `,
+    `w-[${menuWidth}px]`,
+    `min-w-[${menuWidth}px]`,
+    `bg-[${color[theme].background.primary.default}]`,
+    `border border-solid border-[${color[theme].border.secondary.default}]`,
+    theme === Theme.Light &&
+      'shadow-[0px_2px_4px_1px_color-mix(in_srgb,#001E2B_15%,transparent)]',
+    theme === Theme.Dark && 'shadow-none',
   );
 
-export const searchResultsListStyles = css`
-  padding: ${spacing[300]}px 0;
-  margin: 0;
-  border-radius: ${borderRadius[300]}px;
-  overflow-y: auto;
-  scroll-behavior: smooth;
-`;
+const searchResultsListStyles = [
+  'py-[12px]',
+  'px-0',
+  'm-0',
+  'rounded-[12px]',
+  'overflow-y-auto',
+  'scroll-smooth',
+].join(' ');
 
 export const getSearchResultsListStyles = ({
   maxHeightValue,
 }: {
   maxHeightValue: string;
 }) =>
-  cx(
+  cn(
     searchResultsListStyles,
-    css`
-      max-height: ${maxHeightValue};
-    `,
+    `max-h-[${maxHeightValue}]`,
   );

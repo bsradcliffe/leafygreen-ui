@@ -9,7 +9,10 @@ import {
 
 import { getLgIds } from '../utils';
 
-import { containerStyles, getMenuContainerStyles } from './ContextMenu.styles';
+import {
+  containerStyles,
+  getMenuContainerInlineStyles,
+} from './ContextMenu.styles';
 import type { ContextMenuItem, ContextMenuProps } from './ContextMenu.types';
 
 /**
@@ -188,7 +191,7 @@ export const ContextMenu = ({
       {children}
 
       {isOpen && (
-        <div className={getMenuContainerStyles(position)}>
+        <div style={getMenuContainerInlineStyles(position)}>
           {/* This is a workaround to prevent the Menu from being rendered in the DOM when it's not open */}
           <div ref={menuRef} />
           <Menu

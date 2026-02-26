@@ -1,41 +1,25 @@
-import { css } from '@leafygreen-ui/emotion';
 import { spacing } from '@leafygreen-ui/tokens';
 
 const TABLE_WIDTH = '282px';
 const ROW_PADDING = spacing[300];
 const CONTAINER_MARGIN_TOP = spacing[1000] - ROW_PADDING; // Account for the padding on the first row
 
-export const TableContainerStyles = css`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin-top: ${CONTAINER_MARGIN_TOP}px;
-`;
+export const TableContainerStyles = [
+  'flex',
+  'flex-col',
+  'items-center',
+  'justify-center',
+  `mt-[${CONTAINER_MARGIN_TOP}px]`,
+].join(' ');
 
-export const TableStyles = css`
-  width: ${TABLE_WIDTH};
-  border-spacing: 0;
+export const TableStyles = [
+  `w-[${TABLE_WIDTH}]`,
+  '[border-spacing:0]',
+  `[&_tr+tr_td]:pt-[${ROW_PADDING}px]`,
+  '[&_td]:align-top',
+  '[&_td:first-child]:w-[60%]',
+  '[&_td:last-child]:w-[40%]',
+  '[&_td:last-child]:text-right',
+].join(' ');
 
-  tr + tr td {
-    padding-top: ${ROW_PADDING}px;
-  }
-
-  td {
-    vertical-align: top;
-
-    &:first-child {
-      width: 60%;
-    }
-
-    &:last-child {
-      width: 40%;
-      text-align: right;
-    }
-  }
-`;
-
-export const PlusSignStyles = css`
-  display: inline-block;
-  margin: 0 ${spacing[100]}px;
-`;
+export const PlusSignStyles = `inline-block mx-[${spacing[100]}px] my-0`;

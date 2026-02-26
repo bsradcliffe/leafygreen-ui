@@ -1,8 +1,7 @@
 import React from 'react';
 
-import { cx } from '@leafygreen-ui/emotion';
-
 import { BlobSVG } from '../BlobSVG/BlobSVG';
+import { cn } from '../cn';
 import { GraphicStyle } from '../MarketingModal/MarketingModal.types';
 
 import {
@@ -34,16 +33,16 @@ export const Graphic = ({
         <BlobSVG blobPosition={blobPosition} theme={theme} />
       )}
       <div
-        className={cx(containerBaseStyle, containerStyleStyles[graphicStyle])}
+        className={cn(containerBaseStyle, containerStyleStyles[graphicStyle])}
       >
         {React.cloneElement(graphic, {
-          className: `${graphic.props.className ?? ''} ${cx(baseStyle, {
+          className: `${graphic.props.className ?? ''} ${cn(baseStyle, {
             [filledStyle]: filledGraphic,
           })}`,
         })}
         {filledGraphic && (
           <svg
-            className={cx(curvedSVGBaseStyles, curvedSVGThemeStyles[theme])}
+            className={cn(curvedSVGBaseStyles, curvedSVGThemeStyles[theme])}
             viewBox="0 0 600 49"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"

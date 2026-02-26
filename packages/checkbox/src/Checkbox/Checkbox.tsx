@@ -1,11 +1,9 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
-import { css, cx } from '@leafygreen-ui/emotion';
 import { useIdAllocator } from '@leafygreen-ui/hooks';
 import LeafyGreenProvider, {
   useDarkMode,
 } from '@leafygreen-ui/leafygreen-provider';
-import { fontWeights } from '@leafygreen-ui/tokens';
 import {
   Description,
   Label,
@@ -22,18 +20,24 @@ import {
   disabledContainerStyle,
   disabledLabelStyle,
   inputClassName,
-  inputFocusStyles,
+  inputFocusBoxShadow,
   inputStyle,
-  labelHoverStyle,
+  labelHoverBoxShadow,
   labelStyle,
   labelTextStyle,
 } from './Checkbox.style';
 import { CheckboxProps } from './Checkbox.types';
 
+function cn(
+  ...classes: Array<string | false | undefined | null>
+): string {
+  return classes.filter(Boolean).join(' ');
+}
+
 /**
- * Checkboxes should be used whenever a user has an option they’d like to opt in or out of.
+ * Checkboxes should be used whenever a user has an option they'd like to opt in or out of.
  *
- * Unlike toggles, checkboxes are used for actions, or features, that don’t immediately turn on or off. Checkboxes are usually found in forms as opposed to config pages.
+ * Unlike toggles, checkboxes are used for actions, or features, that don't immediately turn on or off. Checkboxes are usually found in forms as opposed to config pages.
  */
 const Checkbox = React.forwardRef(
   (
@@ -78,6 +82,12 @@ const Checkbox = React.forwardRef(
     // otherwise default bold if there's a description
     const bold = boldProp ?? !!description;
 
+    // Unique scope ID for the <style> tag targeting dynamic class names
+    const scopeId = useMemo(
+      () => `cb-${Math.random().toString(36).slice(2, 9)}`,
+      [],
+    );
+
     const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       // Don't fire events if disabled
       if (disabled) {
@@ -113,17 +123,33 @@ const Checkbox = React.forwardRef(
       }
     };
 
+    /**
+     * Dynamic CSS for hover and focus-visible styles.
+     * These selectors reference dynamically-generated class names from
+     * createUniqueClassName, which cannot be expressed as Tailwind utility classes.
+     */
+    const dynamicCSS = useMemo(
+      () => `
+      [data-checkbox-scope="${scopeId}"]:hover:not(:focus-within) > .${inputClassName}:not([disabled]) + .${checkWrapperClassName} {
+        box-shadow: ${labelHoverBoxShadow[theme]};
+      }
+      [data-checkbox-scope="${scopeId}"] > .${inputClassName}:focus-visible + .${checkWrapperClassName} {
+        box-shadow: ${inputFocusBoxShadow[theme]};
+      }
+    `,
+      [scopeId, theme],
+    );
+
     return (
       <LeafyGreenProvider
         baseFontSize={baseFontSize === 16 ? baseFontSize : 14}
         darkMode={darkMode}
       >
+        <style>{dynamicCSS}</style>
         <div
-          className={cx(
+          className={cn(
             containerStyle,
-            {
-              [disabledContainerStyle]: disabled,
-            },
+            disabled && disabledContainerStyle,
             className,
           )}
           data-lgid={lgIds.root}
@@ -134,19 +160,20 @@ const Checkbox = React.forwardRef(
             id={labelId}
             htmlFor={checkboxId}
             disabled={disabled}
-            className={cx(labelStyle, labelHoverStyle[theme], {
-              [disabledLabelStyle]: disabled,
-            })}
+            className={cn(
+              labelStyle,
+              disabled && disabledLabelStyle,
+            )}
             data-lgid={lgIds.root}
             data-testid={lgIds.root}
+            data-checkbox-scope={scopeId}
           >
             <input
               {...rest}
               id={checkboxId}
-              className={cx(
+              className={cn(
                 inputClassName,
                 inputStyle,
-                inputFocusStyles[theme],
               )}
               type="checkbox"
               name={name}
@@ -171,11 +198,10 @@ const Checkbox = React.forwardRef(
 
             {label && (
               <span
-                className={cx(labelTextStyle, {
-                  [css`
-                    font-weight: ${fontWeights.regular};
-                  `]: !bold,
-                })}
+                className={cn(
+                  labelTextStyle,
+                  !bold && 'font-normal',
+                )}
               >
                 {label}
               </span>

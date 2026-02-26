@@ -1,6 +1,5 @@
 import React, { forwardRef } from 'react';
 
-import { cx } from '@leafygreen-ui/emotion';
 import {
   PopoverProvider,
   useDarkMode,
@@ -12,7 +11,11 @@ import {
   RenderMode,
 } from '@leafygreen-ui/popover';
 
-import { menuStyles } from './MenuWrapper.styles';
+import { menuInlineStyles } from './MenuWrapper.styles';
+
+function cn(...classes: Array<string | false | undefined | null>): string {
+  return classes.filter(Boolean).join(' ');
+}
 
 export type MenuWrapperProps = Omit<
   PopoverProps,
@@ -31,13 +34,14 @@ export type MenuWrapperProps = Omit<
  * A simple styled popover component
  */
 export const MenuWrapper = forwardRef<HTMLDivElement, MenuWrapperProps>(
-  ({ className, children, ...props }: MenuWrapperProps, fwdRef) => {
+  ({ className, children, style, ...props }: MenuWrapperProps, fwdRef) => {
     const { theme } = useDarkMode();
 
     return (
       <Popover
         ref={fwdRef}
-        className={cx(menuStyles[theme], className)}
+        className={cn(className)}
+        style={{ ...menuInlineStyles[theme], ...style }}
         {...props}
         dismissMode={DismissMode.Manual}
         renderMode={RenderMode.TopLayer}

@@ -8,3 +8,4 @@ export { default as useAccessibleForm } from './useAccessibleForm';
 export { usePrefersReducedMotion } from './usePrefersReducedMotion';
 export { validateAriaLabelProps } from './validateAriaLabelProps';
 export { default as VisuallyHidden } from './VisuallyHidden';
+export { VisuallyHidden as ReactAriaVisuallyHidden } from 'react-aria';

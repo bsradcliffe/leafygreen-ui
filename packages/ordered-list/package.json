@@ -16,9 +16,7 @@
   },
   "dependencies": {
     "@leafygreen-ui/descendants": "workspace:^",
-    "@leafygreen-ui/emotion": "workspace:^",
     "@leafygreen-ui/lib": "workspace:^",
-    "@leafygreen-ui/tokens": "workspace:^",
     "@leafygreen-ui/typography": "workspace:^"
   },
   "peerDependencies": {

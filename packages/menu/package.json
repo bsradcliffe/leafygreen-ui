@@ -16,7 +16,6 @@
   },
   "dependencies": {
     "@leafygreen-ui/descendants": "workspace:^",
-    "@leafygreen-ui/emotion": "workspace:^",
     "@leafygreen-ui/hooks": "workspace:^",
     "@leafygreen-ui/icon": "workspace:^",
     "@leafygreen-ui/icon-button": "workspace:^",
@@ -28,7 +27,6 @@
     "@leafygreen-ui/tokens": "workspace:^",
     "@leafygreen-ui/typography": "workspace:^",
     "lodash": "^4.17.21",
-    "polished": "^4.3.1",
     "react-transition-group": "^4.4.5"
   },
   "devDependencies": {

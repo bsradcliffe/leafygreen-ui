@@ -1,7 +1,6 @@
 import React, { ChangeEventHandler, KeyboardEventHandler } from 'react';
 
 import { VisuallyHidden } from '@leafygreen-ui/a11y';
-import { cx } from '@leafygreen-ui/emotion';
 import { useForwardedRef } from '@leafygreen-ui/hooks';
 import { useDarkMode } from '@leafygreen-ui/leafygreen-provider';
 import { keyMap } from '@leafygreen-ui/lib';
@@ -19,11 +18,14 @@ import { getAutoComplete, getValueFormatter } from '../../../utils';
 
 import { getNewSegmentValueFromArrowKeyPress } from './utils/getNewSegmentValueFromArrowKeyPress/getNewSegmentValueFromArrowKeyPress';
 import {
-  baseStyles,
-  fontSizeStyles,
-  segmentSizeStyles,
+  baseClassName,
+  baseInlineStyle,
+  fontSizeVars,
+  segmentSizeFontSize,
+  segmentThemeFocusBg,
+  segmentThemePlaceholderColor,
   segmentThemeStyles,
-  segmentWidthStyles,
+  segmentWidths,
 } from './DateInputSegment.styles';
 import { DateInputSegmentProps } from './DateInputSegment.types';
 import { getNewSegmentValueFromInputValue } from './utils';
@@ -69,6 +71,9 @@ export const DateInputSegment = React.forwardRef<
     const formatter = getValueFormatter(segment);
     const autoComplete = getAutoComplete(autoCompleteProp, segment);
     const pattern = `[0-9]{${charsPerSegment[segment]}}`;
+
+    // Track focus state for conditional styling
+    const [isFocused, setIsFocused] = React.useState(false);
 
     /**
      * Receives native input events,
@@ -180,6 +185,24 @@ export const DateInputSegment = React.forwardRef<
       onKeyDown?.(e);
     };
 
+    const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+      setIsFocused(true);
+    };
+
+    const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+      setIsFocused(false);
+      onBlur?.(e);
+    };
+
+    const inlineStyle: React.CSSProperties = {
+      ...baseInlineStyle,
+      ...fontSizeVars[baseFontSize],
+      ...segmentThemeStyles[theme],
+      fontSize: segmentSizeFontSize[size ?? Size.Default],
+      width: segmentWidths[segment],
+      ...(isFocused ? { backgroundColor: segmentThemeFocusBg[theme] } : {}),
+    };
+
     // Note: Using a text input with pattern attribute due to Firefox
     // stripping leading zeros on number inputs - Thanks @matt-d-rat
     // Number inputs also don't support the `selectionStart`/`End` API
@@ -198,18 +221,14 @@ export const DateInputSegment = React.forwardRef<
           max={max}
           placeholder={defaultPlaceholder[segment]}
           onChange={handleChange}
-          onBlur={onBlur}
+          onBlur={handleBlur}
+          onFocus={handleFocus}
           onKeyDown={handleKeyDown}
           disabled={disabled}
           data-testid="lg-date_picker_input-segment"
           data-segment={segment}
-          className={cx(
-            baseStyles,
-            fontSizeStyles[baseFontSize],
-            segmentThemeStyles[theme],
-            segmentSizeStyles[size ?? Size.Default],
-            segmentWidthStyles[segment],
-          )}
+          className={baseClassName}
+          style={inlineStyle}
           autoComplete={autoComplete}
         />
         <VisuallyHidden aria-live="polite" aria-atomic="true">

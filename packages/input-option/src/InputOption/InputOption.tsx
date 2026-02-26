@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { cx } from '@leafygreen-ui/emotion';
 import { useDarkMode } from '@leafygreen-ui/leafygreen-provider';
 import {
   Polymorphic,
@@ -16,6 +15,10 @@ import {
   inputOptionClassName,
 } from './InputOption.style';
 import { InternalInputOptionProps } from './InputOption.types';
+
+function cn(...classes: Array<string | false | undefined | null>): string {
+  return classes.filter(Boolean).join(' ');
+}
 
 export const InputOption = Polymorphic<InternalInputOptionProps>(
   (
@@ -51,7 +54,7 @@ export const InputOption = Polymorphic<InternalInputOptionProps>(
           aria-checked={checked}
           aria-disabled={disabled}
           tabIndex={-1}
-          className={cx(
+          className={cn(
             inputOptionClassName,
             getInputOptionStyles({
               theme,
@@ -59,14 +62,13 @@ export const InputOption = Polymorphic<InternalInputOptionProps>(
               highlighted,
               isInteractive,
             }),
-            {
-              [getInputOptionWedge({
+            showWedge &&
+              getInputOptionWedge({
                 theme,
                 disabled,
                 highlighted,
                 isInteractive,
-              })]: showWedge,
-            },
+              }),
             className,
           )}
           {...rest}

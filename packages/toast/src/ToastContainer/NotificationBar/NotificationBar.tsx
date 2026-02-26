@@ -1,8 +1,9 @@
 import React from 'react';
 import { MouseEventHandler } from 'react';
 
-import { cx } from '@leafygreen-ui/emotion';
 import { useDarkMode } from '@leafygreen-ui/leafygreen-provider';
+
+import { cn } from '../../cn';
 
 import {
   notificationBarStyles,
@@ -32,7 +33,7 @@ export const NotificationBar = ({
   return (
     <button
       onClick={onClick}
-      className={cx(
+      className={cn(
         notificationBarStyles,
         notificationBarThemeStyles[theme],
         className,

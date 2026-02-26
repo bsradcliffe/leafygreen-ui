@@ -1,4 +1,3 @@
-import { css, cx } from '@leafygreen-ui/emotion';
 import { Theme } from '@leafygreen-ui/lib';
 import {
   borderRadius,
@@ -7,27 +6,45 @@ import {
   hoverRing,
 } from '@leafygreen-ui/tokens';
 
-const getDisabledStyles = (theme: Theme) => css`
-  pointer-events: none;
-  background-color: ${color[theme].background.disabled.default};
-  color: ${color[theme].text.disabled.default};
-`;
+function cn(...classes: Array<string | false | undefined | null>): string {
+  return classes.filter(Boolean).join(' ');
+}
 
-const getClickableStyles = (theme: Theme) => css`
-  border-radius: ${borderRadius[150]}px;
-  cursor: pointer;
+const disabledStyles: Record<Theme, string> = {
+  [Theme.Light]: [
+    'pointer-events-none',
+    `bg-[${color[Theme.Light].background.disabled.default}]`,
+    `text-[${color[Theme.Light].text.disabled.default}]`,
+  ].join(' '),
+  [Theme.Dark]: [
+    'pointer-events-none',
+    `bg-[${color[Theme.Dark].background.disabled.default}]`,
+    `text-[${color[Theme.Dark].text.disabled.default}]`,
+  ].join(' '),
+};
 
-  &:hover:not(:focus) {
-    outline: none;
-    box-shadow: inset ${hoverRing[theme].gray};
-  }
-
-  &:focus,
-  &:focus-visible {
-    outline: none;
-    box-shadow: inset ${focusRing[theme].input};
-  }
-`;
+const clickableStyles: Record<Theme, string> = {
+  [Theme.Light]: [
+    `rounded-[${borderRadius[150]}px]`,
+    'cursor-pointer',
+    `[&:hover:not(:focus)]:outline-none`,
+    `[&:hover:not(:focus)]:[box-shadow:inset_${hoverRing[Theme.Light].gray.replaceAll(' ', '_')}]`,
+    `focus:outline-none`,
+    `focus:[box-shadow:inset_${focusRing[Theme.Light].input.replaceAll(' ', '_')}]`,
+    `focus-visible:outline-none`,
+    `focus-visible:[box-shadow:inset_${focusRing[Theme.Light].input.replaceAll(' ', '_')}]`,
+  ].join(' '),
+  [Theme.Dark]: [
+    `rounded-[${borderRadius[150]}px]`,
+    'cursor-pointer',
+    `[&:hover:not(:focus)]:outline-none`,
+    `[&:hover:not(:focus)]:[box-shadow:inset_${hoverRing[Theme.Dark].gray.replaceAll(' ', '_')}]`,
+    `focus:outline-none`,
+    `focus:[box-shadow:inset_${focusRing[Theme.Dark].input.replaceAll(' ', '_')}]`,
+    `focus-visible:outline-none`,
+    `focus-visible:[box-shadow:inset_${focusRing[Theme.Dark].input.replaceAll(' ', '_')}]`,
+  ].join(' '),
+};
 
 export const getRowBaseStyles = ({
   className,
@@ -40,33 +57,33 @@ export const getRowBaseStyles = ({
   isDisabled: boolean;
   theme: Theme;
 }) =>
-  cx(
-    {
-      [getDisabledStyles(theme)]: isDisabled,
-      [getClickableStyles(theme)]: isClickable,
-    },
+  cn(
+    isDisabled && disabledStyles[theme],
+    isClickable && clickableStyles[theme],
     className,
   );
 
 // applied directly to rows for VS
-const getGrayZebraRowStyles = (theme: Theme) => css`
-  background-color: ${color[theme].background.secondary.default};
-`;
+const grayZebraRowStyles: Record<Theme, string> = {
+  [Theme.Light]: `bg-[${color[Theme.Light].background.secondary.default}]`,
+  [Theme.Dark]: `bg-[${color[Theme.Dark].background.secondary.default}]`,
+};
 
-const getZebraStyles = (theme: Theme) => css`
-  &:nth-of-type(even) {
-    ${getGrayZebraRowStyles(theme)}
-  }
-`;
+const zebraStyles: Record<Theme, string> = {
+  [Theme.Light]: `even:bg-[${color[Theme.Light].background.secondary.default}]`,
+  [Theme.Dark]: `even:bg-[${color[Theme.Dark].background.secondary.default}]`,
+};
 
 // applied directly to rows for VS
-const getSelectedRowStyles = (theme: Theme) => css`
-  background-color: ${color[theme].background.secondary.focus};
-`;
+const selectedRowStyles: Record<Theme, string> = {
+  [Theme.Light]: `bg-[${color[Theme.Light].background.secondary.focus}]`,
+  [Theme.Dark]: `bg-[${color[Theme.Dark].background.secondary.focus}]`,
+};
 
-const getExpandedContentParentStyles = (theme: Theme) => css`
-  background-color: ${color[theme].background.secondary.default};
-`;
+const expandedContentParentStyles: Record<Theme, string> = {
+  [Theme.Light]: `bg-[${color[Theme.Light].background.secondary.default}]`,
+  [Theme.Dark]: `bg-[${color[Theme.Dark].background.secondary.default}]`,
+};
 
 export const getRowWithRTStyles = ({
   className,
@@ -87,19 +104,11 @@ export const getRowWithRTStyles = ({
   shouldAlternateRowColor: boolean;
   theme: Theme;
 }) =>
-  cx(
-    {
-      [getZebraStyles(theme)]:
-        !isVirtualRow && shouldAlternateRowColor && !isSelected,
-      [getGrayZebraRowStyles(theme)]:
-        isOddVSRow && shouldAlternateRowColor && !isSelected,
-    },
-    {
-      [getExpandedContentParentStyles(theme)]: isExpanded && !isSelected,
-    },
-    {
-      [getSelectedRowStyles(theme)]: isSelected && !isDisabled,
-    },
+  cn(
+    !isVirtualRow && shouldAlternateRowColor && !isSelected && zebraStyles[theme],
+    isOddVSRow && shouldAlternateRowColor && !isSelected && grayZebraRowStyles[theme],
+    isExpanded && !isSelected && expandedContentParentStyles[theme],
+    isSelected && !isDisabled && selectedRowStyles[theme],
     className,
   );
 
@@ -112,9 +121,7 @@ export const getRowWithoutRTStyles = ({
   shouldAlternateRowColor?: boolean;
   theme: Theme;
 }) =>
-  cx(
-    {
-      [getZebraStyles(theme)]: shouldAlternateRowColor,
-    },
+  cn(
+    shouldAlternateRowColor && zebraStyles[theme],
     className,
   );

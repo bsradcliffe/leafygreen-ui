@@ -1,13 +1,13 @@
 import React, { forwardRef } from 'react';
 
 import { Card } from '@leafygreen-ui/card';
-import { cx } from '@leafygreen-ui/emotion';
 import LeafyGreenProvider, {
   useDarkMode,
 } from '@leafygreen-ui/leafygreen-provider';
 import { PolymorphicAs } from '@leafygreen-ui/polymorphic';
 import { Body } from '@leafygreen-ui/typography';
 
+import { cn } from '../../cn';
 import {
   baseStyles,
   richLinkTextClassName,
@@ -56,7 +56,7 @@ export const RichLink = forwardRef<HTMLAnchorElement, RichLinkProps>(
     return (
       <LeafyGreenProvider darkMode={darkMode}>
         <Card
-          className={cx(baseStyles, themeStyles[theme])}
+          className={cn(baseStyles, themeStyles[theme])}
           title={children}
           {...conditionalProps}
           onClick={() => onLinkClick?.(props)}

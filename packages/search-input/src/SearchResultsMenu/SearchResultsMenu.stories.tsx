@@ -3,7 +3,6 @@
 import React, { useEffect, useState } from 'react';
 import { StoryMetaType, StoryType } from '@lg-tools/storybook-utils';
 
-import { css } from '@leafygreen-ui/emotion';
 import LeafyGreenProvider from '@leafygreen-ui/leafygreen-provider';
 import { transitionDuration } from '@leafygreen-ui/tokens';
 
@@ -43,14 +42,7 @@ const meta: StoryMetaType<typeof SearchResultsMenu, { state: State }> = {
             <SearchInputContextProvider state={ctx?.args.state}>
               <div
                 ref={divRef}
-                className={css`
-                  height: 0;
-                  color: transparent;
-
-                  td:has(&) {
-                    vertical-align: top;
-                  }
-                `}
+                className="h-0 text-transparent [td:has(&)]:align-top"
               >
                 SearchInput Placeholder
               </div>

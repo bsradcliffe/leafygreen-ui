@@ -11,7 +11,7 @@ import range from 'lodash/range';
 import startCase from 'lodash/startCase';
 
 import { Button } from '@leafygreen-ui/button';
-import { css } from '@leafygreen-ui/emotion';
+
 import { DarkModeProps } from '@leafygreen-ui/lib';
 import { InlineCode, Label, Link } from '@leafygreen-ui/typography';
 
@@ -27,10 +27,7 @@ const meta: StoryMetaType<typeof InternalToast, ToastProviderProps> = {
     (Story, meta: StoryContext<InternalToastProps & ToastProviderProps>) => (
       <ToastProvider
         initialValue={meta.args.initialValue}
-        portalClassName={css`
-          // Ensures a new stacking context is established
-          z-index: 1;
-        `}
+        portalClassName="z-[1]"
       >
         <Story {...meta} />
       </ToastProvider>
@@ -66,9 +63,7 @@ const meta: StoryMetaType<typeof InternalToast, ToastProviderProps> = {
       },
       args: {
         title: 'This is a toast',
-        className: css`
-          position: relative;
-        `,
+        className: 'relative',
       },
       excludeCombinations: [
         {
@@ -129,12 +124,7 @@ export const LiveExample: StoryFn<InternalToastProps> = (
   return (
     <div>
       <div
-        className={css`
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 8px;
-          margin: 1em 0;
-        `}
+        className="grid grid-cols-3 gap-[8px] my-[1em] mx-0"
       >
         {Object.values(Variant).map(variant => {
           const VariantIcon = variantIcons[variant];
@@ -216,10 +206,7 @@ export const WithInitialToasts: StoryFn<
 
   return (
     <div
-      className={css`
-        display: flex;
-        gap: 8px;
-      `}
+      className="flex gap-[8px]"
     >
       <Button
         data-testid="toast-trigger"

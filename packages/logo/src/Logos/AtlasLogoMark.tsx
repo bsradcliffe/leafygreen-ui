@@ -1,7 +1,6 @@
 import React from 'react';
 
-import { css, cx } from '@leafygreen-ui/emotion';
-
+import { cn } from '../cn';
 import { ProductLogoProps } from '../Logo.types';
 import { getAccessibleProps, getColor } from '../utils';
 
@@ -29,12 +28,7 @@ export const AtlasLogoMark = React.forwardRef(
         viewBox="0 0 18 18"
         width={size}
         height={size}
-        className={cx(
-          css`
-            flex-shrink: 0;
-          `,
-          className,
-        )}
+        className={cn('shrink-0', className)}
         {...rest}
         ref={ref}
       >
@@ -101,7 +95,7 @@ export const AtlasLogoMark = React.forwardRef(
           </linearGradient>
         </defs>
         <path
-          className={getColor({
+          style={getColor({
             knockout,
             size,
             flat: '#03aa4f',
@@ -113,7 +107,7 @@ export const AtlasLogoMark = React.forwardRef(
         />
 
         <path
-          className={getColor({
+          style={getColor({
             knockout,
             size,
             flat: '#03aa4f',
@@ -125,7 +119,7 @@ export const AtlasLogoMark = React.forwardRef(
         />
 
         <path
-          className={getColor({
+          style={getColor({
             knockout,
             size,
             flat: '#00804b',
@@ -137,7 +131,7 @@ export const AtlasLogoMark = React.forwardRef(
         />
 
         <path
-          className={getColor({
+          style={getColor({
             knockout,
             size,
             flat: '#00804b',
@@ -147,7 +141,7 @@ export const AtlasLogoMark = React.forwardRef(
           d="M8.4,15.9c-0.5-1.1-1.4-2.7-3.1-3.8c-1.7-1.2-3.6-1.5-5.1-1.4c0.8,4,4.1,7,8.2,7.3V15.9z"
         />
         <path
-          className={getColor({
+          style={getColor({
             knockout,
             size,
             flat: '#80dba5',
@@ -157,7 +151,7 @@ export const AtlasLogoMark = React.forwardRef(
           d="M6,4.7C7,5.4,7.8,6.2,8.4,7V0C5.9,0.2,3.7,1.3,2.2,3.2C3.4,3.3,4.8,3.8,6,4.7z"
         />
         <path
-          className={getColor({
+          style={getColor({
             knockout,
             size,
             flat: '#80dba5',

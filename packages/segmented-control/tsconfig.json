@@ -18,9 +18,6 @@
   ],
   "references": [
     {
-      "path": "../emotion"
-    },
-    {
       "path": "../hooks"
     },
     {

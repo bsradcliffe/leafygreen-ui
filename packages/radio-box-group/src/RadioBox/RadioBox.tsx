@@ -1,9 +1,9 @@
 import React, { HTMLProps, useCallback, useMemo } from 'react';
 
-import { cx } from '@leafygreen-ui/emotion';
 import { useIdAllocator } from '@leafygreen-ui/hooks';
 import { useDarkMode } from '@leafygreen-ui/leafygreen-provider';
 
+import { cn } from '../cn';
 import {
   RadioBoxGroupContext,
   useRadioBoxGroupContext,
@@ -119,7 +119,7 @@ export function RadioBox({
     <label
       {...tooltipTriggerHandlers}
       htmlFor={id}
-      className={cx(
+      className={cn(
         radioWrapper,
         {
           [radioBoxSizes['full']]: size === Size.Full,

@@ -1,86 +1,32 @@
-import { css } from '@leafygreen-ui/emotion';
 import { createUniqueClassName, Theme } from '@leafygreen-ui/lib';
-import { palette } from '@leafygreen-ui/palette';
-import { color, focusRing, fontFamilies } from '@leafygreen-ui/tokens';
 
 export const anchorClassName = createUniqueClassName();
 
-export const code = css`
-  display: inline;
-  transition: all 0.15s ease-in-out;
-  border-radius: 3px;
-  font-family: ${fontFamilies.code};
-  line-height: 20px;
-
-  .${anchorClassName}:hover > & {
-    text-decoration: none;
-  }
-`;
+export const code =
+  "inline transition-all duration-150 ease-in-out rounded-[3px] font-[\'Source_Code_Pro\',Menlo,monospace] leading-[20px] group-hover:no-underline";
 
 export const codeModes: Record<Theme, string> = {
-  [Theme.Light]: css`
-    background-color: ${color.light.background.secondary.default};
-    border: 1px solid ${color.light.border.secondary.default};
-    color: ${palette.gray.dark3};
-
-    .${anchorClassName}:hover > & {
-      box-shadow: 0 0 0 3px ${palette.gray.light2};
-      border: 1px solid ${palette.gray.light1};
-    }
-  `,
-
-  [Theme.Dark]: css`
-    background-color: ${color.dark.background.secondary.default};
-    border: 1px solid ${palette.gray.dark2};
-    color: ${palette.gray.light1};
-
-    .${anchorClassName}:hover > & {
-      box-shadow: 0 0 0 3px ${palette.gray.dark2};
-      border: 1px solid ${palette.gray.dark1};
-    }
-  `,
+  [Theme.Light]:
+    'bg-[#F9FBFA] border border-[#E8EDEB] text-[#1C2D38] group-hover:shadow-[0_0_0_3px_#E8EDEB] group-hover:border-[#C1C7C6]',
+  [Theme.Dark]:
+    'bg-[#112733] border border-[#3D4F58] text-[#C1C7C6] group-hover:shadow-[0_0_0_3px_#3D4F58] group-hover:border-[#5C6C75]',
 };
 
 export const codeFocusModes: Record<Theme, string> = {
-  [Theme.Light]: css`
-    .${anchorClassName}:focus-visible > & {
-      box-shadow: ${focusRing[Theme.Light].default};
-      border: 1px solid ${palette.blue.base};
-    }
-  `,
-
-  [Theme.Dark]: css`
-    .${anchorClassName}:focus-visible > & {
-      box-shadow: ${focusRing[Theme.Dark].default};
-      border: 1px solid ${palette.blue.base};
-    }
-  `,
+  [Theme.Light]:
+    'group-focus-visible:shadow-[0_0_0_2px_#FFFFFF,0_0_0_4px_#016BF8] group-focus-visible:border-[#016BF8]',
+  [Theme.Dark]:
+    'group-focus-visible:shadow-[0_0_0_2px_#001E2B,0_0_0_4px_#0498EC] group-focus-visible:border-[#016BF8]',
 };
 
 export const codeLinkStyleModes: Record<Theme, string> = {
-  [Theme.Light]: css`
-    color: ${palette.blue.base};
-  `,
-  [Theme.Dark]: css`
-    color: ${palette.blue.light1};
-  `,
+  [Theme.Light]: 'text-[#016BF8]',
+  [Theme.Dark]: 'text-[#0498EC]',
 };
 
-export const codeLinkWrapper = css`
-  text-decoration: none;
-  margin: 0;
-  padding: 0;
-  line-height: 20px;
+export const codeLinkWrapper =
+  'no-underline m-0 p-0 leading-[20px] focus:outline-none';
 
-  &:focus {
-    outline: none;
-  }
-`;
+export const nowrap = 'whitespace-nowrap';
 
-export const nowrap = css`
-  white-space: nowrap;
-`;
-
-export const normal = css`
-  white-space: normal;
-`;
+export const normal = 'whitespace-normal';

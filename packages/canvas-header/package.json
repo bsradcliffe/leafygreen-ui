@@ -22,7 +22,6 @@
     "access": "public"
   },
   "dependencies": {
-    "@leafygreen-ui/emotion": "workspace:^",
     "@leafygreen-ui/icon": "workspace:^",
     "@leafygreen-ui/lib": "workspace:^",
     "@leafygreen-ui/palette": "workspace:^",

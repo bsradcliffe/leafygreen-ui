@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { cx } from '@leafygreen-ui/emotion';
 import { useIdAllocator } from '@leafygreen-ui/hooks';
 import { useDarkMode } from '@leafygreen-ui/leafygreen-provider';
 
+import { cn } from '../cn';
 import { Provider } from '../RadioBoxGroupContext';
 import { RadioBoxGroupProps, Size } from '../types';
 
@@ -69,7 +69,7 @@ export function RadioBoxGroup({
     >
       <div
         {...rest}
-        className={cx(baseGroupStyle, className)}
+        className={cn(baseGroupStyle, className)}
         role="group"
         aria-label={name}
       >

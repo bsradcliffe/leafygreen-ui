@@ -1,3 +1,11 @@
+/**
+ * @deprecated This package is deprecated. React Aria Components' collection
+ * system replaces the descendants pattern. Use RAC's `<ListBox>`, `<Menu>`,
+ * `<TabList>`, or other collection components instead.
+ *
+ * This package will be removed in a future major version.
+ */
+
 // Descendants
 export {
   createDescendantsContext,

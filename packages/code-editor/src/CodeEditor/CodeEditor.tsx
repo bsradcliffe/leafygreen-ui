@@ -24,7 +24,9 @@ import { useSearchPanelExtension } from './hooks/extensions/useSearchPanelExtens
 import { useModules } from './hooks/useModules';
 import {
   getCopyButtonStyles,
+  getEditorInlineStyles,
   getEditorStyles,
+  getLoaderInlineStyles,
   getLoaderStyles,
   getLoadingTextStyles,
 } from './CodeEditor.styles';
@@ -502,6 +504,14 @@ const BaseCodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(
               className,
               copyButtonAppearance,
             })}
+            style={getEditorInlineStyles({
+              width,
+              minWidth,
+              maxWidth,
+              height,
+              minHeight,
+              maxHeight,
+            })}
             data-lgid={lgIds.root}
             {...rest}
           >
@@ -529,6 +539,12 @@ const BaseCodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(
               <div
                 className={getLoaderStyles({
                   theme,
+                  baseFontSize,
+                  numOfLines,
+                  isLoading,
+                  hasPanel: !!panel,
+                })}
+                style={getLoaderInlineStyles({
                   width,
                   minWidth,
                   maxWidth,

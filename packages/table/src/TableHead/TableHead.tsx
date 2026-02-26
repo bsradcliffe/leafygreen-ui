@@ -1,10 +1,13 @@
-import React, { forwardRef, PropsWithChildren } from 'react';
+import React, { forwardRef, PropsWithChildren, useId } from 'react';
 
-import { cx } from '@leafygreen-ui/emotion';
 import { useDarkMode } from '@leafygreen-ui/leafygreen-provider';
 
-import { getBaseStyles } from './TableHead.styles';
+import { getBaseStyles, getStickyOverflowCss } from './TableHead.styles';
 import { TableHeadProps } from './TableHead.types';
+
+function cn(...classes: Array<string | false | undefined | null>): string {
+  return classes.filter(Boolean).join(' ');
+}
 
 const TableHead = forwardRef<HTMLTableSectionElement, TableHeadProps>(
   (
@@ -17,14 +20,30 @@ const TableHead = forwardRef<HTMLTableSectionElement, TableHeadProps>(
     fwdRef,
   ) => {
     const { theme } = useDarkMode();
+    const uniqueId = useId();
+    const stickyClassName = `lg-table-head-${uniqueId.replace(/:/g, '')}`;
+
     return (
-      <thead
-        ref={fwdRef}
-        className={cx(getBaseStyles(isSticky, theme), className)}
-        {...rest}
-      >
-        {children}
-      </thead>
+      <>
+        {isSticky && (
+          <style
+            dangerouslySetInnerHTML={{
+              __html: getStickyOverflowCss(stickyClassName, theme),
+            }}
+          />
+        )}
+        <thead
+          ref={fwdRef}
+          className={cn(
+            getBaseStyles(isSticky, theme),
+            isSticky && stickyClassName,
+            className,
+          )}
+          {...rest}
+        >
+          {children}
+        </thead>
+      </>
     );
   },
 );

@@ -5,17 +5,19 @@ import {
   getMonthName,
   setUTCMonth,
 } from '@leafygreen-ui/date-utils';
-import { cx } from '@leafygreen-ui/emotion';
 import { Option, Select } from '@leafygreen-ui/select';
 
 import { selectElementProps } from '../../../shared/constants';
 import { useSharedDatePickerContext } from '../../../shared/context';
 import { useDatePickerContext } from '../../DatePickerContext';
 import {
-  selectInputWidthStyles,
-  selectTruncateStyles,
+  selectInputWidthClassName,
 } from '../DatePickerMenu.styles';
 import { shouldMonthBeEnabled } from '../DatePickerMenuHeader/utils';
+
+function cn(...classes: Array<string | false | undefined | null>): string {
+  return classes.filter(Boolean).join(' ');
+}
 
 interface DatePickerMenuSelectMonthProps {
   updateMonth: (newMonth: Date) => void;
@@ -52,7 +54,7 @@ export const DatePickerMenuSelectMonth = ({
       aria-label={`Select month (${monthString.long} selected)`}
       value={month.getUTCMonth().toString()}
       onChange={handleMonthOnChange}
-      className={cx(selectTruncateStyles, selectInputWidthStyles)}
+      className={cn(selectInputWidthClassName)}
       onEntered={() => setIsSelectOpen(true)}
       onExited={() => setIsSelectOpen(false)}
       placeholder={monthString.short}

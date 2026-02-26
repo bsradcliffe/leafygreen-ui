@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useRef } from 'react';
 
-import { cx } from '@leafygreen-ui/emotion';
 import { isComponentGlyph } from '@leafygreen-ui/icon';
 import {
   useBaseFontSize,
@@ -15,15 +14,24 @@ import {
 import { SegmentedControlContext } from '../SegmentedControlContext';
 
 import {
-  boxStyles,
-  buttonStyles,
-  getButtonFocusStyles,
-  getContainerStyles,
-  iconOnlyThemeStyles,
-  labelStyles,
-  labelTextStyles,
+  boxClassName,
+  buttonClassName,
+  containerClassName,
+  getButtonFocusStyle,
+  getButtonInlineStyle,
+  getContainerInlineStyle,
+  getDividerStyle,
+  labelClassName,
+  labelInlineStyle,
+  labelSvgStyle,
+  labelTextClassName,
+  unselectedIconColor,
 } from './SegmentedControlOption.styles';
 import { BaseSegmentedControlOptionProps } from './SegmentedControlOption.types';
+
+function cn(...classes: Array<string | false | undefined | null>): string {
+  return classes.filter(Boolean).join(' ');
+}
 
 /**
  * SegmentedControlOption
@@ -99,16 +107,35 @@ export const SegmentedControlOption =
 
       const isIconOnly = (glyph && !children) ?? false;
 
+      // Compute button inline styles
+      const buttonInlineStyle: React.CSSProperties = {
+        ...getButtonInlineStyle(),
+        // Apply focus ring when using keyboard
+        ...(usingKeyboard ? getButtonFocusStyle(theme) : {}),
+      };
+
+      // Determine if divider should be hidden
+      // The original CSS handled this via :first-child, [data-lg-checked], etc.
+      // We compute it based on the index and checked state.
+      const shouldHideDivider = index === 0 || checked;
+
       return (
         <div
-          className={cx(
-            getContainerStyles({ theme, size, baseFontSize }),
-            className,
-          )}
+          className={cn(containerClassName, className)}
+          style={getContainerInlineStyle({ theme, size, baseFontSize })}
           ref={forwardedRef}
           data-lg-checked={checked}
         >
-          <Component tabIndex={-1} className={boxStyles} {...rest}>
+          {/* Divider element (replaces ::before pseudo-element) */}
+          <div
+            style={{
+              ...getDividerStyle(),
+              ...(shouldHideDivider
+                ? { backgroundColor: 'transparent' }
+                : {}),
+            }}
+          />
+          <Component tabIndex={-1} className={boxClassName} {...rest}>
             <button
               role="tab"
               id={id}
@@ -116,20 +143,21 @@ export const SegmentedControlOption =
               aria-selected={checked}
               aria-controls={ariaControls}
               disabled={disabled}
-              className={cx(buttonStyles, {
-                [getButtonFocusStyles(theme)]: usingKeyboard,
-                [iconOnlyThemeStyles]: isIconOnly,
-              })}
+              className={buttonClassName}
+              style={buttonInlineStyle}
               ref={buttonRef}
               onClick={onClick}
               onMouseEnter={onMouseEnter}
               onMouseLeave={onMouseLeave}
               type="button"
             >
-              <div className={labelStyles}>
-                {glyph && isComponentGlyph(glyph) && glyph}
+              <div className={labelClassName} style={labelInlineStyle}>
+                {glyph && isComponentGlyph(glyph) &&
+                  React.cloneElement(glyph as React.ReactElement, {
+                    style: labelSvgStyle,
+                  })}
                 {!isIconOnly && (
-                  <span className={labelTextStyles}>{children}</span>
+                  <span className={labelTextClassName}>{children}</span>
                 )}
               </div>
             </button>

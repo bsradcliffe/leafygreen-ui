@@ -1,6 +1,5 @@
 import React, { useMemo, useRef } from 'react';
 
-import { cx } from '@leafygreen-ui/emotion';
 import { isComponentGlyph } from '@leafygreen-ui/icon';
 import { useUsingKeyboardContext } from '@leafygreen-ui/leafygreen-provider';
 import { AriaCurrentValue, isComponentType } from '@leafygreen-ui/lib';
@@ -9,6 +8,7 @@ import {
   useInferredPolymorphic,
 } from '@leafygreen-ui/polymorphic';
 
+import { cn } from '../cn';
 import { AccessibleGlyph } from '../AccessibleGlyph';
 import {
   getIndentLevelStyle,
@@ -162,16 +162,16 @@ const SideNavItem = InferredPolymorphic<BaseSideNavItemProps, 'button'>(
       <li className={liStyle}>
         <Component
           {...rest}
-          className={cx(
+          className={cn(
             sideNavItemClassName,
             baseStyle,
             themeStyle[theme],
             typographyStyle[baseFontSize],
             {
-              [cx(activeBaseStyle, activeThemeStyle[theme])]: active,
+              [cn(activeBaseStyle, activeThemeStyle[theme])]: active,
               [disabledStyle]: disabled,
-              [cx(focusedStyle, focusedThemeStyle[theme])]: usingKeyboard,
-              [cx(focusedDisabledStyle, focusedDisabledThemeStyle[theme])]:
+              [cn(focusedStyle, focusedThemeStyle[theme])]: usingKeyboard,
+              [cn(focusedDisabledStyle, focusedDisabledThemeStyle[theme])]:
                 usingKeyboard && disabled,
               [nestedChildrenStyles]: hasNestedChildren.current,
               [getIndentLevelStyle(indentLevel, darkMode)]: indentLevel > 1,

@@ -20,6 +20,7 @@ import TabTitle from '../TabTitle';
 import { getEnabledIndices, getLgIds, getSelectedIndex } from '../utils';
 
 import {
+  getTabContainerInlineStyle,
   getTabContainerStyles,
   inlineChildrenContainerStyles,
   tabListStyles,
@@ -220,7 +221,11 @@ const Tabs = <SelectedType extends number | string>(
               {...rest}
               className={className}
             >
-              <div className={getTabContainerStyles(theme)} id={id}>
+              <div
+                className={getTabContainerStyles(theme)}
+                id={id}
+                style={getTabContainerInlineStyle(theme)}
+              >
                 <div
                   className={tabListStyles}
                   data-lgid={lgIds.tabList}

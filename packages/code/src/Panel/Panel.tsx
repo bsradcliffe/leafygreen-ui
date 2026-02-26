@@ -1,7 +1,6 @@
 import React from 'react';
 import ClipboardJS from 'clipboard';
 
-import { cx } from '@leafygreen-ui/emotion';
 import { useDarkMode } from '@leafygreen-ui/leafygreen-provider';
 import { isComponentType } from '@leafygreen-ui/lib';
 import { Body } from '@leafygreen-ui/typography';
@@ -53,7 +52,7 @@ function Panel({
 
   return (
     <div
-      className={cx(getBasePanelStyle({ hasTitle, theme, className }))}
+      className={getBasePanelStyle({ hasTitle, theme, className })}
       data-lgid={lgIds.panel}
       data-testid={lgIds.panel}
       {...rest}

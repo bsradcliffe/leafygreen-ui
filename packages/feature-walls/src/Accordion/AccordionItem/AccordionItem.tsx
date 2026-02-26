@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react';
+import React, { forwardRef, useState } from 'react';
 
 import { useDescendant } from '@leafygreen-ui/descendants';
 import { useDarkMode } from '@leafygreen-ui/leafygreen-provider';
@@ -9,7 +9,7 @@ import {
   useAccordionContext,
 } from '../context';
 
-import { getStyles } from './AccordionItem.styles';
+import { getStyles, getWedgeFocusStyle, getWedgeStyle } from './AccordionItem.styles';
 import { AccordionItemProps } from './AccordionItem.types';
 
 export const AccordionItem = forwardRef<HTMLDivElement, AccordionItemProps>(
@@ -29,6 +29,8 @@ export const AccordionItem = forwardRef<HTMLDivElement, AccordionItemProps>(
 
     const isExpanded = index === selectedIndex;
 
+    const [hasFocusWithin, setHasFocusWithin] = useState(false);
+
     const contextValue = {
       buttonId,
       isExpanded,
@@ -37,13 +39,24 @@ export const AccordionItem = forwardRef<HTMLDivElement, AccordionItemProps>(
       panelId,
     } as const;
 
+    const { className: styleClassName, style } = getStyles(theme, isExpanded, className);
+
+    const wedgeStyle = {
+      ...getWedgeStyle(theme, isExpanded),
+      ...(hasFocusWithin && !isExpanded ? getWedgeFocusStyle(theme) : {}),
+    };
+
     return (
       <AccordionItemContext.Provider value={contextValue}>
         <div
           {...rest}
-          className={getStyles(theme, isExpanded, className)}
+          className={styleClassName}
+          style={style}
           ref={ref}
+          onFocusCapture={() => setHasFocusWithin(true)}
+          onBlurCapture={() => setHasFocusWithin(false)}
         >
+          <span style={wedgeStyle} aria-hidden />
           {children}
         </div>
       </AccordionItemContext.Provider>

@@ -5,7 +5,6 @@ import { StoryFn, StoryObj } from '@storybook/react';
 
 import Badge from '@leafygreen-ui/badge';
 import Button from '@leafygreen-ui/button';
-import { css } from '@leafygreen-ui/emotion';
 import Icon from '@leafygreen-ui/icon';
 import { breakpoints } from '@leafygreen-ui/tokens';
 import { BackLink } from '@leafygreen-ui/typography';
@@ -45,10 +44,10 @@ const meta: StoryMetaType<typeof CanvasHeader> = {
       decorator: Instance => {
         return (
           <div
-            className={css`
-              position: relative;
-              width: 50vw;
-            `}
+            style={{
+              position: 'relative',
+              width: '50vw',
+            }}
           >
             <Instance />
           </div>
@@ -127,12 +126,12 @@ export default meta;
 // Creating an explicit story so that it works on .design
 export const LiveExample: StoryFn<typeof CanvasHeader> = props => (
   <div
-    className={css`
-      width: 50vw;
-      max-width: ${breakpoints.XLDesktop}px;
-      position: relative;
-      z-index: 0;
-    `}
+    style={{
+      width: '50vw',
+      maxWidth: `${breakpoints.XLDesktop}px`,
+      position: 'relative',
+      zIndex: 0,
+    }}
   >
     <CanvasHeader
       {...props}

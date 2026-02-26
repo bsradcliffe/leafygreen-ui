@@ -1,4 +1,3 @@
-import { css, cx } from '@leafygreen-ui/emotion';
 import { Theme } from '@leafygreen-ui/lib';
 import { palette } from '@leafygreen-ui/palette';
 import {
@@ -8,6 +7,8 @@ import {
   transitionDuration,
   Variant as TokenVariant,
 } from '@leafygreen-ui/tokens';
+
+import { cn } from '../cn';
 
 import { Variant } from './GalleryIndicator.types';
 
@@ -21,15 +22,15 @@ export const getGalleryIndicatorStyles = ({
 }: {
   className?: string;
 }) =>
-  cx(
-    css`
-      all: unset;
-      padding: 0;
-      margin: 0;
-      list-style-type: none;
-      display: flex;
-      gap: ${spacing[100]}px;
-    `,
+  cn(
+    [
+      '[all:unset]',
+      'p-0',
+      'm-0',
+      'list-none',
+      'flex',
+      `gap-[${spacing[100]}px]`,
+    ].join(' '),
     className,
   );
 
@@ -67,33 +68,25 @@ export const getIndicatorStyles = ({
   theme: Theme;
   isActive: boolean;
   variant: Variant;
-}) => {
+}): string => {
   const baseColor = baseColorSet[theme][variant];
   const activeColor = activeColorSet[theme][variant];
+  const dotColor = isActive ? activeColor : baseColor;
 
-  return cx(
-    css`
-      &::after {
-        content: '';
-        display: block;
-        width: ${DOT_SIZE}px;
-        height: ${DOT_SIZE}px;
-        background-color: ${baseColor};
-        border-radius: 50%;
-        transition-property: background-color, width, border-radius;
-        transition-duration: ${TRANSITION_DURATION_SLOW}ms,
-          ${TRANSITION_DURATION_DEFAULT}ms, ${TRANSITION_DURATION_DEFAULT}ms;
-        transition-timing-function: ease-in-out;
-      }
-    `,
-    {
-      [css`
-        &::after {
-          width: ${ACTIVE_DOT_SIZE}px;
-          border-radius: 100px;
-          background-color: ${activeColor};
-        }
-      `]: isActive,
-    },
-  );
+  const baseClasses = [
+    "after:content-['']",
+    'after:block',
+    `after:h-[${DOT_SIZE}px]`,
+    `after:bg-[${dotColor}]`,
+    'after:rounded-full',
+    `after:[transition-property:background-color,width,border-radius]`,
+    `after:[transition-duration:${TRANSITION_DURATION_SLOW}ms,${TRANSITION_DURATION_DEFAULT}ms,${TRANSITION_DURATION_DEFAULT}ms]`,
+    'after:[transition-timing-function:ease-in-out]',
+  ].join(' ');
+
+  const sizeClasses = isActive
+    ? `after:w-[${ACTIVE_DOT_SIZE}px] after:rounded-[100px]`
+    : `after:w-[${DOT_SIZE}px]`;
+
+  return cn(baseClasses, sizeClasses);
 };

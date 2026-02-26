@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { css, cx } from '@leafygreen-ui/emotion';
 import { InputOption, InputOptionContent } from '@leafygreen-ui/input-option';
 import {
   InferredPolymorphicProps,
@@ -9,6 +8,7 @@ import {
 } from '@leafygreen-ui/polymorphic';
 import { color } from '@leafygreen-ui/tokens';
 
+import { cn } from '../cn';
 import { MenuVariant } from '../Menu/Menu.types';
 import {
   useMenuContext,
@@ -103,7 +103,7 @@ export const InternalMenuItemContent = React.forwardRef<
         showWedge
         highlighted={highlighted}
         data-depth={submenuDepth}
-        className={cx(
+        className={cn(
           getMenuItemStyles({
             active,
             disabled,
@@ -132,11 +132,8 @@ export const InternalMenuItemContent = React.forwardRef<
               variant,
               menuVariant: menuVariant,
             })]: theme === 'light' && renderDarkMenu,
-            [css`
-              &::after {
-                background-color: ${color.dark.border.secondary.default};
-              }
-            `]: theme === 'light' && renderDarkMenu && submenuDepth > 0,
+            [`[&::after]:bg-[${color.dark.border.secondary.default}]`]:
+              theme === 'light' && renderDarkMenu && submenuDepth > 0,
           },
           className,
         )}
@@ -152,11 +149,7 @@ export const InternalMenuItemContent = React.forwardRef<
           rightGlyph={rightGlyph}
           preserveIconSpace={false}
         >
-          <div
-            className={css`
-              font-weight: 500;
-            `}
-          >
+          <div className="font-medium">
             {children}
           </div>
         </InputOptionContent>

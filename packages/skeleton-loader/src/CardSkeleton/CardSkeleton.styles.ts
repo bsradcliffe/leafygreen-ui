@@ -1,5 +1,1 @@
-import { css } from '@leafygreen-ui/emotion';
-
-export const rootStyles = css`
-  width: 100%;
-`;
+export const rootStyles = 'w-full';

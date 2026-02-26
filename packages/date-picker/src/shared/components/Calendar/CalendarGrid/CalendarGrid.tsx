@@ -7,17 +7,21 @@ import {
   getLocaleWeekdays,
   getWeeksArray,
 } from '@leafygreen-ui/date-utils';
-import { cx } from '@leafygreen-ui/emotion';
 import { Disclaimer } from '@leafygreen-ui/typography';
 
 import { useSharedDatePickerContext } from '../../../context';
 
 import {
-  calendarGridStyles,
-  calendarHeaderCellStyles,
-  calendarThStyles,
+  calendarGridClassName,
+  calendarHeaderCellClassName,
+  calendarHeaderCellInlineStyle,
+  calendarThClassName,
 } from './CalendarGrid.styles';
 import { CalendarGridProps } from './CalendarGrid.types';
+
+function cn(...classes: Array<string | false | undefined | null>): string {
+  return classes.filter(Boolean).join(' ');
+}
 
 /**
  * A simple table that renders the `CalendarCell` components passed as children
@@ -51,7 +55,7 @@ export const CalendarGrid = forwardRef<HTMLTableElement, CalendarGridProps>(
         {...rest}
         role="grid"
         ref={fwdRef}
-        className={cx(calendarGridStyles, className)}
+        className={cn(calendarGridClassName, className)}
       >
         <thead>
           <tr role="row">
@@ -63,9 +67,12 @@ export const CalendarGrid = forwardRef<HTMLTableElement, CalendarGridProps>(
                   role="columnheader"
                   key={weekday.long}
                   abbr={weekday.long}
-                  className={calendarThStyles}
+                  className={calendarThClassName}
                 >
-                  <Disclaimer className={calendarHeaderCellStyles}>
+                  <Disclaimer
+                    className={calendarHeaderCellClassName}
+                    style={calendarHeaderCellInlineStyle}
+                  >
                     {weekday.short ?? weekday.abbr}
                   </Disclaimer>
                 </th>

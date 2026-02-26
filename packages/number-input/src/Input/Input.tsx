@@ -7,12 +7,12 @@ import React, {
 } from 'react';
 import isUndefined from 'lodash/isUndefined';
 
-import { cx } from '@leafygreen-ui/emotion';
 import { useControlledValue, useForwardedRef } from '@leafygreen-ui/hooks';
 import { useDarkMode } from '@leafygreen-ui/leafygreen-provider';
 import { createSyntheticEvent } from '@leafygreen-ui/lib';
 
 import { Arrows } from '../Arrows';
+import { cn } from '../cn';
 import { Direction, Size, State } from '../NumberInput/NumberInput.types';
 
 import {
@@ -140,7 +140,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
         ref={containerRef}
         onFocus={handleFocus}
         onBlur={handleBlur}
-        className={cx(
+        className={cn(
           wrapperClassName,
           wrapperBaseStyles,
           wrapperThemeStyles[theme],
@@ -155,7 +155,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
       >
         <input
           ref={inputRef}
-          className={cx(
+          className={cn(
             inputBaseStyles,
             inputThemeStyles[theme],
             inputSizeStyles[size],

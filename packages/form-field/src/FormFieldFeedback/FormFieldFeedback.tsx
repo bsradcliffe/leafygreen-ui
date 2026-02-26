@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { cx } from '@leafygreen-ui/emotion';
 import { Icon } from '@leafygreen-ui/icon';
 import { useDarkMode } from '@leafygreen-ui/leafygreen-provider';
 import { color } from '@leafygreen-ui/tokens';
@@ -21,6 +20,10 @@ import {
   spacingTop,
 } from './FormFieldFeedback.styles';
 import { FormFieldFeedbackProps } from './FormFieldFeedback.types';
+
+function cn(...classes: Array<string | false | undefined | null>): string {
+  return classes.filter(Boolean).join(' ');
+}
 
 export const FormFieldFeedback = ({
   baseFontSize: baseFontSizeProp,
@@ -56,10 +59,11 @@ export const FormFieldFeedback = ({
       id={id}
       data-lgid={lgIds.feedback}
       data-testid={lgIds.feedback}
-      className={cx(containerStyles, {
-        [spacingTop]: showFormFieldFeedback,
-        [hideContainerStyle]: hideFeedback,
-      })}
+      className={cn(
+        containerStyles,
+        showFormFieldFeedback && spacingTop,
+        hideFeedback && hideContainerStyle,
+      )}
       aria-live="polite"
       aria-relevant="all"
       {...rest}
@@ -67,7 +71,7 @@ export const FormFieldFeedback = ({
       {showFormFieldFeedback && (
         <>
           {iconProps && (
-            <div className={cx(iconWrapperStyles, getIconWrapperHeight(size))}>
+            <div className={cn(iconWrapperStyles, getIconWrapperHeight(size))}>
               <Icon {...iconProps} aria-hidden />
             </div>
           )}

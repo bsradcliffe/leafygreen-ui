@@ -1,5 +1,1 @@
-import { css } from '@leafygreen-ui/emotion';
-
-export const baseGroupStyle = css`
-  display: flex;
-`;
+export const baseGroupStyle = 'flex';

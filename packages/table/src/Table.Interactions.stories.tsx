@@ -7,7 +7,6 @@ import { StoryFn } from '@storybook/react';
 import { expect, userEvent, waitFor, within } from '@storybook/test';
 
 import { Badge } from '@leafygreen-ui/badge';
-import { css } from '@leafygreen-ui/emotion';
 import { Icon } from '@leafygreen-ui/icon';
 import { IconButton } from '@leafygreen-ui/icon-button';
 
@@ -135,9 +134,7 @@ const Template: StoryFn<StoryTableProps> = args => {
     <div>
       <Table
         table={table}
-        className={css`
-          width: 1100px;
-        `}
+        className="w-[1100px]"
         {...args}
       >
         <TableHead isSticky>

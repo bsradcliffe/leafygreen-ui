@@ -1,49 +1,21 @@
-import { css } from '@leafygreen-ui/emotion';
-import { typeScales } from '@leafygreen-ui/tokens';
-
 import { Size } from '../types';
 
+// typeScales.body1.fontSize = 13px
+
 // base styles
-export const basePipelineStyles = css`
-  display: flex;
-  counter-reset: hiddenCount;
-  font-weight: 600;
-`;
+export const basePipelineStyles =
+  'flex [counter-reset:hiddenCount] font-semibold';
 
-export const basePipelineListStyles = css`
-  display: flex;
-  flex-grow: 1;
-  flex-wrap: wrap;
-  overflow: hidden;
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  min-width: 74px;
-`;
+export const basePipelineListStyles =
+  'flex grow flex-wrap overflow-hidden list-none p-0 m-0 min-w-[74px]';
 
-export const counterVisibleStyles = css`
-  display: flex;
-`;
+export const counterVisibleStyles = 'flex';
 
 export const baseSizeStyles: Record<Size, string> = {
-  [Size.XSmall]: css`
-    font-size: ${typeScales.body1.fontSize}px;
-    height: 22px;
-  `,
-  [Size.Small]: css`
-    font-size: ${typeScales.body1.fontSize}px;
-    height: 28px;
-  `,
-  [Size.Normal]: css`
-    font-size: ${typeScales.body1.fontSize}px;
-    height: 36px;
-  `,
-  [Size.Large]: css`
-    font-size: 18px;
-    height: 48px;
-  `,
+  [Size.XSmall]: 'text-[13px] h-[22px]',
+  [Size.Small]: 'text-[13px] h-[28px]',
+  [Size.Normal]: 'text-[13px] h-[36px]',
+  [Size.Large]: 'text-[18px] h-[48px]',
 };
 
-export const tooltipStyles = css`
-  max-width: 400px;
-`;
+export const tooltipStyles = 'max-w-[400px]';

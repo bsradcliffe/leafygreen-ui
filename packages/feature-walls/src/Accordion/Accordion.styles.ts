@@ -1,13 +1,12 @@
-import { css, cx } from '@leafygreen-ui/emotion';
 import { transitionDuration } from '@leafygreen-ui/tokens';
+
+import { cn } from '../cn';
 
 export const transitionDurations = {
   expand: transitionDuration.slower,
   focusOrHover: transitionDuration.faster,
 };
 
-const containerStyles = css`
-  width: 100%;
-`;
+const containerStyles = 'w-full';
 
-export const getStyles = (className?: string) => cx(containerStyles, className);
+export const getStyles = (className?: string) => cn(containerStyles, className);

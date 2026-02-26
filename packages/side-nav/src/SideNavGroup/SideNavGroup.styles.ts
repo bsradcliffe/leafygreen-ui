@@ -1,47 +1,38 @@
-import { css, cx } from '@leafygreen-ui/emotion';
 import { createUniqueClassName, Theme } from '@leafygreen-ui/lib';
-import { palette } from '@leafygreen-ui/palette';
-import { spacing } from '@leafygreen-ui/tokens';
 
-import { getIndentLevelStyle, sideNavItemSidePadding } from '../SideNav';
+import { cn } from '../cn';
+import { getIndentLevelStyle } from '../SideNav';
 
 export const buttonClassName = createUniqueClassName('side-nav-group-button');
 
-export const listItemStyle = css`
-  display: flex;
-  flex-direction: column;
-  position: relative;
+export const listItemStyle = [
+  'flex',
+  'flex-col',
+  'relative',
+].join(' ');
+// Note: The original sibling selector `& ~ & > .${buttonClassName}` for padding
+// adjustments cannot be expressed in Tailwind. The buttonClassName is still
+// exported for identification, and spacing is handled by the base group styles.
 
-  & ~ & > .${buttonClassName} {
-    padding: ${spacing[3]}px ${sideNavItemSidePadding}px ${spacing[2]}px
-      ${sideNavItemSidePadding}px;
-  }
-`;
-
-export const baseStyle = css`
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 0;
-  margin-bottom: 0;
-  padding: ${spacing[3]}px ${spacing[3]}px ${spacing[2]}px;
-`;
+export const baseStyle = [
+  'relative',
+  'flex',
+  'items-center',
+  'justify-between',
+  'mt-0',
+  'mb-0',
+  'pt-[16px]',
+  'px-[16px]',
+  'pb-[8px]',
+].join(' ');
 
 export const themeStyle: Record<Theme, string> = {
-  [Theme.Light]: css`
-    color: ${palette.green.dark2};
-  `,
-  [Theme.Dark]: css`
-    color: ${palette.green.light1};
-  `,
+  [Theme.Light]: 'text-[#00684A]',
+  [Theme.Dark]: 'text-[#71F6BA]',
 };
 
 export const indentedStyle = (indentLevel: number, darkMode: boolean) =>
-  cx(
+  cn(
     getIndentLevelStyle(indentLevel, darkMode),
-    css`
-      padding-top: ${spacing[3]}px;
-      padding-bottom: ${spacing[2]}px;
-    `,
+    'pt-[16px] pb-[8px]',
   );

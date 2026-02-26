@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { cx } from '@leafygreen-ui/emotion';
 import { useDarkMode } from '@leafygreen-ui/leafygreen-provider';
 
 import {
@@ -10,6 +9,10 @@ import {
 } from './Skeleton.styles';
 import { Size } from './Skeleton.types';
 import { SkeletonProps } from '.';
+
+function cn(...classes: Array<string | false | undefined | null>): string {
+  return classes.filter(Boolean).join(' ');
+}
 
 export function Skeleton({
   enableAnimations = true,
@@ -21,7 +24,7 @@ export function Skeleton({
   const { theme } = useDarkMode(darkMode);
   return (
     <div
-      className={cx(
+      className={cn(
         getSkeletonBaseStyles({ enableAnimations }),
         sizeStyles[size],
         themeStyles[theme],

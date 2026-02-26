@@ -1,15 +1,22 @@
 import React, { useContext, useEffect } from 'react';
 
 import { BaseFontSize, Chip, Variant } from '@leafygreen-ui/chip';
-import { cx } from '@leafygreen-ui/emotion';
 import { useForwardedRef } from '@leafygreen-ui/hooks';
 import { keyMap } from '@leafygreen-ui/lib';
 
 import { ComboboxContext } from '../ComboboxContext';
 import { Overflow, TruncationLocation } from '../types';
 
-import { chipClassName, chipSizeStyles } from './ComboboxChip.styles';
+import {
+  chipClassName,
+  chipSizeClassName,
+  chipSizeStyle,
+} from './ComboboxChip.styles';
 import { ComboboxChipProps } from './ComboboxChip.types';
+
+function cn(...classes: Array<string | false | undefined | null>): string {
+  return classes.filter(Boolean).join(' ');
+}
 
 export const ComboboxChip = React.forwardRef<
   HTMLSpanElement,
@@ -69,7 +76,8 @@ export const ComboboxChip = React.forwardRef<
     return (
       <Chip
         label={displayName}
-        className={cx(chipClassName, chipSizeStyles[size])}
+        className={cn(chipClassName, chipSizeClassName[size])}
+        style={chipSizeStyle(size)}
         role="option"
         aria-selected={isFocused}
         data-testid="lg-combobox-chip"

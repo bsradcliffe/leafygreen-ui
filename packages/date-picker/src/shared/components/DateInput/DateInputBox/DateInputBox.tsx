@@ -7,7 +7,6 @@ import {
   isInvalidDateObject,
   isValidDate,
 } from '@leafygreen-ui/date-utils';
-import { cx } from '@leafygreen-ui/emotion';
 import { useForwardedRef } from '@leafygreen-ui/hooks';
 import { useDarkMode } from '@leafygreen-ui/leafygreen-provider';
 import { keyMap } from '@leafygreen-ui/lib';
@@ -34,11 +33,15 @@ import { DateInputSegment } from '../DateInputSegment';
 import { DateInputSegmentChangeEventHandler } from '../DateInputSegment/DateInputSegment.types';
 
 import {
-  segmentPartsWrapperStyles,
+  segmentPartsWrapperClassName,
+  separatorLiteralClassName,
   separatorLiteralDisabledStyles,
-  separatorLiteralStyles,
 } from './DateInputBox.styles';
 import { DateInputBoxProps } from './DateInputBox.types';
+
+function cn(...classes: Array<string | false | undefined | null>): string {
+  return classes.filter(Boolean).join(' ');
+}
 
 /**
  * Renders a styled date input with appropriate segment order & separator characters.
@@ -171,7 +174,7 @@ export const DateInputBox = React.forwardRef<HTMLDivElement, DateInputBoxProps>(
 
     return (
       <div
-        className={cx(segmentPartsWrapperStyles, className)}
+        className={cn(segmentPartsWrapperClassName, className)}
         ref={containerRef}
         {...rest}
       >
@@ -179,9 +182,8 @@ export const DateInputBox = React.forwardRef<HTMLDivElement, DateInputBoxProps>(
           if (part.type === 'literal') {
             return (
               <span
-                className={cx(separatorLiteralStyles, {
-                  [separatorLiteralDisabledStyles[theme]]: disabled,
-                })}
+                className={separatorLiteralClassName}
+                style={disabled ? separatorLiteralDisabledStyles[theme] : undefined}
                 key={'literal-' + i}
               >
                 {part.value}

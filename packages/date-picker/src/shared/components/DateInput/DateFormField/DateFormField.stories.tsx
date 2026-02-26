@@ -2,7 +2,6 @@ import React from 'react';
 import { StoryMetaType } from '@lg-tools/storybook-utils';
 import { StoryFn } from '@storybook/react';
 
-import { css } from '@leafygreen-ui/emotion';
 import LeafyGreenProvider from '@leafygreen-ui/leafygreen-provider';
 import { Size } from '@leafygreen-ui/tokens';
 
@@ -54,14 +53,14 @@ const meta: StoryMetaType<
       args: {
         children: (
           <input
-            className={css`
-              border: none;
-              padding: 0;
-              margin: 0;
-              font-family: inherit;
-              background-color: inherit;
-              color: inherit;
-            `}
+            style={{
+              border: 'none',
+              padding: 0,
+              margin: 0,
+              fontFamily: 'inherit',
+              backgroundColor: 'inherit',
+              color: 'inherit',
+            }}
             placeholder="<placeholder text>"
           />
         ),

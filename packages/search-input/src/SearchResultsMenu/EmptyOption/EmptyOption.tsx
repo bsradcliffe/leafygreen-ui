@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { cx } from '@leafygreen-ui/emotion';
 import { InputOption } from '@leafygreen-ui/input-option';
 import { useDarkMode } from '@leafygreen-ui/leafygreen-provider';
 
@@ -9,6 +8,12 @@ import {
   emptyOptionThemeStyles,
 } from './EmptyOption.styles';
 
+function cn(
+  ...classes: Array<string | false | undefined | null>
+): string {
+  return classes.filter(Boolean).join(' ');
+}
+
 export const EmptyOption = () => {
   const { theme } = useDarkMode();
 
@@ -16,7 +21,7 @@ export const EmptyOption = () => {
     <InputOption
       aria-label="No results found"
       isInteractive={false}
-      className={cx(emptyOptionStyles, emptyOptionThemeStyles[theme])}
+      className={cn(emptyOptionStyles, emptyOptionThemeStyles[theme])}
     >
       <span>No results found</span>
     </InputOption>

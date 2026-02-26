@@ -17,7 +17,6 @@
   "dependencies": {
     "@leafygreen-ui/a11y": "workspace:^",
     "@leafygreen-ui/date-utils": "workspace:^",
-    "@leafygreen-ui/emotion": "workspace:^",
     "@leafygreen-ui/form-field": "workspace:^",
     "@leafygreen-ui/hooks": "workspace:^",
     "@leafygreen-ui/icon": "workspace:^",
@@ -30,7 +29,6 @@
     "@leafygreen-ui/typography": "workspace:^",
     "date-fns": "^2.30.0",
     "lodash": "^4.17.21",
-    "polished": "^4.2.2",
     "weekstart": "^2.0.0"
   },
   "peerDependencies": {

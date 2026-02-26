@@ -6,7 +6,6 @@ import React, {
   useState,
 } from 'react';
 
-import { css, cx } from '@leafygreen-ui/emotion';
 import { DEFAULT_MESSAGES, FormFieldFeedback } from '@leafygreen-ui/form-field';
 import {
   useEventListener,
@@ -53,6 +52,10 @@ import {
   Size,
   State,
 } from './Select.types';
+
+function cn(...classes: Array<string | false | undefined | null>): string {
+  return classes.filter(Boolean).join(' ');
+}
 
 /**
  * Select inputs are typically used alongside other form elements like toggles, radio boxes, or text inputs when a user needs to make a selection from a list of items.
@@ -545,11 +548,39 @@ export const Select = forwardRef<HTMLDivElement, SelectProps>(
       return `${ariaLabel}, ${selectedText}`;
     }, [ariaLabel, ariaLabelledby, label, placeholder, selectedOption]);
 
+    /** Inline style for the label when size is Default (dynamic baseFontSize) */
+    const defaultSizeLabelStyle: React.CSSProperties | undefined =
+      size === Size.Default
+        ? { fontSize: `${baseFontSize}px`, lineHeight: '20px' }
+        : undefined;
+
+    /** Mobile media query CSS for label and description */
+    const mobileStyleCSS = `
+      ${MobileMediaQuery} {
+        .lg-select-label-mobile {
+          font-size: ${mobileSizeSet.label.text}px;
+          line-height: ${mobileSizeSet.label.lineHeight}px;
+        }
+        .lg-select-description-mobile {
+          font-size: ${mobileSizeSet.description.text}px;
+          line-height: ${mobileSizeSet.description.lineHeight}px;
+        }
+      }
+    `;
+
+    /** Width style for the list menu when dropdownWidthBasis is Trigger */
+    const listMenuStyle: React.CSSProperties | undefined =
+      dropdownWidthBasis === DropdownWidthBasis.Trigger
+        ? { width: `${menuButtonRef.current?.clientWidth}px` }
+        : undefined;
+
     return (
       <LeafyGreenProvider darkMode={darkMode}>
+        {/* Inject mobile media query styles */}
+        {(label || description) && <style>{mobileStyleCSS}</style>}
         <div
           ref={containerRef}
-          className={cx(wrapperStyle, className)}
+          className={cn(wrapperStyle, className)}
           data-lgid={lgIds.root}
           data-testid={lgIds.root}
         >
@@ -563,25 +594,12 @@ export const Select = forwardRef<HTMLDivElement, SelectProps>(
                   id={labelId}
                   darkMode={darkMode}
                   disabled={disabled}
-                  className={cx(
-                    {
-                      [largeLabelStyles]: size === Size.Large,
-                      [css`
-                        font-size: ${baseFontSize}px;
-                        line-height: 20px;
-                      `]: size === Size.Default,
-                    },
-                    css`
-                      // Prevent hover state from showing when hovering label
-                      pointer-events: none;
-                    `,
-                    css`
-                      ${MobileMediaQuery} {
-                        font-size: ${mobileSizeSet.label.text}px;
-                        line-height: ${mobileSizeSet.label.lineHeight}px;
-                      }
-                    `,
+                  className={cn(
+                    size === Size.Large && largeLabelStyles,
+                    'pointer-events-none',
+                    'lg-select-label-mobile',
                   )}
+                  style={defaultSizeLabelStyle}
                 >
                   {label}
                 </Label>
@@ -594,21 +612,11 @@ export const Select = forwardRef<HTMLDivElement, SelectProps>(
                   id={descriptionId}
                   darkMode={darkMode}
                   disabled={disabled}
-                  className={cx(
-                    {
-                      [largeLabelStyles]: size === Size.Large,
-                      [css`
-                        font-size: ${baseFontSize}px;
-                        line-height: 20px;
-                      `]: size === Size.Default,
-                    },
-                    css`
-                      ${MobileMediaQuery} {
-                        font-size: ${mobileSizeSet.description.text}px;
-                        line-height: ${mobileSizeSet.description.lineHeight}px;
-                      }
-                    `,
+                  className={cn(
+                    size === Size.Large && largeLabelStyles,
+                    'lg-select-description-mobile',
                   )}
+                  style={defaultSizeLabelStyle}
                 >
                   {description}
                 </Description>
@@ -648,12 +656,8 @@ export const Select = forwardRef<HTMLDivElement, SelectProps>(
                 id={menuId}
                 referenceElement={menuButtonRef}
                 ref={listMenuRef}
-                className={cx({
-                  [css`
-                    width: ${menuButtonRef.current?.clientWidth}px;
-                  `]: dropdownWidthBasis === DropdownWidthBasis.Trigger,
-                })}
                 dropdownWidthBasis={dropdownWidthBasis}
+                style={listMenuStyle}
                 {...popoverProps}
               >
                 {allowDeselect && deselectionOption}

@@ -1,321 +1,200 @@
-import { css } from '@leafygreen-ui/emotion';
 import { Theme } from '@leafygreen-ui/lib';
-import { palette } from '@leafygreen-ui/palette';
-import {
-  color,
-  focusRing,
-  fontFamilies,
-  fontWeights,
-  hoverRing,
-  spacing,
-  transitionDuration,
-  typeScales,
-} from '@leafygreen-ui/tokens';
 
 import { Size, State } from './PasswordInput.types';
+
+function cn(
+  ...classes: Array<string | false | undefined | null>
+): string {
+  return classes.filter(Boolean).join(' ');
+}
+
+/**
+ * Resolved token values:
+ *
+ * spacing[1] / spacing[100] = 4px
+ * spacing[200] = 8px
+ * spacing[300] = 12px
+ * spacing[800] = 32px
+ * spacing[1000] = 40px
+ * spacing[50] = 2px
+ *
+ * typeScales.body1.fontSize = 13px, lineHeight = 20px
+ * typeScales.large.fontSize = 18px, lineHeight = 24px
+ *
+ * fontFamilies.default = 'Euclid Circular A', 'Helvetica Neue', Helvetica, Arial, sans-serif
+ * fontWeights.regular = 400
+ * transitionDuration.default = 150ms
+ *
+ * Palette:
+ * palette.white = #FFFFFF
+ * palette.black = #001E2B
+ * palette.gray.dark4 = #112733
+ * palette.gray.dark2 = #3D4F58
+ * palette.gray.dark1 = #5C6C75
+ * palette.gray.base = #889397
+ * palette.gray.light1 = #C1C7C6
+ * palette.gray.light2 = #E8EDEB
+ *
+ * Color tokens (light):
+ * color.light.text.primary.default = #001E2B (palette.black)
+ * color.light.text.disabled.default = #889397
+ * color.light.text.disabled.focus = #889397
+ * color.light.text.error.default = #DB3030
+ * color.light.text.secondary.default = #5C6C75
+ * color.light.background.primary.default = #FFFFFF
+ * color.light.background.disabled.default = #E8EDEB
+ * color.light.background.disabled.focus = #E8EDEB
+ * color.light.border.primary.default = #889397
+ * color.light.border.primary.focus = #0498EC (palette.blue.light1)
+ * color.light.border.error.default = #DB3030
+ * color.light.border.success.default = #00A35C (palette.green.dark1)
+ * color.light.border.disabled.default = #C1C7C6
+ *
+ * Color tokens (dark):
+ * color.dark.text.primary.default = #E8EDEB
+ * color.dark.text.disabled.default = #5C6C75
+ * color.dark.text.disabled.focus = #5C6C75
+ * color.dark.text.error.default = #FF6960
+ * color.dark.text.secondary.default = #C1C7C6
+ * color.dark.background.primary.default = #001E2B (palette.black)
+ * color.dark.background.disabled.default = #1C2D38
+ * color.dark.background.disabled.focus = #1C2D38
+ * color.dark.border.primary.default = #889397
+ * color.dark.border.error.default = #FF6960
+ * color.dark.border.success.default = #00A35C
+ * color.dark.border.disabled.default = #3D4F58
+ *
+ * focusRing.light.input = 0 0 0 3px #016BF8
+ * focusRing.dark.input = 0 0 0 3px #0498EC
+ *
+ * hoverRing.light.gray = 0 0 0 3px #E8EDEB
+ * hoverRing.light.green = 0 0 0 3px #C0FAE6
+ * hoverRing.light.red = 0 0 0 3px #FFCDC7
+ * hoverRing.dark.gray = 0 0 0 3px #3D4F58
+ * hoverRing.dark.green = 0 0 0 3px #023430
+ * hoverRing.dark.red = 0 0 0 3px #4C2100
+ */
 
 /**
  * Adds an inset box shadow to hide the UA background styles for autofilled inputs
  */
-const autofillShadowOverride = (color: string) => `0 0 0 100px ${color} inset`;
+const autofillShadowOverride = (color: string) => `0_0_0_100px_${color}_inset`;
 
-export const labelBaseStyles = css`
-  display: block;
-  margin-bottom: ${spacing[1]}px;
-`;
+export const labelBaseStyles = 'block mb-[4px]';
 
-export const labelLargeOverrideStyles = css`
-  font-size: ${typeScales.large.fontSize}px;
-`;
+export const labelLargeOverrideStyles = 'text-[18px]';
 
-export const inheritTypeScale = css`
-  font-size: inherit;
-  line-height: inherit;
-`;
+export const inheritTypeScale = 'text-[inherit] leading-[inherit]';
 
-export const inputWrapperStyles = css`
-  position: relative;
-`;
+export const inputWrapperStyles = 'relative';
 
-export const inputBaseStyles = css`
-  font-family: ${fontFamilies.default};
-  width: 100%;
-  height: 36px;
-  font-weight: ${fontWeights.regular};
-  border: 1px solid;
-  z-index: 1;
-  outline: none;
-  border-radius: 6px;
-  transition: ${transitionDuration.default}ms ease-in-out;
-  transition-property: border-color, box-shadow;
-
-  &:disabled {
-    cursor: not-allowed;
-
-    &:hover,
-    &:active {
-      box-shadow: none;
-    }
-  }
-
-  &::placeholder {
-    ${inheritTypeScale};
-  }
-`;
+export const inputBaseStyles = [
+  "font-[family-name:'Euclid_Circular_A','Helvetica_Neue',Helvetica,Arial,sans-serif]",
+  'w-full',
+  'h-[36px]',
+  'font-normal',
+  'border',
+  'border-solid',
+  'z-[1]',
+  'outline-none',
+  'rounded-[6px]',
+  '[transition:150ms_ease-in-out]',
+  '[transition-property:border-color,box-shadow]',
+  'disabled:cursor-not-allowed',
+  'disabled:hover:shadow-none',
+  'disabled:active:shadow-none',
+  'placeholder:text-[inherit]',
+  'placeholder:leading-[inherit]',
+].join(' ');
 
 export const inputBaseThemeStyles: Record<Theme, string> = {
-  [Theme.Light]: css`
-    color: ${color.light.text.primary.default};
-    background: ${color.light.background.primary.default};
-
-    &:focus-visible {
-      box-shadow: ${focusRing.light.input};
-      border-color: ${color.light.border.primary.focus};
-    }
-
-    &:-webkit-autofill {
-      -webkit-text-fill-color: ${color.light.text.primary.default};
-      box-shadow: ${autofillShadowOverride(
-        color.light.background.primary.default,
-      )};
-      background: ${color.light.background.primary.default};
-
-      &:focus-visible {
-        box-shadow: ${autofillShadowOverride(
-            color.light.background.primary.default,
-          )},
-          ${focusRing.light.input};
-        border-color: ${color.light.border.primary.focus};
-      }
-    }
-
-    &::placeholder {
-      color: ${palette.gray.base};
-    }
-  `,
-  [Theme.Dark]: css`
-    background-color: ${palette.gray.dark4};
-    color: ${color.dark.text.primary.default};
-
-    &:focus-visible {
-      box-shadow: ${focusRing.dark.input};
-      border-color: ${palette.gray.dark4};
-    }
-
-    &:-webkit-autofill {
-      -webkit-text-fill-color: ${color.dark.text.primary.default};
-      box-shadow: ${autofillShadowOverride(palette.gray.dark4)};
-      background-color: ${palette.gray.dark4};
-
-      &:focus-visible {
-        box-shadow: ${autofillShadowOverride(palette.gray.dark4)},
-          ${focusRing.dark.input};
-        border-color: ${palette.gray.dark4};
-      }
-    }
-
-    &::placeholder {
-      color: ${palette.gray.dark1};
-    }
-  `,
+  [Theme.Light]: [
+    'text-[#001E2B]',
+    'bg-[#FFFFFF]',
+    'focus-visible:shadow-[0_0_0_3px_#016BF8]',
+    'focus-visible:border-[#0498EC]',
+    // autofill
+    '[-webkit-autofill:text-fill-color:#001E2B]',
+    `[-webkit-autofill:shadow:${autofillShadowOverride('#FFFFFF')}]`,
+    '[-webkit-autofill:bg:#FFFFFF]',
+    // placeholder
+    'placeholder:text-[#889397]',
+  ].join(' '),
+  [Theme.Dark]: [
+    'bg-[#112733]',
+    'text-[#E8EDEB]',
+    'focus-visible:shadow-[0_0_0_3px_#0498EC]',
+    'focus-visible:border-[#112733]',
+    // placeholder
+    'placeholder:text-[#5C6C75]',
+  ].join(' '),
 };
 
 export const inputSizeStyles: Record<Size, string> = {
-  [Size.XSmall]: css`
-    font-size: ${typeScales.body1.fontSize}px;
-    line-height: ${typeScales.body1.lineHeight}px;
-    height: 22px;
-    padding-left: ${spacing[200]}px;
-    padding-right: ${spacing[800]}px;
-  `,
-  [Size.Small]: css`
-    font-size: ${typeScales.body1.fontSize}px;
-    line-height: ${typeScales.body1.lineHeight}px;
-    height: 28px;
-    padding-left: ${spacing[200]}px;
-    padding-right: ${spacing[800]}px;
-  `,
-  [Size.Default]: css`
-    font-size: ${typeScales.body1.fontSize}px;
-    line-height: ${typeScales.body1.lineHeight}px;
-    height: 36px;
-    padding-left: ${spacing[300]}px;
-    padding-right: ${spacing[1000]}px;
-  `,
-  [Size.Large]: css`
-    font-size: ${typeScales.large.fontSize}px;
-    line-height: ${typeScales.large.lineHeight}px;
-    height: 48px;
-    padding-left: ${spacing[300]}px;
-    padding-right: ${spacing[1000]}px;
-  `,
+  [Size.XSmall]: 'text-[13px] leading-[20px] h-[22px] pl-[8px] pr-[32px]',
+  [Size.Small]: 'text-[13px] leading-[20px] h-[28px] pl-[8px] pr-[32px]',
+  [Size.Default]: 'text-[13px] leading-[20px] h-[36px] pl-[12px] pr-[40px]',
+  [Size.Large]: 'text-[18px] leading-[24px] h-[48px] pl-[12px] pr-[40px]',
 };
 
-export const errorWarningDarkThemeStyles = css`
-  &,
-  &:-webkit-autofill {
-    border-color: ${color.dark.border.error.default};
-  }
+const errorWarningLightThemeStyles = [
+  'border-[#DB3030]',
+  'hover:not-focus-visible:shadow-[0_0_0_3px_#FFCDC7]',
+  'active:not-focus-visible:shadow-[0_0_0_3px_#FFCDC7]',
+].join(' ');
 
-  &:-webkit-autofill {
-    &:hover:not(:focus-visible) {
-      box-shadow: ${autofillShadowOverride(palette.gray.dark4)},
-        ${hoverRing.dark.red};
-    }
-  }
-
-  &:hover,
-  &:active {
-    &:not(:focus-visible) {
-      box-shadow: ${hoverRing.dark.red};
-    }
-  }
-`;
-export const errorWarningLightThemeStyles = css`
-  &,
-  &:-webkit-autofill {
-    border-color: ${color.light.border.error.default};
-  }
-
-  &:-webkit-autofill {
-    &:hover:not(:focus-visible) {
-      box-shadow: ${autofillShadowOverride(
-          color.light.background.primary.default,
-        )},
-        ${hoverRing.light.red};
-    }
-  }
-
-  &:hover,
-  &:active {
-    &:not(:focus-visible) {
-      box-shadow: ${hoverRing.light.red};
-    }
-  }
-`;
+const errorWarningDarkThemeStyles = [
+  'border-[#FF6960]',
+  'hover:not-focus-visible:shadow-[0_0_0_3px_#4C2100]',
+  'active:not-focus-visible:shadow-[0_0_0_3px_#4C2100]',
+].join(' ');
 
 export const inputThemeStyles: Record<Theme, Record<State, string>> = {
   [Theme.Light]: {
-    [State.Error]: css`
-      ${errorWarningLightThemeStyles};
-    `,
-    [State.Warning]: css`
-      ${errorWarningLightThemeStyles};
-    `,
-    [State.Valid]: css`
-      &,
-      &:-webkit-autofill {
-        border-color: ${color.light.border.success.default};
-      }
-
-      &:-webkit-autofill {
-        &:hover:not(:focus-visible) {
-          box-shadow: ${autofillShadowOverride(
-              color.light.background.primary.default,
-            )},
-            ${hoverRing.light.green};
-        }
-      }
-
-      &:hover,
-      &:active {
-        &:not(:focus-visible) {
-          box-shadow: ${hoverRing.light.green};
-        }
-      }
-    `,
-    [State.None]: css`
-      &,
-      &:-webkit-autofill {
-        border-color: ${color.light.border.primary.default};
-      }
-
-      &:-webkit-autofill {
-        &:hover:not(:focus-visible) {
-          box-shadow: ${autofillShadowOverride(
-              color.light.background.primary.default,
-            )},
-            ${hoverRing.light.gray};
-        }
-      }
-
-      &:hover,
-      &:active {
-        &:not(:focus-visible) {
-          box-shadow: ${hoverRing.light.gray};
-        }
-      }
-    `,
+    [State.Error]: errorWarningLightThemeStyles,
+    [State.Warning]: errorWarningLightThemeStyles,
+    [State.Valid]: [
+      'border-[#00A35C]',
+      'hover:not-focus-visible:shadow-[0_0_0_3px_#C0FAE6]',
+      'active:not-focus-visible:shadow-[0_0_0_3px_#C0FAE6]',
+    ].join(' '),
+    [State.None]: [
+      'border-[#889397]',
+      'hover:not-focus-visible:shadow-[0_0_0_3px_#E8EDEB]',
+      'active:not-focus-visible:shadow-[0_0_0_3px_#E8EDEB]',
+    ].join(' '),
   },
   [Theme.Dark]: {
-    [State.Error]: css`
-      ${errorWarningDarkThemeStyles};
-    `,
-    [State.Warning]: css`
-      ${errorWarningDarkThemeStyles};
-    `,
-    [State.Valid]: css`
-      &,
-      &:-webkit-autofill {
-        border-color: ${color.dark.border.success.default};
-      }
-
-      &:-webkit-autofill {
-        &:hover:not(:focus-visible) {
-          box-shadow: ${autofillShadowOverride(palette.gray.dark4)},
-            ${hoverRing.dark.green};
-        }
-      }
-
-      &:hover,
-      &:active {
-        &:not(:focus-visible) {
-          box-shadow: ${hoverRing.dark.green};
-        }
-      }
-    `,
-    [State.None]: css`
-      &,
-      &:-webkit-autofill {
-        border-color: ${color.dark.border.primary.default};
-      }
-
-      &:-webkit-autofill {
-        &:hover:not(:focus-visible) {
-          box-shadow: ${autofillShadowOverride(palette.gray.dark4)},
-            ${hoverRing.dark.gray};
-        }
-      }
-
-      &:hover,
-      &:active {
-        &:not(:focus-visible) {
-          box-shadow: ${hoverRing.dark.gray};
-        }
-      }
-    `,
+    [State.Error]: errorWarningDarkThemeStyles,
+    [State.Warning]: errorWarningDarkThemeStyles,
+    [State.Valid]: [
+      'border-[#00A35C]',
+      'hover:not-focus-visible:shadow-[0_0_0_3px_#023430]',
+      'active:not-focus-visible:shadow-[0_0_0_3px_#023430]',
+    ].join(' '),
+    [State.None]: [
+      'border-[#889397]',
+      'hover:not-focus-visible:shadow-[0_0_0_3px_#3D4F58]',
+      'active:not-focus-visible:shadow-[0_0_0_3px_#3D4F58]',
+    ].join(' '),
   },
 };
 
-export const getInputDisabledStyles = (theme: Theme) => css`
-  cursor: not-allowed;
-  background-color: ${color[theme].background.disabled.default};
-  border-color: ${color[theme].border.disabled.default};
-  color: ${color[theme].text.disabled.default};
+export const getInputDisabledStyles = (theme: Theme) => {
+  const styles: Record<Theme, string> = {
+    [Theme.Light]: [
+      'cursor-not-allowed',
+      'bg-[#E8EDEB]',
+      'border-[#C1C7C6]',
+      'text-[#889397]',
+    ].join(' '),
+    [Theme.Dark]: [
+      'cursor-not-allowed',
+      'bg-[#1C2D38]',
+      'border-[#3D4F58]',
+      'text-[#5C6C75]',
+    ].join(' '),
+  };
 
-  &:-webkit-autofill {
-    -webkit-text-fill-color: ${color[theme].text.disabled.default};
-    border-color: ${color[theme].border.disabled.default};
-    box-shadow: ${autofillShadowOverride(
-      color[theme].background.disabled.default,
-    )};
-
-    &:focus-visible {
-      -webkit-text-fill-color: ${color[theme].text.disabled.focus};
-      box-shadow: ${autofillShadowOverride(
-          color[theme].background.disabled.focus,
-        )},
-        ${focusRing[theme].input};
-    }
-  }
-`;
+  return styles[theme];
+};

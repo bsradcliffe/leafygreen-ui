@@ -18,16 +18,19 @@ export const CloseButton = ({
   const { theme } = useDarkMode();
   const closeId = useIdAllocator({ prefix: 'modal-close_button' });
 
+  const { className: buttonClassName, style: buttonStyle } = getButtonStyles({
+    className,
+    customColor: closeIconColor,
+    theme,
+  });
+
   return (
     <IconButton
       aria-label="Close modal"
-      className={getButtonStyles({
-        className,
-        customColor: closeIconColor,
-        theme,
-      })}
-      id={closeId}
       {...rest}
+      className={buttonClassName}
+      style={buttonStyle}
+      id={closeId}
     >
       <XIcon />
     </IconButton>

@@ -1,146 +1,114 @@
 import { TransitionStatus } from 'react-transition-group';
-import { transparentize } from 'polished';
 
-import { prefersReducedMotion } from '@leafygreen-ui/a11y';
-import { css } from '@leafygreen-ui/emotion';
 import { createUniqueClassName, Theme } from '@leafygreen-ui/lib';
-import { palette } from '@leafygreen-ui/palette';
-import {
-  BaseFontSize,
-  fontFamilies,
-  spacing,
-  typeScales,
-} from '@leafygreen-ui/tokens';
+
+import { cn } from '../cn';
 
 export const sideNavClassName = createUniqueClassName('side-nav');
 export const sideNavItemSidePadding = 16;
 export const sideNavWidth = 184;
 export const collapseDuration = 200;
 
-export const ulStyleOverrides = css`
-  margin-block-start: 0px;
-  margin-block-end: 0px;
-  padding-inline-start: 0px;
-  padding: 0;
-  list-style-type: none;
-`;
+export const ulStyleOverrides = [
+  '[margin-block-start:0px]',
+  '[margin-block-end:0px]',
+  '[padding-inline-start:0px]',
+  'p-0',
+  'list-none',
+].join(' ');
 
 export const getIndentLevelStyle = (indentLevel: number, darkMode: boolean) => {
-  return css`
-    border-left: 3px solid
-      ${darkMode ? palette.gray.dark2 : palette.gray.light1};
-    padding-left: ${8 + indentLevel * 8}px;
-  `;
+  return [
+    `border-l-[3px]`,
+    darkMode ? 'border-l-[#3D4F58]' : 'border-l-[#C1C7C6]',
+    `pl-[${8 + indentLevel * 8}px]`,
+  ].join(' ');
 };
 
-export const outerContainerStyle = css`
-  position: relative;
-  transition: width ${collapseDuration}ms ease-in-out;
+export const outerContainerStyle = [
+  'relative',
+  'transition-[width]',
+  'duration-[200ms]',
+  'ease-in-out',
+  'motion-reduce:transition-none',
+].join(' ');
 
-  ${prefersReducedMotion(`
-    transition: none;
-  `)}
-`;
+export const outerContainerCollapsedStyle = 'w-[48px]';
 
-export const outerContainerCollapsedStyle = css`
-  width: 48px;
-`;
+export const innerNavWrapperStyle = [
+  'absolute',
+  'top-0',
+  'bottom-0',
+  'left-0',
+  'flex',
+].join(' ');
 
-export const innerNavWrapperStyle = css`
-  /**
-   * Setting position: absolute; here so the nav wrapper can appear
-   * above the content in on the collapsed state. 
-   */
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  display: flex;
-`;
-
-export const navBaseStyles = css`
-  position: relative;
-  font-family: ${fontFamilies.default};
-
-  z-index: 0;
-  transition: ${collapseDuration}ms ease-in-out;
-  transition-property: box-shadow, border-color, width;
-
-  ${prefersReducedMotion(`
-    transition-property: box-shadow, border-color;
-  `)}
-`;
+export const navBaseStyles = [
+  'relative',
+  'font-[var(--font-family-default)]',
+  'z-0',
+  'transition-[box-shadow,border-color,width]',
+  'duration-[200ms]',
+  'ease-in-out',
+  'motion-reduce:[transition-property:box-shadow,border-color]',
+].join(' ');
 
 export const navThemeStyles: Record<Theme, string> = {
-  [Theme.Light]: css`
-    background-color: ${palette.gray.light3};
-  `,
-  [Theme.Dark]: css`
-    background-color: ${palette.gray.dark4};
-  `,
+  [Theme.Light]: 'bg-[#F9FBFA]',
+  [Theme.Dark]: 'bg-[#112733]',
 };
 
-export const hoverNavStyles = css`
-  box-shadow: 2px 0 4px ${transparentize(0.9, palette.black)};
-`;
+export const hoverNavStyles =
+  'shadow-[2px_0_4px_rgba(0,30,43,0.1)]';
 
-export const collapsedNavStyles = css`
-  width: 48px;
-`;
+export const collapsedNavStyles = 'w-[48px]';
 
-export const listWrapperStyle = css`
-  /**
-  * Setting position: absolute so the expanded and collapsed menus
-  * can be rendered in the same spot.
-  * We transition the opacity & transform to display one or the other.
-  */
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  overflow: hidden;
-  transition: ${collapseDuration}ms ease-in-out;
-  transition-property: opacity, transform;
+export const listWrapperStyle = [
+  'absolute',
+  'left-0',
+  'right-0',
+  'top-0',
+  'bottom-0',
+  'overflow-hidden',
+  'transition-[opacity,transform]',
+  'duration-[200ms]',
+  'ease-in-out',
+  'motion-reduce:[transition-property:opacity]',
+].join(' ');
 
-  ${prefersReducedMotion(`
-    transition: opacity ${collapseDuration}ms ease-in-out;
-  `)}
-`;
+export const listStyles = [
+  'absolute',
+  'left-0',
+  'right-0',
+  'top-0',
+  'bottom-0',
+  'pt-[16px]',
+  'pb-[16px]',
+  'overflow-x-hidden',
+  'overflow-y-auto',
+].join(' ');
 
-export const listStyles = css`
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  padding-top: ${spacing[3]}px;
-  padding-bottom: ${spacing[3]}px;
-  overflow-x: hidden;
-  overflow-y: auto;
-`;
+const expandedMenu_EnteredStyle = [
+  'translate-y-[8px]',
+  'opacity-0',
+  'pointer-events-none',
+].join(' ');
 
-const expandedMenu_EnteredStyle = css`
-  transform: translate3d(0, ${spacing[2]}px, 0);
-  opacity: 0;
-  pointer-events: none;
-`;
+const expandedMenu_ExitedStyle = [
+  'translate-y-0',
+  'opacity-100',
+].join(' ');
 
-const expandedMenu_ExitedStyle = css`
-  transform: translate3d(0, 0, 0);
-  opacity: 1;
-`;
+const collapsedMenu_EnteredStyle = [
+  'translate-y-0',
+  'opacity-100',
+].join(' ');
 
-const collapsedMenu_EnteredStyle = css`
-  transform: translate3d(0, 0, 0);
-  opacity: 1;
-`;
-
-const collapsedMenu_ExitedStyle = css`
-  transform: translate3d(0, -${spacing[2]}px, 0);
-  opacity: 0;
-  pointer-events: none;
-`;
+const collapsedMenu_ExitedStyle = [
+  'translate-y-[-8px]',
+  'opacity-0',
+  'pointer-events-none',
+].join(' ');
 
 export const expandedStateStyles: Partial<Record<TransitionStatus, string>> = {
   entering: expandedMenu_EnteredStyle,
@@ -157,12 +125,6 @@ export const collapsedStateStyles: Partial<Record<TransitionStatus, string>> = {
 } as const;
 
 export const typographyStyle = {
-  [BaseFontSize.Body1]: css`
-    font-size: ${typeScales.body1.fontSize}px;
-    line-height: ${typeScales.body1.lineHeight}px;
-  `,
-  [BaseFontSize.Body2]: css`
-    font-size: ${typeScales.body2.fontSize}px;
-    line-height: ${typeScales.body2.lineHeight}px;
-  `,
+  [13]: 'text-[13px] leading-[20px]',
+  [16]: 'text-[16px] leading-[28px]',
 } as const;

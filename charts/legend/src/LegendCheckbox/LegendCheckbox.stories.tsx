@@ -6,21 +6,14 @@ import {
 } from '@lg-tools/storybook-utils';
 import { StoryObj } from '@storybook/react';
 
-import { css } from '@leafygreen-ui/emotion';
 import { Icon } from '@leafygreen-ui/icon';
 import { spacing } from '@leafygreen-ui/tokens';
 
 import { LegendCheckbox } from './LegendCheckbox';
 import { LegendCheckboxProps } from './LegendCheckbox.types';
 
-const labelContainerStyles = css`
-  display: flex;
-  align-items: center;
-  gap: ${spacing[100]}px;
-`;
-
 const renderLabel = () => (
-  <div className={labelContainerStyles}>
+  <div className={`flex items-center gap-[${spacing[100]}px]`}>
     <Icon glyph="Primary" />
     <span>Checkbox label</span>
   </div>

@@ -8,7 +8,6 @@
 import React from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 
-import { cx } from '@leafygreen-ui/emotion';
 import LeafyGreenProvider, {
   useDarkMode,
 } from '@leafygreen-ui/leafygreen-provider';
@@ -16,6 +15,7 @@ import { BaseFontSize } from '@leafygreen-ui/tokens';
 import { Body } from '@leafygreen-ui/typography';
 
 import { ChartProvider } from '../ChartContext';
+import { cn } from '../cn';
 
 import {
   chartStyles,
@@ -59,7 +59,7 @@ export function Chart({
       <ChartProvider chart={chart}>
         <div
           ref={isDraggable ? setNodeRef : null}
-          className={cx(
+          className={cn(
             getChartContainerStyles({
               theme,
               transform,

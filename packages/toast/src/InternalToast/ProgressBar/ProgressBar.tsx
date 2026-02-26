@@ -1,8 +1,9 @@
 import React from 'react';
 import clamp from 'lodash/clamp';
 
-import { css, cx } from '@leafygreen-ui/emotion';
 import { Theme } from '@leafygreen-ui/lib';
+
+import { cn } from '../../cn';
 
 import {
   progressBarBackgroundStyle,
@@ -26,7 +27,7 @@ function ToastProgressBar({ progress, theme }: ProgressBarProps) {
 
   return (
     <div
-      className={cx(
+      className={cn(
         progressBarBackgroundStyle,
         progressBarBackgroundThemeStyle[theme],
       )}
@@ -36,13 +37,11 @@ function ToastProgressBar({ progress, theme }: ProgressBarProps) {
       aria-valuemax={100}
     >
       <div
-        className={cx(
+        className={cn(
           progressBarStyle,
           progressBarThemeStyle[theme],
-          css`
-            width: ${normalizedProgress}%;
-          `,
         )}
+        style={{ width: `${normalizedProgress}%` }}
       />
     </div>
   );

@@ -1,23 +1,16 @@
 import React, { useCallback, useState } from 'react';
 
 import { validateAriaLabelProps } from '@leafygreen-ui/a11y';
-import { cx } from '@leafygreen-ui/emotion';
 import CheckmarkIcon from '@leafygreen-ui/icon/dist/Checkmark';
 import { useDarkMode } from '@leafygreen-ui/leafygreen-provider';
 
 import { getLgIds } from '../utils';
 
 import {
-  buttonBaseStyles,
-  buttonSizeStyles,
-  buttonThemeStyles,
-  checkmarkBaseStyles,
   checkmarkSize,
-  checkmarkThemeStyles,
-  sliderBaseStyles,
-  sliderSizeStyles,
-  sliderThemeStyles,
-  toggleButtonClassName,
+  getButtonStyles,
+  getCheckmarkStyles,
+  getSliderStyles,
 } from './styles';
 import { Size, ToggleProps } from './types';
 
@@ -68,28 +61,33 @@ function Toggle({
       aria-checked={normalizedChecked}
       disabled={disabled}
       aria-disabled={disabled}
-      className={cx(
+      className={getButtonStyles({
         className,
-        toggleButtonClassName,
-        buttonBaseStyles,
-        buttonThemeStyles[theme],
-        buttonSizeStyles[size],
-      )}
+        size,
+        theme,
+        checked: normalizedChecked,
+        disabled,
+      })}
       data-lgid={lgIds.root}
       data-testid={lgIds.root}
       {...rest}
     >
       <div
-        className={cx(
-          sliderBaseStyles,
-          sliderSizeStyles[size],
-          sliderThemeStyles[theme],
-        )}
+        className={getSliderStyles({
+          size,
+          theme,
+          checked: normalizedChecked,
+          disabled,
+        })}
       >
         {size !== Size.XSmall && (
           <CheckmarkIcon
             aria-hidden={true}
-            className={cx(checkmarkBaseStyles, checkmarkThemeStyles[theme])}
+            className={getCheckmarkStyles({
+              theme,
+              checked: normalizedChecked,
+              disabled,
+            })}
             size={checkmarkSize[size]}
           />
         )}

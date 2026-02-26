@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { cx } from '@leafygreen-ui/emotion';
 import LeafyGreenProvider, {
   useDarkMode,
 } from '@leafygreen-ui/leafygreen-provider';
@@ -9,6 +8,10 @@ import { Skeleton } from '..';
 
 import { baseStyles, fullWidthStyles } from './FormSkeleton.styles';
 import { FormSkeletonProps } from '.';
+
+function cn(...classes: Array<string | false | undefined | null>): string {
+  return classes.filter(Boolean).join(' ');
+}
 
 export function FormSkeleton({
   darkMode: darkModeProp,
@@ -19,7 +22,7 @@ export function FormSkeleton({
   const { darkMode } = useDarkMode(darkModeProp);
   return (
     <LeafyGreenProvider darkMode={darkMode}>
-      <div className={cx(baseStyles, className)} {...rest} aria-busy>
+      <div className={cn(baseStyles, className)} {...rest} aria-busy>
         <Skeleton
           className={fullWidthStyles}
           enableAnimations={enableAnimations}

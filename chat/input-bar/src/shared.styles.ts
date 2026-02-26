@@ -1,7 +1,8 @@
-import { css, cx } from '@leafygreen-ui/emotion';
 import { Theme } from '@leafygreen-ui/lib';
 import { palette } from '@leafygreen-ui/palette';
 import { color, InteractionState, Variant } from '@leafygreen-ui/tokens';
+
+import { cn } from './cn';
 
 /**
  * Off-palette value specific to primary button instances
@@ -18,50 +19,40 @@ const PRIMARY_BUTTON_INTERACTIVE_GREEN = '#00593F';
 
 const getBaseIconButtonStyles = ({ theme }: { theme: Theme }) => {
   const darkMode = theme === Theme.Dark;
-  return css`
-    background-color: ${palette.green.dark2};
-    border: 1px solid ${palette.green[darkMode ? 'base' : 'dark2']};
-    color: ${palette.white};
+  return [
+    `bg-[${palette.green.dark2}]`,
+    `border`,
+    `border-[${palette.green[darkMode ? 'base' : 'dark2']}]`,
+    `text-[${palette.white}]`,
 
-    &:active,
-    &:hover {
-      background-color: ${PRIMARY_BUTTON_INTERACTIVE_GREEN};
-      color: ${palette.white};
-      box-shadow: 0 0 0 3px ${palette.green[darkMode ? 'dark3' : 'light2']};
-    }
+    `active:bg-[${PRIMARY_BUTTON_INTERACTIVE_GREEN}]`,
+    `hover:bg-[${PRIMARY_BUTTON_INTERACTIVE_GREEN}]`,
+    `active:text-[${palette.white}]`,
+    `hover:text-[${palette.white}]`,
+    `hover:shadow-[0_0_0_3px_${palette.green[darkMode ? 'dark3' : 'light2']}]`,
+    `active:shadow-[0_0_0_3px_${palette.green[darkMode ? 'dark3' : 'light2']}]`,
 
-    &:focus-visible {
-      background-color: ${PRIMARY_BUTTON_INTERACTIVE_GREEN};
-      color: ${palette.white};
-    }
-  `;
+    `focus-visible:bg-[${PRIMARY_BUTTON_INTERACTIVE_GREEN}]`,
+    `focus-visible:text-[${palette.white}]`,
+  ].join(' ');
 };
 
-const getDisabledIconButtonStyles = (theme: Theme) => css`
-  background-color: ${color[theme].background[Variant.Disabled][
-    InteractionState.Default
-  ]};
-  color: ${color[theme].icon[Variant.Disabled][InteractionState.Default]};
-  border-color: ${color[theme].border[Variant.Disabled][
-    InteractionState.Default
-  ]};
+const getDisabledIconButtonStyles = (theme: Theme) =>
+  [
+    `bg-[${color[theme].background[Variant.Disabled][InteractionState.Default]}]`,
+    `text-[${color[theme].icon[Variant.Disabled][InteractionState.Default]}]`,
+    `border-[${color[theme].border[Variant.Disabled][InteractionState.Default]}]`,
 
-  &:active,
-  &:hover {
-    background-color: ${color[theme].background[Variant.Disabled][
-      InteractionState.Default
-    ]};
-    color: ${color[theme].icon[Variant.Disabled][InteractionState.Default]};
-    box-shadow: none;
-  }
+    `active:bg-[${color[theme].background[Variant.Disabled][InteractionState.Default]}]`,
+    `hover:bg-[${color[theme].background[Variant.Disabled][InteractionState.Default]}]`,
+    `active:text-[${color[theme].icon[Variant.Disabled][InteractionState.Default]}]`,
+    `hover:text-[${color[theme].icon[Variant.Disabled][InteractionState.Default]}]`,
+    'hover:shadow-none',
+    'active:shadow-none',
 
-  &:focus-visible {
-    background-color: ${color[theme].background[Variant.Disabled][
-      InteractionState.Default
-    ]};
-    color: ${color[theme].icon[Variant.Disabled][InteractionState.Default]};
-  }
-`;
+    `focus-visible:bg-[${color[theme].background[Variant.Disabled][InteractionState.Default]}]`,
+    `focus-visible:text-[${color[theme].icon[Variant.Disabled][InteractionState.Default]}]`,
+  ].join(' ');
 
 export const getIconButtonStyles = ({
   disabled,
@@ -70,6 +61,6 @@ export const getIconButtonStyles = ({
   disabled: boolean;
   theme: Theme;
 }) =>
-  cx(getBaseIconButtonStyles({ theme }), {
+  cn(getBaseIconButtonStyles({ theme }), {
     [getDisabledIconButtonStyles(theme)]: disabled,
   });

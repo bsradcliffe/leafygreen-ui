@@ -1,7 +1,8 @@
-import { css, cx } from '@leafygreen-ui/emotion';
 import { Theme } from '@leafygreen-ui/lib';
 import { palette } from '@leafygreen-ui/palette';
 import { color, fontWeights, spacing, typeScales } from '@leafygreen-ui/tokens';
+
+import { cn } from '../cn';
 
 import {
   INDENTATION,
@@ -17,9 +18,66 @@ const getIndentation = (level: number) => {
   return INDENTATION['level2'];
 };
 
-export const itemStyles = css`
-  list-style: none;
-`;
+export const itemStyles = 'list-none';
+
+const activeWedgeColor: Record<Theme, string> = {
+  [Theme.Light]: palette.black,
+  [Theme.Dark]: palette.gray.light2,
+};
+
+const getBaseStyles = ({
+  theme,
+  level,
+}: {
+  theme: Theme;
+  level: number;
+}) =>
+  [
+    '[all:unset]',
+    'cursor-pointer',
+    'block',
+    `text-[${color[theme].text.secondary.default}]`,
+    `py-[${spacing[150]}px]`,
+    `text-[${typeScales.body1.fontSize}px]`,
+    `font-[${fontWeights.regular}]`,
+    `leading-[${typeScales.body1.lineHeight}px]`,
+    'relative',
+    `pl-[calc(${getIndentation(level)}px+${WEDGE_WIDTH}px)]`,
+    `pr-[${spacing[400]}px]`,
+    'transition-[font-weight]',
+    `duration-[${TRANSITION_DURATION}ms]`,
+    'ease-in-out',
+    // ::before pseudo-element for the wedge indicator
+    "before:content-['']",
+    'before:absolute',
+    'before:left-[-1px]',
+    'before:top-0',
+    `before:w-[${WEDGE_WIDTH}px]`,
+    'before:h-full',
+    'before:bg-transparent',
+    `before:rounded-tr-[${WEDGE_BORDER_RADIUS}px]`,
+    `before:rounded-br-[${WEDGE_BORDER_RADIUS}px]`,
+  ].join(' ');
+
+const getHoverStyles = ({ theme }: { theme: Theme }) =>
+  `hover:bg-[${color[theme].background.primary.hover}] [&[data-hover='true']]:bg-[${color[theme].background.primary.hover}]`;
+
+const getFocusStyles = ({ theme }: { theme: Theme }) =>
+  [
+    `focus-visible:text-[${color[theme].text.secondary.focus}]`,
+    `[&[data-focus='true']]:text-[${color[theme].text.secondary.focus}]`,
+    `focus-visible:bg-[${color[theme].background.primary.focus}]`,
+    `[&[data-focus='true']]:bg-[${color[theme].background.primary.focus}]`,
+    `focus-visible:before:bg-[${color[theme].icon.primary.focus}]`,
+    `[&[data-focus='true']]:before:bg-[${color[theme].icon.primary.focus}]`,
+  ].join(' ');
+
+const getActiveStyles = ({ theme }: { theme: Theme }) =>
+  [
+    `text-[${color[theme].text.primary.default}]`,
+    `font-[${fontWeights.semiBold}]`,
+    `before:bg-[${activeWedgeColor[theme]}]`,
+  ].join(' ');
 
 export const getLinkStyles = ({
   active = false,
@@ -32,90 +90,12 @@ export const getLinkStyles = ({
   className?: string;
   level: number;
 }) =>
-  cx(
-    css`
-      ${getBaseStyles({ theme, level })};
-      ${getHoverStyles({ theme })}
-    `,
-    {
-      [getActiveStyles({ theme })]: active,
-    },
-    css`
-      ${getFocusStyles({ theme })};
-    `,
+  cn(
+    getBaseStyles({ theme, level }),
+    getHoverStyles({ theme }),
+    active && getActiveStyles({ theme }),
+    getFocusStyles({ theme }),
     className,
   );
 
-export const getBaseStyles = ({
-  theme,
-  level,
-}: {
-  theme: Theme;
-  level: number;
-}) => css`
-  all: unset;
-  cursor: pointer;
-  display: block;
-  color: ${color[theme].text.secondary.default};
-  padding-block: ${spacing[150]}px;
-  font-size: ${typeScales.body1.fontSize}px;
-  font-weight: ${fontWeights.regular};
-  line-height: ${typeScales.body1.lineHeight}px;
-  position: relative;
-  padding-inline: calc(${getIndentation(level)}px + ${WEDGE_WIDTH}px)
-    ${spacing[400]}px;
-
-  transition-property: font-weight;
-  transition-duration: ${TRANSITION_DURATION}ms;
-  transition-timing-function: ease-in-out;
-
-  &::before {
-    content: '';
-    position: absolute;
-    left: -1px;
-    top: 0;
-    width: ${WEDGE_WIDTH}px;
-    height: 100%;
-    background-color: transparent;
-    border-top-right-radius: ${WEDGE_BORDER_RADIUS}px;
-    border-bottom-right-radius: ${WEDGE_BORDER_RADIUS}px;
-  }
-`;
-
-const activeWedgeColor: Record<Theme, string> = {
-  [Theme.Light]: palette.black,
-  [Theme.Dark]: palette.gray.light2,
-};
-
-export const getFocusStyles = ({ theme }: { theme: Theme }) => css`
-  &:focus-visible,
-  &[data-focus='true'] {
-    color: ${color[theme].text.secondary.focus};
-    background-color: ${color[theme].background.primary.focus};
-
-    &::before {
-      background-color: ${color[theme].icon.primary.focus};
-    }
-  }
-`;
-
-export const getHoverStyles = ({ theme }: { theme: Theme }) => css`
-  &:hover,
-  &[data-hover='true'] {
-    background-color: ${color[theme].background.primary.hover};
-  }
-`;
-
-export const getActiveStyles = ({ theme }: { theme: Theme }) => css`
-  color: ${color[theme].text.primary.default};
-  font-weight: ${fontWeights.semiBold};
-
-  &::before {
-    background-color: ${activeWedgeColor[theme]};
-  }
-`;
-
-export const listStyles = css`
-  padding: 0;
-  margin: 0;
-`;
+export const listStyles = 'p-0 m-0';

@@ -1,35 +1,15 @@
-import { css, cx } from '@leafygreen-ui/emotion';
 import { palette } from '@leafygreen-ui/palette';
-import {
-  focusRing,
-  fontFamilies,
-  fontWeights,
-  hoverRing,
-  transitionDuration,
-} from '@leafygreen-ui/tokens';
 
+import { cn } from '../cn';
 import { Size } from '../types';
 
 export const radioBoxSizes: { [K in Size]: string } = {
-  [Size.Default]: css`
-    width: 169px;
-  `,
-
-  [Size.Compact]: css`
-    padding-right: 12px;
-    padding-left: 12px;
-  `,
-
-  [Size.Full]: css`
-    flex: 1;
-  `,
+  [Size.Default]: 'w-[169px]',
+  [Size.Compact]: 'px-[12px]',
+  [Size.Full]: 'flex-1',
 };
 
-export const inputStyles = css`
-  opacity: 0;
-  position: absolute;
-  pointer-events: none;
-`;
+export const inputStyles = 'opacity-0 absolute pointer-events-none peer';
 
 interface StateForStyles {
   checked: boolean;
@@ -44,71 +24,69 @@ export const getRadioDisplayStyles = ({
   size,
   darkMode,
 }: StateForStyles) => {
-  return cx(
-    css`
-      display: flex;
-      align-items: center;
-      justify-content: center;
+  const baseStyles = [
+    'flex',
+    'items-center',
+    'justify-center',
+    'py-[16px]',
+    'px-[24px]',
+    'text-[13px]',
+    'font-semibold',
+    'text-center',
+    'break-words',
+    'rounded-[6px]',
+    'border',
+    `border-[${palette.gray.base}]`,
+    'border-solid',
+    'cursor-pointer',
+    'pointer-events-auto',
+    'transition-[border-color,box-shadow]',
+    'duration-[150ms]',
+    'ease-in-out',
+    darkMode ? `bg-[${palette.gray.dark4}]` : `bg-[${palette.white}]`,
+    darkMode ? `text-[${palette.gray.light2}]` : `text-[${palette.black}]`,
+  ].join(' ');
 
-      padding: 16px 24px;
+  // Hover & active states (only when not checked and not disabled)
+  const hoverActiveStyles = darkMode
+    ? `hover:shadow-[0_0_0_3px_${palette.gray.dark2}] active:shadow-[0_0_0_3px_${palette.gray.dark2}]`
+    : `hover:shadow-[0_0_0_3px_${palette.gray.light2}] active:shadow-[0_0_0_3px_${palette.gray.light2}]`;
 
-      font-size: 13px;
-      font-weight: ${fontWeights.semiBold};
-      text-align: center;
-      overflow-wrap: break-word;
-      background-color: ${darkMode ? palette.gray.dark4 : palette.white};
-      border-radius: 6px;
-      color: ${darkMode ? palette.gray.light2 : palette.black};
-      border: 1px solid ${palette.gray.base};
+  // Focus-visible styles (via peer modifier from sibling input)
+  const focusVisibleStyles = darkMode
+    ? `peer-focus-visible:border-[${palette.gray.base}] peer-focus-visible:shadow-[0_0_0_2px_${palette.black},0_0_0_4px_${palette.blue.light1}]`
+    : `peer-focus-visible:border-[${palette.gray.base}] peer-focus-visible:shadow-[0_0_0_2px_${palette.white},0_0_0_4px_${palette.blue.base}]`;
 
-      cursor: pointer;
-      pointer-events: auto;
-      transition: ${transitionDuration.default}ms ease-in-out;
-      transition-property: border-color, box-shadow;
+  const checkedStyles = [
+    'border-transparent',
+    `shadow-[0_0_0_3px_${palette.green.dark1}]`,
+    `hover:shadow-[0_0_0_3px_${palette.green.dark1}]`,
+    `active:shadow-[0_0_0_3px_${palette.green.dark1}]`,
+  ].join(' ');
 
-      &:hover,
-      &:active {
-        box-shadow: ${darkMode ? hoverRing.dark.gray : hoverRing.light.gray};
-      }
+  const disabledStyles = [
+    darkMode ? `text-[${palette.gray.dark1}]` : `text-[${palette.gray.base}]`,
+    darkMode ? `bg-[${palette.gray.dark3}]` : `bg-[${palette.gray.light2}]`,
+    'font-normal',
+    darkMode ? `border-[${palette.gray.dark2}]` : `border-[${palette.gray.light1}]`,
+    'cursor-not-allowed',
+    'hover:shadow-none',
+    'active:shadow-none',
+  ].join(' ');
 
-      input:focus-visible + & {
-        border-color: ${palette.gray.base};
-        box-shadow: ${darkMode
-          ? focusRing.dark.default
-          : focusRing.light.default};
-      }
-    `,
-    {
-      [css`
-        border-color: rgba(255, 255, 255, 0);
-        box-shadow: 0 0 0 3px ${palette.green.dark1};
-        &:hover,
-        &:active {
-          box-shadow: 0 0 0 3px ${palette.green.dark1};
-        }
-      `]: checked,
-      [css`
-        color: ${darkMode ? palette.gray.dark1 : palette.gray.base};
-        background: ${darkMode ? palette.gray.dark3 : palette.gray.light2};
-        font-weight: ${fontWeights.regular};
-        border-color: ${darkMode ? palette.gray.dark2 : palette.gray.light1};
-        cursor: not-allowed;
-        &:hover,
-        &:active {
-          box-shadow: unset;
-        }
-      `]: disabled,
-    },
+  return cn(
+    baseStyles,
+    !checked && !disabled && hoverActiveStyles,
+    !disabled && focusVisibleStyles,
+    { [checkedStyles]: checked },
+    { [disabledStyles]: disabled },
     radioBoxSizes[size],
   );
 };
 
-export const radioWrapper = css`
-  font-family: ${fontFamilies.default};
-  display: flex;
-  position: relative;
-
-  &:not(:last-of-type) {
-    margin-right: 12px;
-  }
-`;
+export const radioWrapper = [
+  `font-[${`'Euclid_Circular_A','Helvetica_Neue',Helvetica,Arial,sans-serif`}]`,
+  'flex',
+  'relative',
+  '[&:not(:last-of-type)]:mr-[12px]',
+].join(' ');

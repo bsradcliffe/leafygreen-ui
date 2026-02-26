@@ -13,7 +13,12 @@ import {
 
 import GuideCueTooltip from '../GuideCueTooltip';
 
-import { beaconStyles, timeout1, timeout2 } from './GuideCue.styles';
+import {
+  beaconStyles,
+  getBeaconAnimationStyles,
+  timeout1,
+  timeout2,
+} from './GuideCue.styles';
 import { GuideCueProps, TooltipAlign, TooltipJustify } from './GuideCue.types';
 
 /**
@@ -136,6 +141,33 @@ function GuideCue({
     return null;
   }
 
+  const renderBeacon = () => {
+    if (prefersReducedMotion) {
+      return (
+        <div className={beaconStyles(prefersReducedMotion, darkMode)}>
+          <div />
+        </div>
+      );
+    }
+
+    const animStyles = getBeaconAnimationStyles(darkMode);
+
+    return (
+      <>
+        {/* eslint-disable-next-line react/no-danger */}
+        <style dangerouslySetInnerHTML={{ __html: animStyles.keyframes }} />
+        <div
+          className={beaconStyles(prefersReducedMotion, darkMode)}
+          style={animStyles.wrapperStyle}
+        >
+          <span style={animStyles.beforeStyle} />
+          <span style={animStyles.afterStyle} />
+          <div style={animStyles.innerDivStyle} />
+        </div>
+      </>
+    );
+  };
+
   return (
     <>
       {isStandalone ? (
@@ -157,9 +189,7 @@ function GuideCue({
             ref={beaconRef}
           >
             {/* The beacon is using the popover component to position itself */}
-            <div className={beaconStyles(prefersReducedMotion, darkMode)}>
-              <div />
-            </div>
+            {renderBeacon()}
           </Popover>
           {/* The tooltip is using the ref of the beacon as the trigger to position itself against */}
           {/* Instead of passing the beacon as the tooltip trigger prop we pass a reference to the beacon to the `refEl` prop. By passing only the reference we avoid default tooltip behaviors such as closing the tooltip on background click or showing and hiding the tooltip on hover. */}

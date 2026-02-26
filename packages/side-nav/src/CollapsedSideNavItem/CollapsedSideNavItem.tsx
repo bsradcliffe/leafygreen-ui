@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { cx } from '@leafygreen-ui/emotion';
 import { Portal } from '@leafygreen-ui/portal';
 
+import { cn } from '../cn';
 import { useSideNavContext } from '../SideNav';
 
 import {
@@ -22,7 +22,7 @@ export function CollapsedSideNavItem({
   return (
     <Portal container={portalContainer}>
       <li
-        className={cx(
+        className={cn(
           baseStyles,
           themeStyle[theme],
           {

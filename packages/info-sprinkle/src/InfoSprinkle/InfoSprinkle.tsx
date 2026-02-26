@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 
-import { cx } from '@leafygreen-ui/emotion';
 import InfoWithCircleIcon from '@leafygreen-ui/icon/dist/InfoWithCircle';
 import { useDarkMode } from '@leafygreen-ui/leafygreen-provider';
 import { RenderMode, Tooltip } from '@leafygreen-ui/tooltip';
+
+import { cn } from '../cn';
 
 import { iconBaseStyles, iconThemeStyles } from './InfoSprinkle.styles';
 import { InfoSprinkleProps } from './InfoSprinkle.types';
@@ -48,7 +49,7 @@ export const InfoSprinkle = React.forwardRef<
             {...triggerProps}
             aria-disabled
             ref={forwardRef}
-            className={cx(
+            className={cn(
               iconBaseStyles,
               iconThemeStyles(theme),
               triggerProps?.className,

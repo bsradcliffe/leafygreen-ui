@@ -10,7 +10,6 @@ import { userEvent, within } from '@storybook/test';
 
 import { Badge } from '@leafygreen-ui/badge';
 import { Button } from '@leafygreen-ui/button';
-import { css } from '@leafygreen-ui/emotion';
 
 import { getComboboxOptions } from './test-utils/getTestOptions.testutils';
 import {
@@ -23,11 +22,11 @@ import {
 } from './types';
 import { Combobox, ComboboxOption, ComboboxProps } from '.';
 
-const wrapperStyle = css`
-  width: 256px;
-  padding-block: 64px;
-  display: flex;
-`;
+const wrapperStyle: React.CSSProperties = {
+  width: '256px',
+  paddingBlock: '64px',
+  display: 'flex',
+};
 
 const multiValue = ['apple', 'banana'];
 
@@ -36,7 +35,7 @@ const meta: StoryMetaType<typeof Combobox> = {
   component: Combobox,
   decorators: [
     StoryFn => (
-      <div className={wrapperStyle}>
+      <div style={wrapperStyle}>
         <StoryFn />
       </div>
     ),
@@ -359,12 +358,7 @@ export const InitialLongComboboxOpen = {
   },
   decorators: [
     (Story: StoryFn, _ctx: StoryContext) => (
-      <div
-        className={css`
-          height: 100vh;
-          padding: 0;
-        `}
-      >
+      <div style={{ height: '100vh', padding: 0 }}>
         <Story />
       </div>
     ),

@@ -29,7 +29,6 @@
   },
   "dependencies": {
     "@leafygreen-ui/button": "workspace:^",
-    "@leafygreen-ui/emotion": "workspace:^",
     "@leafygreen-ui/hooks": "workspace:^",
     "@leafygreen-ui/icon": "workspace:^",
     "@leafygreen-ui/icon-button": "workspace:^",
@@ -42,7 +41,6 @@
     "@leafygreen-ui/toolbar": "workspace:^",
     "@leafygreen-ui/typography": "workspace:^",
     "@lg-tools/test-harnesses": "workspace:^",
-    "polished": "^4.2.2",
     "react-intersection-observer": "^8.25.1"
   },
   "devDependencies": {

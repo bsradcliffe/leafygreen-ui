@@ -1,6 +1,7 @@
+import React from 'react';
+
 import clamp from 'lodash/clamp';
 
-import { css } from '@leafygreen-ui/emotion';
 import { Align, ElementPosition, Justify } from '@leafygreen-ui/popover';
 
 import { TooltipVariant } from './Tooltip.types';
@@ -8,7 +9,6 @@ import {
   borderRadiuses,
   CONTAINER_SIZE,
   NOTCH_OVERLAP,
-  NOTCH_WIDTH,
 } from './tooltipConstants';
 
 interface NotchPositionStylesArgs {
@@ -18,23 +18,53 @@ interface NotchPositionStylesArgs {
   isCompact: boolean;
 }
 
+interface NotchPositionResult {
+  notchContainerStyle: React.CSSProperties;
+  notchContainerClassName: string;
+  notchStyle: React.CSSProperties;
+  notchClassName: string;
+  tooltipStyle: React.CSSProperties;
+}
+
+const emptyResult: NotchPositionResult = {
+  notchContainerStyle: {},
+  notchContainerClassName: '',
+  notchStyle: {},
+  notchClassName: '',
+  tooltipStyle: {},
+};
+
+/**
+ * Base class names for the notch container (non-dynamic properties).
+ */
+const notchContainerBaseClassName = [
+  'absolute',
+  'overflow-hidden',
+  'm-auto',
+  'pointer-events-none',
+].join(' ');
+
+/**
+ * Base class names for the notch SVG (non-dynamic properties).
+ * Width/height set to NOTCH_WIDTH (26px) to keep the notch square.
+ */
+const notchBaseClassName = 'absolute m-0 w-[26px] h-[26px]';
+
 export function notchPositionStyles({
   align,
   justify,
   triggerRect,
   isCompact,
-}: NotchPositionStylesArgs) {
+}: NotchPositionStylesArgs): NotchPositionResult {
   if (!align || !justify || !triggerRect || isCompact) {
-    return {
-      notchContainer: '',
-      notch: '',
-      tooltip: '',
-    };
+    return emptyResult;
   }
 
-  type Styles = 'left' | 'right' | 'top' | 'bottom' | 'margin' | 'transform';
-  const notchStyleObj: Partial<Record<Styles, string>> = {};
-  const containerStyleObj: Partial<Record<Styles, string>> = {};
+  const notchStyle: React.CSSProperties = {};
+  const containerStyle: React.CSSProperties = {
+    width: CONTAINER_SIZE,
+    height: CONTAINER_SIZE,
+  };
 
   /**
    * The bounds used to clamp the notchOffset value.
@@ -87,21 +117,21 @@ export function notchPositionStyles({
       );
       shouldTransformPosition = notchOffsetActual <= notchOffsetLowerBound;
 
-      notchStyleObj.left = `0px`;
-      notchStyleObj.right = `0px`;
+      notchStyle.left = 0;
+      notchStyle.right = 0;
 
       if (align === 'top') {
-        containerStyleObj.top = 'calc(100% - 1px)';
-        notchStyleObj.top = `${NOTCH_OVERLAP}px`;
+        containerStyle.top = 'calc(100% - 1px)';
+        notchStyle.top = NOTCH_OVERLAP;
       } else {
-        containerStyleObj.bottom = 'calc(100% - 1px)';
-        notchStyleObj.bottom = `${NOTCH_OVERLAP}px`;
-        notchStyleObj.transform = `rotate(180deg)`;
+        containerStyle.bottom = 'calc(100% - 1px)';
+        notchStyle.bottom = NOTCH_OVERLAP;
+        notchStyle.transform = 'rotate(180deg)';
       }
 
       switch (justify) {
         case Justify.Start:
-          containerStyleObj.left = `${notchOffset}px`;
+          containerStyle.left = notchOffset;
 
           if (shouldTransformPosition) {
             tooltipOffsetTransform = `translateX(-${
@@ -112,13 +142,13 @@ export function notchPositionStyles({
           break;
 
         case Justify.Middle:
-          containerStyleObj.left = '0px';
-          containerStyleObj.right = '0px';
+          containerStyle.left = 0;
+          containerStyle.right = 0;
 
           break;
 
         case Justify.End:
-          containerStyleObj.right = `${notchOffset}px`;
+          containerStyle.right = notchOffset;
 
           if (shouldTransformPosition) {
             tooltipOffsetTransform = `translateX(${
@@ -142,22 +172,22 @@ export function notchPositionStyles({
       );
       shouldTransformPosition = notchOffsetActual <= notchOffsetLowerBound;
 
-      notchStyleObj.top = `0px`;
-      notchStyleObj.bottom = `0px`;
+      notchStyle.top = 0;
+      notchStyle.bottom = 0;
 
       if (align === 'left') {
-        containerStyleObj.left = 'calc(100% - 1px)';
-        notchStyleObj.left = `${NOTCH_OVERLAP}px`;
-        notchStyleObj.transform = `rotate(-90deg)`;
+        containerStyle.left = 'calc(100% - 1px)';
+        notchStyle.left = NOTCH_OVERLAP;
+        notchStyle.transform = 'rotate(-90deg)';
       } else {
-        containerStyleObj.right = 'calc(100% - 1px)';
-        notchStyleObj.right = `${NOTCH_OVERLAP}px`;
-        notchStyleObj.transform = `rotate(90deg)`;
+        containerStyle.right = 'calc(100% - 1px)';
+        notchStyle.right = NOTCH_OVERLAP;
+        notchStyle.transform = 'rotate(90deg)';
       }
 
       switch (justify) {
         case Justify.Start:
-          containerStyleObj.top = `${notchOffset}px`;
+          containerStyle.top = notchOffset;
 
           if (shouldTransformPosition) {
             tooltipOffsetTransform = `translateY(-${
@@ -168,12 +198,12 @@ export function notchPositionStyles({
           break;
 
         case Justify.Middle:
-          containerStyleObj.top = '0px';
-          containerStyleObj.bottom = '0px';
+          containerStyle.top = 0;
+          containerStyle.bottom = 0;
           break;
 
         case Justify.End:
-          containerStyleObj.bottom = `${notchOffset}px`;
+          containerStyle.bottom = notchOffset;
 
           if (shouldTransformPosition) {
             tooltipOffsetTransform = `translateY(${
@@ -187,26 +217,16 @@ export function notchPositionStyles({
       break;
   }
 
+  const tooltipStyle: React.CSSProperties = {
+    minWidth: notchOffset * 2 + CONTAINER_SIZE,
+    transform: tooltipOffsetTransform || undefined,
+  };
+
   return {
-    notchContainer: css`
-      position: absolute;
-      width: ${CONTAINER_SIZE}px;
-      height: ${CONTAINER_SIZE}px;
-      overflow: hidden;
-      margin: auto;
-      pointer-events: none;
-      ${css(containerStyleObj)};
-    `,
-    notch: css`
-      ${css(notchStyleObj)};
-      position: absolute;
-      width: ${NOTCH_WIDTH}px;
-      height: ${NOTCH_WIDTH}px; // Keep it square. Rotating is simpler
-      margin: 0;
-    `,
-    tooltip: css`
-      min-width: ${notchOffset * 2 + CONTAINER_SIZE}px;
-      transform: ${tooltipOffsetTransform};
-    `,
+    notchContainerStyle: containerStyle,
+    notchContainerClassName: notchContainerBaseClassName,
+    notchStyle,
+    notchClassName: notchBaseClassName,
+    tooltipStyle,
   };
 }

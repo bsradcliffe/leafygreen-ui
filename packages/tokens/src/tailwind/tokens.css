@@ -1,0 +1,443 @@
+@import "tailwindcss";
+
+/*
+ * LeafyGreen UI Design Tokens — CSS Custom Properties
+ *
+ * Auto-generated from packages/tokens/src/ JS token definitions.
+ * Consumed by Tailwind v4's @theme directive.
+ *
+ * Naming convention: --lg-{category}-{key}
+ *   e.g. --lg-spacing-200, --lg-color-bg-primary-default
+ */
+
+@theme {
+  /* ===== Spacing ===== */
+  --spacing-0: 0px;
+  --spacing-25: 1px;
+  --spacing-50: 2px;
+  --spacing-100: 4px;
+  --spacing-150: 6px;
+  --spacing-200: 8px;
+  --spacing-300: 12px;
+  --spacing-400: 16px;
+  --spacing-500: 20px;
+  --spacing-600: 24px;
+  --spacing-800: 32px;
+  --spacing-900: 36px;
+  --spacing-1000: 40px;
+  --spacing-1200: 48px;
+  --spacing-1400: 56px;
+  --spacing-1600: 64px;
+  --spacing-1800: 72px;
+
+  /* ===== Border Radius ===== */
+  --radius-0: 0px;
+  --radius-50: 2px;
+  --radius-100: 4px;
+  --radius-150: 6px;
+  --radius-200: 8px;
+  --radius-300: 12px;
+  --radius-400: 16px;
+  --radius-500: 20px;
+  --radius-600: 24px;
+
+  /* ===== Font Families ===== */
+  --font-family-default: 'Euclid Circular A', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-family-serif: 'MongoDB Value Serif', 'Times New Roman', serif;
+  --font-family-code: 'Source Code Pro', Menlo, monospace;
+
+  /* ===== Font Weights ===== */
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+
+  /* ===== Type Scales ===== */
+  --font-size-body1: 13px;
+  --line-height-body1: 20px;
+  --font-size-body2: 16px;
+  --line-height-body2: 28px;
+  --font-size-code1: 13px;
+  --line-height-code1: 20px;
+  --font-size-code2: 15px;
+  --line-height-code2: 24px;
+  --font-size-disclaimer: 12px;
+  --line-height-disclaimer: 20px;
+  --font-size-large: 18px;
+  --line-height-large: 24px;
+
+  /* ===== Transition Durations ===== */
+  --transition-duration-faster: 100ms;
+  --transition-duration-default: 150ms;
+  --transition-duration-slower: 300ms;
+  --transition-duration-slowest: 500ms;
+
+  /* ===== Breakpoints ===== */
+  --breakpoint-mobile: 320px;
+  --breakpoint-tablet: 768px;
+  --breakpoint-desktop: 1024px;
+  --breakpoint-xl-desktop: 1440px;
+}
+
+/* ========================================
+ * Color Tokens — Light Mode (default)
+ * ======================================== */
+:root {
+  /* ----- Palette Colors ----- */
+  --lg-color-white: #FFFFFF;
+  --lg-color-black: #001E2B;
+  --lg-color-transparent: #FFFFFF00;
+
+  /* Gray */
+  --lg-color-gray-dark4: #112733;
+  --lg-color-gray-dark3: #1C2D38;
+  --lg-color-gray-dark2: #3D4F58;
+  --lg-color-gray-dark1: #5C6C75;
+  --lg-color-gray-base: #889397;
+  --lg-color-gray-light1: #C1C7C6;
+  --lg-color-gray-light2: #E8EDEB;
+  --lg-color-gray-light3: #F9FBFA;
+
+  /* Green */
+  --lg-color-green-dark3: #023430;
+  --lg-color-green-dark2: #00684A;
+  --lg-color-green-dark1: #00A35C;
+  --lg-color-green-base: #00ED64;
+  --lg-color-green-light1: #71F6BA;
+  --lg-color-green-light2: #C0FAE6;
+  --lg-color-green-light3: #E3FCF7;
+
+  /* Blue */
+  --lg-color-blue-dark3: #0C2657;
+  --lg-color-blue-dark2: #083C90;
+  --lg-color-blue-dark1: #1254B7;
+  --lg-color-blue-base: #016BF8;
+  --lg-color-blue-light1: #0498EC;
+  --lg-color-blue-light2: #C3E7FE;
+  --lg-color-blue-light3: #E1F7FF;
+
+  /* Red */
+  --lg-color-red-dark3: #5B0000;
+  --lg-color-red-dark2: #970606;
+  --lg-color-red-base: #DB3030;
+  --lg-color-red-light1: #FF6960;
+  --lg-color-red-light2: #FFCDC7;
+  --lg-color-red-light3: #FFEAE5;
+
+  /* Yellow */
+  --lg-color-yellow-dark3: #4C2100;
+  --lg-color-yellow-dark2: #944F01;
+  --lg-color-yellow-base: #FFC010;
+  --lg-color-yellow-light2: #FFEC9E;
+  --lg-color-yellow-light3: #FEF7DB;
+
+  /* Purple */
+  --lg-color-purple-dark3: #2D0B59;
+  --lg-color-purple-dark2: #5E0C9E;
+  --lg-color-purple-base: #B45AF2;
+  --lg-color-purple-light2: #F1D4FD;
+  --lg-color-purple-light3: #F9EBFF;
+
+  /* ----- Semantic Background Colors ----- */
+  --lg-color-bg-primary-default: #FFFFFF;
+  --lg-color-bg-primary-hover: #E8EDEB;
+  --lg-color-bg-primary-focus: #E1F7FF;
+  --lg-color-bg-secondary-default: #F9FBFA;
+  --lg-color-bg-secondary-hover: #E8EDEB;
+  --lg-color-bg-secondary-focus: #E1F7FF;
+  --lg-color-bg-inverse-primary-default: #001E2B;
+  --lg-color-bg-inverse-primary-hover: #1C2D38;
+  --lg-color-bg-inverse-primary-focus: #083C90;
+  --lg-color-bg-info-default: #E1F7FF;
+  --lg-color-bg-info-hover: #E1F7FF;
+  --lg-color-bg-info-focus: #E1F7FF;
+  --lg-color-bg-warning-default: #FEF7DB;
+  --lg-color-bg-warning-hover: #FEF7DB;
+  --lg-color-bg-warning-focus: #FEF7DB;
+  --lg-color-bg-success-default: #E3FCF7;
+  --lg-color-bg-success-hover: #E3FCF7;
+  --lg-color-bg-success-focus: #E3FCF7;
+  --lg-color-bg-error-default: #FFEAE5;
+  --lg-color-bg-error-hover: #FFEAE5;
+  --lg-color-bg-error-focus: #FFEAE5;
+  --lg-color-bg-disabled-default: #E8EDEB;
+  --lg-color-bg-disabled-hover: #E8EDEB;
+  --lg-color-bg-disabled-focus: #E8EDEB;
+
+  /* ----- Semantic Border Colors ----- */
+  --lg-color-border-primary-default: #889397;
+  --lg-color-border-primary-hover: #889397;
+  --lg-color-border-primary-focus: #0498EC;
+  --lg-color-border-secondary-default: #E8EDEB;
+  --lg-color-border-secondary-hover: #E8EDEB;
+  --lg-color-border-secondary-focus: #0498EC;
+  --lg-color-border-tertiary-default: #C1C7C6;
+  --lg-color-border-tertiary-hover: #C1C7C6;
+  --lg-color-border-tertiary-focus: #0498EC;
+  --lg-color-border-success-default: #00A35C;
+  --lg-color-border-success-hover: #00A35C;
+  --lg-color-border-success-focus: #0498EC;
+  --lg-color-border-error-default: #DB3030;
+  --lg-color-border-error-hover: #DB3030;
+  --lg-color-border-error-focus: #0498EC;
+  --lg-color-border-disabled-default: #C1C7C6;
+  --lg-color-border-disabled-hover: #C1C7C6;
+  --lg-color-border-disabled-focus: #C1C7C6;
+  --lg-color-border-on-success-default: #C0FAE6;
+  --lg-color-border-on-success-hover: #C0FAE6;
+  --lg-color-border-on-success-focus: #C0FAE6;
+  --lg-color-border-on-error-default: #FFCDC7;
+  --lg-color-border-on-error-hover: #FFCDC7;
+  --lg-color-border-on-error-focus: #FFCDC7;
+  --lg-color-border-info-default: #016BF8;
+  --lg-color-border-info-hover: #016BF8;
+  --lg-color-border-info-focus: #016BF8;
+  --lg-color-border-on-info-default: #C3E7FE;
+  --lg-color-border-on-info-hover: #C3E7FE;
+  --lg-color-border-on-info-focus: #C3E7FE;
+  --lg-color-border-warning-default: #FFC010;
+  --lg-color-border-warning-hover: #FFC010;
+  --lg-color-border-warning-focus: #FFC010;
+  --lg-color-border-on-warning-default: #FFEC9E;
+  --lg-color-border-on-warning-hover: #FFEC9E;
+  --lg-color-border-on-warning-focus: #FFEC9E;
+
+  /* ----- Semantic Icon Colors ----- */
+  --lg-color-icon-primary-default: #5C6C75;
+  --lg-color-icon-primary-hover: #001E2B;
+  --lg-color-icon-primary-focus: #1254B7;
+  --lg-color-icon-secondary-default: #889397;
+  --lg-color-icon-secondary-hover: #001E2B;
+  --lg-color-icon-secondary-focus: #1254B7;
+  --lg-color-icon-inverse-primary-default: #FFFFFF;
+  --lg-color-icon-inverse-primary-hover: #FFFFFF;
+  --lg-color-icon-inverse-primary-focus: #C3E7FE;
+  --lg-color-icon-info-default: #016BF8;
+  --lg-color-icon-info-hover: #016BF8;
+  --lg-color-icon-info-focus: #016BF8;
+  --lg-color-icon-warning-default: #944F01;
+  --lg-color-icon-warning-hover: #944F01;
+  --lg-color-icon-warning-focus: #944F01;
+  --lg-color-icon-success-default: #00A35C;
+  --lg-color-icon-success-hover: #00A35C;
+  --lg-color-icon-success-focus: #00A35C;
+  --lg-color-icon-error-default: #DB3030;
+  --lg-color-icon-error-hover: #DB3030;
+  --lg-color-icon-error-focus: #DB3030;
+  --lg-color-icon-disabled-default: #C1C7C6;
+  --lg-color-icon-disabled-hover: #C1C7C6;
+  --lg-color-icon-disabled-focus: #C1C7C6;
+
+  /* ----- Semantic Text Colors ----- */
+  --lg-color-text-primary-default: #001E2B;
+  --lg-color-text-primary-hover: #001E2B;
+  --lg-color-text-primary-focus: #1254B7;
+  --lg-color-text-secondary-default: #5C6C75;
+  --lg-color-text-secondary-hover: #001E2B;
+  --lg-color-text-secondary-focus: #1254B7;
+  --lg-color-text-inverse-primary-default: #FFFFFF;
+  --lg-color-text-inverse-primary-hover: #FFFFFF;
+  --lg-color-text-inverse-primary-focus: #C3E7FE;
+  --lg-color-text-inverse-secondary-default: #C1C7C6;
+  --lg-color-text-inverse-secondary-hover: #FFFFFF;
+  --lg-color-text-inverse-secondary-focus: #C3E7FE;
+  --lg-color-text-disabled-default: #889397;
+  --lg-color-text-disabled-hover: #889397;
+  --lg-color-text-disabled-focus: #889397;
+  --lg-color-text-success-default: #00684A;
+  --lg-color-text-success-hover: #00684A;
+  --lg-color-text-success-focus: #00684A;
+  --lg-color-text-error-default: #DB3030;
+  --lg-color-text-error-hover: #DB3030;
+  --lg-color-text-error-focus: #DB3030;
+  --lg-color-text-placeholder-default: #5C6C75;
+  --lg-color-text-placeholder-hover: #5C6C75;
+  --lg-color-text-placeholder-focus: #5C6C75;
+  --lg-color-text-on-success-default: #00684A;
+  --lg-color-text-on-success-hover: #00684A;
+  --lg-color-text-on-success-focus: #00684A;
+  --lg-color-text-on-success-link-default: #023430;
+  --lg-color-text-on-success-link-hover: #023430;
+  --lg-color-text-on-success-link-focus: #023430;
+  --lg-color-text-on-error-default: #970606;
+  --lg-color-text-on-error-hover: #970606;
+  --lg-color-text-on-error-focus: #970606;
+  --lg-color-text-link-default: #016BF8;
+  --lg-color-text-link-hover: #016BF8;
+  --lg-color-text-link-focus: #016BF8;
+  --lg-color-text-info-default: #1254B7;
+  --lg-color-text-info-hover: #1254B7;
+  --lg-color-text-info-focus: #1254B7;
+  --lg-color-text-on-info-default: #083C90;
+  --lg-color-text-on-info-hover: #083C90;
+  --lg-color-text-on-info-focus: #083C90;
+  --lg-color-text-warning-default: #944F01;
+  --lg-color-text-warning-hover: #944F01;
+  --lg-color-text-warning-focus: #944F01;
+  --lg-color-text-on-warning-default: #944F01;
+  --lg-color-text-on-warning-hover: #944F01;
+  --lg-color-text-on-warning-focus: #944F01;
+
+  /* ----- Focus Ring ----- */
+  --lg-focus-ring-default: 0 0 0 2px #FFFFFF, 0 0 0 4px #016BF8;
+  --lg-focus-ring-input: 0 0 0 3px #016BF8;
+
+  /* ----- Hover Ring ----- */
+  --lg-hover-ring-gray: 0 0 0 3px #E8EDEB;
+  --lg-hover-ring-green: 0 0 0 3px #C0FAE6;
+  --lg-hover-ring-red: 0 0 0 3px #FFCDC7;
+}
+
+/* ========================================
+ * Color Tokens — Dark Mode
+ * Applied via data-theme="dark" attribute
+ * ======================================== */
+[data-theme="dark"] {
+  /* ----- Semantic Background Colors ----- */
+  --lg-color-bg-primary-default: #001E2B;
+  --lg-color-bg-primary-hover: #3D4F58;
+  --lg-color-bg-primary-focus: #0C2657;
+  --lg-color-bg-secondary-default: #112733;
+  --lg-color-bg-secondary-hover: #3D4F58;
+  --lg-color-bg-secondary-focus: #0C2657;
+  --lg-color-bg-inverse-primary-default: #E8EDEB;
+  --lg-color-bg-inverse-primary-hover: #F9FBFA;
+  --lg-color-bg-inverse-primary-focus: #C3E7FE;
+  --lg-color-bg-info-default: #0C2657;
+  --lg-color-bg-info-hover: #0C2657;
+  --lg-color-bg-info-focus: #0C2657;
+  --lg-color-bg-warning-default: #4C2100;
+  --lg-color-bg-warning-hover: #4C2100;
+  --lg-color-bg-warning-focus: #4C2100;
+  --lg-color-bg-success-default: #023430;
+  --lg-color-bg-success-hover: #023430;
+  --lg-color-bg-success-focus: #023430;
+  --lg-color-bg-error-default: #5B0000;
+  --lg-color-bg-error-hover: #5B0000;
+  --lg-color-bg-error-focus: #5B0000;
+  --lg-color-bg-disabled-default: #1C2D38;
+  --lg-color-bg-disabled-hover: #1C2D38;
+  --lg-color-bg-disabled-focus: #1C2D38;
+
+  /* ----- Semantic Border Colors ----- */
+  --lg-color-border-primary-default: #889397;
+  --lg-color-border-primary-hover: #889397;
+  --lg-color-border-primary-focus: #0498EC;
+  --lg-color-border-secondary-default: #3D4F58;
+  --lg-color-border-secondary-hover: #3D4F58;
+  --lg-color-border-secondary-focus: #0498EC;
+  --lg-color-border-tertiary-default: #5C6C75;
+  --lg-color-border-tertiary-hover: #5C6C75;
+  --lg-color-border-tertiary-focus: #0498EC;
+  --lg-color-border-success-default: #00A35C;
+  --lg-color-border-success-hover: #00A35C;
+  --lg-color-border-success-focus: #0498EC;
+  --lg-color-border-error-default: #FF6960;
+  --lg-color-border-error-hover: #FF6960;
+  --lg-color-border-error-focus: #0498EC;
+  --lg-color-border-on-success-default: #00684A;
+  --lg-color-border-on-success-hover: #00684A;
+  --lg-color-border-on-success-focus: #0498EC;
+  --lg-color-border-on-error-default: #970606;
+  --lg-color-border-on-error-hover: #970606;
+  --lg-color-border-on-error-focus: #0498EC;
+  --lg-color-border-disabled-default: #3D4F58;
+  --lg-color-border-disabled-hover: #3D4F58;
+  --lg-color-border-disabled-focus: #3D4F58;
+  --lg-color-border-info-default: #0498EC;
+  --lg-color-border-info-hover: #0498EC;
+  --lg-color-border-info-focus: #0498EC;
+  --lg-color-border-on-info-default: #083C90;
+  --lg-color-border-on-info-hover: #083C90;
+  --lg-color-border-on-info-focus: #083C90;
+  --lg-color-border-warning-default: #944F01;
+  --lg-color-border-warning-hover: #944F01;
+  --lg-color-border-warning-focus: #944F01;
+  --lg-color-border-on-warning-default: #944F01;
+  --lg-color-border-on-warning-hover: #944F01;
+  --lg-color-border-on-warning-focus: #944F01;
+
+  /* ----- Semantic Icon Colors ----- */
+  --lg-color-icon-primary-default: #C1C7C6;
+  --lg-color-icon-primary-hover: #F9FBFA;
+  --lg-color-icon-primary-focus: #E1F7FF;
+  --lg-color-icon-secondary-default: #889397;
+  --lg-color-icon-secondary-hover: #F9FBFA;
+  --lg-color-icon-secondary-focus: #E1F7FF;
+  --lg-color-icon-inverse-primary-default: #001E2B;
+  --lg-color-icon-inverse-primary-hover: #001E2B;
+  --lg-color-icon-inverse-primary-focus: #083C90;
+  --lg-color-icon-info-default: #0498EC;
+  --lg-color-icon-info-hover: #0498EC;
+  --lg-color-icon-info-focus: #0498EC;
+  --lg-color-icon-warning-default: #FFC010;
+  --lg-color-icon-warning-hover: #FFC010;
+  --lg-color-icon-warning-focus: #FFC010;
+  --lg-color-icon-success-default: #00ED64;
+  --lg-color-icon-success-hover: #00ED64;
+  --lg-color-icon-success-focus: #00ED64;
+  --lg-color-icon-error-default: #FF6960;
+  --lg-color-icon-error-hover: #FF6960;
+  --lg-color-icon-error-focus: #FF6960;
+  --lg-color-icon-disabled-default: #5C6C75;
+  --lg-color-icon-disabled-hover: #5C6C75;
+  --lg-color-icon-disabled-focus: #5C6C75;
+
+  /* ----- Semantic Text Colors ----- */
+  --lg-color-text-primary-default: #E8EDEB;
+  --lg-color-text-primary-hover: #E8EDEB;
+  --lg-color-text-primary-focus: #E1F7FF;
+  --lg-color-text-secondary-default: #C1C7C6;
+  --lg-color-text-secondary-hover: #E8EDEB;
+  --lg-color-text-secondary-focus: #E1F7FF;
+  --lg-color-text-inverse-primary-default: #001E2B;
+  --lg-color-text-inverse-primary-hover: #001E2B;
+  --lg-color-text-inverse-primary-focus: #083C90;
+  --lg-color-text-inverse-secondary-default: #3D4F58;
+  --lg-color-text-inverse-secondary-hover: #001E2B;
+  --lg-color-text-inverse-secondary-focus: #083C90;
+  --lg-color-text-disabled-default: #5C6C75;
+  --lg-color-text-disabled-hover: #5C6C75;
+  --lg-color-text-disabled-focus: #5C6C75;
+  --lg-color-text-placeholder-default: #C1C7C6;
+  --lg-color-text-placeholder-hover: #C1C7C6;
+  --lg-color-text-placeholder-focus: #C1C7C6;
+  --lg-color-text-success-default: #C0FAE6;
+  --lg-color-text-success-hover: #C0FAE6;
+  --lg-color-text-success-focus: #C0FAE6;
+  --lg-color-text-error-default: #FF6960;
+  --lg-color-text-error-hover: #FF6960;
+  --lg-color-text-error-focus: #FF6960;
+  --lg-color-text-on-success-default: #71F6BA;
+  --lg-color-text-on-success-hover: #71F6BA;
+  --lg-color-text-on-success-focus: #71F6BA;
+  --lg-color-text-on-success-link-default: #E3FCF7;
+  --lg-color-text-on-success-link-hover: #E3FCF7;
+  --lg-color-text-on-success-link-focus: #E3FCF7;
+  --lg-color-text-on-error-default: #FFCDC7;
+  --lg-color-text-on-error-hover: #FFCDC7;
+  --lg-color-text-on-error-focus: #FFCDC7;
+  --lg-color-text-link-default: #0498EC;
+  --lg-color-text-link-hover: #0498EC;
+  --lg-color-text-link-focus: #0498EC;
+  --lg-color-text-info-default: #C3E7FE;
+  --lg-color-text-info-hover: #C3E7FE;
+  --lg-color-text-info-focus: #C3E7FE;
+  --lg-color-text-on-info-default: #C3E7FE;
+  --lg-color-text-on-info-hover: #C3E7FE;
+  --lg-color-text-on-info-focus: #C3E7FE;
+  --lg-color-text-warning-default: #FFC010;
+  --lg-color-text-warning-hover: #FFC010;
+  --lg-color-text-warning-focus: #FFC010;
+  --lg-color-text-on-warning-default: #FFEC9E;
+  --lg-color-text-on-warning-hover: #FFEC9E;
+  --lg-color-text-on-warning-focus: #FFEC9E;
+
+  /* ----- Focus Ring (Dark) ----- */
+  --lg-focus-ring-default: 0 0 0 2px #001E2B, 0 0 0 4px #0498EC;
+  --lg-focus-ring-input: 0 0 0 3px #0498EC;
+
+  /* ----- Hover Ring (Dark) ----- */
+  --lg-hover-ring-gray: 0 0 0 3px #3D4F58;
+  --lg-hover-ring-green: 0 0 0 3px #023430;
+  --lg-hover-ring-red: 0 0 0 3px #4C2100;
+}

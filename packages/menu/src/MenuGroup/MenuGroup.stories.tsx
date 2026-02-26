@@ -3,7 +3,6 @@ import React from 'react';
 import { StoryMetaType } from '@lg-tools/storybook-utils';
 import { StoryObj } from '@storybook/react';
 
-import { css } from '@leafygreen-ui/emotion';
 import { glyphs, Icon } from '@leafygreen-ui/icon';
 
 import { MenuItem } from '../MenuItem';
@@ -38,10 +37,10 @@ export default {
 export const LiveExample = {
   render: ({ glyph, ...args }) => (
     <div
-      className={css`
-        width: 256px;
-        outline: 1px dashed gray;
-      `}
+      style={{
+        width: 256,
+        outline: '1px dashed gray',
+      }}
     >
       <MenuGroup
         {...args}

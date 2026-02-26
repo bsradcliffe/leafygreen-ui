@@ -264,7 +264,10 @@ export const Popover = forwardRef<HTMLDivElement, PopoverComponentProps>(
       <>
         {/* Using <span> as placeholder to prevent validateDOMNesting warnings
     Warnings will still show up if `usePortal` is false */}
-        <span ref={setPlaceholderElement} className={hiddenPlaceholderStyle} />
+        <span
+          ref={setPlaceholderElement}
+          style={hiddenPlaceholderStyle}
+        />
         <Transition
           nodeRef={contentNodeRef}
           in={context.open}
@@ -283,39 +286,46 @@ export const Popover = forwardRef<HTMLDivElement, PopoverComponentProps>(
           unmountOnExit
           appear
         >
-          {state => (
-            <>
-              <Root {...rootProps}>
-                <div
-                  ref={popoverRef}
-                  className={getPopoverStyles({
-                    className,
-                    left: x,
-                    placement: extendedPlacement,
-                    popoverZIndex,
-                    position: strategy,
-                    spacing,
-                    state,
-                    top: y,
-                    transformAlign,
-                  })}
-                  // @ts-expect-error - `popover` attribute is not typed in current version of `@types/react` https://github.com/DefinitelyTyped/DefinitelyTyped/pull/69670
+          {state => {
+            const popoverStyles = getPopoverStyles({
+              className,
+              left: x,
+              placement: extendedPlacement,
+              popoverZIndex,
+              position: strategy,
+              spacing,
+              state,
+              top: y,
+              transformAlign,
+            });
 
-                  popover={
-                    renderMode === RenderMode.TopLayer ? dismissMode : undefined
-                  }
-                  {...restProps}
-                >
-                  {/* We need to put `setContentNode` ref on this inner wrapper because
-                placing the ref on the parent will create an infinite loop in some cases
-                when dynamic styles are applied. */}
-                  <div ref={setContentNode} className={contentClassName}>
-                    {renderChildren()}
+            return (
+              <>
+                <Root {...rootProps}>
+                  <div
+                    ref={popoverRef}
+                    className={popoverStyles.className}
+                    style={popoverStyles.style}
+                    // @ts-expect-error - `popover` attribute is not typed in current version of `@types/react` https://github.com/DefinitelyTyped/DefinitelyTyped/pull/69670
+
+                    popover={
+                      renderMode === RenderMode.TopLayer
+                        ? dismissMode
+                        : undefined
+                    }
+                    {...restProps}
+                  >
+                    {/* We need to put `setContentNode` ref on this inner wrapper because
+                  placing the ref on the parent will create an infinite loop in some cases
+                  when dynamic styles are applied. */}
+                    <div ref={setContentNode} className={contentClassName}>
+                      {renderChildren()}
+                    </div>
                   </div>
-                </div>
-              </Root>
-            </>
-          )}
+                </Root>
+              </>
+            );
+          }}
         </Transition>
       </>
     );

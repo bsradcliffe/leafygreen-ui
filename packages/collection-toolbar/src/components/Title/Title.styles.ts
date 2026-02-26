@@ -1,10 +1,7 @@
-import { css, cx } from '@leafygreen-ui/emotion';
-
+import { cn } from '../../cn';
 import { Variant } from '../../shared.types';
 
-const collapsibleTitleStyles = css`
-  flex: 1;
-`;
+const collapsibleTitleStyles = 'flex-1';
 
 export const getTitleStyles = ({
   className,
@@ -13,7 +10,7 @@ export const getTitleStyles = ({
   className?: string;
   variant?: Variant;
 }) => {
-  return cx(className, {
+  return cn(className, {
     [collapsibleTitleStyles]: variant === Variant.Collapsible,
   });
 };

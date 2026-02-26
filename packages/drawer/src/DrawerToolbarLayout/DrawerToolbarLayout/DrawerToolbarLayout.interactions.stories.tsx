@@ -7,7 +7,6 @@ import { StoryFn, StoryObj } from '@storybook/react';
 import { expect, userEvent, waitFor, within } from '@storybook/test';
 
 import { Button } from '@leafygreen-ui/button';
-import { css } from '@leafygreen-ui/emotion';
 import { GuideCue } from '@leafygreen-ui/guide-cue';
 import { usePrevious } from '@leafygreen-ui/hooks';
 import LeafyGreenProvider from '@leafygreen-ui/leafygreen-provider';
@@ -305,13 +304,13 @@ export default {
     (StoryFn, ctx) => (
       <LeafyGreenProvider darkMode={ctx?.args.darkMode}>
         <div
-          className={css`
-            height: 100%;
-            display: flex;
-            align-items: center;
-            margin: -100px;
-            width: 100vw;
-          `}
+          style={{
+            height: '100%',
+            display: 'flex',
+            alignItems: 'center',
+            margin: '-100px',
+            width: '100vw',
+          }}
         >
           <StoryFn />
         </div>
@@ -327,11 +326,7 @@ const Template: StoryFn<DrawerToolbarLayoutPropsWithDisplayMode> = ({
     const { openDrawer } = useDrawerToolbarContext();
 
     return (
-      <main
-        className={css`
-          padding: ${spacing[400]}px;
-        `}
-      >
+      <main style={{ padding: `${spacing[400]}px` }}>
         <Button onClick={() => openDrawer('Code')}>Open Code Drawer</Button>
         <LongContent />
         <LongContent />
@@ -341,11 +336,11 @@ const Template: StoryFn<DrawerToolbarLayoutPropsWithDisplayMode> = ({
 
   return (
     <div
-      className={css`
-        height: 80vh;
-        border-bottom: 1px solid ${palette.gray.light1};
-        width: 100%;
-      `}
+      style={{
+        height: '80vh',
+        borderBottom: `1px solid ${palette.gray.light1}`,
+        width: '100%',
+      }}
     >
       <DrawerLayoutProvider displayMode={displayMode!} hasToolbar>
         <DrawerToolbarLayout toolbarData={DRAWER_TOOLBAR_DATA}>
@@ -372,17 +367,13 @@ const TemplateWithToolbarToggle: StoryFn<
     const { openDrawer } = useDrawerToolbarContext();
 
     return (
-      <main
-        className={css`
-          padding: ${spacing[400]}px;
-        `}
-      >
+      <main style={{ padding: `${spacing[400]}px` }}>
         <div
-          className={css`
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-          `}
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'flex-start',
+          }}
         >
           <Button onClick={() => openDrawer('Code')}>Open Code Drawer</Button>
           <Button onClick={() => setHasToolbarData(prev => !prev)}>
@@ -403,11 +394,11 @@ const TemplateWithToolbarToggle: StoryFn<
 
   return (
     <div
-      className={css`
-        height: 80vh;
-        border-bottom: 1px solid ${palette.gray.light1};
-        width: 100%;
-      `}
+      style={{
+        height: '80vh',
+        borderBottom: `1px solid ${palette.gray.light1}`,
+        width: '100%',
+      }}
     >
       <DrawerLayoutProvider displayMode={displayMode!} hasToolbar>
         <DrawerToolbarLayout toolbarData={toolbarData}>
@@ -573,18 +564,14 @@ const MainContent: React.FC<MainContentProps> = ({
   }, [isDrawerOpen, prevIsDrawerOpen, guideCueOpen, setGuideCueOpen]);
 
   return (
-    <main
-      className={css`
-        padding: ${spacing[400]}px;
-      `}
-    >
+    <main style={{ padding: `${spacing[400]}px` }}>
       <div
-        className={css`
-          display: flex;
-          flex-direction: column;
-          align-items: flex-start;
-          gap: ${spacing[200]}px;
-        `}
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'flex-start',
+          gap: `${spacing[200]}px`,
+        }}
       >
         <Button onClick={() => setGuideCueOpen(true)}>Show GuideCue</Button>
         <p>
@@ -648,12 +635,7 @@ const WithGuideCueComponent: StoryFn<DrawerLayoutProps> = ({
   );
 
   return (
-    <div
-      className={css`
-        height: 90vh;
-        width: 100%;
-      `}
-    >
+    <div style={{ height: '90vh', width: '100%' }}>
       <DrawerLayout displayMode={displayMode} toolbarData={DRAWER_TOOLBAR_DATA}>
         <MainContent
           dashboardButtonRef={dashboardButtonRef}

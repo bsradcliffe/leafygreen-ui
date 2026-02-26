@@ -21,6 +21,8 @@ module.exports = function (api) {
   // https://github.com/babel/babel/issues/11622#issuecomment-644141879
   const plugins = [
     '@babel/plugin-proposal-export-default-from',
+    // TODO: Remove @emotion/babel-plugin once all packages have migrated
+    // from Emotion to Tailwind CSS. Tracked in the Emotion → Tailwind migration.
     '@emotion/babel-plugin',
   ];
 

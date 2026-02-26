@@ -1,6 +1,8 @@
-import { css, cx } from '@leafygreen-ui/emotion';
+import type { CSSProperties } from 'react';
+
 import { createUniqueClassName, Theme } from '@leafygreen-ui/lib';
-import { color, spacing } from '@leafygreen-ui/tokens';
+
+import { cn } from '../cn';
 
 export const tabContainerClassName = createUniqueClassName('tab-container');
 export const tabListElementClassName = createUniqueClassName('tab-list');
@@ -9,49 +11,57 @@ export const inlineChildrenContainerClassName = createUniqueClassName(
 );
 export const tabPanelsElementClassName = createUniqueClassName('tab-panels');
 
-const getBaseTabContainerStyles = (theme: Theme) => css`
-  display: flex;
-  align-items: stretch;
-  justify-content: space-between;
+/**
+ * Border color values for the tab container bottom border.
+ * Light: gray.light2, Dark: gray.dark2
+ */
+const tabContainerBorderColor: Record<Theme, string> = {
+  [Theme.Light]: '#E8EDEB',
+  [Theme.Dark]: '#3D4F58',
+};
 
-  /* Using a background allows the "border" to appear underneath the individual tab color */
-  background: linear-gradient(
-    0deg,
-    ${color[theme].border.secondary.default} 1px,
-    rgb(255 255 255 / 0%) 1px
-  );
-`;
+const baseTabContainerStyles = [
+  'flex',
+  'items-stretch',
+  'justify-between',
+].join(' ');
 
 export const getTabContainerStyles = (theme: Theme) =>
-  cx(getBaseTabContainerStyles(theme), tabContainerClassName);
+  cn(
+    baseTabContainerStyles,
+    tabContainerClassName,
+  );
 
-const baseTabListStyles = css`
-  list-style: none;
-  padding: 0;
-  display: flex;
-  width: 100%;
-  overflow-x: auto;
+/**
+ * Inline style for the gradient border, since it requires a dynamic color token.
+ */
+export const getTabContainerInlineStyle = (
+  theme: Theme,
+): CSSProperties => ({
+  background: `linear-gradient(0deg, ${tabContainerBorderColor[theme]} 1px, rgb(255 255 255 / 0%) 1px)`,
+});
 
-  /* Remove scrollbar */
+const baseTabListStyles = [
+  'list-none',
+  'p-0',
+  'flex',
+  'w-full',
+  'overflow-x-auto',
+  // Hide scrollbar
+  'scrollbar-none',
+  '[&::-webkit-scrollbar]:hidden',
+  '[-ms-overflow-style:none]',
+].join(' ');
 
-  /* Chrome, Edge, Safari and Opera */
-  &::-webkit-scrollbar {
-    display: none;
-  }
+export const tabListStyles = cn(baseTabListStyles, tabListElementClassName);
 
-  -ms-overflow-style: none; /* IE */
-  scrollbar-width: none; /* Firefox */
-`;
+const baseInlineChildrenContainerStyles = [
+  'flex',
+  'items-center',
+  'gap-[8px]',
+].join(' ');
 
-export const tabListStyles = cx(baseTabListStyles, tabListElementClassName);
-
-const baseInlineChildrenContainerStyles = css`
-  display: flex;
-  align-items: center;
-  gap: ${spacing[200]}px;
-`;
-
-export const inlineChildrenContainerStyles = cx(
+export const inlineChildrenContainerStyles = cn(
   baseInlineChildrenContainerStyles,
   inlineChildrenContainerClassName,
 );

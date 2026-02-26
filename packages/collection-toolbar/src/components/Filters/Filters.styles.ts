@@ -1,23 +1,21 @@
-import { css, cx } from '@leafygreen-ui/emotion';
 import { breakpoints, spacing } from '@leafygreen-ui/tokens';
 
+import { cn } from '../../cn';
 import { Variant } from '../../shared.types';
 
-export const baseStyles = css`
-  flex: 100%;
-  display: flex;
-  flex-flow: row wrap;
-  align-items: flex-end;
-  gap: ${spacing[200]}px;
-`;
+export const baseStyles = [
+  'flex-[100%]',
+  'flex',
+  'flex-row',
+  'flex-wrap',
+  'items-end',
+  `gap-[${spacing[200]}px]`,
+].join(' ');
 
-const compactStyles = css`
-  flex: 1;
-
-  @media only screen and (max-width: ${breakpoints.Tablet}px) {
-    flex: 100%;
-  }
-`;
+const compactStyles = [
+  'flex-1',
+  `[@media_only_screen_and_(max-width:${breakpoints.Tablet}px)]:flex-[100%]`,
+].join(' ');
 
 export const getFiltersStyles = ({
   className,
@@ -26,7 +24,7 @@ export const getFiltersStyles = ({
   className?: string;
   variant?: Variant;
 }) =>
-  cx(
+  cn(
     baseStyles,
     {
       [compactStyles]: variant === Variant.Compact,

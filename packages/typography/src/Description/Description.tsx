@@ -1,16 +1,16 @@
 import React from 'react';
 
-import { cx } from '@leafygreen-ui/emotion';
 import { useDarkMode } from '@leafygreen-ui/leafygreen-provider';
 import { Polymorphic, usePolymorphic } from '@leafygreen-ui/polymorphic';
 
+import { cn } from '../utils/cn';
 import { getLgIds } from '../utils';
 import { useUpdatedBaseFontSize } from '../utils/useUpdatedBaseFontSize';
 
 import {
+  descriptionStyles,
   descriptionTypeScaleStyles,
-  getDescriptionStyle,
-  getDisabledDescriptionColorStyle,
+  disabledDescriptionColorStyles,
 } from './Description.styles';
 import { DescriptionProps } from './Description.types';
 
@@ -37,12 +37,10 @@ export const Description = Polymorphic<DescriptionProps>(
       <Component
         data-lgid={getLgIds(dataLgId).description}
         data-testid={getLgIds(dataLgId).description}
-        className={cx(
-          getDescriptionStyle(theme),
+        className={cn(
+          descriptionStyles[theme],
           descriptionTypeScaleStyles[baseFontSize],
-          {
-            [getDisabledDescriptionColorStyle(theme)]: disabled,
-          },
+          disabled && disabledDescriptionColorStyles[theme],
           className,
         )}
         {...rest}

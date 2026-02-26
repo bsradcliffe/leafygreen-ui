@@ -1,4 +1,3 @@
-import { css, cx } from '@leafygreen-ui/emotion';
 import {
   createUniqueClassName,
   RecursiveRecord,
@@ -17,6 +16,12 @@ import {
 } from '@leafygreen-ui/tokens';
 
 import { Variant } from './Chip.types';
+
+function cn(
+  ...classes: Array<string | false | undefined | null>
+): string {
+  return classes.filter(Boolean).join(' ');
+}
 
 export const chipInlineDefinitionClassName = createUniqueClassName(
   'chip-inline-definition',
@@ -258,38 +263,35 @@ export const wrapperBaseStyles = (
   baseFontSize: BaseFontSize,
   variant: Variant,
   theme: Theme,
-) => css`
-  display: inline-flex;
-  align-items: center;
-  overflow: hidden;
-  white-space: nowrap;
-  border-radius: 4px;
-  font-size: ${fontSize[baseFontSize]}px;
-  line-height: ${lineHeight[baseFontSize]}px;
+) =>
+  [
+    'inline-flex',
+    'items-center',
+    'overflow-hidden',
+    'whitespace-nowrap',
+    'rounded-[4px]',
+    `text-[${fontSize[baseFontSize]}px]`,
+    `leading-[${lineHeight[baseFontSize]}px]`,
+    `text-[${variantColor[variant][theme].text.default}]`,
+    `bg-[${variantColor[variant][theme].background.default}]`,
+    `[transition:background-color_${transitionDuration.faster}ms_ease-in-out]`,
+  ].join(' ');
 
-  color: ${variantColor[variant][theme].text.default};
-  background-color: ${variantColor[variant][theme].background.default};
-  transition: background-color ${transitionDuration.faster}ms ease-in-out;
-`;
-
-const getWrapperBorderStyles = (theme: Theme) => css`
-  box-sizing: border-box;
-  border: 1px solid
-    ${color[theme].border[ColorVariant.Secondary][InteractionState.Default]};
-`;
+const getWrapperBorderStyles = (theme: Theme) =>
+  [
+    'box-border',
+    `border-[1px]`,
+    'border-solid',
+    `border-[${color[theme].border[ColorVariant.Secondary][InteractionState.Default]}]`,
+  ].join(' ');
 
 export const wrapperDisabledStyles = (theme: Theme) =>
-  cx(
-    css`
-      cursor: not-allowed;
-      background-color: ${color[theme].background.secondary.default};
-      color: ${wrapperDisabledColor[theme]};
-    `,
-    {
-      [css`
-        box-shadow: inset 0 0 1px 1px ${palette.gray.dark2};
-      `]: theme === Theme.Dark,
-    },
+  cn(
+    'cursor-not-allowed',
+    `bg-[${color[theme].background.secondary.default}]`,
+    `text-[${wrapperDisabledColor[theme]}]`,
+    theme === Theme.Dark &&
+      `[box-shadow:inset_0_0_1px_1px_${palette.gray.dark2}]`,
   );
 
 /**
@@ -301,53 +303,38 @@ export const getWrapperStyles = (
   theme: Theme,
   isDisabled = false,
 ) =>
-  cx(wrapperBaseStyles(baseFontSize, variant, theme), {
-    [getWrapperBorderStyles(theme)]: variant === Variant.White,
-    [wrapperDisabledStyles(theme)]: isDisabled,
-  });
+  cn(
+    wrapperBaseStyles(baseFontSize, variant, theme),
+    variant === Variant.White && getWrapperBorderStyles(theme),
+    isDisabled && wrapperDisabledStyles(theme),
+  );
 
 export const textBaseStyles = (
   baseFontSize: BaseFontSize,
   variant: Variant,
   theme: Theme,
-) => css`
-  padding-inline: ${chipWrapperPadding[baseFontSize].x}px;
-  padding-block: ${chipWrapperPadding[baseFontSize].y}px;
+) =>
+  [
+    `px-[${chipWrapperPadding[baseFontSize].x}px]`,
+    `py-[${chipWrapperPadding[baseFontSize].y}px]`,
+    'flex',
+    `gap-[${spacing[50]}px]`,
+    `[&_svg]:self-center`,
+    `[&_svg]:text-[${variantColor[variant][theme].icon.default}]`,
+    `focus-within:bg-[${variantColor[variant][theme].background.focus}]`,
+    `[&_.${chipInlineDefinitionClassName}:focus-visible]:outline-none`,
+    `[&_.${chipInlineDefinitionClassName}:focus]:outline-none`,
+  ].join(' ');
 
-  display: flex;
-  gap: ${spacing[50]}px;
+export const textDisabledStyles = (theme: Theme) =>
+  [
+    `[&_svg]:text-[${color[theme].icon.disabled.default}]`,
+    // truncated + disabled + focused styles (a truncated disabled chip is still focusable)
+    `focus-within:bg-[${truncateDisabledColor[theme]}]`,
+  ].join(' ');
 
-  svg {
-    align-self: center;
-    color: ${variantColor[variant][theme].icon.default};
-  }
-
-  &:focus-within {
-    background-color: ${variantColor[variant][theme].background.focus};
-  }
-
-  .${chipInlineDefinitionClassName} {
-    &:focus-visible,
-    &:focus {
-      outline: none;
-    }
-  }
-`;
-
-export const textDisabledStyles = (theme: Theme) => css`
-  svg {
-    color: ${color[theme].icon.disabled.default};
-  }
-
-  // truncated + disabled + focused styles (a truncated disabled chip is still focusable)
-  &:focus-within {
-    background-color: ${truncateDisabledColor[theme]};
-  }
-`;
-
-export const textDismissibleStyles = css`
-  padding-inline-end: ${spacing[50]}px;
-`;
+export const textDismissibleStyles =
+  `pe-[${spacing[50]}px]`;
 
 /**
  * Chip text
@@ -359,11 +346,10 @@ export const getTextStyles = (
   isDisabled = false,
   isDismissible = false,
 ) =>
-  cx(textBaseStyles(baseFontSize, variant, theme), {
-    [textDisabledStyles(theme)]: isDisabled,
-    [textDismissibleStyles]: isDismissible,
-  });
+  cn(
+    textBaseStyles(baseFontSize, variant, theme),
+    isDisabled && textDisabledStyles(theme),
+    isDismissible && textDismissibleStyles,
+  );
 
-export const inlineDefinitionStyles = css`
-  white-space: normal;
-`;
+export const inlineDefinitionStyles = 'whitespace-normal';

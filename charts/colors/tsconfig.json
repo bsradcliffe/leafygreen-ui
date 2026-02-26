@@ -18,9 +18,6 @@
   ],
   "references": [
     {
-      "path": "../../packages/emotion"
-    },
-    {
       "path": "../../packages/leafygreen-provider"
     },
     {

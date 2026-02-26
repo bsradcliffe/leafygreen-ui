@@ -1,4 +1,3 @@
-import { css, cx } from '@leafygreen-ui/emotion';
 import { Theme } from '@leafygreen-ui/lib';
 import { palette } from '@leafygreen-ui/palette';
 import {
@@ -11,6 +10,12 @@ import {
 } from '@leafygreen-ui/tokens';
 
 import { ContentStyle } from './types';
+
+function cn(
+  ...classes: Array<string | false | undefined | null>
+): string {
+  return classes.filter(Boolean).join(' ');
+}
 
 interface ColorSet {
   containerStyle: string;
@@ -27,66 +32,56 @@ const darkFocusBoxShadow = focusRing.dark.default;
 
 const colorSet: Record<Theme, ColorSet> = {
   [Theme.Light]: {
-    containerStyle: css`
-      border: 1px solid ${color[Theme.Light].border.tertiary.default};
-      background-color: ${palette.white};
-      color: ${palette.gray.dark3};
-    `,
-    clickableStyle: css`
-      cursor: pointer;
-
-      &:focus {
-        outline: none;
-        box-shadow: ${lightFocusBoxShadow}, ${lightBaseBoxShadow};
-      }
-
-      &:hover,
-      &:active {
-        border: 1px solid ${palette.gray.light2};
-        box-shadow: ${lightHoverBoxShadow};
-
-        &:focus {
-          box-shadow: ${lightFocusBoxShadow}, ${lightBaseBoxShadow};
-        }
-      }
-    `,
+    containerStyle: [
+      'box-border',
+      `border-[1px]`,
+      `border-solid`,
+      `border-[${color[Theme.Light].border.tertiary.default}]`,
+      `bg-[${palette.white}]`,
+      `text-[${palette.gray.dark3}]`,
+    ].join(' '),
+    clickableStyle: [
+      'cursor-pointer',
+      `focus:outline-none`,
+      `focus:[box-shadow:${lightFocusBoxShadow},${lightBaseBoxShadow}]`,
+      `hover:border-[${palette.gray.light2}]`,
+      `hover:[box-shadow:${lightHoverBoxShadow}]`,
+      `active:border-[${palette.gray.light2}]`,
+      `active:[box-shadow:${lightHoverBoxShadow}]`,
+      `hover:focus:[box-shadow:${lightFocusBoxShadow},${lightBaseBoxShadow}]`,
+      `active:focus:[box-shadow:${lightFocusBoxShadow},${lightBaseBoxShadow}]`,
+    ].join(' '),
   },
   [Theme.Dark]: {
-    containerStyle: css`
-      border: 1px solid ${color[Theme.Dark].border.tertiary.default};
-      background-color: ${palette.black};
-      color: ${palette.white};
-    `,
-    clickableStyle: css`
-      cursor: pointer;
-
-      &:focus {
-        outline: none;
-        box-shadow: ${darkBaseBoxShadow}, ${darkFocusBoxShadow};
-      }
-
-      &:hover {
-        box-shadow: ${darkHoverBoxShadow};
-
-        &:focus {
-          box-shadow: ${darkBaseBoxShadow}, ${darkFocusBoxShadow};
-        }
-      }
-    `,
+    containerStyle: [
+      'box-border',
+      `border-[1px]`,
+      `border-solid`,
+      `border-[${color[Theme.Dark].border.tertiary.default}]`,
+      `bg-[${palette.black}]`,
+      `text-[${palette.white}]`,
+    ].join(' '),
+    clickableStyle: [
+      'cursor-pointer',
+      `focus:outline-none`,
+      `focus:[box-shadow:${darkBaseBoxShadow},${darkFocusBoxShadow}]`,
+      `hover:[box-shadow:${darkHoverBoxShadow}]`,
+      `hover:focus:[box-shadow:${darkBaseBoxShadow},${darkFocusBoxShadow}]`,
+    ].join(' '),
   },
 };
 
-const containerStyle = css`
-  position: relative;
-  transition: ${transitionDuration.default}ms ease-in-out;
-  transition-property: border, box-shadow;
-  border-radius: 24px;
-  font-family: ${fontFamilies.default};
-  font-size: ${typeScales.body1.fontSize}px;
-  line-height: ${typeScales.body1.lineHeight}px;
-  padding: 24px;
-  min-height: 68px; // 48px + 20px (padding + line-height)
-`;
+const containerStyle = [
+  'relative',
+  `[transition:${transitionDuration.default}ms_ease-in-out]`,
+  `[transition-property:border,box-shadow]`,
+  'rounded-[24px]',
+  `font-[${fontFamilies.default}]`,
+  `text-[${typeScales.body1.fontSize}px]`,
+  `leading-[${typeScales.body1.lineHeight}px]`,
+  'p-[24px]',
+  'min-h-[68px]',
+].join(' ');
 
 export const getCardStyles = ({
   theme,
@@ -97,11 +92,9 @@ export const getCardStyles = ({
   contentStyle?: ContentStyle;
   className?: string;
 }) =>
-  cx(
+  cn(
     containerStyle,
     colorSet[theme].containerStyle,
-    {
-      [colorSet[theme].clickableStyle]: contentStyle === ContentStyle.Clickable,
-    },
+    contentStyle === ContentStyle.Clickable && colorSet[theme].clickableStyle,
     className,
   );

@@ -12,8 +12,6 @@ import {
 // @ts-ignore
 import { EChartsOption, getInstanceByDom, SeriesOption } from 'echarts';
 
-import { css } from '@leafygreen-ui/emotion';
-
 import { ChartProps } from './Chart/Chart.types';
 import { ChartHeaderProps } from './ChartHeader/ChartHeader.types';
 import { ChartTooltipProps } from './ChartTooltip/ChartTooltip.types';
@@ -1393,11 +1391,7 @@ export const WithZoomAndTooltip: StoryObj<{}> = {
   },
 };
 
-const chartGroupStyles = css`
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 8px;
-`;
+const chartGroupStyles = 'grid grid-cols-[1fr] gap-[8px]';
 
 export const SyncedByGroupIDWithTooltipSync: StoryObj<{}> = {
   render: () => {

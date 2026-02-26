@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { validateAriaLabelProps } from '@leafygreen-ui/a11y';
-import { cx } from '@leafygreen-ui/emotion';
 import { isComponentGlyph } from '@leafygreen-ui/icon';
 import { useDarkMode } from '@leafygreen-ui/leafygreen-provider';
 import { isComponentType } from '@leafygreen-ui/lib';
@@ -21,6 +20,12 @@ import {
   removeButtonStyle,
 } from './IconButton.styles';
 import { AccessibleIconButtonProps, IconProps, Size } from './IconButton.types';
+
+function cn(
+  ...classes: Array<string | false | undefined | null>
+): string {
+  return classes.filter(Boolean).join(' ');
+}
 
 /**
  * Icon Buttons are a type of call to action (CTA) the user can click or press. They use icons to indicate the type of action that will occur when the button is pressed.
@@ -86,16 +91,14 @@ export const IconButton = InferredPolymorphic<
       // Override any actions if it's disabled
       href: disabled ? undefined : rest.href,
       onClick: disabled ? undefined : rest.onClick,
-      className: cx(
+      className: cn(
         removeButtonStyle,
         baseIconButtonStyle,
         iconButtonSizes[size],
         iconButtonMode[theme],
         focusStyle[theme],
-        {
-          [activeStyle[theme]]: active && !disabled,
-          [disabledStyle[theme]]: disabled,
-        },
+        active && !disabled && activeStyle[theme],
+        disabled && disabledStyle[theme],
         className,
       ),
     };

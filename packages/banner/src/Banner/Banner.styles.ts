@@ -1,253 +1,166 @@
-import { css, cx } from '@leafygreen-ui/emotion';
 import { createUniqueClassName, Theme } from '@leafygreen-ui/lib';
 import { palette } from '@leafygreen-ui/palette';
-import { BaseFontSize, fontFamilies, fontWeights } from '@leafygreen-ui/tokens';
+import { BaseFontSize } from '@leafygreen-ui/tokens';
 import {
   anchorClassName,
   bodyTypeScaleStyles,
 } from '@leafygreen-ui/typography';
 
+import { cn } from '../cn';
 import { Variant } from '../shared.types';
 
 export const bannerChildrenContainerClassName = createUniqueClassName(
   'banner-children_container',
 );
 
-const baseBannerStyles = css`
-  position: relative;
-  display: flex;
-  padding: 10px 12px 10px 20px;
-  border-width: 1px 1px 1px 0px;
-  border-style: solid;
-  border-radius: 12px;
-  font-family: ${fontFamilies.default};
+const baseBannerStyles = [
+  'relative',
+  'flex',
+  'py-[10px]',
+  'pl-[20px]',
+  'pr-[12px]',
+  'border-[1px]',
+  'border-l-0',
+  'border-solid',
+  'rounded-[12px]',
+  `font-[${`'Euclid_Circular_A','Helvetica_Neue',Helvetica,Arial,sans-serif`}]`,
 
-  &::before {
-    content: '';
-    position: absolute;
-    width: 13px;
-    top: -1px;
-    bottom: -1px;
-    left: 0px;
-    border-radius: 12px 0px 0px 12px;
-  }
-`;
+  // &::before pseudo-element
+  "before:content-['']",
+  'before:absolute',
+  'before:w-[13px]',
+  'before:top-[-1px]',
+  'before:bottom-[-1px]',
+  'before:left-0',
+  'before:rounded-l-[12px]',
+  'before:rounded-r-none',
+].join(' ');
 
-const darkModeInfoBannerStyles = css`
-  color: ${palette.blue.light2};
-  border-color: ${palette.blue.dark2};
-  background-color: ${palette.blue.dark3};
+// -- Dark mode variant styles --
 
-  .${anchorClassName}, a {
-    color: ${palette.blue.light3};
+const darkModeInfoBannerStyles = [
+  `text-[${palette.blue.light2}]`,
+  `border-[${palette.blue.dark2}]`,
+  `bg-[${palette.blue.dark3}]`,
 
-    &:hover {
-      color: ${palette.blue.light2};
-    }
+  // Anchor styles
+  `[&_.${anchorClassName}]:text-[${palette.blue.light3}]`,
+  `[&_a]:text-[${palette.blue.light3}]`,
+  `[&_.${anchorClassName}:hover]:text-[${palette.blue.light2}]`,
+  `[&_a:hover]:text-[${palette.blue.light2}]`,
+  `[&_.${anchorClassName}:focus-visible]:shadow-[0_0_0_5px_${palette.blue.dark3},0_0_0_7px_${palette.blue.light1}]`,
+  `[&_a:focus-visible]:shadow-[0_0_0_5px_${palette.blue.dark3},0_0_0_7px_${palette.blue.light1}]`,
 
-    &:focus-visible {
-      box-shadow: 0 0 0 5px ${palette.blue.dark3},
-        0 0 0 7px ${palette.blue.light1};
-    }
-  }
+  // &::before
+  `before:bg-[linear-gradient(to_left,transparent_6px,${palette.blue.light1}_6px)]`,
+].join(' ');
 
-  &::before {
-    background: linear-gradient(
-      to left,
-      transparent 6px,
-      ${palette.blue.light1} 6px
-    );
-  }
-`;
+const darkModeWarningBannerStyles = [
+  `text-[${palette.yellow.light2}]`,
+  `border-[${palette.yellow.dark2}]`,
+  `bg-[${palette.yellow.dark3}]`,
 
-const darkModeWarningBannerStyles = css`
-  color: ${palette.yellow.light2};
-  border-color: ${palette.yellow.dark2};
-  background-color: ${palette.yellow.dark3};
+  `[&_.${anchorClassName}]:text-[${palette.yellow.light3}]`,
+  `[&_a]:text-[${palette.yellow.light3}]`,
+  `[&_.${anchorClassName}:hover]:text-[${palette.yellow.light2}]`,
+  `[&_a:hover]:text-[${palette.yellow.light2}]`,
+  `[&_.${anchorClassName}:focus-visible]:shadow-[0_0_0_5px_${palette.yellow.dark3},0_0_0_7px_${palette.blue.light1}]`,
+  `[&_a:focus-visible]:shadow-[0_0_0_5px_${palette.yellow.dark3},0_0_0_7px_${palette.blue.light1}]`,
 
-  .${anchorClassName}, a {
-    color: ${palette.yellow.light3};
+  `before:bg-[linear-gradient(to_left,transparent_6px,${palette.yellow.dark2}_6px)]`,
+].join(' ');
 
-    &:hover {
-      color: ${palette.yellow.light2};
-    }
+const darkModeDangerBannerStyles = [
+  `text-[${palette.red.light2}]`,
+  `border-[${palette.red.dark2}]`,
+  `bg-[${palette.red.dark3}]`,
 
-    &:focus-visible {
-      box-shadow: 0 0 0 5px ${palette.yellow.dark3},
-        0 0 0 7px ${palette.blue.light1};
-    }
-  }
+  `[&_.${anchorClassName}]:text-[${palette.red.light3}]`,
+  `[&_a]:text-[${palette.red.light3}]`,
+  `[&_.${anchorClassName}:hover]:text-[${palette.red.light2}]`,
+  `[&_a:hover]:text-[${palette.red.light2}]`,
+  `[&_.${anchorClassName}:focus-visible]:shadow-[0_0_0_5px_${palette.red.dark3},0_0_0_7px_${palette.blue.light1}]`,
+  `[&_a:focus-visible]:shadow-[0_0_0_5px_${palette.red.dark3},0_0_0_7px_${palette.blue.light1}]`,
 
-  &::before {
-    background: linear-gradient(
-      to left,
-      transparent 6px,
-      ${palette.yellow.dark2} 6px
-    );
-  }
-`;
+  `before:bg-[linear-gradient(to_left,transparent_6px,${palette.red.base}_6px)]`,
+].join(' ');
 
-const darkModeDangerBannerStyles = css`
-  color: ${palette.red.light2};
-  border-color: ${palette.red.dark2};
-  background-color: ${palette.red.dark3};
+const darkModeSuccessBannerStyles = [
+  `text-[${palette.green.light2}]`,
+  `border-[${palette.green.dark2}]`,
+  `bg-[${palette.green.dark3}]`,
 
-  .${anchorClassName}, a {
-    color: ${palette.red.light3};
+  `[&_.${anchorClassName}]:text-[${palette.green.light3}]`,
+  `[&_a]:text-[${palette.green.light3}]`,
+  `[&_.${anchorClassName}:hover]:text-[${palette.green.light2}]`,
+  `[&_a:hover]:text-[${palette.green.light2}]`,
+  `[&_.${anchorClassName}:focus-visible]:shadow-[0_0_0_5px_${palette.green.dark3},0_0_0_7px_${palette.blue.light1}]`,
+  `[&_a:focus-visible]:shadow-[0_0_0_5px_${palette.green.dark3},0_0_0_7px_${palette.blue.light1}]`,
 
-    &:hover {
-      color: ${palette.red.light2};
-    }
+  `before:bg-[linear-gradient(to_left,transparent_6px,${palette.green.base}_6px)]`,
+].join(' ');
 
-    &:focus-visible {
-      box-shadow: 0 0 0 5px ${palette.red.dark3},
-        0 0 0 7px ${palette.blue.light1};
-    }
-  }
+// -- Light mode variant styles --
 
-  &::before {
-    background: linear-gradient(
-      to left,
-      transparent 6px,
-      ${palette.red.base} 6px
-    );
-  }
-`;
+const lightModeInfoBannerStyles = [
+  `text-[${palette.blue.dark2}]`,
+  `border-[${palette.blue.light2}]`,
+  `bg-[${palette.blue.light3}]`,
 
-const darkModeSuccessBannerStyles = css`
-  color: ${palette.green.light2};
-  border-color: ${palette.green.dark2};
-  background-color: ${palette.green.dark3};
+  `[&_.${anchorClassName}]:text-[${palette.blue.dark3}]`,
+  `[&_a]:text-[${palette.blue.dark3}]`,
+  `[&_.${anchorClassName}:hover]:text-[${palette.blue.dark2}]`,
+  `[&_a:hover]:text-[${palette.blue.dark2}]`,
+  `[&_.${anchorClassName}:focus-visible]:shadow-[0_0_0_3px_${palette.blue.light3},0_0_0_5px_${palette.white},0_0_0_7px_${palette.blue.light1}]`,
+  `[&_a:focus-visible]:shadow-[0_0_0_3px_${palette.blue.light3},0_0_0_5px_${palette.white},0_0_0_7px_${palette.blue.light1}]`,
 
-  .${anchorClassName}, a {
-    color: ${palette.green.light3};
+  `before:bg-[linear-gradient(to_left,transparent_6px,${palette.blue.base}_6px)]`,
+].join(' ');
 
-    &:hover {
-      color: ${palette.green.light2};
-    }
+const lightModeWarningBannerStyles = [
+  `text-[${palette.yellow.dark2}]`,
+  `border-[${palette.yellow.light2}]`,
+  `bg-[${palette.yellow.light3}]`,
 
-    &:focus-visible {
-      box-shadow: 0 0 0 5px ${palette.green.dark3},
-        0 0 0 7px ${palette.blue.light1};
-    }
-  }
+  `[&_.${anchorClassName}]:text-[${palette.yellow.dark3}]`,
+  `[&_a]:text-[${palette.yellow.dark3}]`,
+  `[&_.${anchorClassName}:hover]:text-[${palette.yellow.dark2}]`,
+  `[&_a:hover]:text-[${palette.yellow.dark2}]`,
+  `[&_.${anchorClassName}:focus-visible]:shadow-[0_0_0_3px_${palette.yellow.light3},0_0_0_5px_${palette.white},0_0_0_7px_${palette.blue.light1}]`,
+  `[&_a:focus-visible]:shadow-[0_0_0_3px_${palette.yellow.light3},0_0_0_5px_${palette.white},0_0_0_7px_${palette.blue.light1}]`,
 
-  &::before {
-    background: linear-gradient(
-      to left,
-      transparent 6px,
-      ${palette.green.base} 6px
-    );
-  }
-`;
+  `before:bg-[linear-gradient(to_left,transparent_6px,${palette.yellow.base}_6px)]`,
+].join(' ');
 
-const lightModeInfoBannerStyles = css`
-  color: ${palette.blue.dark2};
-  border-color: ${palette.blue.light2};
-  background-color: ${palette.blue.light3};
+const lightModeDangerBannerStyles = [
+  `text-[${palette.red.dark2}]`,
+  `border-[${palette.red.light2}]`,
+  `bg-[${palette.red.light3}]`,
 
-  .${anchorClassName}, a {
-    color: ${palette.blue.dark3};
+  `[&_.${anchorClassName}]:text-[${palette.red.dark3}]`,
+  `[&_a]:text-[${palette.red.dark3}]`,
+  `[&_.${anchorClassName}:hover]:text-[${palette.red.dark2}]`,
+  `[&_a:hover]:text-[${palette.red.dark2}]`,
+  `[&_.${anchorClassName}:focus-visible]:shadow-[0_0_0_3px_${palette.red.light3},0_0_0_5px_${palette.white},0_0_0_7px_${palette.blue.light1}]`,
+  `[&_a:focus-visible]:shadow-[0_0_0_3px_${palette.red.light3},0_0_0_5px_${palette.white},0_0_0_7px_${palette.blue.light1}]`,
 
-    &:hover {
-      color: ${palette.blue.dark2};
-    }
+  `before:bg-[linear-gradient(to_left,transparent_6px,${palette.red.base}_6px)]`,
+].join(' ');
 
-    &:focus-visible {
-      box-shadow: 0 0 0 3px ${palette.blue.light3}, 0 0 0 5px ${palette.white},
-        0 0 0 7px ${palette.blue.light1};
-    }
-  }
+const lightModeSuccessBannerStyles = [
+  `text-[${palette.green.dark2}]`,
+  `border-[${palette.green.light2}]`,
+  `bg-[${palette.green.light3}]`,
 
-  &::before {
-    background: linear-gradient(
-      to left,
-      transparent 6px,
-      ${palette.blue.base} 6px
-    );
-  }
-`;
+  `[&_.${anchorClassName}]:text-[${palette.green.dark3}]`,
+  `[&_a]:text-[${palette.green.dark3}]`,
+  `[&_.${anchorClassName}:hover]:text-[${palette.green.dark2}]`,
+  `[&_a:hover]:text-[${palette.green.dark2}]`,
+  `[&_.${anchorClassName}:focus-visible]:shadow-[0_0_0_3px_${palette.green.light3},0_0_0_5px_${palette.white},0_0_0_7px_${palette.blue.light1}]`,
+  `[&_a:focus-visible]:shadow-[0_0_0_3px_${palette.green.light3},0_0_0_5px_${palette.white},0_0_0_7px_${palette.blue.light1}]`,
 
-const lightModeWarningBannerStyles = css`
-  color: ${palette.yellow.dark2};
-  border-color: ${palette.yellow.light2};
-  background-color: ${palette.yellow.light3};
-
-  .${anchorClassName}, a {
-    color: ${palette.yellow.dark3};
-
-    &:hover {
-      color: ${palette.yellow.dark2};
-    }
-
-    &:focus-visible {
-      box-shadow: 0 0 0 3px ${palette.yellow.light3}, 0 0 0 5px ${palette.white},
-        0 0 0 7px ${palette.blue.light1};
-    }
-  }
-
-  &::before {
-    background: linear-gradient(
-      to left,
-      transparent 6px,
-      ${palette.yellow.base} 6px
-    );
-  }
-`;
-
-const lightModeDangerBannerStyles = css`
-  color: ${palette.red.dark2};
-  border-color: ${palette.red.light2};
-  background-color: ${palette.red.light3};
-
-  .${anchorClassName}, a {
-    color: ${palette.red.dark3};
-
-    &:hover {
-      color: ${palette.red.dark2};
-    }
-
-    &:focus-visible {
-      box-shadow: 0 0 0 3px ${palette.red.light3}, 0 0 0 5px ${palette.white},
-        0 0 0 7px ${palette.blue.light1};
-    }
-  }
-
-  &::before {
-    background: linear-gradient(
-      to left,
-      transparent 6px,
-      ${palette.red.base} 6px
-    );
-  }
-`;
-
-const lightModeSuccessBannerStyles = css`
-  color: ${palette.green.dark2};
-  border-color: ${palette.green.light2};
-  background-color: ${palette.green.light3};
-
-  .${anchorClassName}, a {
-    color: ${palette.green.dark3};
-
-    &:hover {
-      color: ${palette.green.dark2};
-    }
-
-    &:focus-visible {
-      box-shadow: 0 0 0 3px ${palette.green.light3}, 0 0 0 5px ${palette.white},
-        0 0 0 7px ${palette.blue.light1};
-    }
-  }
-
-  &::before {
-    background: linear-gradient(
-      to left,
-      transparent 6px,
-      ${palette.green.dark1} 6px
-    );
-  }
-`;
+  `before:bg-[linear-gradient(to_left,transparent_6px,${palette.green.dark1}_6px)]`,
+].join(' ');
 
 const variantStyles: Record<Theme, Record<Variant, string>> = {
   [Theme.Dark]: {
@@ -264,9 +177,7 @@ const variantStyles: Record<Theme, Record<Variant, string>> = {
   },
 };
 
-const bannerDismissibleStyles = css`
-  padding-right: 36px; // add space for the icon
-`;
+const bannerDismissibleStyles = 'pr-[36px]';
 
 export const getBannerStyles = ({
   baseFontSize,
@@ -281,13 +192,11 @@ export const getBannerStyles = ({
   theme: Theme;
   variant: Variant;
 }) =>
-  cx(
+  cn(
     baseBannerStyles,
     bodyTypeScaleStyles[baseFontSize],
     variantStyles[theme][variant],
-    {
-      [bannerDismissibleStyles]: dismissible,
-    },
+    { [bannerDismissibleStyles]: dismissible },
     className,
   );
 
@@ -304,54 +213,62 @@ const getTextMargins = (image: boolean, dismissible: boolean) => {
   };
 
   if (image) {
-    styleObj.marginLeft = '17px';
-    styleObj.marginRight = '4px';
+    styleObj.marginLeft = 'ml-[17px]';
+    styleObj.marginRight = 'mr-[4px]';
     if (dismissible) {
-      styleObj.marginRight = `${defaultIconSize + defaultBorderSpacing}px`;
+      styleObj.marginRight = `mr-[${defaultIconSize + defaultBorderSpacing}px]`;
     }
   } else {
-    styleObj.marginLeft = `13px`;
-    styleObj.marginRight = '10px';
+    styleObj.marginLeft = 'ml-[13px]';
+    styleObj.marginRight = 'mr-[10px]';
     if (dismissible) {
-      styleObj.marginRight = `${defaultIconSize + 16}px`;
+      styleObj.marginRight = `mr-[${defaultIconSize + 16}px]`;
     }
   }
 
   return styleObj;
 };
 
-const textStyles = (hasImage: boolean, dismissible: boolean) => css`
-  align-self: center;
-  flex-grow: 1;
-  margin-left: ${getTextMargins(hasImage, dismissible).marginLeft};
-  margin-right: ${getTextMargins(hasImage, dismissible).marginRight};
+const textBaseStyles = [
+  'self-center',
+  'grow',
 
-  .${anchorClassName}, a {
-    font-size: inherit;
-    line-height: inherit;
-    font-weight: ${fontWeights.semiBold};
-    text-decoration: underline;
-    text-underline-offset: 3px;
-    text-decoration-thickness: 2px;
-    border-radius: 4px;
-    display: inline;
+  // Anchor styles within text container
+  `[&_.${anchorClassName}]:text-[length:inherit]`,
+  `[&_a]:text-[length:inherit]`,
+  `[&_.${anchorClassName}]:leading-[inherit]`,
+  `[&_a]:leading-[inherit]`,
+  `[&_.${anchorClassName}]:font-semibold`,
+  `[&_a]:font-semibold`,
+  `[&_.${anchorClassName}]:underline`,
+  `[&_a]:underline`,
+  `[&_.${anchorClassName}]:underline-offset-[3px]`,
+  `[&_a]:underline-offset-[3px]`,
+  `[&_.${anchorClassName}]:decoration-[2px]`,
+  `[&_a]:decoration-[2px]`,
+  `[&_.${anchorClassName}]:rounded-[4px]`,
+  `[&_a]:rounded-[4px]`,
+  `[&_.${anchorClassName}]:inline`,
+  `[&_a]:inline`,
 
-    &:hover,
-    &:focus,
-    &:focus-visible {
-      outline: none;
-      span {
-        &::after {
-          display: none;
-        }
-      }
-    }
+  // Hover / focus / focus-visible: remove outline & hide span::after
+  `[&_.${anchorClassName}:hover]:outline-none`,
+  `[&_a:hover]:outline-none`,
+  `[&_.${anchorClassName}:focus]:outline-none`,
+  `[&_a:focus]:outline-none`,
+  `[&_.${anchorClassName}:focus-visible]:outline-none`,
+  `[&_a:focus-visible]:outline-none`,
+  `[&_.${anchorClassName}:hover_span::after]:hidden`,
+  `[&_a:hover_span::after]:hidden`,
+  `[&_.${anchorClassName}:focus_span::after]:hidden`,
+  `[&_a:focus_span::after]:hidden`,
+  `[&_.${anchorClassName}:focus-visible_span::after]:hidden`,
+  `[&_a:focus-visible_span::after]:hidden`,
 
-    &:focus-visible {
-      position: relative;
-    }
-  }
-`;
+  // Focus-visible: position relative
+  `[&_.${anchorClassName}:focus-visible]:relative`,
+  `[&_a:focus-visible]:relative`,
+].join(' ');
 
 export const getChildrenContainerStyles = ({
   dismissible,
@@ -359,4 +276,13 @@ export const getChildrenContainerStyles = ({
 }: {
   dismissible: boolean;
   hasImage: boolean;
-}) => cx(textStyles(hasImage, dismissible), bannerChildrenContainerClassName);
+}) => {
+  const margins = getTextMargins(hasImage, dismissible);
+
+  return cn(
+    textBaseStyles,
+    margins.marginLeft,
+    margins.marginRight,
+    bannerChildrenContainerClassName,
+  );
+};

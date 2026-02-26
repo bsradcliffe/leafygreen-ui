@@ -34,12 +34,18 @@ import { useDatePickerContext } from '../DatePickerContext';
 import { shouldChevronBeDisabled } from './DatePickerMenuHeader/utils';
 import { getNewHighlight } from './utils/getNewHighlight';
 import {
-  menuCalendarGridStyles,
-  menuContentStyles,
-  menuWrapperStyles,
+  menuCalendarGridClassName,
+  menuCalendarGridInlineStyle,
+  menuContentClassName,
+  menuContentInlineStyle,
+  menuWrapperClassName,
 } from './DatePickerMenu.styles';
 import { DatePickerMenuProps } from './DatePickerMenu.types';
 import { DatePickerMenuHeader } from './DatePickerMenuHeader';
+
+function cn(...classes: Array<string | false | undefined | null>): string {
+  return classes.filter(Boolean).join(' ');
+}
 
 export const DatePickerMenu = forwardRef<HTMLDivElement, DatePickerMenuProps>(
   ({ onKeyDown, onExited, ...rest }: DatePickerMenuProps, fwdRef) => {
@@ -300,13 +306,13 @@ export const DatePickerMenu = forwardRef<HTMLDivElement, DatePickerMenuProps>(
         active={isOpen}
         spacing={spacing[1]}
         data-today={today.toISOString()}
-        className={menuWrapperStyles}
+        className={menuWrapperClassName}
         onKeyDown={handleMenuKeyPress}
         onTransitionEnd={handleMenuTransitionEntered}
         onExited={handleMenuTransitionExited}
         {...rest}
       >
-        <div className={menuContentStyles}>
+        <div className={menuContentClassName} style={menuContentInlineStyle}>
           {/**
            * Calendar & Header are reversed in the DOM,
            * and visually updated with CSS grid
@@ -316,7 +322,8 @@ export const DatePickerMenu = forwardRef<HTMLDivElement, DatePickerMenuProps>(
           <CalendarGrid
             ref={calendarRef}
             month={month}
-            className={menuCalendarGridStyles}
+            className={menuCalendarGridClassName}
+            style={menuCalendarGridInlineStyle}
             onKeyDown={handleCalendarKeyDown}
             // TODO: Test month label in different time zones
             aria-label={monthLabel}

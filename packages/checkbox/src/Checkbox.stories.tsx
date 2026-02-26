@@ -6,7 +6,6 @@ import {
 } from '@lg-tools/storybook-utils';
 import { StoryFn } from '@storybook/react';
 
-import { css } from '@leafygreen-ui/emotion';
 import LeafygreenProvider from '@leafygreen-ui/leafygreen-provider';
 
 import Checkbox, { CheckboxProps } from '.';
@@ -50,10 +49,10 @@ const meta: StoryMetaType<typeof Checkbox> = {
         },
       ],
       args: {
-        className: css`
-          text-align: initial;
-          max-width: 300px;
-        `,
+        style: {
+          textAlign: 'initial' as const,
+          maxWidth: 300,
+        },
       },
     },
   },
@@ -61,9 +60,9 @@ const meta: StoryMetaType<typeof Checkbox> = {
     animate: true,
     label: 'I agree to this thing.',
     description: descriptionText,
-    className: css`
-      max-width: 700px;
-    `,
+    style: {
+      maxWidth: 700,
+    },
   },
   argTypes: {
     label: { control: 'text' },

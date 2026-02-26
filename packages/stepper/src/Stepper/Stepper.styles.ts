@@ -1,11 +1,7 @@
-import { css } from '@leafygreen-ui/emotion';
-
-export const baseStyles = css`
-  list-style: none;
-  padding-inline-start: 0;
-  width: 100%;
-  display: flex;
-  & > * {
-    flex: 1;
-  }
-`;
+export const baseStyles = [
+  'list-none',
+  'ps-0',
+  'w-full',
+  'flex',
+  '[&>*]:flex-1',
+].join(' ');

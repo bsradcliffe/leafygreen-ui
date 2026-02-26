@@ -1,34 +1,18 @@
-import { css, cx } from '@leafygreen-ui/emotion';
 import { palette } from '@leafygreen-ui/palette';
 
+import { cn } from '../../cn';
 import { RESIZER_SIZE } from '../useResizable.constants';
 
 /**
  * Generates styles for the resizer element based on its orientation and resizing state
  */
 export const getResizerStyles = (isVertical: boolean, isResizing: boolean) =>
-  cx(
-    css`
-      cursor: ${isVertical ? 'col-resize' : 'row-resize'};
-      background-color: transparent;
-
-      &:hover,
-      &:focus-visible {
-        background-color: ${palette.blue.light1};
-        outline: none;
-      }
-    `,
-    {
-      [css`
-        width: ${RESIZER_SIZE}px;
-        height: 100%;
-      `]: isVertical,
-      [css`
-        height: ${RESIZER_SIZE}px;
-        width: 100%;
-      `]: !isVertical,
-      [css`
-        background-color: ${palette.blue.light1};
-      `]: isResizing,
-    },
+  cn(
+    isVertical
+      ? `w-[${RESIZER_SIZE}px] h-full`
+      : `h-[${RESIZER_SIZE}px] w-full`,
+    isVertical ? 'cursor-col-resize' : 'cursor-row-resize',
+    'bg-transparent',
+    `hover:bg-[${palette.blue.light1}] focus-visible:bg-[${palette.blue.light1}] hover:outline-none focus-visible:outline-none`,
+    isResizing && `bg-[${palette.blue.light1}]`,
   );

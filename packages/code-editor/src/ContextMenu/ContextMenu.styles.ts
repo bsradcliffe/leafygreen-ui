@@ -1,14 +1,15 @@
-import { css } from '@leafygreen-ui/emotion';
+import React from 'react';
 
-export const containerStyles = css`
-  display: contents;
-`;
+export const containerStyles = 'contents';
 
-export const getMenuContainerStyles = (position: {
+/**
+ * Returns inline styles for the menu container position.
+ */
+export const getMenuContainerInlineStyles = (position: {
   x: number;
   y: number;
-}) => css`
-  position: absolute;
-  top: ${position.y}px;
-  left: ${position.x}px;
-`;
+}): React.CSSProperties => ({
+  position: 'absolute',
+  top: `${position.y}px`,
+  left: `${position.x}px`,
+});

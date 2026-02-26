@@ -1,12 +1,12 @@
-import { css, cx } from '@leafygreen-ui/emotion';
+import { cn } from '../../../cn';
 
-const baseStyles = css`
-  flex-direction: column;
-  align-items: flex-start;
-`;
+const baseStyles = [
+  'flex-col',
+  'items-start',
+].join(' ');
 
 export const getSegmentedControlStyles = ({
   className,
 }: {
   className?: string;
-}) => cx(baseStyles, className);
+}) => cn(baseStyles, className);

@@ -1,5 +1,4 @@
-import { injectGlobal } from '@leafygreen-ui/emotion';
-import { Theme } from '@leafygreen-ui/lib';
+import { injectStyles, Theme } from '@leafygreen-ui/lib';
 import { palette } from '@leafygreen-ui/palette';
 import { fontWeights } from '@leafygreen-ui/tokens';
 
@@ -49,7 +48,7 @@ export const variantColors: { readonly [K in Theme]: Base16Palette } = {
 
 const getStyles = (theme: Theme): string => `
   .lg-highlight-hljs-${theme} {
-    
+
     .lg-highlight-keyword,
     .lg-highlight-keyword.lg-highlight-function,
     .lg-highlight-keyword.lg-highlight-class,
@@ -109,20 +108,20 @@ const getStyles = (theme: Theme): string => `
     .lg-highlight-formula {
       color: ${variantColors[theme][3]};
     }
-  
+
     .lg-highlight-comment {
       color: ${variantColors[theme][2]};
       font-style: italic;
     }
-  
+
     .lg-highlight-string {
       font-weight: 600;
     }
-    
+
     .lg-highlight-emphasis {
       font-style: italic;
     }
-  
+
     .lg-highlight-strong {
       font-weight: ${fontWeights.semiBold};
     }
@@ -130,5 +129,7 @@ const getStyles = (theme: Theme): string => `
 `;
 
 export function injectGlobalStyles() {
-  Object.values(Theme).forEach(theme => injectGlobal(getStyles(theme)));
+  Object.values(Theme).forEach(theme =>
+    injectStyles(`lg-highlight-theme-${theme}`, getStyles(theme)),
+  );
 }

@@ -1,4 +1,5 @@
-import { css, keyframes } from '@leafygreen-ui/emotion';
+import { type CSSProperties } from 'react';
+
 import { Theme } from '@leafygreen-ui/lib';
 import { palette } from '@leafygreen-ui/palette';
 import {
@@ -27,91 +28,75 @@ export const getMenuItemHeight = (size: Size) => {
  * Menu styles
  */
 
-export const popoverStyle = (width = 384) => css`
-  width: ${width}px;
-  overflow: hidden;
-  border-radius: 12px;
-  border: 1px solid;
-`;
+export const popoverClassName = 'overflow-hidden rounded-[12px] border border-solid';
 
-export const popoverThemeStyle: Record<Theme, string> = {
-  [Theme.Light]: css`
-    box-shadow: ${boxShadows[Theme.Light][1]};
-    border-color: ${palette.gray.light2};
-  `,
-  [Theme.Dark]: css`
-    box-shadow: ${boxShadows[Theme.Dark][1]};
-    border-color: ${palette.gray.dark2};
-  `,
+export const popoverStyle = (width = 384): CSSProperties => ({
+  width: `${width}px`,
+});
+
+export const popoverThemeStyle: Record<Theme, CSSProperties> = {
+  [Theme.Light]: {
+    boxShadow: boxShadows[Theme.Light][1],
+    borderColor: palette.gray.light2,
+  },
+  [Theme.Dark]: {
+    boxShadow: boxShadows[Theme.Dark][1],
+    borderColor: palette.gray.dark2,
+  },
 };
 
-export const autoWidthStyles = css`
-  width: max-content;
-`;
-
-export const menuBaseStyle = css`
-  position: relative;
-  width: 100%;
-  margin: 0;
-  padding: ${spacing[2]}px 0;
-  font-family: ${fontFamilies.default};
-  border-radius: inherit;
-  overflow-y: auto;
-  scroll-behavior: smooth;
-`;
-
-export const menuThemeStyle: Record<Theme, string> = {
-  [Theme.Light]: css`
-    color: ${palette.black};
-    background-color: ${palette.white};
-  `,
-  [Theme.Dark]: css`
-    color: ${palette.gray.light1};
-    background-color: ${palette.gray.dark3};
-  `,
+export const autoWidthStyle: CSSProperties = {
+  width: 'max-content',
 };
 
-export const getMenuThemeStyles = (theme: Theme) => css`
-  background-color: ${color[theme].background.primary.default};
-`;
+export const menuBaseClassName = 'relative w-full m-0 rounded-[inherit] overflow-y-auto';
 
-export const menuList = css`
-  position: relative;
-  margin: 0;
-  padding: 0;
-`;
-
-export const menuMessageBaseStyle = css`
-  font-family: inherit;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-`;
-
-export const menuMessageThemeStyle: Record<Theme, string> = {
-  [Theme.Light]: css`
-    color: ${palette.gray.dark3};
-  `,
-  [Theme.Dark]: css`
-    color: ${palette.gray.light3};
-  `,
+export const menuBaseStyle: CSSProperties = {
+  padding: `${spacing[2]}px 0`,
+  fontFamily: fontFamilies.default,
+  scrollBehavior: 'smooth',
 };
 
-export const menuMessageSizeStyle = (size: Size) => css`
-  font-size: ${fontSize[size]}px;
-  line-height: ${lineHeight[size]}px;
-  padding: ${menuItemPadding[size].y}px ${menuItemPadding[size].x}px;
+export const getMenuThemeStyle = (theme: Theme): CSSProperties => ({
+  backgroundColor: color[theme].background.primary.default,
+});
+
+export const menuListClassName = 'relative m-0 p-0';
+
+export const menuMessageBaseClassName =
+  'inline-flex items-center';
+
+export const menuMessageBaseStyle: CSSProperties = {
+  fontFamily: 'inherit',
+  gap: '8px',
+};
+
+export const menuMessageThemeStyle: Record<Theme, CSSProperties> = {
+  [Theme.Light]: {
+    color: palette.gray.dark3,
+  },
+  [Theme.Dark]: {
+    color: palette.gray.light3,
+  },
+};
+
+export const menuMessageSizeStyle = (size: Size): CSSProperties => ({
+  fontSize: `${fontSize[size]}px`,
+  lineHeight: `${lineHeight[size]}px`,
+  padding: `${menuItemPadding[size].y}px ${menuItemPadding[size].x}px`,
+});
+
+/**
+ * Stylesheet for keyframes animation that cannot be expressed inline.
+ */
+export const menuStyleTag = `
+@keyframes lg-combobox-loading-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+.lg-combobox-loading-icon {
+  animation: lg-combobox-loading-spin 1.5s linear infinite;
+}
 `;
 
-const loadingIconAnimation = keyframes`
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-`;
-
-export const loadingIconStyle = css`
-  animation: ${loadingIconAnimation} 1.5s linear infinite;
-`;
+export const loadingIconClassName = 'lg-combobox-loading-icon';

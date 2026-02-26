@@ -29,7 +29,6 @@
   "dependencies": {
     "@leafygreen-ui/button": "workspace:^",
     "@leafygreen-ui/compound-component": "workspace:^",
-    "@leafygreen-ui/emotion": "workspace:^",
     "@leafygreen-ui/form-footer": "workspace:^",
     "@leafygreen-ui/hooks": "workspace:^",
     "@leafygreen-ui/lib": "workspace:^",

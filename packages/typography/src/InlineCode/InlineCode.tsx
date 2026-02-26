@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { cx } from '@leafygreen-ui/emotion';
 import { useDarkMode } from '@leafygreen-ui/leafygreen-provider';
 import {
   InferredPolymorphic,
@@ -8,6 +7,7 @@ import {
 } from '@leafygreen-ui/polymorphic';
 
 import { codeTypeScaleStyles } from '../styles';
+import { cn } from '../utils/cn';
 import { useUpdatedBaseFontSize } from '../utils/useUpdatedBaseFontSize';
 
 import {
@@ -46,15 +46,13 @@ const InlineCode = InferredPolymorphic<BaseInlineCodeProps, 'code'>(
     const renderedInlineCode = (
       <code
         ref={forwardedRef}
-        className={cx(
+        className={cn(
           codeTypeScaleStyles[baseFontSize],
           code,
           codeModes[theme],
           codeFocusModes[theme],
           whiteSpace,
-          {
-            [codeLinkStyleModes[theme]]: needsWrapper,
-          },
+          needsWrapper && codeLinkStyleModes[theme],
           className,
         )}
       >
@@ -65,7 +63,7 @@ const InlineCode = InferredPolymorphic<BaseInlineCodeProps, 'code'>(
     if (needsWrapper) {
       return (
         <Component
-          className={cx(anchorClassName, codeLinkWrapper, className)}
+          className={cn(anchorClassName, 'group', codeLinkWrapper, className)}
           {...rest}
         >
           {renderedInlineCode}

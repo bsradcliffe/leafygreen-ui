@@ -1,41 +1,24 @@
-import { css } from '@leafygreen-ui/emotion';
 import { createUniqueClassName, Theme } from '@leafygreen-ui/lib';
-import { color, spacing } from '@leafygreen-ui/tokens';
 
 export const stepIconClassName = createUniqueClassName('step');
 
-const MARKER_SIZE = 20;
+// spacing[200] = 8px, spacing[100] = 4px
+// MARKER_SIZE = 20px
+export const baseStyles =
+  'flex gap-[8px] mb-[4px]';
 
-export const baseStyles = css`
-  display: flex;
-  gap: ${spacing[200]}px;
-  margin-bottom: ${spacing[100]}px;
-`;
+export const contentStyles = 'w-full';
 
-export const contentStyles = css`
-  width: 100%;
-`;
+export const markerStyles =
+  'rounded-full flex items-center justify-center border border-solid w-[20px] h-[20px] relative text-[12px] font-medium';
 
-export const markerStyles = css`
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid;
-  width: ${MARKER_SIZE}px;
-  height: ${MARKER_SIZE}px;
-  position: relative;
-  font-size: 12px;
-  font-weight: 500;
-`;
+export const titleStyles = 'font-bold leading-[unset]';
 
-export const titleStyles = css`
-  font-weight: bold;
-  line-height: unset;
-`;
-
-export const getThemedStateStyles = (theme: Theme) => css`
-  color: ${color[theme].text.primary.default};
-  background-color: rgba(255, 255, 255, 0);
-  border-color: ${color[theme].border.primary.default};
-`;
+// Light: color[light].text.primary.default = #001E2B, border.primary.default = #889397
+// Dark:  color[dark].text.primary.default = #E8EDEB, border.primary.default = #889397
+export const themedStateStyles: Record<Theme, string> = {
+  [Theme.Light]:
+    'text-[#001E2B] bg-[rgba(255,255,255,0)] border-[#889397]',
+  [Theme.Dark]:
+    'text-[#E8EDEB] bg-[rgba(255,255,255,0)] border-[#889397]',
+};

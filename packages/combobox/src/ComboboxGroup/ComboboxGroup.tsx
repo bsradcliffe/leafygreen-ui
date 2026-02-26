@@ -1,15 +1,19 @@
 import React from 'react';
 
-import { cx } from '@leafygreen-ui/emotion';
 import { useIdAllocator } from '@leafygreen-ui/hooks';
 import { useDarkMode } from '@leafygreen-ui/leafygreen-provider';
 
 import {
-  comboboxGroupLabel,
+  comboboxGroupLabelClassName,
+  comboboxGroupLabelStyle,
   comboboxGroupLabelThemeStyle,
   comboboxGroupStyle,
 } from './ComboboxGroup.styles';
 import { ComboboxGroupProps } from './ComboboxGroup.types';
+
+function cn(...classes: Array<string | false | undefined | null>): string {
+  return classes.filter(Boolean).join(' ');
+}
 
 /**
  * @internal
@@ -25,9 +29,13 @@ export function InternalComboboxGroup({
   const childCount = React.Children.count(children);
 
   return childCount > 0 ? (
-    <div className={cx(comboboxGroupStyle[theme], className)}>
+    <div className={cn(className)} style={comboboxGroupStyle}>
       <div
-        className={cx(comboboxGroupLabel, comboboxGroupLabelThemeStyle[theme])}
+        className={cn(comboboxGroupLabelClassName)}
+        style={{
+          ...comboboxGroupLabelStyle,
+          ...comboboxGroupLabelThemeStyle[theme],
+        }}
         id={groupId}
       >
         {label}

@@ -1,7 +1,6 @@
 import React from 'react';
 import defaults from 'lodash/defaults';
 
-import { cx } from '@leafygreen-ui/emotion';
 import XIcon from '@leafygreen-ui/icon/dist/X';
 import { IconButton } from '@leafygreen-ui/icon-button';
 import LeafyGreenProvider, {
@@ -9,6 +8,7 @@ import LeafyGreenProvider, {
 } from '@leafygreen-ui/leafygreen-provider';
 import { Body } from '@leafygreen-ui/typography';
 
+import { cn } from '../cn';
 import { Variant } from '../Toast.types';
 
 import { defaultToastProps } from './defaultProps';
@@ -83,7 +83,7 @@ export const InternalToast = React.forwardRef<
         <div
           id={id}
           ref={forwardedRef}
-          className={cx(baseToastStyle, toastThemeStyles[theme], className)}
+          className={cn(baseToastStyle, toastThemeStyles[theme], className)}
           aria-atomic="true"
           data-testid="lg-toast"
           {...rest}
@@ -103,14 +103,14 @@ export const InternalToast = React.forwardRef<
             <div className={textContentStyle}>
               <Body
                 data-testid="toast-title"
-                className={cx(titleStyle, titleThemeStyle[theme])}
+                className={cn(titleStyle, titleThemeStyle[theme])}
               >
                 {title}
               </Body>
 
               {description && (
                 <Body
-                  className={cx(descriptionStyle, descriptionThemeStyle[theme])}
+                  className={cn(descriptionStyle, descriptionThemeStyle[theme])}
                 >
                   {description}
                 </Body>

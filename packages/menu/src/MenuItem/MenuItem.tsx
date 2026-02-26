@@ -1,9 +1,9 @@
 import React, { MouseEventHandler } from 'react';
 
 import { useDescendant } from '@leafygreen-ui/descendants';
-import { cx } from '@leafygreen-ui/emotion';
 import { InferredPolymorphic } from '@leafygreen-ui/polymorphic';
 
+import { cn } from '../cn';
 import { MenuDescendantsContext, useMenuContext } from '../MenuContext';
 
 import { InternalMenuItemContent } from './InternalMenuItemContent';
@@ -31,7 +31,7 @@ export const MenuItem = InferredPolymorphic<InternalMenuItemProps, 'button'>(
       <li
         id={id}
         role="none"
-        className={cx(menuItemClassName, menuItemContainerStyles)}
+        className={cn(menuItemClassName, menuItemContainerStyles)}
         data-testid={lgIds.item}
       >
         <InternalMenuItemContent

@@ -1,6 +1,5 @@
 import React, { useMemo } from 'react';
 
-import { cx } from '@leafygreen-ui/emotion';
 import { InlineDefinition } from '@leafygreen-ui/inline-definition';
 import { useDarkMode } from '@leafygreen-ui/leafygreen-provider';
 import { BaseFontSize } from '@leafygreen-ui/tokens';
@@ -21,6 +20,12 @@ import {
   TruncationLocation,
   Variant,
 } from './Chip.types';
+
+function cn(
+  ...classes: Array<string | false | undefined | null>
+): string {
+  return classes.filter(Boolean).join(' ');
+}
 
 /**
  * Chips are used to display discrete pieces of information such as results for a filter, or tagging for a group of items.
@@ -81,7 +86,7 @@ export const Chip = React.forwardRef<HTMLSpanElement, ChipProps>(
       <span
         ref={forwardedRef}
         aria-disabled={disabled}
-        className={cx(
+        className={cn(
           getWrapperStyles(baseFontSize, variant, theme, disabled),
           className,
         )}
@@ -89,7 +94,7 @@ export const Chip = React.forwardRef<HTMLSpanElement, ChipProps>(
       >
         <span
           data-testid="chip-text"
-          className={cx(
+          className={cn(
             getTextStyles(baseFontSize, variant, theme, disabled, !!onDismiss),
             chipTextClassName,
           )}

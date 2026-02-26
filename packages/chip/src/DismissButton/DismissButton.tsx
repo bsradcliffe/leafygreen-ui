@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { cx } from '@leafygreen-ui/emotion';
 import { Icon } from '@leafygreen-ui/icon';
 import { useDarkMode } from '@leafygreen-ui/leafygreen-provider';
 
@@ -11,6 +10,12 @@ import {
   dismissButtonThemeStyle,
 } from './DismissButton.styles';
 import { type DismissButtonProps } from './DismissButton.types';
+
+function cn(
+  ...classes: Array<string | false | undefined | null>
+): string {
+  return classes.filter(Boolean).join(' ');
+}
 
 /**
  * @internal
@@ -35,7 +40,7 @@ export function DismissButton({
       aria-label={ariaLabel}
       aria-disabled={disabled}
       disabled={disabled}
-      className={cx(
+      className={cn(
         dismissButtonBaseStyle,
         dismissButtonThemeStyle(variant, theme),
         dismissButtonDisabledStyle[theme],

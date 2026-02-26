@@ -22,7 +22,6 @@
     "@leafygreen-ui/leafygreen-provider": "workspace:^5.0.0 || ^4.0.0 || ^3.2.0"
   },
   "devDependencies": {
-    "@leafygreen-ui/emotion": "workspace:^",
     "@leafygreen-ui/tokens": "workspace:^",
     "@lg-tools/build": "workspace:^"
   },

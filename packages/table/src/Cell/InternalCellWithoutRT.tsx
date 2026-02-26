@@ -1,12 +1,14 @@
 import React, { forwardRef } from 'react';
 
-import { cx } from '@leafygreen-ui/emotion';
-
 import { useTableContext } from '../TableContext';
 
 import { getCellEllipsisStyles, getCellStyles } from './Cell.styles';
 import InternalCellBase from './InternalCellBase';
 import { InternalCellProps } from '.';
+
+function cn(...classes: Array<string | false | undefined | null>): string {
+  return classes.filter(Boolean).join(' ');
+}
 
 /**
  * @internal
@@ -20,7 +22,7 @@ const InternalCellWithoutRT = forwardRef<
   return (
     <InternalCellBase
       ref={fwdRef}
-      className={cx(getCellStyles(), className)}
+      className={cn(getCellStyles(), className)}
       {...rest}
     >
       <div className={getCellEllipsisStyles(shouldTruncate)}>{children}</div>

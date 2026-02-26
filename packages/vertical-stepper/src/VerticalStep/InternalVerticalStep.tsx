@@ -1,10 +1,10 @@
 import React from 'react';
 
-import { cx } from '@leafygreen-ui/emotion';
 import { useDarkMode } from '@leafygreen-ui/leafygreen-provider';
 import { BaseFontSize } from '@leafygreen-ui/tokens';
 import { Body, Description } from '@leafygreen-ui/typography';
 
+import { cn } from '../cn';
 import { LGIDS_VERTICAL_STEPPER } from '../constants';
 import { StepIcon } from '../StepIcon';
 import { VerticalStepActions } from '../VerticalStepActions';
@@ -49,7 +49,7 @@ export const InternalVerticalStep = React.forwardRef<
     return (
       <li
         ref={forwardRef}
-        className={cx(baseStyles, className)}
+        className={cn(baseStyles, className)}
         {...rest}
         aria-current={isCurrent ? 'step' : false}
         data-state={state}
@@ -58,7 +58,7 @@ export const InternalVerticalStep = React.forwardRef<
       >
         <StepIcon isCompleted={isCompleted} state={state} index={index} />
         <div
-          className={cx(
+          className={cn(
             contentClassName,
             getContentStyles(isCurrent, !!hasActions),
           )}

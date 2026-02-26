@@ -1,8 +1,10 @@
+import { CSSProperties } from 'react';
 import { TransitionStatus } from 'react-transition-group';
 
-import { css, cx } from '@leafygreen-ui/emotion';
 import { createUniqueClassName } from '@leafygreen-ui/lib';
 import { transitionDuration } from '@leafygreen-ui/tokens';
+
+import { cn } from '../cn';
 
 import { ExtendedPlacement, TransformAlign } from './Popover.types';
 
@@ -21,196 +23,58 @@ export const popoverCSSProperties = {
 
 export const contentClassName = createUniqueClassName('popover-content');
 
-export const hiddenPlaceholderStyle = css`
-  display: none;
-`;
-
-const basePopoverStyles = css`
-  margin: 0;
-  border: none;
-  padding: 0;
-  overflow: visible;
-  background-color: transparent;
-  width: max-content;
-
-  transition-property: opacity, transform, overlay;
-  transition-duration: ${TRANSITION_DURATION}ms;
-  transition-timing-function: ease-in-out;
-  transition-behavior: allow-discrete;
-
-  opacity: 0;
-  transform: scale(${TRANSFORM_INITIAL_SCALE});
-
-  &::backdrop {
-    transition-property: background, overlay;
-    transition-duration: ${TRANSITION_DURATION}ms;
-    transition-timing-function: ease-in-out;
-    transition-behavior: allow-discrete;
-  }
-`;
-
-const getPositionStyles = ({
-  left,
-  position,
-  top,
-}: {
-  left: number;
-  position: 'absolute' | 'fixed';
-  top: number;
-}) => css`
-  left: ${left}px;
-  position: ${position};
-  top: ${top}px;
-  max-height: var(${popoverCSSProperties.maxHeight}, unset);
-  max-width: var(${popoverCSSProperties.maxWidth}, unset);
-`;
-
-const transformOriginStyles: Record<ExtendedPlacement, string> = {
-  top: css`
-    transform-origin: bottom;
-  `,
-  'top-start': css`
-    transform-origin: bottom left;
-  `,
-  'top-end': css`
-    transform-origin: bottom right;
-  `,
-  bottom: css`
-    transform-origin: top;
-  `,
-  'bottom-start': css`
-    transform-origin: top left;
-  `,
-  'bottom-end': css`
-    transform-origin: top right;
-  `,
-  left: css`
-    transform-origin: right;
-  `,
-  'left-start': css`
-    transform-origin: right top;
-  `,
-  'left-end': css`
-    transform-origin: right bottom;
-  `,
-  right: css`
-    transform-origin: left;
-  `,
-  'right-start': css`
-    transform-origin: left top;
-  `,
-  'right-end': css`
-    transform-origin: left bottom;
-  `,
-  center: css`
-    transform-origin: center;
-  `,
-  'center-start': css`
-    transform-origin: top;
-  `,
-  'center-end': css`
-    transform-origin: bottom;
-  `,
+export const hiddenPlaceholderStyle: CSSProperties = {
+  display: 'none',
 };
 
-const baseClosedStyles = css`
-  opacity: 0;
-`;
+const transformOriginMap: Record<ExtendedPlacement, string> = {
+  top: 'bottom',
+  'top-start': 'bottom left',
+  'top-end': 'bottom right',
+  bottom: 'top',
+  'bottom-start': 'top left',
+  'bottom-end': 'top right',
+  left: 'right',
+  'left-start': 'right top',
+  'left-end': 'right bottom',
+  right: 'left',
+  'right-start': 'left top',
+  'right-end': 'left bottom',
+  center: 'center',
+  'center-start': 'top',
+  'center-end': 'bottom',
+};
 
-const getClosedStyles = (spacing: number, transformAlign: TransformAlign) => {
+const getClosedTransform = (
+  spacing: number,
+  transformAlign: TransformAlign,
+): string => {
   switch (transformAlign) {
     case TransformAlign.Top:
-      return cx(
-        baseClosedStyles,
-        css`
-          transform: translate3d(0, ${spacing}px, 0)
-            scale(${TRANSFORM_INITIAL_SCALE});
-        `,
-      );
+      return `translate3d(0, ${spacing}px, 0) scale(${TRANSFORM_INITIAL_SCALE})`;
     case TransformAlign.Bottom:
-      return cx(
-        baseClosedStyles,
-        css`
-          transform: translate3d(0, -${spacing}px, 0)
-            scale(${TRANSFORM_INITIAL_SCALE});
-        `,
-      );
+      return `translate3d(0, -${spacing}px, 0) scale(${TRANSFORM_INITIAL_SCALE})`;
     case TransformAlign.Left:
-      return cx(
-        baseClosedStyles,
-        css`
-          transform: translate3d(${spacing}px, 0, 0)
-            scale(${TRANSFORM_INITIAL_SCALE});
-        `,
-      );
+      return `translate3d(${spacing}px, 0, 0) scale(${TRANSFORM_INITIAL_SCALE})`;
     case TransformAlign.Right:
-      return cx(
-        baseClosedStyles,
-        css`
-          transform: translate3d(-${spacing}px, 0, 0)
-            scale(${TRANSFORM_INITIAL_SCALE});
-        `,
-      );
+      return `translate3d(-${spacing}px, 0, 0) scale(${TRANSFORM_INITIAL_SCALE})`;
     case TransformAlign.Center:
     default:
-      return cx(
-        baseClosedStyles,
-        css`
-          transform: scale(${TRANSFORM_INITIAL_SCALE});
-        `,
-      );
+      return `scale(${TRANSFORM_INITIAL_SCALE})`;
   }
 };
 
-const baseOpenStyles = css`
-  opacity: 1;
-  pointer-events: initial;
-
-  &:popover-open {
-    opacity: 1;
-
-    pointer-events: initial;
-  }
-`;
-
-const getOpenStyles = (transformAlign: TransformAlign) => {
+const getOpenTransform = (transformAlign: TransformAlign): string => {
   switch (transformAlign) {
     case TransformAlign.Top:
     case TransformAlign.Bottom:
-      return cx(
-        baseOpenStyles,
-        css`
-          transform: translateY(0) scale(1);
-
-          &:popover-open {
-            transform: translateY(0) scale(1);
-          }
-        `,
-      );
+      return 'translateY(0) scale(1)';
     case TransformAlign.Left:
     case TransformAlign.Right:
-      return cx(
-        baseOpenStyles,
-        css`
-          transform: translateX(0) scale(1);
-
-          &:popover-open {
-            transform: translateX(0) scale(1);
-          }
-        `,
-      );
+      return 'translateX(0) scale(1)';
     case TransformAlign.Center:
     default:
-      return cx(
-        baseOpenStyles,
-        css`
-          transform: scale(1);
-
-          &:popover-open {
-            transform: scale(1);
-          }
-        `,
-      );
+      return 'scale(1)';
   }
 };
 
@@ -234,17 +98,48 @@ export const getPopoverStyles = ({
   state: TransitionStatus;
   top: number;
   transformAlign: TransformAlign;
-}) =>
-  cx(
-    basePopoverStyles,
-    getPositionStyles({ left, position, top }),
-    transformOriginStyles[placement],
-    {
-      [getClosedStyles(spacing, transformAlign)]: state !== 'entered',
-      [getOpenStyles(transformAlign)]: state === 'entered',
-      [css`
-        z-index: ${popoverZIndex};
-      `]: typeof popoverZIndex === 'number',
-    },
-    className,
-  );
+}): { className: string; style: CSSProperties } => {
+  const isOpen = state === 'entered';
+
+  const style: CSSProperties = {
+    // Base popover styles
+    margin: 0,
+    border: 'none',
+    padding: 0,
+    overflow: 'visible',
+    backgroundColor: 'transparent',
+    width: 'max-content',
+
+    // Transition properties
+    transitionProperty: 'opacity, transform, overlay',
+    transitionDuration: `${TRANSITION_DURATION}ms`,
+    transitionTimingFunction: 'ease-in-out',
+    // @ts-expect-error - `transitionBehavior` is not yet in CSSProperties
+    transitionBehavior: 'allow-discrete',
+
+    // Position styles
+    left: `${left}px`,
+    position,
+    top: `${top}px`,
+    maxHeight: `var(${popoverCSSProperties.maxHeight}, unset)`,
+    maxWidth: `var(${popoverCSSProperties.maxWidth}, unset)`,
+
+    // Transform origin based on placement
+    transformOrigin: transformOriginMap[placement],
+
+    // Open/closed state styles
+    opacity: isOpen ? 1 : 0,
+    transform: isOpen
+      ? getOpenTransform(transformAlign)
+      : getClosedTransform(spacing, transformAlign),
+    pointerEvents: isOpen ? 'initial' : undefined,
+
+    // Optional z-index
+    ...(typeof popoverZIndex === 'number' ? { zIndex: popoverZIndex } : {}),
+  };
+
+  return {
+    className: cn(className),
+    style,
+  };
+};

@@ -9,7 +9,8 @@ import { Size } from '@leafygreen-ui/tokens';
 import { Skeleton } from '../Skeleton';
 
 import {
-  getSkeletonListItemStyles,
+  getSkeletonListItemWidth,
+  skeletonListItemBaseStyles,
   skeletonListWrapperStyles,
 } from './ListSkeleton.styles';
 import { ListSkeletonProps } from './ListSkeleton.types';
@@ -35,7 +36,8 @@ export function ListSkeleton({
           <li
             // Update the key when `count` changes so the item animation stays in sync
             key={`${i}/${count}`}
-            className={getSkeletonListItemStyles(i, bulletsOnly)}
+            className={skeletonListItemBaseStyles}
+            style={getSkeletonListItemWidth(i, bulletsOnly)}
             data-testid="lg-skeleton-list_item"
           >
             <Skeleton enableAnimations={enableAnimations} size={Size.Small} />

@@ -26,7 +26,6 @@
     "@leafygreen-ui/button": "workspace:^",
     "@leafygreen-ui/card": "workspace:^",
     "@leafygreen-ui/descendants": "workspace:^",
-    "@leafygreen-ui/emotion": "workspace:^",
     "@leafygreen-ui/hooks": "workspace:^",
     "@leafygreen-ui/icon": "workspace:^",
     "@leafygreen-ui/lib": "workspace:^",

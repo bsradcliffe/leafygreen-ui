@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { cx } from '@leafygreen-ui/emotion';
 import { DEFAULT_MESSAGES, FormFieldFeedback } from '@leafygreen-ui/form-field';
 import { useIdAllocator } from '@leafygreen-ui/hooks';
 import LeafyGreenProvider, {
@@ -8,6 +7,7 @@ import LeafyGreenProvider, {
 } from '@leafygreen-ui/leafygreen-provider';
 import { Body, Description, Label } from '@leafygreen-ui/typography';
 
+import { cn } from '../cn';
 import { Input } from '../Input';
 import { UnitSelect } from '../UnitSelect';
 
@@ -99,7 +99,7 @@ export const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
             </div>
           )}
           <div
-            className={cx(wrapperBaseStyles, wrapperSizeStyles[size], {
+            className={cn(wrapperBaseStyles, wrapperSizeStyles[size], {
               [wrapperGapStyles]: renderUnitOnly,
             })}
           >
@@ -124,7 +124,7 @@ export const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
             />
             {renderUnitOnly && (
               <Body
-                className={cx(unitBaseStyles, getUnitThemeStyles(theme), {
+                className={cn(unitBaseStyles, getUnitThemeStyles(theme), {
                   [getUnitDisabledStyles(theme)]: disabled,
                 })}
               >

@@ -1,7 +1,6 @@
 import React, { ForwardedRef, forwardRef } from 'react';
 import { useInView } from 'react-intersection-observer';
 
-import { cx } from '@leafygreen-ui/emotion';
 import { useDarkMode } from '@leafygreen-ui/leafygreen-provider';
 import { BaseFontSize } from '@leafygreen-ui/tokens';
 import { useUpdatedBaseFontSize } from '@leafygreen-ui/typography';
@@ -17,6 +16,10 @@ import {
   tableClassName,
 } from './Table.styles';
 import { TableProps, VerticalAlignment } from './Table.types';
+
+function cn(...classes: Array<string | false | undefined | null>): string {
+  return classes.filter(Boolean).join(' ');
+}
 
 // Inferred generic type from component gets used in place of `any`
 /**
@@ -57,7 +60,7 @@ const Table = forwardRef<HTMLDivElement, TableProps<any>>(
     return (
       <div
         ref={containerRef}
-        className={cx(getTableContainerStyles(isVirtual), className)}
+        className={cn(getTableContainerStyles(isVirtual), className)}
         // allow select by keyboard to allow scroll by keyboard
         // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
         tabIndex={0}
@@ -76,7 +79,7 @@ const Table = forwardRef<HTMLDivElement, TableProps<any>>(
           shouldMemoizeRows={table?.shouldMemoizeRows}
         >
           <table
-            className={cx(
+            className={cn(
               tableClassName,
               getTableStyles(theme, baseFontSize, isVirtual, shouldTruncate),
             )}

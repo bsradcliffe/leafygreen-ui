@@ -1,20 +1,20 @@
 import React, { ReactElement } from 'react';
 
 import { Checkbox } from '@leafygreen-ui/checkbox';
-import { cx } from '@leafygreen-ui/emotion';
 import { Icon, isComponentGlyph } from '@leafygreen-ui/icon';
 import { Theme } from '@leafygreen-ui/lib';
 
 import { ComboboxSize } from '../types';
 
 import {
-  checkBoxBaseStyles,
-  checkMarkDisabledStyles,
+  checkBoxBaseClassName,
+  checkBoxBaseStyle,
+  checkMarkDisabledStyle,
   checkMarkSizeStyle,
-  checkMarkThemeStyles,
-  iconDisabledStyles,
-  iconHighlightedStyles,
-  iconThemeStyles,
+  checkMarkThemeStyle,
+  iconDisabledStyle,
+  iconHighlightedStyle,
+  iconThemeStyle,
 } from './ComboboxOption.styles';
 
 /**
@@ -50,18 +50,17 @@ export const getGlyphs = ({
     );
   }
 
+  const iconStyle: React.CSSProperties = {
+    ...iconThemeStyle[theme],
+    ...(isFocused ? iconHighlightedStyle[theme] : {}),
+    ...(disabled ? iconDisabledStyle[theme] : {}),
+  };
+
   const icon =
     glyph && isComponentGlyph(glyph) ? (
       React.cloneElement(glyph, {
         ...glyph.props,
-        className: cx(
-          iconThemeStyles[theme],
-          {
-            [iconHighlightedStyles[theme]]: isFocused,
-            [iconDisabledStyles[theme]]: disabled,
-          },
-          glyph.props.className,
-        ),
+        style: { ...iconStyle, ...(glyph.props.style || {}) },
       })
     ) : (
       <></>
@@ -74,17 +73,19 @@ export const getGlyphs = ({
       tabIndex={-1}
       disabled={disabled}
       darkMode={darkMode}
-      className={checkBoxBaseStyles}
+      className={checkBoxBaseClassName}
+      style={checkBoxBaseStyle}
     />
   );
 
+  const checkMarkStyle: React.CSSProperties = {
+    ...checkMarkSizeStyle(size),
+    ...checkMarkThemeStyle[theme],
+    ...(disabled ? checkMarkDisabledStyle[theme] : {}),
+  };
+
   const checkMark = (
-    <Icon
-      glyph="Checkmark"
-      className={cx(checkMarkSizeStyle[size], checkMarkThemeStyles[theme], {
-        [checkMarkDisabledStyles[theme]]: disabled,
-      })}
-    />
+    <Icon glyph="Checkmark" style={checkMarkStyle} />
   );
 
   const multiSelectLeftGlyph = withIcons ? icon : checkBox;

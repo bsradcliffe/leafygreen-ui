@@ -8,13 +8,13 @@ import React, {
 } from 'react';
 
 import { Button } from '@leafygreen-ui/button';
-import { cx } from '@leafygreen-ui/emotion';
 import { useBackdropClick, useEventListener } from '@leafygreen-ui/hooks';
 import { Icon } from '@leafygreen-ui/icon';
 import { useDarkMode } from '@leafygreen-ui/leafygreen-provider';
 import { isComponentType, keyMap } from '@leafygreen-ui/lib';
 import { Menu as LGMenu } from '@leafygreen-ui/menu';
 
+import { cn } from '../cn';
 import { MenuItemType } from '../SplitButton';
 
 import {
@@ -139,7 +139,7 @@ export const Menu = ({
           variant={variant}
           size={size}
           baseFontSize={baseFontSize}
-          className={cx(triggerBaseStyles, triggerSizeStyles[size], {
+          className={cn(triggerBaseStyles, triggerSizeStyles[size], {
             [triggerThemeStyles(theme, variant)]: !disabled,
           })}
           aria-label={triggerAriaLabel || 'More options'}

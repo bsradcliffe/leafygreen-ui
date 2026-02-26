@@ -7,7 +7,6 @@ import {
   type StoryType,
 } from '@lg-tools/storybook-utils';
 
-import { css } from '@leafygreen-ui/emotion';
 import { Icon } from '@leafygreen-ui/icon';
 import { IconButton } from '@leafygreen-ui/icon-button';
 
@@ -147,9 +146,7 @@ export const LiveExample: StoryType<typeof Code, FontSizeProps> = ({
   <Code
     {...(args as CodeProps)}
     highlightLines={highlightLines ? [6, [10, 15]] : undefined}
-    className={css`
-      width: 100%;
-    `}
+    className="w-full"
   >
     {jsSnippet}
   </Code>
@@ -172,9 +169,7 @@ export const Collapsed: StoryType<typeof Code, FontSizeProps> = ({
   <Code
     {...(args as CodeProps)}
     highlightLines={highlightLines ? [6, [10, 15]] : undefined}
-    className={css`
-      width: 100%;
-    `}
+    className="w-full"
     showLineNumbers={true}
     collapsedLines={3}
     expandable={true}
@@ -205,13 +200,7 @@ export const CustomWord: StoryType<typeof Code, FontSizeProps> = ({
     <Code
       {...(args as CodeProps)}
       highlightLines={highlightLines ? [6, [10, 15]] : undefined}
-      className={css`
-        width: 100%;
-
-        .lg-highlight-custom {
-          color: red;
-        }
-      `}
+      className="w-full [&_.lg-highlight-custom]:text-red-500"
       customKeywords={{
         testing: 'custom',
         api: 'custom',
@@ -270,9 +259,7 @@ export const Multiple: StoryType<typeof Code, FontSizeProps> = ({
     <Code
       {...(args as CodeProps)}
       highlightLines={highlightLines ? [6, [10, 15]] : undefined}
-      className={css`
-        width: 100%;
-      `}
+      className="w-full"
     >
       {jsSnippet}
     </Code>
@@ -280,13 +267,7 @@ export const Multiple: StoryType<typeof Code, FontSizeProps> = ({
     <Code
       {...(args as CodeProps)}
       highlightLines={highlightLines ? [6, [10, 15]] : undefined}
-      className={css`
-        width: 100%;
-
-        .lg-highlight-custom {
-          color: red;
-        }
-      `}
+      className="w-full [&_.lg-highlight-custom]:text-red-500"
       customKeywords={{
         testing: 'custom',
         api: 'custom',
@@ -403,11 +384,7 @@ Loading.parameters = {
     },
     decorator: Instance => {
       return (
-        <div
-          className={css`
-            width: 400px;
-          `}
-        >
+        <div className="w-[400px]">
           <Instance />
         </div>
       );

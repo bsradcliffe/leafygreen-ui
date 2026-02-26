@@ -1,4 +1,3 @@
-import { css, cx } from '@leafygreen-ui/emotion';
 import { Theme } from '@leafygreen-ui/lib';
 import {
   borderRadius,
@@ -8,6 +7,8 @@ import {
   Variant,
 } from '@leafygreen-ui/tokens';
 
+import { cn } from '../../cn';
+
 const TOOL_CARD_MIN_WIDTH = 200;
 
 export const getBaseContainerStyles = ({
@@ -16,18 +17,17 @@ export const getBaseContainerStyles = ({
 }: {
   isErrorState: boolean;
   theme: Theme;
-}) => css`
-  overflow: hidden;
-  min-width: ${TOOL_CARD_MIN_WIDTH}px;
-  width: 100%;
-  border: 1px solid
-    ${color[theme].border[isErrorState ? Variant.OnError : Variant.Secondary][
-      InteractionState.Default
-    ]};
-  border-radius: ${borderRadius[200]}px;
-  display: flex;
-  flex-direction: column;
-`;
+}) =>
+  [
+    'overflow-hidden',
+    `min-w-[${TOOL_CARD_MIN_WIDTH}px]`,
+    'w-full',
+    'border',
+    `border-[${color[theme].border[isErrorState ? Variant.OnError : Variant.Secondary][InteractionState.Default]}]`,
+    `rounded-[${borderRadius[200]}px]`,
+    'flex',
+    'flex-col',
+  ].join(' ');
 
 export const getContainerStyles = ({
   className,
@@ -37,7 +37,7 @@ export const getContainerStyles = ({
   className?: string;
   isErrorState: boolean;
   theme: Theme;
-}) => cx(getBaseContainerStyles({ isErrorState, theme }), className);
+}) => cn(getBaseContainerStyles({ isErrorState, theme }), className);
 
 export const getContentContainerStyles = ({
   isErrorState,
@@ -49,17 +49,12 @@ export const getContentContainerStyles = ({
   theme: Theme;
 }) =>
   shouldRenderBorderTop
-    ? css`
-        border-top: 1px solid
-          ${color[theme].border[
-            isErrorState ? Variant.OnError : Variant.Secondary
-          ][InteractionState.Default]};
-      `
-    : css``;
+    ? `border-t border-t-[${color[theme].border[isErrorState ? Variant.OnError : Variant.Secondary][InteractionState.Default]}]`
+    : '';
 
-export const actionsContainerStyles = css`
-  width: 100%;
-  padding: ${spacing[300]}px;
-  display: flex;
-  gap: ${spacing[200]}px;
-`;
+export const actionsContainerStyles = [
+  'w-full',
+  `p-[${spacing[300]}px]`,
+  'flex',
+  `gap-[${spacing[200]}px]`,
+].join(' ');

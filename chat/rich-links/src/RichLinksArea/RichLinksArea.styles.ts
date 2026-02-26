@@ -1,11 +1,13 @@
-import { css, cx } from '@leafygreen-ui/emotion';
 import { spacing } from '@leafygreen-ui/tokens';
 
-const baseContainerStyles = css`
-  display: flex;
-  flex-wrap: wrap;
-  gap: ${spacing[200]}px ${spacing[300]}px;
-`;
+import { cn } from '../cn';
+
+const baseContainerStyles = [
+  'flex',
+  'flex-wrap',
+  `gap-x-[${spacing[300]}px]`,
+  `gap-y-[${spacing[200]}px]`,
+].join(' ');
 
 export const getContainerStyles = (className?: string) =>
-  cx(baseContainerStyles, className);
+  cn(baseContainerStyles, className);

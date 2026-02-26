@@ -1,101 +1,66 @@
-import { css } from '@leafygreen-ui/emotion';
 import { createUniqueClassName, Theme } from '@leafygreen-ui/lib';
-import { palette } from '@leafygreen-ui/palette';
-import { focusRing, hoverRing } from '@leafygreen-ui/tokens';
 
 import { checkBoxSize } from '../constants';
 
 export const checkWrapperClassName = createUniqueClassName('check-wrapper');
 export const inputClassName = createUniqueClassName('input');
 
-export const containerStyle = css`
-  display: grid;
-  grid-template-columns: ${checkBoxSize}px auto;
-  grid-template-areas: 'label label' '. description';
-  gap: 0 8px;
-  position: relative;
-  align-items: center;
-  justify-content: flex-start;
-  z-index: 0;
-`;
+export const containerStyle = [
+  'grid',
+  `grid-cols-[${checkBoxSize}px_auto]`,
+  `[grid-template-areas:'label_label'_'._description']`,
+  'gap-x-2',
+  'gap-y-0',
+  'relative',
+  'items-center',
+  'justify-start',
+  'z-0',
+].join(' ');
 
-/** &:disabled won't work and [disabled] isn't a valid property because this isn't an input */
-export const disabledContainerStyle = css`
-  cursor: not-allowed;
-`;
+export const disabledContainerStyle = 'cursor-not-allowed';
 
-export const labelStyle = css`
-  grid-area: label;
-  display: grid;
-  grid-template-columns: ${checkBoxSize}px auto;
-  grid-template-areas: 'check text';
-  gap: 8px;
-  justify-content: flex-start;
-  align-items: baseline;
-  cursor: pointer;
-`;
+export const labelStyle = [
+  '[grid-area:label]',
+  'grid',
+  `grid-cols-[${checkBoxSize}px_auto]`,
+  `[grid-template-areas:'check_text']`,
+  'gap-2',
+  'justify-start',
+  'items-baseline',
+  'cursor-pointer',
+].join(' ');
 
-export const labelHoverSelector = `
-  &:hover:not(:focus-within)
-    > .${inputClassName}:not([disabled])
-      + .${checkWrapperClassName}
-`;
-
-export const labelHoverStyle: Record<Theme, string> = {
-  [Theme.Light]: css`
-    ${labelHoverSelector} {
-      box-shadow: ${hoverRing.light.gray};
-    }
-  `,
-  [Theme.Dark]: css`
-    ${labelHoverSelector} {
-      box-shadow: ${hoverRing.dark.gray};
-    }
-  `,
+/**
+ * Raw CSS box-shadow values for hover ring by theme.
+ * Applied via a <style> tag since the selector references dynamic class names.
+ */
+export const labelHoverBoxShadow: Record<Theme, string> = {
+  [Theme.Light]: '0 0 0 3px #E8EDEB',
+  [Theme.Dark]: '0 0 0 3px #3D4F58',
 };
 
-export const disabledLabelStyle = css`
-  cursor: not-allowed;
-`;
+export const disabledLabelStyle = 'cursor-not-allowed';
 
-export const inputStyle = css`
-  margin: 0;
-  position: absolute;
-  height: 0;
-  width: 0;
-  left: 0;
-  top: 0;
-  pointer-events: none;
-  opacity: 0;
-`;
+export const inputStyle = [
+  'm-0',
+  'absolute',
+  'h-0',
+  'w-0',
+  'left-0',
+  'top-0',
+  'pointer-events-none',
+  'opacity-0',
+].join(' ');
 
-export const inputFocusStyles: Record<Theme, string> = {
-  [Theme.Light]: css`
-    &:focus-visible + .${checkWrapperClassName} {
-      box-shadow: ${focusRing.light.default};
-    }
-  `,
-  [Theme.Dark]: css`
-    &:focus-visible + .${checkWrapperClassName} {
-      box-shadow: ${focusRing.dark.default};
-    }
-  `,
+/**
+ * Raw CSS box-shadow values for focus ring by theme.
+ * Applied via a <style> tag since the selector references dynamic class names.
+ */
+export const inputFocusBoxShadow: Record<Theme, string> = {
+  [Theme.Light]: '0 0 0 2px #FFFFFF, 0 0 0 4px #016BF8',
+  [Theme.Dark]: '0 0 0 2px #001E2B, 0 0 0 4px #0498EC',
 };
 
-export const labelTextStyle = css`
-  align-self: baseline;
-`;
+export const labelTextStyle = 'self-baseline';
 
-export const descriptionStyle = css`
-  grid-area: description;
-`;
-
-export const labelTextColorStyle: Record<Theme, string> = {
-  [Theme.Light]: css`
-    color: ${palette.black};
-  `,
-
-  [Theme.Dark]: css`
-    color: ${palette.gray.light2};
-  `,
-};
+export const descriptionStyle = '[grid-area:description]';

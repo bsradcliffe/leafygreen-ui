@@ -18,9 +18,11 @@ export {
   /** @deprecated Use the utility exported from `@leafygreen-ui/compound-component` */
   isChildWithProperty,
 } from './childQueries';
+export { cn } from './cn';
 export { createSyntheticEvent } from './createSyntheticEvent';
 export { deepMapValues } from './deepMapValues';
 export { formatCssSize } from './formatCssSize';
+export { injectStyles } from './injectStyles';
 export { getClosestFocusableElement } from './getClosestFocusableElement';
 export { getMobileMediaQuery } from './getMobileMediaQuery';
 export * from './helpers';

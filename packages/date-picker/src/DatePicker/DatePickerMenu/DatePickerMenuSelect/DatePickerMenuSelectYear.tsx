@@ -2,16 +2,18 @@ import React from 'react';
 import range from 'lodash/range';
 
 import { setUTCYear } from '@leafygreen-ui/date-utils';
-import { cx } from '@leafygreen-ui/emotion';
 import { Option, Select } from '@leafygreen-ui/select';
 
 import { selectElementProps } from '../../../shared/constants';
 import { useSharedDatePickerContext } from '../../../shared/context';
 import { useDatePickerContext } from '../../DatePickerContext';
 import {
-  selectInputWidthStyles,
-  selectTruncateStyles,
+  selectInputWidthClassName,
 } from '../DatePickerMenu.styles';
+
+function cn(...classes: Array<string | false | undefined | null>): string {
+  return classes.filter(Boolean).join(' ');
+}
 
 interface DatePickerMenuSelectYearProps {
   updateMonth: (newMonth: Date) => void;
@@ -41,7 +43,7 @@ export const DatePickerMenuSelectYear = ({
       aria-label={`Select year (${yearString} selected)`}
       value={yearString}
       onChange={handleYearOnChange}
-      className={cx(selectTruncateStyles, selectInputWidthStyles)}
+      className={cn(selectInputWidthClassName)}
       onEntered={() => setIsSelectOpen(true)}
       onExited={() => setIsSelectOpen(false)}
       placeholder={yearString}

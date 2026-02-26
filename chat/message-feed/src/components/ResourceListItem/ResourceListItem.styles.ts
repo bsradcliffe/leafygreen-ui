@@ -1,26 +1,21 @@
-import { css, cx } from '@leafygreen-ui/emotion';
 import { Theme } from '@leafygreen-ui/lib';
 import { color, spacing, typeScales } from '@leafygreen-ui/tokens';
 
+import { cn } from '../../cn';
+
 export const getListItemStyles = ({ className }: { className?: string }) =>
-  cx(
-    css`
-      display: flex;
-      gap: ${spacing[200]}px;
-      align-items: center;
-      font-size: ${typeScales.body1.fontSize}px;
-      line-height: ${typeScales.body1.lineHeight}px;
-    `,
+  cn(
+    [
+      'flex',
+      `gap-[${spacing[200]}px]`,
+      'items-center',
+      `text-[${typeScales.body1.fontSize}px]`,
+      `leading-[${typeScales.body1.lineHeight}px]`,
+    ].join(' '),
     className,
   );
 
-export const iconWrapperStyles = css`
-  display: flex;
-`;
+export const iconWrapperStyles = 'flex';
 
 export const getIconStyles = ({ theme }: { theme: Theme }) =>
-  cx(
-    css`
-      color: ${color[theme].icon.primary.default};
-    `,
-  );
+  `text-[${color[theme].icon.primary.default}]`;

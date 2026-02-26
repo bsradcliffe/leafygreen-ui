@@ -15,7 +15,7 @@ import {
   childrenContainerStyles,
   getIconFill,
   getMessageContainerStyles,
-  getMessageStyles,
+  getMessageStyle,
   verticalStepperStyles,
 } from './ActivationSteps.styles';
 import { ActivationStepsProps } from './ActivationSteps.types';
@@ -40,6 +40,8 @@ export const ActivationSteps = forwardRef<HTMLElement, ActivationStepsProps>(
 
     const showMessage = currentStep >= steps.length;
 
+    const messageContainer = getMessageContainerStyles(theme, showMessage);
+
     return (
       <LeafyGreenProvider darkMode={darkMode}>
         <Card className={cardStyles}>
@@ -56,12 +58,13 @@ export const ActivationSteps = forwardRef<HTMLElement, ActivationStepsProps>(
               <div
                 aria-live="polite"
                 aria-relevant="all"
-                className={getMessageContainerStyles(theme, showMessage)}
+                className={messageContainer.className}
+                style={messageContainer.style}
                 hidden={!showMessage}
                 ref={messageContainerRef}
               >
                 <CheckmarkWithCircle fill={getIconFill(theme)} />
-                <Body className={getMessageStyles(theme)}>
+                <Body style={getMessageStyle(theme)}>
                   {completedMessage}
                 </Body>
               </div>

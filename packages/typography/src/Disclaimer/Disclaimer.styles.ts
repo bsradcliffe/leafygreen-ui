@@ -1,19 +1,9 @@
-import { css } from '@leafygreen-ui/emotion';
 import { Theme } from '@leafygreen-ui/lib';
-import { color } from '@leafygreen-ui/tokens';
 
 export const disclaimerTextColor: Record<Theme, string> = {
-  [Theme.Light]: css`
-    color: ${color.light.text.secondary.default};
-  `,
-  [Theme.Dark]: css`
-    color: ${color.dark.text.secondary.default};
-  `,
+  [Theme.Light]: 'text-[#5C6C75]',
+  [Theme.Dark]: 'text-[#C1C7C6]',
 };
 
-export const disclaimerStyles = css`
-  display: block;
-  font-size: 11px;
-  line-height: 16px;
-  letter-spacing: 0.2px;
-`;
+export const disclaimerStyles =
+  'block text-[11px] leading-[16px] tracking-[0.2px]';

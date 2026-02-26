@@ -1,5 +1,4 @@
-import { css } from '@leafygreen-ui/emotion';
-
+import { cn } from '../../../cn';
 import {
   avatarFontSizeMap,
   avatarMultiCharacterFontSizeMap,
@@ -32,26 +31,21 @@ export const getAvatarTextStyles = ({
     : avatarMultiCharacterFontSizeMap[size];
   const fontSize = overriddenSize ?? defaultFontSize;
 
-  return css`
-    user-select: none;
-    font-size: ${fontSize}px;
-    font-weight: ${isSingleCharacter || size === AvatarSize.XLarge
-      ? 'bold'
-      : 'normal'};
-  `;
+  const isBold = isSingleCharacter || size === AvatarSize.XLarge;
+
+  return cn(
+    'select-none',
+    `text-[${fontSize}px]`,
+    isBold ? 'font-bold' : 'font-normal',
+  );
 };
 
-export const getAvatarLogoStyles = (_: AvatarStyleArgs) => css`
+export const getAvatarLogoStyles = (_: AvatarStyleArgs) =>
   // set to percentage to keep it responsive to all sizeOverride values
-  height: ${LOGO_SCALE * 100}%;
-  width: ${LOGO_SCALE * 100}%;
-`;
+  `h-[${LOGO_SCALE * 100}%] w-[${LOGO_SCALE * 100}%]`;
 
 export const getAvatarIconStyles = ({ sizeOverride }: AvatarStyleArgs) => {
   if (sizeOverride) {
-    return css`
-      height: ${ICON_SCALE * sizeOverride}px;
-      width: ${ICON_SCALE * sizeOverride}px;
-    `;
+    return `h-[${ICON_SCALE * sizeOverride}px] w-[${ICON_SCALE * sizeOverride}px]`;
   }
 };

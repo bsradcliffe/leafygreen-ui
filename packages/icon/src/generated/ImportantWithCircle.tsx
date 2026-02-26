@@ -5,7 +5,7 @@
 * @checksum 8b9fb3a1ddd64878c8fe9ea0e22486e3
 */
 import * as React from "react";
-import { css, cx } from '@leafygreen-ui/emotion';
+import { cn } from '../cn';
 import { useIdAllocator } from '@leafygreen-ui/hooks';
 import { generateAccessibleProps, sizeMap } from '../glyphCommon';
 import { LGGlyph } from '../types';
@@ -23,21 +23,13 @@ const ImportantWithCircle = ({
   const titleId = useIdAllocator({
     prefix: 'icon-title'
   });
-  const fillStyle = css`
-        color: ${fill};
-      `;
-  const noFlexShrink = css`
-        flex-shrink: 0;
-      `;
   const accessibleProps = generateAccessibleProps(role, 'ImportantWithCircle', {
     title,
     titleId,
     ['aria-label']: ariaLabel,
     ['aria-labelledby']: ariaLabelledby
   });
-  return <svg className={cx({
-    [fillStyle]: fill != null
-  }, noFlexShrink, className)} height={typeof size === 'number' ? size : sizeMap[size]} width={typeof size === 'number' ? size : sizeMap[size]} role={role} {...accessibleProps} {...props} viewBox="0 0 16 16">{title && <title id={titleId}>{title}</title>}<path fillRule="evenodd" clipRule="evenodd" d="M8 15C11.866 15 15 11.866 15 8C15 4.13401 11.866 1 8 1C4.13401 1 1 4.13401 1 8C1 11.866 4.13401 15 8 15ZM7 4.5C7 3.94772 7.44772 3.5 8 3.5C8.55228 3.5 9 3.94772 9 4.5V8.5C9 9.05228 8.55228 9.5 8 9.5C7.44772 9.5 7 9.05228 7 8.5V4.5ZM9 11.5C9 12.0523 8.55228 12.5 8 12.5C7.44772 12.5 7 12.0523 7 11.5C7 10.9477 7.44772 10.5 8 10.5C8.55228 10.5 9 10.9477 9 11.5Z" fill={'currentColor'} /></svg>;
+  return <svg className={cn('shrink-0', className)} style={fill != null ? { color: fill } : undefined} height={typeof size === 'number' ? size : sizeMap[size]} width={typeof size === 'number' ? size : sizeMap[size]} role={role} {...accessibleProps} {...props} viewBox="0 0 16 16">{title && <title id={titleId}>{title}</title>}<path fillRule="evenodd" clipRule="evenodd" d="M8 15C11.866 15 15 11.866 15 8C15 4.13401 11.866 1 8 1C4.13401 1 1 4.13401 1 8C1 11.866 4.13401 15 8 15ZM7 4.5C7 3.94772 7.44772 3.5 8 3.5C8.55228 3.5 9 3.94772 9 4.5V8.5C9 9.05228 8.55228 9.5 8 9.5C7.44772 9.5 7 9.05228 7 8.5V4.5ZM9 11.5C9 12.0523 8.55228 12.5 8 12.5C7.44772 12.5 7 12.0523 7 11.5C7 10.9477 7.44772 10.5 8 10.5C8.55228 10.5 9 10.9477 9 11.5Z" fill={'currentColor'} /></svg>;
 };
 ImportantWithCircle.displayName = 'ImportantWithCircle';
 ImportantWithCircle.isGlyph = true;

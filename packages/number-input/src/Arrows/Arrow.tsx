@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { cx } from '@leafygreen-ui/emotion';
 import { Icon } from '@leafygreen-ui/icon';
 import { useDarkMode } from '@leafygreen-ui/leafygreen-provider';
 
+import { cn } from '../cn';
 import { Direction } from '../NumberInput/NumberInput.types';
 
 import {
@@ -30,14 +30,14 @@ export const Arrow = ({
       aria-label={`${direction} number`}
       onClick={() => onClick(direction)}
       onKeyDown={onKeyDown}
-      className={cx(arrowBaseStyles, getArrowThemeStyles(theme))}
+      className={cn(arrowBaseStyles, getArrowThemeStyles(theme))}
       type="button"
       tabIndex={-1} // Mimicking native behavior; you cannot focus on an arrow.
       disabled={disabled}
       data-testid={`lg-number_input-${direction}_button`}
     >
       <Icon
-        className={cx({
+        className={cn({
           [downArrowRotateStyles]: direction === Direction.Decrement,
         })}
         aria-hidden

@@ -15,10 +15,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@leafygreen-ui/emotion": "workspace:^",
-    "@leafygreen-ui/lib": "workspace:^",
     "@leafygreen-ui/table": "workspace:^",
-    "@leafygreen-ui/tokens": "workspace:^",
     "@leafygreen-ui/typography": "workspace:^"
   },
   "peerDependencies": {},

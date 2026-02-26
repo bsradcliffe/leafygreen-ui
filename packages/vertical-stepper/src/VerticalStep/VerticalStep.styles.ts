@@ -1,4 +1,3 @@
-import { css } from '@leafygreen-ui/emotion';
 import { createUniqueClassName, Theme } from '@leafygreen-ui/lib';
 import { palette } from '@leafygreen-ui/palette';
 import {
@@ -9,67 +8,48 @@ import {
   typeScales,
 } from '@leafygreen-ui/tokens';
 
+import { cn } from '../cn';
 import { stepIconClassName } from '../StepIcon';
 
 import { State } from './VerticalStep.types';
 
 export const contentClassName = createUniqueClassName('content');
 
-export const baseStyles = css`
-  display: flex;
-  gap: ${spacing[200]}px;
-
+export const baseStyles = [
+  'flex',
+  `gap-[${spacing[200]}px]`,
   // This adds the line between steps
-  &:not(:last-of-type) {
-    .${stepIconClassName} {
-      &::after {
-        content: '';
-      }
-    }
-  }
+  `[&:not(:last-of-type)_.${stepIconClassName}]:after:content-['']`,
+  // Remove margin on last step content
+  `[&:last-of-type_.${contentClassName}]:m-0`,
+].join(' ');
 
-  &:last-of-type {
-    .${contentClassName} {
-      margin: 0;
-    }
-  }
-`;
+export const getWrapperStyles = (hasMedia = false) =>
+  cn(
+    [
+      'overflow-hidden',
+      `ps-[${spacing[200]}px]`,
+    ].join(' '),
+    hasMedia &&
+      [
+        `[@media(min-width:${breakpoints.Tablet}px)]:grid`,
+        `gap-x-[${spacing[400]}px]`,
+        `[grid-template:_'desc_img'_'cta_img'_'cta_img']`,
+        '[grid-template-columns:minmax(370px,1fr)_auto]',
+      ].join(' '),
+  );
 
-export const getWrapperStyles = (hasMedia = false) => css`
-  overflow: hidden;
-  padding-inline-start: ${spacing[200]}px;
-
-  ${hasMedia &&
-  css`
-    @media (min-width: ${breakpoints.Tablet}px) {
-      display: grid;
-    }
-
-    column-gap: ${spacing[400]}px;
-    grid-template:
-      'desc img'
-      'cta img'
-      'cta img';
-    grid-template-columns: minmax(370px, 1fr) auto;
-  `}
-`;
-
-export const mediaStyles = css`
-  grid-area: img;
-  margin-block-start: ${spacing[200]}px;
-  max-width: 800px;
-  width: 100%;
-
-  @media (min-width: ${breakpoints.Tablet}px) {
-    margin-block-start: 0;
-  }
-
-  img,
-  svg {
-    max-width: 100%;
-    vertical-align: middle;
-  }
-`;
+export const mediaStyles = [
+  '[grid-area:img]',
+  `mt-[${spacing[200]}px]`,
+  'max-w-[800px]',
+  'w-full',
+  `[@media(min-width:${breakpoints.Tablet}px)]:mt-0`,
+  '[&_img]:max-w-full',
+  '[&_img]:align-middle',
+  '[&_svg]:max-w-full',
+  '[&_svg]:align-middle',
+].join(' ');
 
 export const titleStyles: Record<Theme, Record<State, string>> = {
   [Theme.Dark]: {
@@ -84,28 +64,27 @@ export const titleStyles: Record<Theme, Record<State, string>> = {
   },
 };
 
-export const getTitleStyles = (theme: Theme, state: State) => {
-  return css`
-    color: ${titleStyles[theme][state]};
-    padding-inline-start: ${spacing[200]}px;
-    line-height: ${typeScales.body1.lineHeight}px;
-    transition: ${transitionDuration.default}ms font-weight ease-in-out;
+export const getTitleStyles = (theme: Theme, state: State) =>
+  cn(
+    [
+      `text-[${titleStyles[theme][state]}]`,
+      `ps-[${spacing[200]}px]`,
+      `leading-[${typeScales.body1.lineHeight}px]`,
+      `transition-[font-weight]`,
+      `duration-[${transitionDuration.default}ms]`,
+      'ease-in-out',
+    ].join(' '),
+    state !== State.Completed && `font-[${fontWeights.bold}]`,
+  );
 
-    ${state !== State.Completed &&
-    css`
-      font-weight: ${fontWeights.bold};
-    `}
-  `;
-};
-
-export const getContentStyles = (isOpen = false, hasButtons = false) => css`
-  margin-block-end: ${spacing[400]}px;
-  transition: margin-block-end ${transitionDuration.slowest}ms ease-in-out;
-  width: 100%;
-
-  ${isOpen &&
-  hasButtons &&
-  css`
-    margin-block-end: ${spacing[200]}px;
-  `}
-`;
+export const getContentStyles = (isOpen = false, hasButtons = false) =>
+  cn(
+    [
+      `mb-[${spacing[400]}px]`,
+      `transition-[margin-block-end]`,
+      `duration-[${transitionDuration.slowest}ms]`,
+      'ease-in-out',
+      'w-full',
+    ].join(' '),
+    isOpen && hasButtons && `mb-[${spacing[200]}px]`,
+  );

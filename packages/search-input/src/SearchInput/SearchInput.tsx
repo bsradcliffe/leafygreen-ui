@@ -13,7 +13,6 @@ import React, {
 } from 'react';
 import isUndefined from 'lodash/isUndefined';
 
-import { cx } from '@leafygreen-ui/emotion';
 import {
   useAutoScroll,
   useBackdropClick,
@@ -56,6 +55,12 @@ import {
   searchIconThemeStyle,
 } from './SearchInput.styles';
 import { SearchInputProps, State } from './SearchInput.types';
+
+function cn(
+  ...classes: Array<string | false | undefined | null>
+): string {
+  return classes.filter(Boolean).join(' ');
+}
 
 /**
  * # SearchInput
@@ -373,7 +378,7 @@ export const SearchInput = React.forwardRef<HTMLInputElement, SearchInputProps>(
           <form
             role="search"
             ref={formRef}
-            className={cx(formStyle, className)}
+            className={cn(formStyle, className)}
             onSubmit={handleFormSubmit}
             {...rest}
           >
@@ -385,31 +390,28 @@ export const SearchInput = React.forwardRef<HTMLInputElement, SearchInputProps>(
               onClick={handleSearchBoxClick}
               onFocus={handleSearchBoxFocus}
               onKeyDown={handleSearchBoxKeyDown}
-              className={cx(
+              className={cn(
                 inputWrapperStyle,
                 inputWrapperSizeStyle[size],
                 inputWrapperThemeStyle[theme],
-                {
-                  [inputWrapperFocusStyles[theme]]:
-                    focusedElement === inputRef.current,
-                  [inputWrapperDisabledStyle[theme]]: disabled,
-                  [inputWrapperInteractiveStyles[theme]]: !disabled,
-                },
+                focusedElement === inputRef.current && inputWrapperFocusStyles[theme],
+                disabled && inputWrapperDisabledStyle[theme],
+                !disabled && inputWrapperInteractiveStyles[theme],
               )}
               aria-label={ariaLabelledby ? undefined : ariaLabel}
               aria-labelledby={ariaLabelledby}
             >
               <MagnifyingGlass
-                className={cx(
+                className={cn(
                   searchIconThemeStyle[theme],
                   searchIconSizeStyle[size],
-                  { [searchIconDisabledStyle[theme]]: disabled },
+                  disabled && searchIconDisabledStyle[theme],
                 )}
                 role="presentation"
               />
               <input
                 type="search"
-                className={cx(baseInputStyle, inputThemeStyle[theme])}
+                className={cn(baseInputStyle, inputThemeStyle[theme])}
                 value={value}
                 onChange={handleInputChange}
                 placeholder={placeholder}

@@ -1,7 +1,5 @@
 import React, { forwardRef } from 'react';
 
-import { cx } from '@leafygreen-ui/emotion';
-
 import { useTableContext } from '../TableContext';
 
 import {
@@ -10,6 +8,10 @@ import {
   getCellContainerStyles,
 } from './Cell.styles';
 import { InternalCellProps } from './Cell.types';
+
+function cn(...classes: Array<string | false | undefined | null>): string {
+  return classes.filter(Boolean).join(' ');
+}
 
 /**
  * @internal
@@ -30,11 +32,11 @@ const InternalCellBase = forwardRef<HTMLTableCellElement, InternalCellProps>(
       <td
         data-lgid={lgIds.cell}
         data-testid={lgIds.cell}
-        className={cx(getBaseCellStyles(verticalAlignment), className)}
+        className={cn(getBaseCellStyles(verticalAlignment), className)}
         ref={fwdRref}
         {...rest}
       >
-        <div className={cx(getCellContainerStyles(align), contentClassName)}>
+        <div className={cn(getCellContainerStyles(align), contentClassName)}>
           <div className={cellInnerStyles}>{children}</div>
         </div>
       </td>

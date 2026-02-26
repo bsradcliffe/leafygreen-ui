@@ -1,7 +1,28 @@
-import { css, cx } from '@leafygreen-ui/emotion';
-import { Theme } from '@leafygreen-ui/lib';
-import { palette } from '@leafygreen-ui/palette';
-import { color, transitionDuration } from '@leafygreen-ui/tokens';
+import { injectStyles, Theme } from '@leafygreen-ui/lib';
+import { color } from '@leafygreen-ui/tokens';
+
+import { cn } from '../cn';
+
+/**
+ * Base color style for the copy button when not disabled.
+ * Uses `injectStyles` because the `[aria-disabled='false']` attribute
+ * selector combined with a runtime color token cannot be expressed
+ * statically in Tailwind.
+ */
+function getCopyButtonBaseColorStyle(theme: Theme): string {
+  const id = `lg-code-copy-btn-base-color-${theme}`;
+
+  injectStyles(
+    id,
+    `
+    .${id}[aria-disabled='false'] {
+      color: ${color[theme].icon.primary.default};
+    }
+  `,
+  );
+
+  return id;
+}
 
 export const getCopyButtonStyles = ({
   theme,
@@ -14,90 +35,45 @@ export const getCopyButtonStyles = ({
   showPanel: boolean;
   className?: string;
 }) =>
-  cx(
-    css`
-      align-self: center;
-
-      &[aria-disabled='false'] {
-        color: ${color[theme].icon.primary.default};
-      }
-
-      div[role='tooltip'] svg {
-        width: 26px;
-        height: 26px;
-      }
-
-      &,
-      & > div > svg {
-        transition: all ${transitionDuration.default}ms ease-in-out;
-      }
-    `,
-    {
-      [copiedThemeStyle[theme]]: copied,
-      [minimalButtonThemeStyle[theme]]: !showPanel,
-    },
+  cn(
+    'self-center',
+    getCopyButtonBaseColorStyle(theme),
+    // Transition on the button and nested SVG
+    '[&]:transition-all [&]:duration-[150ms] [&]:ease-in-out',
+    '[&>div>svg]:transition-all [&>div>svg]:duration-[150ms] [&>div>svg]:ease-in-out',
+    // Tooltip SVG sizing
+    '[&_div[role=tooltip]_svg]:w-[26px] [&_div[role=tooltip]_svg]:h-[26px]',
+    copied && copiedThemeStyle[theme],
+    !showPanel && minimalButtonThemeStyle[theme],
     className,
   );
 
 export const copiedThemeStyle: Record<Theme, string> = {
-  [Theme.Light]: css`
-    &,
-    & > div > svg {
-      color: ${palette.white};
-
-      &:focus,
-      &:hover {
-        color: ${palette.white};
-      }
-    }
-
-    background-color: ${palette.green.dark1};
-
-    &:focus,
-    &:hover {
-      background-color: ${palette.green.dark1};
-      &::before {
-        background-color: ${palette.green.dark1};
-      }
-    }
-  `,
-  [Theme.Dark]: css`
-    &,
-    & > div > svg {
-      color: ${palette.gray.dark3};
-
-      &:focus,
-      &:hover {
-        color: ${palette.gray.dark3};
-      }
-    }
-
-    background-color: ${palette.green.base};
-
-    &:focus,
-    &:hover {
-      background-color: ${palette.green.base};
-
-      &::before {
-        background-color: ${palette.green.base};
-      }
-    }
-  `,
+  [Theme.Light]: cn(
+    // palette.white on green.dark1
+    '[&]:text-[#FFFFFF] [&>div>svg]:text-[#FFFFFF]',
+    '[&:focus]:text-[#FFFFFF] [&:hover]:text-[#FFFFFF]',
+    '[&>div>svg:focus]:text-[#FFFFFF] [&>div>svg:hover]:text-[#FFFFFF]',
+    'bg-[#00A35C]',
+    '[&:focus]:bg-[#00A35C] [&:hover]:bg-[#00A35C]',
+    '[&:focus::before]:bg-[#00A35C] [&:hover::before]:bg-[#00A35C]',
+  ),
+  [Theme.Dark]: cn(
+    // palette.gray.dark3 on green.base
+    '[&]:text-[#1C2D38] [&>div>svg]:text-[#1C2D38]',
+    '[&:focus]:text-[#1C2D38] [&:hover]:text-[#1C2D38]',
+    '[&>div>svg:focus]:text-[#1C2D38] [&>div>svg:hover]:text-[#1C2D38]',
+    'bg-[#00ED64]',
+    '[&:focus]:bg-[#00ED64] [&:hover]:bg-[#00ED64]',
+    '[&:focus::before]:bg-[#00ED64] [&:hover::before]:bg-[#00ED64]',
+  ),
 };
 
-export const getMinimalButtonCopiedStyles = ({
-  theme,
-}: {
-  theme: Theme;
-}) => css`
-  border-color: ${color[theme].icon.primary.default};
-`;
-
 export const minimalButtonThemeStyle: Record<Theme, string> = {
-  [Theme.Light]: css`
-    border-color: ${palette.gray.base};
-  `,
-  [Theme.Dark]: css`
-    border-color: ${palette.gray.light2};
-  `,
+  [Theme.Light]:
+    // palette.gray.base
+    'border-[#889397]',
+  [Theme.Dark]:
+    // palette.gray.light2
+    'border-[#E8EDEB]',
 };

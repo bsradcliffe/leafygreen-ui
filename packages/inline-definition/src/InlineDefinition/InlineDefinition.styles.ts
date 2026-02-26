@@ -1,50 +1,42 @@
-import { css, cx } from '@leafygreen-ui/emotion';
 import { Theme } from '@leafygreen-ui/lib';
-import { palette } from '@leafygreen-ui/palette';
 
-const triggerElementStyles = css`
-  border-radius: 2px;
-  text-decoration: underline dotted 2px;
-  text-underline-offset: 0.125em;
-
-  &:hover {
-    a > * {
-      // Remove the Link underline styles
-      &::after {
-        height: 0;
-      }
-    }
-  }
-
-  &:focus,
-  &:focus-visible {
-    outline-color: ${palette.blue.light1};
-    outline-offset: 3px;
-    outline-style: solid;
-    outline-width: 2px;
-  }
-`;
+const triggerElementStyles = [
+  'rounded-[2px]',
+  'underline',
+  'decoration-dotted',
+  'decoration-2',
+  'underline-offset-[0.125em]',
+  // hover: remove Link underline styles
+  '[&:hover_a>*::after]:h-0',
+  // focus / focus-visible
+  'focus:outline-[#0498EC]',
+  'focus:outline-offset-[3px]',
+  'focus:outline-solid',
+  'focus:outline-2',
+  'focus-visible:outline-[#0498EC]',
+  'focus-visible:outline-offset-[3px]',
+  'focus-visible:outline-solid',
+  'focus-visible:outline-2',
+].join(' ');
 
 const triggerElementModeStyles: Record<Theme, string> = {
-  [Theme.Light]: css`
-    text-decoration-color: ${palette.black};
-
-    &:hover,
-    &:focus,
-    &:focus-visible {
-      text-decoration-color: ${palette.black};
-    }
-  `,
-  [Theme.Dark]: css`
-    text-decoration-color: ${palette.gray.light2};
-
-    &:hover,
-    &:focus,
-    &:focus-visible {
-      text-decoration-color: ${palette.gray.light2};
-    }
-  `,
+  [Theme.Light]: [
+    'decoration-[#001E2B]',
+    'hover:decoration-[#001E2B]',
+    'focus:decoration-[#001E2B]',
+    'focus-visible:decoration-[#001E2B]',
+  ].join(' '),
+  [Theme.Dark]: [
+    'decoration-[#E8EDEB]',
+    'hover:decoration-[#E8EDEB]',
+    'focus:decoration-[#E8EDEB]',
+    'focus-visible:decoration-[#E8EDEB]',
+  ].join(' '),
 };
 
+function cn(...classes: Array<string | false | undefined | null>): string {
+  return classes.filter(Boolean).join(' ');
+}
+
 export const getTriggerElementStyles = (theme: Theme, className?: string) =>
-  cx(triggerElementStyles, triggerElementModeStyles[theme], className);
+  cn(triggerElementStyles, triggerElementModeStyles[theme], className);

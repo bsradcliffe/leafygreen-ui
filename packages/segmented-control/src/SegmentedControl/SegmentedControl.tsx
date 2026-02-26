@@ -9,7 +9,6 @@ import React, {
 import isNull from 'lodash/isNull';
 import once from 'lodash/once';
 
-import { css, cx } from '@leafygreen-ui/emotion';
 import { useDynamicRefs, useIdAllocator } from '@leafygreen-ui/hooks';
 import {
   useDarkMode,
@@ -22,13 +21,23 @@ import { SegmentedControlContext } from '../SegmentedControlContext';
 import { useEffectOnceOnMount } from '../useEffectOnceOnMount';
 
 import {
+  frameShadowStyle,
+  getIndicatorDynamicStyle,
   getLabelStyles,
-  hoverIndicatorStyle,
-  optionsWrapperStyle,
-  selectionIndicatorStyle,
+  getOptionsWrapperInlineStyle,
+  hoverIndicatorClassName,
+  hoverIndicatorInlineStyle,
+  optionsWrapperClassName,
+  selectionIndicatorClassName,
+  selectionIndicatorInlineStyle,
+  wrapperInlineStyle,
   wrapperStyle,
 } from './SegmentedControl.styles';
 import { SegmentedControlProps, Size } from './SegmentedControl.types';
+
+function cn(...classes: Array<string | false | undefined | null>): string {
+  return classes.filter(Boolean).join(' ');
+}
 
 /**
  * Segmented controls act as a toggle between a current state and related states, often changing the view of information within a single page.
@@ -283,28 +292,7 @@ export const SegmentedControl = forwardRef<
    * Dynamic Styles.
    * Dynamically set the size & position of the selection indicator
    */
-
-  const getIndicatorDynamicStyles = useCallback(
-    (index: number | null = 0) => {
-      if (isNull(index))
-        return css`
-          width: 0;
-        `;
-
-      const count = React.Children.count(renderedChildren);
-      const widthPct = (1 / count) * 100;
-      const transformPct = index * 100;
-
-      return css`
-        opacity: 1;
-        width: calc(${widthPct}% - 2 * var(--wrapper-padding));
-        transform: translateX(
-          calc(${transformPct}% + ${2 * index + 1} * var(--wrapper-padding))
-        );
-      `;
-    },
-    [renderedChildren],
-  );
+  const childCount = React.Children.count(renderedChildren);
 
   /**
    * Return
@@ -315,37 +303,48 @@ export const SegmentedControl = forwardRef<
     >
       <div
         ref={segmentedContainerRef}
-        className={cx(wrapperStyle, className)}
+        className={cn(wrapperStyle, className)}
+        style={wrapperInlineStyle}
         {...rest}
       >
         {label && (
-          <Overline className={getLabelStyles(theme)}>{label}</Overline>
+          <Overline
+            className={getLabelStyles(theme).className}
+            style={getLabelStyles(theme).style}
+          >
+            {label}
+          </Overline>
         )}
 
         <div
           role="tablist"
           aria-label={name}
           aria-owns={childrenIdList}
-          className={cx(optionsWrapperStyle({ theme, size }))}
+          className={optionsWrapperClassName}
+          style={getOptionsWrapperInlineStyle({ theme, size })}
           ref={forwardedRef}
           onKeyDownCapture={handleKeyDown}
         >
           {renderedChildren}
+          {/* Frame shadow element (replaces ::after pseudo-element) */}
+          <div style={frameShadowStyle} />
           {/**
            * The selection and hover indicators are absolutely positioned elements that move underneath the text.
            * This allows us to achieve the sliding effect.
            */}
           <div
-            className={cx(
-              selectionIndicatorStyle,
-              getIndicatorDynamicStyles(selectedIndex),
-            )}
+            className={selectionIndicatorClassName}
+            style={{
+              ...selectionIndicatorInlineStyle,
+              ...getIndicatorDynamicStyle(selectedIndex, childCount),
+            }}
           />
           <div
-            className={cx(
-              hoverIndicatorStyle,
-              getIndicatorDynamicStyles(hoveredIndex),
-            )}
+            className={hoverIndicatorClassName}
+            style={{
+              ...hoverIndicatorInlineStyle,
+              ...getIndicatorDynamicStyle(hoveredIndex, childCount),
+            }}
           />
         </div>
       </div>

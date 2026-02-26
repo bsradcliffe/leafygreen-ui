@@ -1,16 +1,9 @@
-import { css } from '@leafygreen-ui/emotion';
 import { Theme } from '@leafygreen-ui/lib';
 import { palette } from '@leafygreen-ui/palette';
 
-export const baseStyles = css`
-  padding: 0;
-`;
+export const baseStyles = 'p-0';
 
 export const expandedContentThemeStyles: Record<Theme, string> = {
-  [Theme.Dark]: css`
-    background-color: ${palette.gray.dark4};
-  `,
-  [Theme.Light]: css`
-    background-color: ${palette.gray.light3};
-  `,
+  [Theme.Dark]: `bg-[${palette.gray.dark4}]`,
+  [Theme.Light]: `bg-[${palette.gray.light3}]`,
 };

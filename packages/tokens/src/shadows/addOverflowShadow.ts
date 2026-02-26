@@ -1,4 +1,4 @@
-import { css } from '@leafygreen-ui/emotion';
+import { injectStyles } from '@leafygreen-ui/lib';
 import { Theme } from '@leafygreen-ui/lib';
 
 import { shadows } from './shadows';
@@ -117,6 +117,10 @@ const getPositionStyles = ({
   }
 };
 
+/**
+ * Adds an overflow shadow pseudo-element to an element.
+ * Returns a CSS class name that can be applied via `className`.
+ */
 export const addOverflowShadow = ({
   isInside,
   side,
@@ -125,16 +129,24 @@ export const addOverflowShadow = ({
   isInside: boolean;
   side: Side;
   theme: Theme;
-}) => {
+}): string => {
   const pseudoElement =
     side === Side.Top || side === Side.Left ? '::before' : '::after';
   const shadowColor = shadows[theme].overflow;
   const shadowOffsetVal = shadowOffset[theme];
 
-  return css`
-    position: relative;
-    ${pseudoElement} {
+  const id = `lg-overflow-shadow-${side}-${isInside ? 'in' : 'out'}-${theme}`;
+  const className = id;
+
+  const cssText = `
+    .${className} {
+      position: relative;
+    }
+    .${className}${pseudoElement} {
       ${getPositionStyles({ isInside, shadowColor, shadowOffsetVal, side })}
     }
   `;
+
+  injectStyles(id, cssText);
+  return className;
 };

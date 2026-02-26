@@ -2,7 +2,6 @@ import React from 'react';
 import { StoryMetaType, StoryType } from '@lg-tools/storybook-utils';
 
 import { Badge } from '@leafygreen-ui/badge';
-import { css } from '@leafygreen-ui/emotion';
 import { Icon } from '@leafygreen-ui/icon';
 import LeafyGreenProvider from '@leafygreen-ui/leafygreen-provider';
 import { spacing } from '@leafygreen-ui/tokens';
@@ -84,12 +83,12 @@ WithIconsAndCustomDisplayName.parameters = {
       displayName: 'Option',
       customContent: (
         <div
-          className={css`
-            display: flex;
-            align-items: center;
-            gap: ${spacing[100]}px;
-            margin-bottom: ${spacing[100]}px;
-          `}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: `${spacing[100]}px`,
+            marginBottom: `${spacing[100]}px`,
+          }}
         >
           <span>Option</span>
           <Badge variant="green">New</Badge>

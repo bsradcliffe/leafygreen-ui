@@ -1,66 +1,56 @@
-import { css } from '@leafygreen-ui/emotion';
 import { Theme } from '@leafygreen-ui/lib';
-import { palette } from '@leafygreen-ui/palette';
-import { spacing } from '@leafygreen-ui/tokens';
+import { injectStyles } from '@leafygreen-ui/lib';
 
 import { Size } from './Skeleton.types';
 
-interface SkeletonStyleArgs {
-  enableAnimations: boolean;
+/**
+ * Inject the skeleton shimmer keyframe animation once at module load.
+ */
+injectStyles(
+  'lg-skeleton-loader-keyframes',
+  `
+@keyframes SkeletonShimmer {
+  to {
+    background-position: 100vw 0;
+  }
 }
+`,
+);
+
+/**
+ * Base styles for all skeleton elements.
+ * When animations are enabled, a shimmer keyframe runs on the background-position.
+ */
+export const skeletonBaseStyles =
+  'w-full rounded-[6px] bg-[position:50vw_0]';
+
+export const skeletonAnimationStyles =
+  'animate-[SkeletonShimmer_1.5s_linear_infinite]';
+
+/**
+ * Returns the combined base + animation styles string.
+ * Exported for use by IconSkeleton.
+ */
 export const getSkeletonBaseStyles = ({
   enableAnimations,
-}: SkeletonStyleArgs) => css`
-  width: 100%;
-  border-radius: ${spacing[150]}px;
-  background-position: 50vw 0;
+}: {
+  enableAnimations: boolean;
+}) =>
+  enableAnimations
+    ? `${skeletonBaseStyles} ${skeletonAnimationStyles}`
+    : skeletonBaseStyles;
 
-  ${enableAnimations &&
-  css`
-    animation: SkeletonShimmer 1.5s infinite linear;
-
-    @keyframes SkeletonShimmer {
-      to {
-        background-position: 100vw 0;
-      }
-    }
-  `}
-`;
-
-export const rootStyles = css`
-  width: 100%;
-  border-radius: 6px;
-`;
+export const rootStyles = 'w-full rounded-[6px]';
 
 export const sizeStyles: Record<Size, string> = {
-  [Size.Small]: css`
-    height: ${spacing[400]}px;
-  `,
-  [Size.Default]: css`
-    height: ${spacing[800]}px;
-  `,
-  [Size.Large]: css`
-    height: ${spacing[1200]}px;
-  `,
+  [Size.Small]: 'h-[16px]',
+  [Size.Default]: 'h-[32px]',
+  [Size.Large]: 'h-[48px]',
 };
 
 export const themeStyles: Record<Theme, string> = {
-  [Theme.Dark]: css`
-    background: linear-gradient(
-        110deg,
-        ${palette.gray.dark2} 35%,
-        ${palette.gray.dark1},
-        ${palette.gray.dark2} 65%
-      )
-      0 0/ 100vw 100% fixed;
-  `,
-  [Theme.Light]: css`
-    background: linear-gradient(
-        110deg,
-        ${palette.gray.light2} 35%,
-        ${palette.gray.light3},
-        ${palette.gray.light2} 65%
-      )
-      0 0/ 100vw 100% fixed;
-  `,
+  [Theme.Dark]:
+    '[background:linear-gradient(110deg,#3D4F58_35%,#5C6C75,#3D4F58_65%)_0_0/100vw_100%_fixed]',
+  [Theme.Light]:
+    '[background:linear-gradient(110deg,#E8EDEB_35%,#F9FBFA,#E8EDEB_65%)_0_0/100vw_100%_fixed]',
 };

@@ -1,11 +1,15 @@
-import { transparentize } from 'polished';
-
 import { Theme } from '@leafygreen-ui/lib';
 import { palette } from '@leafygreen-ui/palette';
-import { borderRadius } from '@leafygreen-ui/tokens';
 
 import { Size, Variant } from '../ProgressBar.types';
 
+/**
+ * Pre-computed transparent color values, replacing polished `transparentize()`.
+ *
+ * transparentize(amount, color) reduces alpha by `amount`:
+ *   0.5  => 50% alpha => hex suffix 80
+ *   0.25 => 75% alpha => hex suffix BF
+ */
 const customFadePalette = {
   blue: '#C3E7FE',
   green: '#C0FAE6',
@@ -14,15 +18,15 @@ const customFadePalette = {
 export const barSizeStyles = {
   [Size.Small]: {
     height: '4px',
-    borderRadius: borderRadius[100] + 'px',
+    borderRadius: '4px',
   },
   [Size.Default]: {
     height: '8px',
-    borderRadius: borderRadius[100] + 'px',
+    borderRadius: '4px',
   },
   [Size.Large]: {
     height: '16px',
-    borderRadius: borderRadius[200] + 'px',
+    borderRadius: '8px',
   },
 };
 
@@ -34,12 +38,12 @@ export const barColorStyles = {
     [Variant.Info]: {
       bar: palette.blue.base,
       icon: palette.blue.base,
-      shimmerFade: transparentize(0.5, customFadePalette.blue),
+      shimmerFade: `${customFadePalette.blue}80`,
     },
     [Variant.Success]: {
       bar: palette.green.dark1,
       icon: palette.green.dark1,
-      shimmerFade: transparentize(0.5, customFadePalette.green),
+      shimmerFade: `${customFadePalette.green}80`,
     },
     [Variant.Warning]: {
       bar: palette.yellow.base,
@@ -57,12 +61,12 @@ export const barColorStyles = {
     [Variant.Info]: {
       bar: palette.blue.light1,
       icon: palette.blue.light1,
-      shimmerFade: transparentize(0.25, customFadePalette.blue),
+      shimmerFade: `${customFadePalette.blue}BF`,
     },
     [Variant.Success]: {
       bar: palette.green.base,
       icon: palette.green.base,
-      shimmerFade: transparentize(0.25, customFadePalette.green),
+      shimmerFade: `${customFadePalette.green}BF`,
     },
     [Variant.Warning]: {
       bar: palette.yellow.base,

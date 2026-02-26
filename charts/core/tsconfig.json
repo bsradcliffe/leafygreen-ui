@@ -27,9 +27,6 @@
       "path": "../series-provider"
     },
     {
-      "path": "../../packages/emotion"
-    },
-    {
       "path": "../../packages/hooks"
     },
     {

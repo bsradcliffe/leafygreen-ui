@@ -1,5 +1,3 @@
-import { transparentize } from 'polished';
-
 import { Theme } from '@leafygreen-ui/lib';
 import { palette } from '@leafygreen-ui/palette';
 
@@ -40,7 +38,8 @@ export const colorSets: Record<Theme, ColorSet> = {
   [Theme.Light]: {
     menu: {
       border: palette.gray.light2,
-      shadow: transparentize(0.75, palette.black),
+      // transparentize(0.75, palette.black) => palette.black (#001E2B) at 25% opacity
+      shadow: 'rgba(0, 30, 43, 0.25)',
     },
     option: {
       group: {
@@ -71,7 +70,8 @@ export const colorSets: Record<Theme, ColorSet> = {
   [Theme.Dark]: {
     menu: {
       border: palette.gray.dark2,
-      shadow: transparentize(0.85, '#000000'),
+      // transparentize(0.85, '#000000') => #000000 at 15% opacity
+      shadow: 'rgba(0, 0, 0, 0.15)',
     },
     option: {
       group: {

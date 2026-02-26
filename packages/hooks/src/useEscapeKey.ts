@@ -17,6 +17,7 @@ const handleEscape = (e: KeyboardEvent, callback: () => void) => {
  * @param options.enabled Determines whether or not the useEffect hook should run.
  * @param options.dependencies Array to be passed to useEffect hook, such that the hook will only run if the array's values have changed.
  * @param options.element Value to be passed as target of event handler, will default to document.
+ * @deprecated RAC overlay dismiss handles this.
  */
 const useEscapeKey = (callback: () => void, options?: UseEventOptions) => {
   return useEventListener('keydown', e => handleEscape(e, callback), options);

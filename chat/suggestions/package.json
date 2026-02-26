@@ -30,7 +30,6 @@
   "dependencies": {
     "@leafygreen-ui/banner": "workspace:^",
     "@leafygreen-ui/button": "workspace:^",
-    "@leafygreen-ui/emotion": "workspace:^",
     "@leafygreen-ui/icon": "workspace:^",
     "@leafygreen-ui/lib": "workspace:^",
     "@leafygreen-ui/tokens": "workspace:^",

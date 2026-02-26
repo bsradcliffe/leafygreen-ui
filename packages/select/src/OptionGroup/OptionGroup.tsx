@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { css, cx } from '@leafygreen-ui/emotion';
 import { useIdAllocator } from '@leafygreen-ui/hooks';
 import { useDarkMode } from '@leafygreen-ui/leafygreen-provider';
 
@@ -8,6 +7,10 @@ import { colorSets } from '../styleSets';
 
 import { optionGroupLabelStyle, optionGroupStyle } from './OptionGroup.styles';
 import { InternalOptionProps, OptionGroupProps } from './OptionGroup.types';
+
+function cn(...classes: Array<string | false | undefined | null>): string {
+  return classes.filter(Boolean).join(' ');
+}
 
 export function InternalOptionGroup({
   className,
@@ -21,15 +24,11 @@ export function InternalOptionGroup({
   const groupId = useIdAllocator({ prefix: 'select-option-group' });
 
   return (
-    <div className={cx(optionGroupStyle, className)} {...rest}>
+    <div className={cn(optionGroupStyle, className)} {...rest}>
       <div
         id={groupId}
-        className={cx(
-          optionGroupLabelStyle,
-          css`
-            color: ${colorSet.group.label};
-          `,
-        )}
+        className={optionGroupLabelStyle}
+        style={{ color: colorSet.group.label }}
       >
         {label}
       </div>

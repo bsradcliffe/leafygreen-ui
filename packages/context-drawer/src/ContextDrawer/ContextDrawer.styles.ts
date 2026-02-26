@@ -1,5 +1,4 @@
-import { css, cx } from '@leafygreen-ui/emotion';
-import { createUniqueClassName, Theme } from '@leafygreen-ui/lib';
+import { createUniqueClassName, injectStyles, Theme } from '@leafygreen-ui/lib';
 import {
   addOverflowShadow,
   borderRadius,
@@ -10,6 +9,7 @@ import {
   Variant,
 } from '@leafygreen-ui/tokens';
 
+import { cn } from '../cn';
 import { TRANSITION_DURATION } from '../constants';
 
 const BORDER_WIDTH = 1;
@@ -18,57 +18,91 @@ export const referenceWrapperClassName = createUniqueClassName(
   'context_drawer-reference_wrapper',
 );
 
-const baseOuterContainerStyles = css`
-  display: flex;
-  flex-direction: column;
-`;
+const baseOuterContainerStyles = 'flex flex-col';
 
 export const getOuterContainerStyles = ({
   className,
 }: {
   className?: string;
-}) => cx(baseOuterContainerStyles, className);
-
-export const getInnerContainerStyles = ({ theme }: { theme: Theme }) => css`
-  display: flex;
-  flex-direction: column;
-  border-radius: ${borderRadius[400]}px;
-  border: ${BORDER_WIDTH}px solid
-    ${color[theme].border[Variant.Secondary][InteractionState.Default]};
-  transition: border ${TRANSITION_DURATION}ms ease-in-out;
-`;
+}) => cn(baseOuterContainerStyles, className);
 
 /**
- * Negative margins are used to offset the border width of the inner container so
- * that the reference element and content element appear to be flush with the border.
+ * Inner container: border color is a dynamic token with a transition.
  */
-export const referenceWrapperStyles = cx(
-  css`
-    margin: -${BORDER_WIDTH}px;
+export const getInnerContainerStyles = ({
+  theme,
+}: {
+  theme: Theme;
+}): string => {
+  const id = `lg-context-drawer-inner-${theme}`;
+  injectStyles(
+    id,
+    `
+    .${id} {
+      display: flex;
+      flex-direction: column;
+      border-radius: ${borderRadius[400]}px;
+      border: ${BORDER_WIDTH}px solid
+        ${color[theme].border[Variant.Secondary][InteractionState.Default]};
+      transition: border ${TRANSITION_DURATION}ms ease-in-out;
+    }
   `,
+  );
+  return id;
+};
+
+/**
+ * Negative margins offset the border width so reference and content appear
+ * flush with the border.
+ */
+export const referenceWrapperStyles = cn(
+  `-m-[${BORDER_WIDTH}px]`,
   referenceWrapperClassName,
 );
 
-const contentWrapperStyles = css`
-  position: relative;
-  overflow: hidden;
-  transition-property: height, opacity, visibility;
-  transition-duration: ${TRANSITION_DURATION}ms;
-  transition-timing-function: ease-in-out;
-  height: 0;
-  opacity: 0;
-  visibility: hidden;
+/**
+ * Content wrapper: animates height/opacity/visibility from 0 to dynamic height.
+ */
+const contentWrapperId = 'lg-context-drawer-content-wrapper';
+injectStyles(
+  contentWrapperId,
+  `
+  .${contentWrapperId} {
+    position: relative;
+    overflow: hidden;
+    transition-property: height, opacity, visibility;
+    transition-duration: ${TRANSITION_DURATION}ms;
+    transition-timing-function: ease-in-out;
+    height: 0;
+    opacity: 0;
+    visibility: hidden;
+  }
 
-  :focus-visible {
+  .${contentWrapperId}:focus-visible {
     outline: none;
   }
-`;
+`,
+);
 
-const getExpandedContentStyles = (height: string) => css`
-  height: ${height};
-  opacity: 1;
-  visibility: visible;
-`;
+/**
+ * Expanded state: height set to a dynamic value, opacity 1, visible.
+ */
+function getExpandedContentClass(height: string): string {
+  // Normalize the height value to create a stable id
+  const normalizedHeight = height.replace(/[^a-zA-Z0-9]/g, '_');
+  const id = `lg-context-drawer-expanded-${normalizedHeight}`;
+  injectStyles(
+    id,
+    `
+    .${id} {
+      height: ${height};
+      opacity: 1;
+      visibility: visible;
+    }
+  `,
+  );
+  return id;
+}
 
 export const getContentWrapperStyles = ({
   hasBottomShadow,
@@ -83,28 +117,26 @@ export const getContentWrapperStyles = ({
   isOpen: boolean;
   theme: Theme;
 }) =>
-  cx(contentWrapperStyles, {
-    [getExpandedContentStyles(height)]: isOpen,
+  cn(contentWrapperId, {
+    [getExpandedContentClass(height)]: isOpen,
     [addOverflowShadow({ side: Side.Top, theme, isInside: true })]:
       hasTopShadow,
     [addOverflowShadow({ side: Side.Bottom, theme, isInside: true })]:
       hasBottomShadow,
   });
 
-export const contentScrollContainerStyles = css`
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  overflow-y: auto;
-  overscroll-behavior: contain;
-`;
+export const contentScrollContainerStyles = [
+  'flex',
+  'flex-col',
+  'h-full',
+  'overflow-y-auto',
+  'overscroll-contain',
+].join(' ');
 
-export const bottomInterceptStyles = css`
-  // Ensures bottom intercept is visible when end of scroll container is reached.
-  padding-bottom: 1px;
-`;
+export const bottomInterceptStyles = 'pb-px';
 
-export const triggerWrapperStyles = css`
-  display: flex;
-  padding: 0 ${spacing[600]}px;
-`;
+export const triggerWrapperStyles = [
+  'flex',
+  `px-[${spacing[600]}px]`,
+  'py-0',
+].join(' ');

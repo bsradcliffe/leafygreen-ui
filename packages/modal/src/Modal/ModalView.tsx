@@ -14,7 +14,12 @@ import { CloseButton } from '../CloseButton';
 import { CloseIconColor } from '../shared.types';
 import { focusModalChildElement, getLgIds } from '../utils';
 
-import { getDialogStyles, portalContainerStyles } from './Modal.styles';
+import {
+  getDialogClassName,
+  getDialogInlineStyles,
+  getDialogTransitionCss,
+  portalContainerStyles,
+} from './Modal.styles';
 import { ModalProps, ModalSize } from './Modal.types';
 
 /**
@@ -41,7 +46,7 @@ const ModalView = React.forwardRef<HTMLDialogElement, ModalProps>(
       initialFocus = 'auto',
       children,
       className,
-      backdropClassName,
+      backdropClassName: _backdropClassName,
       'data-lgid': dataLgId,
       ...rest
     },
@@ -89,18 +94,19 @@ const ModalView = React.forwardRef<HTMLDialogElement, ModalProps>(
           scrollContainer: portalContainerEl,
         }}
       >
+        {/* Inject transition and backdrop CSS that cannot be expressed as Tailwind utilities */}
+        <style>{getDialogTransitionCss({ dialogId: id, theme })}</style>
         <dialog
           data-testid={lgIds.root}
           data-lgid={lgIds.root}
           {...rest}
           ref={dialogRef}
           id={id}
-          className={getDialogStyles({
-            backdropClassName,
+          className={getDialogClassName({
             className,
             size,
-            theme,
           })}
+          style={getDialogInlineStyles(theme)}
           /**
            * Prevents the default <dialog> cancel behavior (ESC key) to ensure
            * the modal only closes via the custom escape key handler logic.

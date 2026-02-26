@@ -1,7 +1,6 @@
 import React, { forwardRef, useMemo, useRef, useState } from 'react';
 
 import { Button } from '@leafygreen-ui/button';
-import { cx } from '@leafygreen-ui/emotion';
 import { useMergeRefs } from '@leafygreen-ui/hooks';
 import WarningIcon from '@leafygreen-ui/icon/dist/Warning';
 import { useDarkMode } from '@leafygreen-ui/leafygreen-provider';
@@ -10,6 +9,7 @@ import { palette } from '@leafygreen-ui/palette';
 import { TextInput } from '@leafygreen-ui/text-input';
 import { H3 } from '@leafygreen-ui/typography';
 
+import { cn } from '../cn';
 import { getLgIds } from '../utils/getLgIds';
 
 import {
@@ -144,19 +144,19 @@ export const ConfirmationModal = forwardRef<
         setOpen={handleCancel}
       >
         <div
-          className={cx(contentStyle, contentVariantStyles[variant], {
+          className={cn(contentStyle, contentVariantStyles[variant], {
             [contentDarkModeStyles]: darkMode,
           })}
         >
           {variant === Variant.Danger && (
-            <div className={cx(warningIconStyle, warningIconThemeStyle[theme])}>
+            <div className={cn(warningIconStyle, warningIconThemeStyle[theme])}>
               <WarningIcon
                 fill={darkMode ? palette.red.light3 : palette.red.base}
                 role="presentation"
               />
             </div>
           )}
-          <H3 as="h1" className={cx(titleStyle)} data-testid={lgIds.title}>
+          <H3 as="h1" className={titleStyle} data-testid={lgIds.title}>
             {title}
           </H3>
           {children}
@@ -167,7 +167,7 @@ export const ConfirmationModal = forwardRef<
             data-testid={lgIds.cancel}
             {...cancelButtonProps}
             onClick={handleCancel}
-            className={cx(buttonStyle, cancelButtonProps?.className)}
+            className={cn(buttonStyle, cancelButtonProps?.className)}
             ref={cancelButtonRef}
           >
             Cancel
@@ -176,7 +176,7 @@ export const ConfirmationModal = forwardRef<
             data-testid={lgIds.confirm}
             {...confirmButtonProps}
             disabled={!confirmEnabled || isConfirmDisabled}
-            className={cx(buttonStyle, confirmButtonProps?.className)}
+            className={cn(buttonStyle, confirmButtonProps?.className)}
             variant={variant}
             onClick={handleConfirm}
             ref={confirmButtonRef}

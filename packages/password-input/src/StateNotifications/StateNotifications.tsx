@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { VisuallyHidden } from '@leafygreen-ui/a11y';
-import { cx } from '@leafygreen-ui/emotion';
 import CheckmarkIcon from '@leafygreen-ui/icon/dist/Checkmark';
 import WarningIcon from '@leafygreen-ui/icon/dist/Warning';
 import ErrorIcon from '@leafygreen-ui/icon/dist/X';
@@ -17,6 +16,12 @@ import {
   wrapperStyles,
 } from './StateNotifications.styles';
 import { StateNotificationsProps } from './StateNotifications.types';
+
+function cn(
+  ...classes: Array<string | false | undefined | null>
+): string {
+  return classes.filter(Boolean).join(' ');
+}
 
 const icons: Record<State, React.ComponentType<any>> = {
   [State.Error]: ErrorIcon,
@@ -47,11 +52,11 @@ export const StateNotifications = ({
         return (
           <li
             key={`${index}-${state}`}
-            className={cx(baseStyles, getStateStyles(theme)[state])}
+            className={cn(baseStyles, getStateStyles(theme)[state])}
             aria-hidden={state === State.None}
           >
             <ValidationIcon
-              className={cx(iconBaseStyles, getIconStateStyles(theme)[state])}
+              className={cn(iconBaseStyles, getIconStateStyles(theme)[state])}
               aria-hidden="true"
             />
             <VisuallyHidden>{`${state}`}</VisuallyHidden>

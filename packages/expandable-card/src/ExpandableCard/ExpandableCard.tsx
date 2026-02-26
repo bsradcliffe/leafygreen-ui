@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Transition } from 'react-transition-group';
 
 import { Card } from '@leafygreen-ui/card';
-import { cx } from '@leafygreen-ui/emotion';
 import { useIdAllocator, usePrevious } from '@leafygreen-ui/hooks';
 import { Icon } from '@leafygreen-ui/icon';
 import { IconButton } from '@leafygreen-ui/icon-button';
@@ -14,7 +13,7 @@ import { Body, Subtitle } from '@leafygreen-ui/typography';
 import { DEFAULT_LGID_ROOT, getLgIds } from '../testing';
 
 import {
-  cardStyle,
+  cardStyles,
   childrenWrapperStyle,
   childrenWrapperTransitionStyle,
   flagTextStyle,
@@ -27,6 +26,10 @@ import {
   transitionDuration,
 } from './ExpandableCard.styles';
 import { ExpandableCardProps } from './ExpandableCard.types';
+
+function cn(...classes: Array<string | false | undefined | null>): string {
+  return classes.filter(Boolean).join(' ');
+}
 
 /**
  * Expandable Cards are components equipped with a chevron that functions like a toggle that can show or hide contained content. Additionally, the component has an optional description that remains visible whether the card is expanded or collapsed. For more general content guidelines, visit our Card guidelines.
@@ -105,7 +108,7 @@ const ExpandableCard = ({
   return (
     <LeafyGreenProvider darkMode={darkMode}>
       <Card
-        className={cx(cardStyle(darkMode), className)}
+        className={cn(cardStyles[theme], className)}
         data-lgid={lgIds.root}
         id={id}
         {...rest}
@@ -141,7 +144,7 @@ const ExpandableCard = ({
               <IconButton
                 // Setting 'as="div"' to avoid nesting interactive components for accessibility
                 as="div"
-                className={cx(
+                className={cn(
                   iconStyle,
                   iconThemeStyle[theme],
                   iconTransitionStyle[state],
@@ -166,7 +169,7 @@ const ExpandableCard = ({
               id={contentId}
               aria-labelledby={summaryId}
               ref={childrenWrapperRef}
-              className={cx(
+              className={cn(
                 childrenWrapperStyle,
                 childrenWrapperTransitionStyle(state, childrenHeight),
                 contentClassName,

@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { cx } from '@leafygreen-ui/emotion';
 import { useDarkMode } from '@leafygreen-ui/leafygreen-provider';
 import {
   InferredPolymorphic,
@@ -13,7 +12,11 @@ import { ButtonClassName } from '../styles';
 import { getLgIds } from '../testing';
 import { BaseButtonProps, Size, Variant } from '../types';
 
-import { getClassName } from './Button.styles';
+import { buttonStyles } from './Button.styles';
+
+function cn(...classes: Array<string | false | undefined | null>): string {
+  return classes.filter(Boolean).join(' ');
+}
 
 /**
  * Buttons allow users to take actions, and make choices, with a single tap. Buttons are a type of call to action (CTA) the user can click or press.
@@ -48,18 +51,18 @@ export const Button = InferredPolymorphic<BaseButtonProps, 'button'>(
     const isInteractive = !(disabled || isLoading);
     const lgIds = getLgIds(dataLgId);
 
-    const buttonStyles = getClassName({
+    const tvClassName = buttonStyles({
       variant,
       size,
-      darkMode,
+      isDarkMode: darkMode,
+      isDisabled: !isInteractive,
       baseFontSize,
-      disabled: !isInteractive,
     });
 
     const buttonProps = {
       'data-lgid': lgIds.root,
       type: isAnchor ? undefined : type || 'button',
-      className: cx(ButtonClassName, buttonStyles, className),
+      className: cn(ButtonClassName, tvClassName, className),
       ref: forwardRef,
       'aria-disabled': !isInteractive,
       onClick: isInteractive

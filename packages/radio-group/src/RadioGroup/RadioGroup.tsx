@@ -1,10 +1,10 @@
 import React from 'react';
 
-import { cx } from '@leafygreen-ui/emotion';
 import { useIdAllocator } from '@leafygreen-ui/hooks';
 import { useDarkMode } from '@leafygreen-ui/leafygreen-provider';
 import { isComponentType } from '@leafygreen-ui/lib';
 
+import { cn } from '../cn';
 import { Size } from '../types';
 
 import { radioGroupStyles } from './RadioGroup.styles';
@@ -93,7 +93,7 @@ function RadioGroup({
 
   return (
     <div
-      className={cx(radioGroupStyles, className)}
+      className={cn(radioGroupStyles, className)}
       role="group"
       aria-label={name}
       {...rest}

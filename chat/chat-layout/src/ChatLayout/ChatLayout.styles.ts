@@ -1,28 +1,27 @@
-import { css, cx } from '@leafygreen-ui/emotion';
-
 import {
   COLLAPSED_SIDE_NAV_WIDTH_WITH_BORDER,
   gridAreas,
   PINNED_SIDE_NAV_WIDTH_WITH_BORDER,
   SIDE_NAV_TRANSITION_DURATION,
 } from '../constants';
+import { cn } from '../cn';
 
-const baseContainerStyles = css`
-  overflow: hidden;
-  height: 100%;
-  width: 100%;
-  max-height: 100vh;
-  max-width: 100vw;
-  display: grid;
-  grid-template-areas: '${gridAreas.sideNav} ${gridAreas.main}';
-  grid-template-columns: ${PINNED_SIDE_NAV_WIDTH_WITH_BORDER}px auto;
-  transition: grid-template-columns ${SIDE_NAV_TRANSITION_DURATION}ms
-    ease-in-out;
-`;
+const baseContainerStyles = [
+  'overflow-hidden',
+  'h-full',
+  'w-full',
+  'max-h-screen',
+  'max-w-[100vw]',
+  'grid',
+  `[grid-template-areas:'${gridAreas.sideNav}_${gridAreas.main}']`,
+  `grid-cols-[${PINNED_SIDE_NAV_WIDTH_WITH_BORDER}px_auto]`,
+  `transition-[grid-template-columns]`,
+  `duration-[${SIDE_NAV_TRANSITION_DURATION}ms]`,
+  'ease-in-out',
+].join(' ');
 
-const collapsedContainerStyles = css`
-  grid-template-columns: ${COLLAPSED_SIDE_NAV_WIDTH_WITH_BORDER}px auto;
-`;
+const collapsedContainerStyles =
+  `grid-cols-[${COLLAPSED_SIDE_NAV_WIDTH_WITH_BORDER}px_auto]`;
 
 export const getContainerStyles = ({
   className,
@@ -31,7 +30,7 @@ export const getContainerStyles = ({
   className?: string;
   isPinned: boolean;
 }) =>
-  cx(
+  cn(
     baseContainerStyles,
     {
       [collapsedContainerStyles]: !isPinned,
