@@ -19,7 +19,6 @@
     "@leafygreen-ui/button": "workspace:^",
     "@leafygreen-ui/chip": "workspace:^",
     "@leafygreen-ui/compound-component": "workspace:^",
-    "@leafygreen-ui/emotion": "workspace:^",
     "@leafygreen-ui/hooks": "workspace:^",
     "@leafygreen-ui/icon": "workspace:^",
     "@leafygreen-ui/icon-button": "workspace:^",

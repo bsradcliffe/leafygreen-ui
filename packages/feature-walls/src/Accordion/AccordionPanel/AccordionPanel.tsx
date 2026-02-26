@@ -16,6 +16,8 @@ export const AccordionPanel = forwardRef<HTMLDivElement, AccordionPanelProps>(
 
     const { buttonId, isExpanded, panelId } = useAccordionItemContext();
 
+    const contentWrapper = getContentWrapperStyles(theme);
+
     return (
       <div
         role="region"
@@ -28,7 +30,7 @@ export const AccordionPanel = forwardRef<HTMLDivElement, AccordionPanelProps>(
         inert={!isExpanded ? '' : undefined}
         aria-hidden={!isExpanded}
       >
-        <div className={getContentWrapperStyles(theme)}>{children}</div>
+        <div className={contentWrapper.className} style={contentWrapper.style}>{children}</div>
       </div>
     );
   },

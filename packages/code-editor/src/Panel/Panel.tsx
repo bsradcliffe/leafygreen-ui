@@ -27,6 +27,7 @@ import { ShortcutTable } from '../ShortcutTable';
 
 import {
   getPanelButtonsStyles,
+  getPanelInlineStyles,
   getPanelInnerContentStyles,
   getPanelStyles,
   getPanelTitleStyles,
@@ -135,7 +136,8 @@ export function Panel({
   return (
     <>
       <div
-        className={getPanelStyles({ theme, width, minWidth, maxWidth })}
+        className={getPanelStyles({ theme })}
+        style={getPanelInlineStyles({ width, minWidth, maxWidth })}
         data-lgid={lgIds.panel}
       >
         <div

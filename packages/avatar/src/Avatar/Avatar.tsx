@@ -1,8 +1,9 @@
 import React, { forwardRef } from 'react';
 
-import { cx } from '@leafygreen-ui/emotion';
 import { useDarkMode } from '@leafygreen-ui/leafygreen-provider';
 import { Size } from '@leafygreen-ui/tokens';
+
+import { cn } from '../../cn';
 
 import { getAvatarStyles } from './Avatar.styles';
 import { AvatarProps } from './Avatar.types';
@@ -26,7 +27,7 @@ export const Avatar = forwardRef<HTMLDivElement, AvatarProps>(
     return (
       <div
         ref={fwdRef}
-        className={cx(
+        className={cn(
           getAvatarStyles({ size, theme, format, sizeOverride }),
           className,
         )}

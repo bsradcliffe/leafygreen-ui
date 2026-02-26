@@ -17,7 +17,6 @@
   "dependencies": {
     "@leafygreen-ui/checkbox": "workspace:^",
     "@leafygreen-ui/chip": "workspace:^",
-    "@leafygreen-ui/emotion": "workspace:^",
     "@leafygreen-ui/form-field": "workspace:^",
     "@leafygreen-ui/hooks": "workspace:^",
     "@leafygreen-ui/icon": "workspace:^",
@@ -29,8 +28,7 @@
     "@leafygreen-ui/tokens": "workspace:^",
     "@leafygreen-ui/typography": "workspace:^",
     "chalk": "^4.1.2",
-    "lodash": "^4.17.21",
-    "polished": "^4.2.2"
+    "lodash": "^4.17.21"
   },
   "peerDependencies": {
     "@leafygreen-ui/leafygreen-provider": "workspace:^5.0.0 || ^4.0.0 || ^3.2.0"

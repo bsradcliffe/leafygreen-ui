@@ -3,7 +3,6 @@
 import React, { useEffect, useState } from 'react';
 import { StoryMetaType, StoryType } from '@lg-tools/storybook-utils';
 
-import { css } from '@leafygreen-ui/emotion';
 import LeafyGreenProvider from '@leafygreen-ui/leafygreen-provider';
 
 import { InternalOption } from '../Option';
@@ -33,16 +32,12 @@ const meta: StoryMetaType<typeof ListMenu> = {
             >
               <div
                 ref={divRef}
-                className={css`
-                  height: 0;
-                  color: transparent;
-
-                  td:has(&) {
-                    vertical-align: top;
-                  }
-                `}
+                style={{ height: 0, color: 'transparent' }}
               >
-                SearchInput Placeholder
+                <style>{`td:has(.lg-select-listmenu-story-placeholder) { vertical-align: top; }`}</style>
+                <span className="lg-select-listmenu-story-placeholder">
+                  SearchInput Placeholder
+                </span>
               </div>
               <Instance referenceElement={divRef}>
                 {/* @ts-expect-error missing props*/}

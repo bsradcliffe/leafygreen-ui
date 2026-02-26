@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { cx } from '@leafygreen-ui/emotion';
 import { useDarkMode } from '@leafygreen-ui/leafygreen-provider';
 import {
   Polymorphic,
@@ -9,6 +8,7 @@ import {
 } from '@leafygreen-ui/polymorphic';
 
 import { baseTypographyStyles, defaultTextColor } from '../styles';
+import { cn } from '../utils/cn';
 
 import { subtitleStyles } from './Subtitle.styles';
 import { BaseSubtitleProps } from './Subtitle.types';
@@ -25,7 +25,7 @@ const Subtitle = Polymorphic<BaseSubtitleProps>(
 
     return (
       <Component
-        className={cx(
+        className={cn(
           baseTypographyStyles,
           subtitleStyles,
           defaultTextColor[theme],

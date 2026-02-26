@@ -1,7 +1,6 @@
 import React from 'react';
 
-import { css, cx } from '@leafygreen-ui/emotion';
-
+import { cn } from '../cn';
 import { ProductLogoProps } from '../Logo.types';
 import { getAccessibleProps, getColor } from '../utils';
 
@@ -29,12 +28,7 @@ export const ChartsLogoMark = React.forwardRef(
         viewBox="0 0 18 18"
         width={size}
         height={size}
-        className={cx(
-          css`
-            flex-shrink: 0;
-          `,
-          className,
-        )}
+        className={cn('shrink-0', className)}
         {...rest}
         ref={ref}
       >
@@ -53,7 +47,7 @@ export const ChartsLogoMark = React.forwardRef(
         </defs>
 
         <path
-          className={getColor({
+          style={getColor({
             knockout,
             size,
             darkMode,
@@ -67,7 +61,7 @@ export const ChartsLogoMark = React.forwardRef(
 		C10.197773,9.8429594,9.9750586,9.9268064,9.7495308,9.9141502z"
         />
         <path
-          className={getColor({
+          style={getColor({
             knockout,
             size,
             darkMode,
@@ -80,7 +74,7 @@ export const ChartsLogoMark = React.forwardRef(
 		L5.735918,4.3303709z"
         />
         <path
-          className={getColor({
+          style={getColor({
             knockout,
             size,
             darkMode,

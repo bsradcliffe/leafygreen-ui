@@ -1,5 +1,6 @@
+import { type CSSProperties } from 'react';
+
 import { chipTextClassName } from '@leafygreen-ui/chip';
-import { css } from '@leafygreen-ui/emotion';
 import { createUniqueClassName } from '@leafygreen-ui/lib';
 import { typeScales } from '@leafygreen-ui/tokens';
 
@@ -38,40 +39,33 @@ export const chipWrapperPaddingY = {
 } as const;
 
 /**
- * Override chip sizes
+ * Stylesheet that must be injected for chip size overrides
+ * that target nested child selectors (chipTextClassName).
  */
-export const chipSizeStyles: Record<ComboboxSize, string> = {
-  [ComboboxSize.XSmall]: css`
-    font-size: ${fontSize[ComboboxSize.XSmall]}px;
-    line-height: ${lineHeight[ComboboxSize.XSmall]}px;
+export const chipSizeStyleTag = `
+.lg-combobox-chip-xsmall .${chipTextClassName} {
+  padding-block: ${chipWrapperPaddingY[ComboboxSize.XSmall]}px;
+}
+.lg-combobox-chip-small .${chipTextClassName} {
+  padding-block: ${chipWrapperPaddingY[ComboboxSize.Small]}px;
+}
+.lg-combobox-chip-default .${chipTextClassName} {
+  padding-block: ${chipWrapperPaddingY[ComboboxSize.Default]}px;
+}
+.lg-combobox-chip-large .${chipTextClassName} {
+  padding-inline-end: 10px;
+  padding-block: ${chipWrapperPaddingY[ComboboxSize.Large]}px;
+}
+`;
 
-    .${chipTextClassName} {
-      padding-block: ${chipWrapperPaddingY[ComboboxSize.XSmall]}px;
-    }
-  `,
-  [ComboboxSize.Small]: css`
-    font-size: ${fontSize[ComboboxSize.Small]}px;
-    line-height: ${lineHeight[ComboboxSize.Small]}px;
-
-    .${chipTextClassName} {
-      padding-block: ${chipWrapperPaddingY[ComboboxSize.Small]}px;
-    }
-  `,
-  [ComboboxSize.Default]: css`
-    font-size: ${fontSize[ComboboxSize.Default]}px;
-    line-height: ${lineHeight[ComboboxSize.Default]}px;
-
-    .${chipTextClassName} {
-      padding-block: ${chipWrapperPaddingY[ComboboxSize.Default]}px;
-    }
-  `,
-  [ComboboxSize.Large]: css`
-    font-size: ${fontSize[ComboboxSize.Large]}px;
-    line-height: ${lineHeight[ComboboxSize.Large]}px;
-
-    .${chipTextClassName} {
-      padding-inline-end: 10px;
-      padding-block: ${chipWrapperPaddingY[ComboboxSize.Large]}px;
-    }
-  `,
+export const chipSizeClassName: Record<ComboboxSize, string> = {
+  [ComboboxSize.XSmall]: 'lg-combobox-chip-xsmall',
+  [ComboboxSize.Small]: 'lg-combobox-chip-small',
+  [ComboboxSize.Default]: 'lg-combobox-chip-default',
+  [ComboboxSize.Large]: 'lg-combobox-chip-large',
 };
+
+export const chipSizeStyle = (size: ComboboxSize): CSSProperties => ({
+  fontSize: `${fontSize[size]}px`,
+  lineHeight: `${lineHeight[size]}px`,
+});

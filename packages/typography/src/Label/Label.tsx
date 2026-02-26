@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { cx } from '@leafygreen-ui/emotion';
 import { useDarkMode } from '@leafygreen-ui/leafygreen-provider';
 import {
   Polymorphic,
@@ -8,12 +7,13 @@ import {
   usePolymorphic,
 } from '@leafygreen-ui/polymorphic';
 
+import { cn } from '../utils/cn';
 import { getLgIds } from '../utils';
 import { useUpdatedBaseFontSize } from '../utils/useUpdatedBaseFontSize';
 
 import {
-  getDisabledLabelColorStyle,
-  getLabelStyles,
+  disabledLabelColorStyles,
+  labelStyles,
   labelTypeScaleStyles,
 } from './Label.styles';
 import { BaseLabelProps } from './Label.types';
@@ -37,10 +37,10 @@ export const Label = Polymorphic<BaseLabelProps>(
       <Component
         data-lgid={getLgIds(dataLgId).label}
         data-testid={getLgIds(dataLgId).label}
-        className={cx(
-          getLabelStyles(theme),
+        className={cn(
+          labelStyles[theme],
           labelTypeScaleStyles[baseFontSize],
-          { [getDisabledLabelColorStyle(theme)]: disabled },
+          disabled && disabledLabelColorStyles[theme],
           className,
         )}
         {...rest}

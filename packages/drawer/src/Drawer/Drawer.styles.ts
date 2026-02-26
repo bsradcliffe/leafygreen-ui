@@ -1,5 +1,4 @@
-import { css, cx, keyframes } from '@leafygreen-ui/emotion';
-import { createUniqueClassName, Theme } from '@leafygreen-ui/lib';
+import { createUniqueClassName, injectStyles, Theme } from '@leafygreen-ui/lib';
 import {
   addOverflowShadow,
   color,
@@ -9,6 +8,7 @@ import {
   transitionDuration,
 } from '@leafygreen-ui/tokens';
 
+import { cn } from '../cn';
 import {
   EMBEDDED_TOOLBAR_OVERFLOW_PADDING,
   HEADER_HEIGHT,
@@ -22,26 +22,29 @@ import { getDrawerWidth } from './Drawer.utils';
 
 export const drawerClassName = createUniqueClassName('lg-drawer');
 
-// Because of .show() and .close() in the drawer component, transitioning from 0px to (x)px does not transition correctly. Having the drawer start at the open position while hidden, moving to the closed position, and then animating to the open position is a workaround to get the animation to work.
-// These styles are used for a standalone drawer in overlay mode since it is not part of a grid layout.
-const drawerIn = keyframes`
+/**
+ * Keyframe animations for overlay drawer open/close.
+ */
+injectStyles(
+  'lg-drawer-keyframes',
+  `
+@keyframes lg-drawer-in {
   0% {
     transform: translate3d(0%, 0, 0);
     opacity: 0;
-    visibility: hidden; 
+    visibility: hidden;
   }
   1% {
-   transform: translate3d(100%, 0, 0);
+    transform: translate3d(100%, 0, 0);
     opacity: 1;
     visibility: visible;
   }
   100% {
     transform: translate3d(0%, 0, 0);
   }
-`;
+}
 
-// Keep the drawer opacity at 1 until the end of the animation. The inner container opacity is transitioned separately.
-const drawerOut = keyframes`
+@keyframes lg-drawer-out {
   0% {
     transform: translate3d(0%, 0, 0);
   }
@@ -53,48 +56,88 @@ const drawerOut = keyframes`
     opacity: 0;
     visibility: hidden;
   }
-`;
+}
+`,
+);
 
-const getBaseStyles = ({ theme }: { theme: Theme }) => css`
-  all: unset;
-  background-color: ${color[theme].background.primary.default};
-  border: 1px solid ${color[theme].border.secondary.default};
-  max-width: 50vw;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  box-sizing: border-box;
-  position: relative;
+/**
+ * Base drawer styles per theme (background, border).
+ */
+function getBaseStylesClass(theme: Theme): string {
+  const id = `lg-drawer-base-${theme}`;
+  injectStyles(
+    id,
+    `
+    .${id} {
+      all: unset;
+      background-color: ${color[theme].background.primary.default};
+      border: 1px solid ${color[theme].border.secondary.default};
+      max-width: 50vw;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      box-sizing: border-box;
+      position: relative;
+    }
+
+    @media only screen and (max-width: ${MOBILE_BREAKPOINT}px) {
+      .${id} {
+        width: auto;
+        max-width: 100%;
+        height: 50vh;
+      }
+    }
+  `,
+  );
+  return id;
+}
+
+/**
+ * Overlay open: animate in.
+ */
+const overlayOpenId = 'lg-drawer-overlay-open';
+injectStyles(
+  overlayOpenId,
+  `
+  .${overlayOpenId} {
+    opacity: 1;
+    animation-name: lg-drawer-in;
+  }
 
   @media only screen and (max-width: ${MOBILE_BREAKPOINT}px) {
-    width: auto;
-    max-width: 100%;
-    height: 50vh;
+    .${overlayOpenId} {
+      transform: none;
+    }
   }
-`;
+`,
+);
 
-const overlayOpenStyles = css`
-  opacity: 1;
-  animation-name: ${drawerIn};
+/**
+ * Overlay closed: animate out.
+ */
+const overlayClosedId = 'lg-drawer-overlay-closed';
+injectStyles(
+  overlayClosedId,
+  `
+  .${overlayClosedId} {
+    pointer-events: none;
+    animation-name: lg-drawer-out;
+  }
 
-  // On mobile, the drawer should be positioned at the bottom of the screen when closed, and slide up to the top when opened.
   @media only screen and (max-width: ${MOBILE_BREAKPOINT}px) {
-    transform: none;
+    .${overlayClosedId} {
+      transform: translate3d(0, 100%, 0);
+      opacity: 0;
+    }
   }
-`;
+`,
+);
 
-const overlayClosedStyles = css`
-  pointer-events: none;
-  animation-name: ${drawerOut};
-
-  // On mobile, the drawer should be positioned at the bottom of the screen when closed, and slide up to the top when opened.
-  @media only screen and (max-width: ${MOBILE_BREAKPOINT}px) {
-    transform: translate3d(0, 100%, 0);
-    opacity: 0;
-  }
-`;
-
-const getOverlayStyles = ({
+/**
+ * Overlay positioning, animation, and responsive styles.
+ * Parameterized by z-index, size, toolbar, and open state.
+ */
+function getOverlayClass({
   open,
   shouldAnimate,
   zIndex,
@@ -106,44 +149,49 @@ const getOverlayStyles = ({
   zIndex: number;
   hasToolbar: boolean;
   size: Size;
-}) =>
-  cx(
-    css`
+}): string {
+  const maxWidth = hasToolbar
+    ? getDrawerWidth({ size }).withToolbar
+    : getDrawerWidth({ size }).default;
+  const mobileTransitionDelay = open ? '0ms' : `${TRANSITION_DURATION}ms`;
+  const id = `lg-drawer-overlay-${zIndex}-${maxWidth}-${open ? 'o' : 'c'}`;
+  injectStyles(
+    id,
+    `
+    .${id} {
       position: absolute;
       z-index: ${zIndex};
       top: 0;
       bottom: 0;
       right: 0;
       overflow: visible;
-
-      max-width: ${hasToolbar
-        ? getDrawerWidth({ size }).withToolbar
-        : getDrawerWidth({ size }).default}px;
-
-      // By default, the drawer is positioned off-screen to the right.
+      max-width: ${maxWidth}px;
       transform: translate3d(100%, 0, 0);
       animation-timing-function: ${TRANSITION_TIMING_FUNCTION};
       animation-duration: ${TRANSITION_DURATION}ms;
       animation-fill-mode: forwards;
+    }
 
-      @media only screen and (max-width: ${MOBILE_BREAKPOINT}px) {
+    @media only screen and (max-width: ${MOBILE_BREAKPOINT}px) {
+      .${id} {
         top: unset;
         left: 0;
-        // Since the drawer has position: fixed, we can use normal transitions
         animation: none;
         position: fixed;
         transform: translate3d(0, 100%, 0);
         transition-property: transform, opacity;
         transition-duration: ${TRANSITION_DURATION}ms;
         transition-timing-function: ${TRANSITION_TIMING_FUNCTION};
-        transition-delay: 0ms, ${open ? '0ms' : `${TRANSITION_DURATION}ms`};
+        transition-delay: 0ms, ${mobileTransitionDelay};
       }
-    `,
-    {
-      [overlayOpenStyles]: open,
-      [overlayClosedStyles]: !open && shouldAnimate, // This ensures that the drawer does not animate closed on initial render
-    },
+    }
+  `,
   );
+  return cn(id, {
+    [overlayOpenId]: open,
+    [overlayClosedId]: !open && shouldAnimate,
+  });
+}
 
 const getDisplayModeStyles = ({
   displayMode,
@@ -160,8 +208,8 @@ const getDisplayModeStyles = ({
   hasToolbar: boolean;
   size: Size;
 }) =>
-  cx({
-    [getOverlayStyles({ open, shouldAnimate, zIndex, hasToolbar, size })]:
+  cn({
+    [getOverlayClass({ open, shouldAnimate, zIndex, hasToolbar, size })]:
       displayMode === DisplayMode.Overlay,
   });
 
@@ -184,8 +232,8 @@ export const getDrawerStyles = ({
   hasToolbar?: boolean;
   size: Size;
 }) =>
-  cx(
-    getBaseStyles({ theme }),
+  cn(
+    getBaseStylesClass(theme),
     getDisplayModeStyles({
       displayMode,
       open,
@@ -205,61 +253,113 @@ export const getResizerStyles = ({
   resizerClassName?: string;
   hasToolbar?: boolean;
 }) =>
-  cx(
-    css`
-      position: absolute;
-      left: 0px;
-    `,
-    {
-      [css`
-        left: ${EMBEDDED_TOOLBAR_OVERFLOW_PADDING}px; // An embedded drawer with a toolbar needs to be offset to the right to account for the overflow padding.
-      `]: hasToolbar,
-    },
+  cn(
+    'absolute',
+    hasToolbar
+      ? `left-[${EMBEDDED_TOOLBAR_OVERFLOW_PADDING}px]`
+      : 'left-0',
     resizerClassName,
   );
 
+/**
+ * Shadow styles for overlay drawer.
+ * Composes addOverflowShadow classes with a theme-based background.
+ *
+ * On desktop, a left-side shadow is shown. On mobile, a top-side shadow
+ * replaces it. Both use ::before, so a mobile media query override swaps
+ * the positioning.
+ */
 export const getDrawerShadowStyles = ({
   theme,
   displayMode,
 }: {
   theme: Theme;
   displayMode: DisplayMode;
-}) =>
-  cx(
-    css`
+}) => {
+  const bgId = `lg-drawer-shadow-bg-${theme}`;
+  injectStyles(
+    bgId,
+    `
+    .${bgId} {
       height: 100%;
       background-color: ${color[theme].background.primary.default};
-    `,
-    {
-      [css`
-        ${addOverflowShadow({ isInside: false, side: Side.Left, theme })};
-
-        @media only screen and (max-width: ${MOBILE_BREAKPOINT}px) {
-          ${addOverflowShadow({ isInside: false, side: Side.Top, theme })};
-        }
-      `]: displayMode === DisplayMode.Overlay,
-    },
+    }
+  `,
   );
 
-const getBaseInnerContainerStyles = ({ theme }: { theme: Theme }) => css`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  background-color: ${color[theme].background.primary.default};
-  opacity: 0;
-  transition-property: opacity;
-  transition-duration: ${transitionDuration.faster}ms;
-  transition-timing-function: ${TRANSITION_TIMING_FUNCTION};
-`;
+  // The left shadow class provides the desktop ::before pseudo-element.
+  const leftShadow = addOverflowShadow({
+    isInside: false,
+    side: Side.Left,
+    theme,
+  });
 
-const getInnerOpenContainerStyles = css`
-  transition-property: opacity;
-  transition-duration: ${transitionDuration.slowest}ms;
-  transition-timing-function: ${TRANSITION_TIMING_FUNCTION};
-  transition-delay: ${transitionDuration.default}ms;
-  opacity: 1;
-`;
+  // We also need the top shadow's values on mobile.
+  // Ensure the top shadow class is injected (for its positional styles), but
+  // we only compose the left shadow class and override ::before on mobile.
+  const topShadow = addOverflowShadow({
+    isInside: false,
+    side: Side.Top,
+    theme,
+  });
+
+  // On mobile, swap from left shadow to top shadow by applying the top
+  // shadow class and removing the left shadow class via specificity.
+  const mobileOverrideId = `lg-drawer-shadow-mobile-${theme}`;
+  injectStyles(
+    mobileOverrideId,
+    `
+    @media only screen and (max-width: ${MOBILE_BREAKPOINT}px) {
+      .${mobileOverrideId}.${leftShadow}::before {
+        display: none;
+      }
+    }
+  `,
+  );
+
+  return cn(bgId, {
+    [cn(leftShadow, topShadow, mobileOverrideId)]:
+      displayMode === DisplayMode.Overlay,
+  });
+};
+
+/**
+ * Inner container styles: background, opacity transition.
+ */
+function getBaseInnerContainerClass(theme: Theme): string {
+  const id = `lg-drawer-inner-base-${theme}`;
+  injectStyles(
+    id,
+    `
+    .${id} {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      background-color: ${color[theme].background.primary.default};
+      opacity: 0;
+      transition-property: opacity;
+      transition-duration: ${transitionDuration.faster}ms;
+      transition-timing-function: ${TRANSITION_TIMING_FUNCTION};
+    }
+  `,
+  );
+  return id;
+}
+
+const innerOpenId = 'lg-drawer-inner-open';
+injectStyles(
+  innerOpenId,
+  `
+  .${innerOpenId} {
+    transition-property: opacity;
+    transition-duration: ${transitionDuration.slowest}ms;
+    transition-timing-function: ${TRANSITION_TIMING_FUNCTION};
+    transition-delay: ${transitionDuration.default}ms;
+    opacity: 1;
+  }
+`,
+);
 
 export const getInnerContainerStyles = ({
   theme,
@@ -268,31 +368,40 @@ export const getInnerContainerStyles = ({
   theme: Theme;
   open: boolean;
 }) =>
-  cx(getBaseInnerContainerStyles({ theme }), {
-    [getInnerOpenContainerStyles]: open,
+  cn(getBaseInnerContainerClass(theme), {
+    [innerOpenId]: open,
   });
 
-export const getHeaderStyles = ({ theme }: { theme: Theme }) => css`
-  height: ${HEADER_HEIGHT}px;
-  padding: ${spacing[400]}px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid ${color[theme].border.secondary.default};
-  transition-property: box-shadow;
-  transition-duration: ${transitionDuration.faster}ms;
-  transition-timing-function: ${TRANSITION_TIMING_FUNCTION};
-`;
+/**
+ * Header styles: border, transition.
+ */
+export const getHeaderStyles = ({ theme }: { theme: Theme }): string => {
+  const id = `lg-drawer-header-${theme}`;
+  injectStyles(
+    id,
+    `
+    .${id} {
+      height: ${HEADER_HEIGHT}px;
+      padding: ${spacing[400]}px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid ${color[theme].border.secondary.default};
+      transition-property: box-shadow;
+      transition-duration: ${transitionDuration.faster}ms;
+      transition-timing-function: ${TRANSITION_TIMING_FUNCTION};
+    }
+  `,
+  );
+  return id;
+};
 
-export const titleStyles = css`
-  flex-grow: 1;
-  font-weight: ${fontWeights.semiBold};
-`;
+export const titleStyles = [
+  'grow',
+  `font-[${fontWeights.semiBold}]`,
+].join(' ');
 
-const baseChildrenContainerStyles = css`
-  height: 100%;
-  overflow: hidden;
-`;
+const baseChildrenContainerStyles = 'h-full overflow-hidden';
 
 export const getChildrenContainerStyles = ({
   hasShadowTop,
@@ -301,20 +410,10 @@ export const getChildrenContainerStyles = ({
   hasShadowTop: boolean;
   theme: Theme;
 }) =>
-  cx(baseChildrenContainerStyles, {
+  cn(baseChildrenContainerStyles, {
     [addOverflowShadow({ isInside: true, side: Side.Top, theme })]:
       hasShadowTop,
   });
-
-const innerChildrenContainerScrollStyles = css`
-  height: 100%;
-  overflow-y: auto;
-  overscroll-behavior: contain;
-`;
-
-const innerChildrenContainerPaddingStyles = css`
-  padding: ${spacing[400]}px;
-`;
 
 export const getInnerChildrenContainerStyles = ({
   hasPadding,
@@ -323,7 +422,7 @@ export const getInnerChildrenContainerStyles = ({
   hasPadding: boolean;
   scrollable: boolean;
 }) =>
-  cx({
-    [innerChildrenContainerPaddingStyles]: hasPadding,
-    [innerChildrenContainerScrollStyles]: scrollable,
+  cn({
+    [`p-[${spacing[400]}px]`]: hasPadding,
+    ['h-full overflow-y-auto overscroll-contain']: scrollable,
   });

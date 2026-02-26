@@ -1,7 +1,5 @@
 import React, { ForwardedRef, PropsWithChildren } from 'react';
 
-import { cx } from '@leafygreen-ui/emotion';
-
 import { useTableContext } from '../../TableContext';
 import { LGRowData } from '../../useLeafyGreenTable';
 
@@ -12,6 +10,10 @@ import {
   getHeaderCellContentStyles,
 } from './HeaderCell.styles';
 import { HeaderCellComponentType, HeaderCellProps } from './HeaderCell.types';
+
+function cn(...classes: Array<string | false | undefined | null>): string {
+  return classes.filter(Boolean).join(' ');
+}
 
 /**
  * Component to wrap `<th>` elements for use inside `<thead>` elements.
@@ -34,7 +36,7 @@ const HeaderCellWithRef = <T extends LGRowData>(
     <th
       data-lgid={lgIds.header}
       data-testid={lgIds.header}
-      className={cx(
+      className={cn(
         getBaseHeaderCellStyles(header?.getSize() ?? 0, isSelectable),
         className,
       )}
@@ -43,7 +45,7 @@ const HeaderCellWithRef = <T extends LGRowData>(
       {...rest}
     >
       <div
-        className={cx(
+        className={cn(
           // TS error is ignored (and not expected) as it doesn't show up locally but interrupts build
           // @ts-ignore Header types need to be extended or declared in the react-table namespace
           getHeaderCellContentStyles(align || header?.column.columnDef?.align),

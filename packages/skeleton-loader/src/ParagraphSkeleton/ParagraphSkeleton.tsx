@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { cx } from '@leafygreen-ui/emotion';
 import LeafyGreenProvider, {
   useDarkMode,
 } from '@leafygreen-ui/leafygreen-provider';
@@ -15,6 +14,10 @@ import {
 } from './ParagraphSkeleton.styles';
 import { ParagraphSkeletonProps } from '.';
 
+function cn(...classes: Array<string | false | undefined | null>): string {
+  return classes.filter(Boolean).join(' ');
+}
+
 export function ParagraphSkeleton({
   darkMode: darkModeProp,
   enableAnimations,
@@ -25,7 +28,7 @@ export function ParagraphSkeleton({
   const { darkMode } = useDarkMode(darkModeProp);
   return (
     <LeafyGreenProvider darkMode={darkMode}>
-      <div {...rest} className={cx(rootStyles, className)} aria-busy>
+      <div {...rest} className={cn(rootStyles, className)} aria-busy>
         {withHeader && (
           <Skeleton
             enableAnimations={enableAnimations}

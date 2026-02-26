@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Transition, TransitionGroup } from 'react-transition-group';
 
-import { cx } from '@leafygreen-ui/emotion';
 import {
   useBackdropClick,
   useDynamicRefs,
@@ -18,6 +17,7 @@ import {
 import { Portal } from '@leafygreen-ui/portal';
 import { transitionDuration } from '@leafygreen-ui/tokens';
 
+import { cn } from '../cn';
 import { TOAST_CONSTANTS } from '../constants';
 import { InternalToast } from '../InternalToast';
 import { ToastId, ToastStack, useToast } from '../ToastContext';
@@ -248,7 +248,7 @@ export const ToastContainer = ({
   };
 
   return (
-    <Portal className={cx(portalStyles, toastPortalClassName, portalClassName)}>
+    <Portal className={cn(portalStyles, toastPortalClassName, portalClassName)}>
       {/* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions */}
       <div
         ref={toastContainerRef}
@@ -260,7 +260,7 @@ export const ToastContainer = ({
         onFocus={setHovered}
         onBlur={setUnhovered}
         onKeyDown={handleContainerKeydown}
-        className={cx(toastContainerStyles, {
+        className={cn(toastContainerStyles, {
           [toastContainerVisibleStyles]: doesStackExist,
           [getContainerStatefulStyles({
             topToastHeight: toastHeights[topToastId],
@@ -280,7 +280,7 @@ export const ToastContainer = ({
           data-testid="lg-toast-scroll-container"
           onMouseEnter={setHovered}
           onMouseLeave={setUnhovered}
-          className={cx(scrollContainerStyles, {
+          className={cn(scrollContainerStyles, {
             // Wait to apply fully expanded styles until the toast transition is complete
             [scrollContainerExpandedStyles(totalStackHeight)]: isExpanded,
             [scrollContainerTransitionOutStyles]: isExpanded && !shouldExpand,
@@ -310,7 +310,7 @@ export const ToastContainer = ({
                         onClose={onClose}
                         index={index}
                         isHovered={isHovered || shouldExpand}
-                        className={cx(
+                        className={cn(
                           getToastTransitionStyles({
                             state,
                             theme,

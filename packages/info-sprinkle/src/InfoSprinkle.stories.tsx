@@ -6,7 +6,6 @@ import {
 } from '@lg-tools/storybook-utils';
 import { StoryFn } from '@storybook/react';
 
-import { css } from '@leafygreen-ui/emotion';
 import { BaseFontSize } from '@leafygreen-ui/tokens';
 
 import { Align, InfoSprinkle, Justify } from '.';
@@ -29,14 +28,7 @@ const meta: StoryMetaType<typeof InfoSprinkle> = {
         open: true,
       },
       decorator: Instance => (
-        <div
-          className={css`
-            width: 256px;
-            height: 100px;
-            display: flex;
-            align-items: center;
-          `}
-        >
+        <div className="w-[256px] h-[100px] flex items-center">
           <Instance />
         </div>
       ),

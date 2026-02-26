@@ -1,13 +1,14 @@
 import React, { forwardRef, MouseEvent, useEffect, useState } from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 
-import { cx } from '@leafygreen-ui/emotion';
 import { useIdAllocator, useMergeRefs } from '@leafygreen-ui/hooks';
 import { Icon } from '@leafygreen-ui/icon';
 import { IconButton } from '@leafygreen-ui/icon-button';
 import { useDarkMode } from '@leafygreen-ui/leafygreen-provider';
 import { BaseFontSize } from '@leafygreen-ui/tokens';
 import { Body } from '@leafygreen-ui/typography';
+
+import { cn } from '../cn';
 
 import {
   childrenContainerStyles,
@@ -123,9 +124,10 @@ export const ChartCard = forwardRef<HTMLDivElement, ChartCardProps>(
               >
                 <Icon
                   glyph="ChevronDown"
-                  className={cx(toggleIconStyles, {
-                    [openToggleIconStyles]: isOpen,
-                  })}
+                  className={cn(
+                    toggleIconStyles,
+                    isOpen && openToggleIconStyles,
+                  )}
                 />
               </IconButton>
               <Body weight="medium" baseFontSize={BaseFontSize.Body2}>

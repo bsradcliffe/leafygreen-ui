@@ -2,25 +2,49 @@ import React from 'react';
 import { storybookArgTypes } from '@lg-tools/storybook-utils';
 import type { StoryFn, StoryObj } from '@storybook/react';
 
-import { css } from '@leafygreen-ui/emotion';
 import { Icon } from '@leafygreen-ui/icon';
 import LeafyGreenProvider from '@leafygreen-ui/leafygreen-provider';
+import {
+  borderRadius,
+  color,
+  fontFamilies,
+  fontWeights,
+  InteractionState,
+  Variant,
+} from '@leafygreen-ui/tokens';
 
-import { getRootStylesText } from './ChartTooltip.styles';
 import {
   CustomTooltip,
   CustomTooltipProps,
   sampleTooltipParams,
 } from './CustomTooltip';
 
+const TOOLTIP_WIDTH = 270;
+
 const TooltipRoot = (Story: StoryFn, ctx: any) => {
-  const rootClassName = css`
-    ${getRootStylesText(ctx.args.darkMode ? 'dark' : 'light')}
-  `;
+  const theme = ctx.args.darkMode ? 'dark' : 'light';
 
   return (
     <LeafyGreenProvider darkMode={!!ctx.args.darkMode}>
-      <div className={rootClassName}>
+      <div
+        style={{
+          width: TOOLTIP_WIDTH,
+          overflow: 'hidden',
+          backgroundColor:
+            color[theme].background[Variant.InversePrimary][
+              InteractionState.Default
+            ],
+          color:
+            color[theme].text[Variant.InversePrimary][
+              InteractionState.Default
+            ],
+          borderRadius: borderRadius[150],
+          fontFamily: fontFamilies.default,
+          fontSize: 12,
+          lineHeight: '20px',
+          fontWeight: fontWeights.regular,
+        }}
+      >
         <Story />
       </div>
     </LeafyGreenProvider>

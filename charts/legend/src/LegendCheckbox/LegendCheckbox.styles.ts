@@ -1,5 +1,4 @@
 import { checkWrapperClassName } from '@leafygreen-ui/checkbox';
-import { css, cx } from '@leafygreen-ui/emotion';
 import { Theme } from '@leafygreen-ui/lib';
 import { palette } from '@leafygreen-ui/palette';
 import {
@@ -10,74 +9,63 @@ import {
   typeScales,
 } from '@leafygreen-ui/tokens';
 
-const getBaseLegendCheckboxStyles = ({
+import { cn } from '../cn';
+
+/**
+ * Generates a CSS string for a scoped class. These styles use nested selectors
+ * (`:hover`, `.${checkWrapperClassName}`, `::before`, `label`) which cannot be
+ * expressed as Tailwind utility classes on a single element.
+ */
+export const getScopedCss = ({
+  scopeClass,
   checkboxColor,
   theme,
-}: {
-  checkboxColor?: string;
-  theme: Theme;
-}) => {
-  const defaultCheckboxColor =
-    theme === 'dark' ? palette.blue.light1 : palette.blue.base;
-
-  return css`
-    padding: 0 ${spacing[100]}px;
-    border-radius: ${borderRadius[100]}px;
-
-    &:hover {
-      background-color: ${color[theme].background.secondary.hover};
-    }
-
-    .${checkWrapperClassName} {
-      border-color: ${checkboxColor || defaultCheckboxColor};
-
-      &::before {
-        background-color: ${checkboxColor || defaultCheckboxColor};
-      }
-    }
-
-    label {
-      align-items: center;
-      gap: ${spacing[100]}px;
-      font-size: ${typeScales.disclaimer.fontSize}px;
-      line-height: ${typeScales.disclaimer.lineHeight}px;
-      font-weight: ${fontWeights.regular};
-    }
-  `;
-};
-
-const getFilledStyles = ({
-  checkboxColor,
-  theme,
-}: {
-  checkboxColor?: string;
-  theme: Theme;
-}) => {
-  const defaultCheckboxColor =
-    theme === 'dark' ? palette.blue.light1 : palette.blue.base;
-
-  return css`
-    .${checkWrapperClassName} {
-      background-color: ${checkboxColor || defaultCheckboxColor};
-    }
-  `;
-};
-
-export const getLegendCheckboxStyles = ({
-  className,
-  checkboxColor,
   showFilled,
-  theme,
 }: {
-  className?: string;
+  scopeClass: string;
   checkboxColor?: string;
-  showFilled: boolean;
   theme: Theme;
-}) =>
-  cx(
-    getBaseLegendCheckboxStyles({ checkboxColor, theme }),
-    {
-      [getFilledStyles({ checkboxColor, theme })]: showFilled,
-    },
-    className,
-  );
+  showFilled: boolean;
+}) => {
+  const defaultCheckboxColor =
+    theme === 'dark' ? palette.blue.light1 : palette.blue.base;
+  const resolvedColor = checkboxColor || defaultCheckboxColor;
+
+  return `
+.${scopeClass} {
+  padding: 0 ${spacing[100]}px;
+  border-radius: ${borderRadius[100]}px;
+}
+.${scopeClass}:hover {
+  background-color: ${color[theme].background.secondary.hover};
+}
+.${scopeClass} .${checkWrapperClassName} {
+  border-color: ${resolvedColor};
+}
+.${scopeClass} .${checkWrapperClassName}::before {
+  background-color: ${resolvedColor};
+}
+${
+  showFilled
+    ? `.${scopeClass} .${checkWrapperClassName} {
+  background-color: ${resolvedColor};
+}`
+    : ''
+}
+.${scopeClass} label {
+  align-items: center;
+  gap: ${spacing[100]}px;
+  font-size: ${typeScales.disclaimer.fontSize}px;
+  line-height: ${typeScales.disclaimer.lineHeight}px;
+  font-weight: ${fontWeights.regular};
+}
+  `.trim();
+};
+
+export const getLegendCheckboxClassName = ({
+  scopeClass,
+  className,
+}: {
+  scopeClass: string;
+  className?: string;
+}) => cn(scopeClass, className);

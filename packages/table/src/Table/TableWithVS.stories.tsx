@@ -9,7 +9,6 @@ import { StoryFn } from '@storybook/react';
 
 import { Badge } from '@leafygreen-ui/badge';
 import { Button } from '@leafygreen-ui/button';
-import { css } from '@leafygreen-ui/emotion';
 import { Tooltip } from '@leafygreen-ui/tooltip';
 
 import {
@@ -78,10 +77,8 @@ const meta: StoryMetaType<typeof Table> = {
 };
 export default meta;
 
-const virtualScrollingContainerHeight = css`
-  max-height: calc(100vh - 200px);
-  width: 100%;
-`;
+const virtualScrollingContainerHeight =
+  'max-h-[calc(100vh-200px)] w-full';
 
 const basicColumnDefs: Array<LGColumnDef<Person>> = [
   {
@@ -725,9 +722,7 @@ export const TallRows: StoryFn<StoryTableProps> = args => {
 
   return (
     <div
-      className={css`
-        width: 100%;
-      `}
+      className="w-full"
     >
       <div>
         <p>{table.getRowModel().rows.length} total rows</p>
@@ -769,13 +764,7 @@ export const TallRows: StoryFn<StoryTableProps> = args => {
                       return (
                         <Cell
                           key={cell.id}
-                          className={css`
-                            padding-block: 4px;
-
-                            & > div {
-                              max-height: unset;
-                            }
-                          `}
+                          className="[padding-block:4px] [&>div]:max-h-[unset]"
                           cell={cell}
                         >
                           {flexRender(
@@ -867,9 +856,7 @@ export const WithLeafyGreenComponents: StoryFn<StoryTableProps> = args => {
 
   return (
     <div
-      className={css`
-        width: 100%;
-      `}
+      className="w-full"
     >
       <div>
         <p>{table.getRowModel().rows.length} total rows</p>

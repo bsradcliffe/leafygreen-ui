@@ -1,73 +1,45 @@
-import { css } from '@leafygreen-ui/emotion';
 import { Theme } from '@leafygreen-ui/lib';
-import { palette } from '@leafygreen-ui/palette';
-import { spacing, typeScales } from '@leafygreen-ui/tokens';
 
 import { Variant } from './ConfirmationModal.types';
 
-export const titleStyle = css`
-  line-height: 32px;
-  margin-bottom: 10px;
-`;
+export const titleStyle = 'leading-[32px] mb-[10px]';
 
-export const baseModalStyle = css`
-  width: 600px;
-  padding: initial;
-  letter-spacing: 0;
-`;
+export const baseModalStyle = 'w-[600px] p-0 tracking-[0px]';
 
-export const contentStyle = css`
-  font-size: ${typeScales.body1.fontSize}px;
-  line-height: ${typeScales.body1.lineHeight}px;
-`;
+/** font-size: 13px, line-height: 20px (body1 typeScale) */
+export const contentStyle = 'text-[13px] leading-[20px]';
 
-export const contentDarkModeStyles = css`
-  color: ${palette.gray.light1};
-`;
+export const contentDarkModeStyles = 'text-[#C1C7C6]';
 
 export const contentVariantStyles: Record<Variant, string> = {
-  [Variant.Default]: css`
-    padding: 40px 36px 0px;
-  `,
-  [Variant.Danger]: css`
-    padding: 40px 36px 0px 78px;
-  `,
+  [Variant.Default]: 'pt-[40px] px-[36px] pb-0',
+  [Variant.Danger]: 'pt-[40px] pr-[36px] pb-0 pl-[78px]',
 };
 
-export const textEntryInputStyle = css`
-  width: 300px;
-  margin-top: 14px;
+/**
+ * The nested label selector (`label { margin-bottom: 3px }`) is converted to
+ * a Tailwind arbitrary variant on child `label` elements.
+ */
+export const textEntryInputStyle =
+  'w-[300px] mt-[14px] [&_label]:mb-[3px]';
 
-  label {
-    margin-bottom: 3px;
-  }
-`;
+/** margin-left: 8px (spacing[200]) */
+export const buttonStyle = 'ml-[8px]';
 
-export const buttonStyle = css`
-  margin: 0 0 0 ${spacing[200]}px;
-`;
-
-export const warningIconStyle = css`
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: absolute;
-  left: 36px;
-  top: 40px;
-
-  svg {
-    margin-top: -3px;
-  }
-`;
+export const warningIconStyle = [
+  'w-[32px]',
+  'h-[32px]',
+  'rounded-full',
+  'flex',
+  'items-center',
+  'justify-center',
+  'absolute',
+  'left-[36px]',
+  'top-[40px]',
+  '[&_svg]:mt-[-3px]',
+].join(' ');
 
 export const warningIconThemeStyle: Record<Theme, string> = {
-  [Theme.Light]: css`
-    background: ${palette.red.light3};
-  `,
-  [Theme.Dark]: css`
-    background: ${palette.red.dark2};
-  `,
+  [Theme.Light]: 'bg-[#FFEAE5]',
+  [Theme.Dark]: 'bg-[#970606]',
 };

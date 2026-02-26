@@ -1,4 +1,3 @@
-import { css } from '@leafygreen-ui/emotion';
 import { Theme } from '@leafygreen-ui/lib';
 import { palette } from '@leafygreen-ui/palette';
 import { focusRing, transitionDuration } from '@leafygreen-ui/tokens';
@@ -20,23 +19,20 @@ export const themeColor: Record<
   },
 };
 
-export const iconBaseStyles = css`
-  all: unset;
-  display: flex;
-  cursor: pointer;
-  transition: all ${transitionDuration.default}ms ease-in-out;
-`;
+export const iconBaseStyles = [
+  '[all:unset]',
+  'flex',
+  'cursor-pointer',
+  `transition-all`,
+  `duration-[${transitionDuration.default}ms]`,
+  'ease-in-out',
+].join(' ');
 
-export const iconThemeStyles = (theme: Theme) => css`
-  color: ${themeColor[theme].iconBackgroundColor};
-
-  &:hover {
-    color: ${themeColor[theme].iconBackgroundHoverColor};
-  }
-
-  &:focus-visible {
-    box-shadow: ${focusRing[theme].default};
-    outline: none;
-    border-radius: 50%;
-  }
-`;
+export const iconThemeStyles = (theme: Theme) =>
+  [
+    `text-[${themeColor[theme].iconBackgroundColor}]`,
+    `hover:text-[${themeColor[theme].iconBackgroundHoverColor}]`,
+    `focus-visible:shadow-[${focusRing[theme].default}]`,
+    'focus-visible:outline-none',
+    'focus-visible:rounded-full',
+  ].join(' ');

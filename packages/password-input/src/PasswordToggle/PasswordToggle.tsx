@@ -1,12 +1,17 @@
 import React from 'react';
 
 import { VisuallyHidden } from '@leafygreen-ui/a11y';
-import { cx } from '@leafygreen-ui/emotion';
 import { Icon } from '@leafygreen-ui/icon';
 import { IconButton } from '@leafygreen-ui/icon-button';
 
 import { baseStyles, sizeStyles } from './PasswordToggle.styles';
 import { PasswordToggleProps } from './PasswordToggle.types';
+
+function cn(
+  ...classes: Array<string | false | undefined | null>
+): string {
+  return classes.filter(Boolean).join(' ');
+}
 
 export const PasswordToggle = ({
   showPassword,
@@ -20,7 +25,7 @@ export const PasswordToggle = ({
       <IconButton
         aria-label="Toggle password visibility"
         onClick={handlePasswordToggleClick}
-        className={cx(baseStyles, sizeStyles[size])}
+        className={cn(baseStyles, sizeStyles[size])}
         role="switch"
         aria-checked={showPassword ? true : false}
         type="button"

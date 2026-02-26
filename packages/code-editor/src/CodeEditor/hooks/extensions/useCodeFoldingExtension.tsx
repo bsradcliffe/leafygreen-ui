@@ -2,7 +2,6 @@ import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { type EditorView } from '@codemirror/view';
 
-import { css } from '@leafygreen-ui/emotion';
 import { Icon } from '@leafygreen-ui/icon';
 import { spacing } from '@leafygreen-ui/tokens';
 
@@ -57,20 +56,16 @@ export function useCodeFoldingExtension({
               <Icon
                 glyph="ChevronDown"
                 size={CUSTOM_ICON_SIZE}
-                className={css`
-                  margin-top: ${spacing[100]}px;
-                `}
+                className={`mt-[${spacing[100]}px]`}
               />
             ) : (
               <Icon
                 glyph="ChevronRight"
                 size={CUSTOM_ICON_SIZE}
-                className={css`
-                  /**
-                   * Design indicated that the close icon seemed a bit unaligned at 4px, so we added 1px to better align
-                   */
-                  margin-top: ${spacing[100] + 1}px;
-                `}
+                /**
+                 * Design indicated that the close icon seemed a bit unaligned at 4px, so we added 1px to better align
+                 */
+                className={`mt-[${spacing[100] + 1}px]`}
               />
             ),
           );

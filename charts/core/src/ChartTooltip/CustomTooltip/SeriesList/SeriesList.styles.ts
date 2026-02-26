@@ -1,4 +1,3 @@
-import { css } from '@leafygreen-ui/emotion';
 import { Theme } from '@leafygreen-ui/lib';
 import {
   color,
@@ -15,14 +14,15 @@ export const getSeriesListStyles = ({
 }: {
   theme: Theme;
   tooltipPinned: boolean;
-}) => css`
-  all: unset;
-  background-color: ${color[theme].background[Variant.InversePrimary][
-    InteractionState.Default
-  ]};
-  overflow-y: auto;
-  max-height: ${tooltipPinned ? `${PINNED_SERIES_LIST_MAX_HEIGHT}px` : 'none'};
-  padding: 0 ${spacing[150]}px ${spacing[150]}px;
-  display: grid;
-  gap: ${spacing[100]}px;
-`;
+}) =>
+  [
+    '[all:unset]',
+    `bg-[${color[theme].background[Variant.InversePrimary][InteractionState.Default]}]`,
+    'overflow-y-auto',
+    tooltipPinned
+      ? `max-h-[${PINNED_SERIES_LIST_MAX_HEIGHT}px]`
+      : 'max-h-none',
+    `pb-[${spacing[150]}px] px-[${spacing[150]}px]`,
+    'grid',
+    `gap-[${spacing[100]}px]`,
+  ].join(' ');

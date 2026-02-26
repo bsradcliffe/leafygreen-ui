@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { cx } from '@leafygreen-ui/emotion';
 import { useDarkMode } from '@leafygreen-ui/leafygreen-provider';
 import {
   Polymorphic,
@@ -8,6 +7,7 @@ import {
   usePolymorphic,
 } from '@leafygreen-ui/polymorphic';
 
+import { cn } from '../utils/cn';
 import { useUpdatedBaseFontSize } from '../utils/useUpdatedBaseFontSize';
 
 import { getErrorMessageStyle } from './Error.styles';
@@ -28,7 +28,7 @@ const Error = Polymorphic<BaseErrorProps>(
     return (
       <Component
         {...rest}
-        className={cx(getErrorMessageStyle({ theme, baseFontSize }), className)}
+        className={cn(getErrorMessageStyle({ theme, baseFontSize }), className)}
       >
         {children}
       </Component>

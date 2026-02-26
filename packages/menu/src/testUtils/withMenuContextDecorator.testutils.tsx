@@ -3,7 +3,6 @@ import React from 'react';
 import { InstanceDecorator } from '@lg-tools/storybook-utils';
 import noop from 'lodash/noop';
 
-import { css } from '@leafygreen-ui/emotion';
 import { Theme } from '@leafygreen-ui/lib';
 
 import { Menu, MenuVariant } from '../Menu';
@@ -40,11 +39,7 @@ export const withMenuContext =
     const theme = darkMode ? Theme.Dark : Theme.Light;
 
     return (
-      <div
-        className={css`
-          max-width: 256px;
-        `}
-      >
+      <div style={{ maxWidth: 256 }}>
         <MenuContext.Provider
           value={{
             darkMode,

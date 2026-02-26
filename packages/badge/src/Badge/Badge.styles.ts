@@ -1,111 +1,40 @@
-import { css } from '@leafygreen-ui/emotion';
 import { Theme } from '@leafygreen-ui/lib';
-import { palette } from '@leafygreen-ui/palette';
-import { fontFamilies, fontWeights } from '@leafygreen-ui/tokens';
 
 import { Variant } from './Badge.types';
 
-export const baseStyle = css`
-  font-family: ${fontFamilies.default};
-  display: inline-flex;
-  align-items: center;
-  font-weight: ${fontWeights.semiBold};
-  font-size: 12px;
-  line-height: 16px;
-  border-radius: 24px;
-  height: 18px;
-  padding-left: 6px;
-  padding-right: 6px;
-  text-transform: uppercase;
-  border: 1px solid;
-  letter-spacing: 0.4px;
-`;
+export const baseStyle = [
+  "font-family-['Euclid_Circular_A','Helvetica_Neue',Helvetica,Arial,sans-serif]",
+  'inline-flex',
+  'items-center',
+  'font-semibold',
+  'text-[12px]',
+  'leading-[16px]',
+  'rounded-[24px]',
+  'h-[18px]',
+  'px-[6px]',
+  'uppercase',
+  'border',
+  'border-solid',
+  'tracking-[0.4px]',
+].join(' ');
 
 export const badgeVariants: Record<Theme, Record<Variant, string>> = {
   [Theme.Dark]: {
-    [Variant.LightGray]: css`
-      background-color: ${palette.gray.dark3};
-      border-color: ${palette.gray.dark2};
-      color: ${palette.gray.light2};
-    `,
-
-    [Variant.DarkGray]: css`
-      background-color: ${palette.gray.dark1};
-      border-color: ${palette.gray.base};
-      color: ${palette.gray.light3};
-    `,
-
-    [Variant.Red]: css`
-      background-color: ${palette.red.dark3};
-      border-color: ${palette.red.dark2};
-      color: ${palette.red.light2};
-    `,
-
-    [Variant.Yellow]: css`
-      background-color: ${palette.yellow.dark3};
-      border-color: ${palette.yellow.dark2};
-      color: ${palette.yellow.light2};
-    `,
-
-    [Variant.Blue]: css`
-      background-color: ${palette.blue.dark2};
-      border-color: ${palette.blue.dark1};
-      color: ${palette.blue.light2};
-    `,
-
-    [Variant.Green]: css`
-      background-color: ${palette.green.dark3};
-      border-color: ${palette.green.dark2};
-      color: ${palette.green.light1};
-    `,
-
-    [Variant.Purple]: css`
-      background-color: ${palette.purple.dark2};
-      border-color: ${palette.purple.base};
-      color: ${palette.purple.light2};
-    `,
+    [Variant.LightGray]: 'bg-[#1C2D38] border-[#3D4F58] text-[#E8EDEB]',
+    [Variant.DarkGray]: 'bg-[#5C6C75] border-[#889397] text-[#F9FBFA]',
+    [Variant.Red]: 'bg-[#5B0000] border-[#970606] text-[#FFCDC7]',
+    [Variant.Yellow]: 'bg-[#4C2100] border-[#944F01] text-[#FFEC9E]',
+    [Variant.Blue]: 'bg-[#083C90] border-[#1254B7] text-[#C3E7FE]',
+    [Variant.Green]: 'bg-[#023430] border-[#00684A] text-[#71F6BA]',
+    [Variant.Purple]: 'bg-[#5E0C9E] border-[#B45AF2] text-[#F1D4FD]',
   },
   [Theme.Light]: {
-    [Variant.LightGray]: css`
-      background-color: ${palette.gray.light3};
-      border-color: ${palette.gray.light2};
-      color: ${palette.gray.dark1};
-    `,
-
-    [Variant.DarkGray]: css`
-      background-color: ${palette.gray.dark2};
-      border-color: ${palette.gray.dark3};
-      color: ${palette.white};
-    `,
-
-    [Variant.Red]: css`
-      background-color: ${palette.red.light3};
-      border-color: ${palette.red.light2};
-      color: ${palette.red.dark2};
-    `,
-
-    [Variant.Yellow]: css`
-      background-color: ${palette.yellow.light3};
-      border-color: ${palette.yellow.light2};
-      color: ${palette.yellow.dark2};
-    `,
-
-    [Variant.Blue]: css`
-      background-color: ${palette.blue.light3};
-      border-color: ${palette.blue.light2};
-      color: ${palette.blue.dark1};
-    `,
-
-    [Variant.Green]: css`
-      background-color: ${palette.green.light3};
-      border-color: ${palette.green.light2};
-      color: ${palette.green.dark2};
-    `,
-
-    [Variant.Purple]: css`
-      background-color: ${palette.purple.light3};
-      border-color: ${palette.purple.light2};
-      color: ${palette.purple.dark2};
-    `,
+    [Variant.LightGray]: 'bg-[#F9FBFA] border-[#E8EDEB] text-[#5C6C75]',
+    [Variant.DarkGray]: 'bg-[#3D4F58] border-[#1C2D38] text-[#FFFFFF]',
+    [Variant.Red]: 'bg-[#FFEAE5] border-[#FFCDC7] text-[#970606]',
+    [Variant.Yellow]: 'bg-[#FEF7DB] border-[#FFEC9E] text-[#944F01]',
+    [Variant.Blue]: 'bg-[#E1F7FF] border-[#C3E7FE] text-[#1254B7]',
+    [Variant.Green]: 'bg-[#E3FCF7] border-[#C0FAE6] text-[#00684A]',
+    [Variant.Purple]: 'bg-[#F9EBFF] border-[#F1D4FD] text-[#5E0C9E]',
   },
 } as const;

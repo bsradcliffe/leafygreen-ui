@@ -1,39 +1,30 @@
-import { css } from '@leafygreen-ui/emotion';
 import { Theme } from '@leafygreen-ui/lib';
-import { palette } from '@leafygreen-ui/palette';
 
-export const baseStyles = css`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 40px;
-`;
+export const baseStyles = [
+  'flex',
+  'items-center',
+  'justify-center',
+  'h-[40px]',
+].join(' ');
 
 export const themeStyle: Record<Theme, string> = {
-  [Theme.Light]: css`
-    border-bottom: 1px solid ${palette.gray.light2};
-    color: ${palette.green.dark2};
-
-    &:first-of-type {
-      border-top: 1px solid ${palette.gray.light2};
-    }
-  `,
-  [Theme.Dark]: css`
-    border-bottom: 1px solid ${palette.gray.dark2};
-    color: ${palette.gray.light1};
-
-    &:first-of-type {
-      border-top: 1px solid ${palette.gray.dark2};
-    }
-  `,
+  [Theme.Light]: [
+    'border-b',
+    'border-b-[#E8EDEB]',
+    'text-[#00684A]',
+    'first-of-type:border-t',
+    'first-of-type:border-t-[#E8EDEB]',
+  ].join(' '),
+  [Theme.Dark]: [
+    'border-b',
+    'border-b-[#3D4F58]',
+    'text-[#C1C7C6]',
+    'first-of-type:border-t',
+    'first-of-type:border-t-[#3D4F58]',
+  ].join(' '),
 };
 
 export const activeThemeStyle: Record<Theme, string> = {
-  [Theme.Light]: css`
-    background-color: ${palette.green.light3};
-  `,
-  [Theme.Dark]: css`
-    color: ${palette.green.light1};
-    background-color: ${palette.green.dark3};
-  `,
+  [Theme.Light]: 'bg-[#E3FCF7]',
+  [Theme.Dark]: 'text-[#71F6BA] bg-[#023430]',
 };

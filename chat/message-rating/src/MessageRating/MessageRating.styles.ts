@@ -1,26 +1,25 @@
-import { css, cx } from '@leafygreen-ui/emotion';
 import { spacing } from '@leafygreen-ui/tokens';
 
-const baseContainerStyles = css`
-  display: flex;
-  align-items: center;
-  gap: ${spacing[200]}px;
-`;
+import { cn } from '../cn';
+
+const baseContainerStyles = [
+  'flex',
+  'items-center',
+  `gap-[${spacing[200]}px]`,
+].join(' ');
 
 export const getContainerStyles = (className?: string) =>
-  cx(baseContainerStyles, className);
+  cn(baseContainerStyles, className);
 
-export const buttonContainerStyles = css`
-  display: flex;
-  align-items: center;
-  gap: ${spacing[100]}px;
-`;
+export const buttonContainerStyles = [
+  'flex',
+  'items-center',
+  `gap-[${spacing[100]}px]`,
+].join(' ');
 
-const baseHiddenStyles = css`
-  display: none;
-`;
+const baseHiddenStyles = 'hidden';
 
 export const getHiddenStyles = (isHidden: boolean) =>
-  cx({
+  cn({
     [baseHiddenStyles]: isHidden,
   });

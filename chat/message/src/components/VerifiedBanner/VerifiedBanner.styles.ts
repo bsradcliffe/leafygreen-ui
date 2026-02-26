@@ -1,6 +1,1 @@
-import { css } from '@leafygreen-ui/emotion';
-
-export const textStyles = css`
-  display: inline;
-  color: inherit;
-`;
+export const textStyles = 'inline text-inherit';

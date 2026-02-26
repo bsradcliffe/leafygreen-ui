@@ -7,7 +7,6 @@ import React, {
   useState,
 } from 'react';
 
-import { cx } from '@leafygreen-ui/emotion';
 import { useMutationObserver } from '@leafygreen-ui/hooks';
 import { useDarkMode } from '@leafygreen-ui/leafygreen-provider';
 import { isComponentType } from '@leafygreen-ui/lib';
@@ -26,6 +25,10 @@ import {
   counterVisibleStyles,
   tooltipStyles,
 } from './Pipeline.styles';
+
+function cn(...classes: Array<string | false | undefined | null>): string {
+  return classes.filter(Boolean).join(' ');
+}
 
 /**
  *
@@ -143,12 +146,12 @@ const Pipeline = forwardRef(
           {...rest}
           data-testid="pipeline"
           ref={ref}
-          className={cx(baseSizeStyles[size], basePipelineStyles, className)}
+          className={cn(baseSizeStyles[size], basePipelineStyles, className)}
         >
           <ol
             ref={setPipelineNode}
             data-testid="pipeline-stages"
-            className={cx(basePipelineListStyles)}
+            className={basePipelineListStyles}
           >
             {childrenAsPipelineStages}
           </ol>
@@ -164,9 +167,9 @@ const Pipeline = forwardRef(
             setOpen={setTooltipOpen}
             trigger={
               <Counter
-                className={cx({
-                  [counterVisibleStyles]: !!hiddenStages.length,
-                })}
+                className={cn(
+                  !!hiddenStages.length && counterVisibleStyles,
+                )}
                 onMouseEnter={handleMouseEnter}
               />
             }

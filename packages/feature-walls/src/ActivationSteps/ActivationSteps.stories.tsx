@@ -6,8 +6,6 @@ import {
 } from '@lg-tools/storybook-utils';
 import { StoryFn } from '@storybook/react';
 
-import { css } from '@leafygreen-ui/emotion';
-
 import {
   generateMockActivationSteps,
   MOCK_SECTION_TITLE,
@@ -91,9 +89,7 @@ const Template: StoryFn<TemplateProps> = ({
   return (
     <ActivationSteps
       {...rest}
-      className={css`
-        height: 500px;
-      `}
+      className="h-[500px]"
       currentStep={currentStep}
       steps={generateMockActivationSteps(
         numberOfActivationSteps,

@@ -81,6 +81,12 @@ export const PreviewCard = forwardRef<HTMLDivElement, PreviewCardProps>(
       }, TRANSITION_DURATION);
     }, [isOpen]);
 
+    const contentWrapperStyles = getContentWrapperStyles({
+      collapsedHeight,
+      isOpen: !!isOpen,
+      theme,
+    });
+
     return (
       <LeafyGreenProvider darkMode={darkMode}>
         <div
@@ -92,11 +98,8 @@ export const PreviewCard = forwardRef<HTMLDivElement, PreviewCardProps>(
         >
           <div
             aria-labelledby={buttonId}
-            className={getContentWrapperStyles({
-              collapsedHeight,
-              isOpen: !!isOpen,
-              theme,
-            })}
+            className={contentWrapperStyles.className}
+            style={contentWrapperStyles.style as React.CSSProperties}
             data-lgid={lgIds.content}
             id={contentId}
             // @ts-expect-error - react type issue: https://github.com/facebook/react/pull/24730

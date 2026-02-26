@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 
-import { cx } from '@leafygreen-ui/emotion';
 import { DEFAULT_MESSAGES } from '@leafygreen-ui/form-field';
 import { useControlledValue, useIdAllocator } from '@leafygreen-ui/hooks';
 import LeafyGreenProvider, {
@@ -30,8 +29,14 @@ import {
 } from './PasswordInput.types';
 import { convertStateToFormFieldState, getStateFromArray } from './utils';
 
+function cn(
+  ...classes: Array<string | false | undefined | null>
+): string {
+  return classes.filter(Boolean).join(' ');
+}
+
 /**
- * A password input protects user’s sensitive information and prevents unauthorized access to a page or product. It features an icon button that allows the user to toggle the visibility of the input field. This provides them with the opportunity to view any typing errors and confirm their input.
+ * A password input protects user's sensitive information and prevents unauthorized access to a page or product. It features an icon button that allows the user to toggle the visibility of the input field. This provides them with the opportunity to view any typing errors and confirm their input.
  */
 export const PasswordInput = React.forwardRef<
   HTMLInputElement,
@@ -119,9 +124,7 @@ export const PasswordInput = React.forwardRef<
         >
           {label && (
             <Label
-              className={cx(labelBaseStyles, {
-                [labelLargeOverrideStyles]: size === Size.Large,
-              })}
+              className={cn(labelBaseStyles, size === Size.Large && labelLargeOverrideStyles)}
               htmlFor={inputId}
               disabled={disabled}
               data-lgid={lgIds.root}
@@ -143,14 +146,12 @@ export const PasswordInput = React.forwardRef<
               aria-label={!label && ariaLabelProp ? ariaLabelProp : undefined}
               aria-disabled={disabled}
               aria-invalid={state === State.Error || state === State.Warning}
-              className={cx(
+              className={cn(
                 inputBaseStyles,
                 inputSizeStyles[size],
                 inputBaseThemeStyles[theme],
-                {
-                  [inputThemeStyles[theme][state]]: !disabled,
-                  [cx(getInputDisabledStyles(theme))]: disabled,
-                },
+                !disabled && inputThemeStyles[theme][state],
+                disabled && getInputDisabledStyles(theme),
               )}
               onChange={handleChange}
               readOnly={disabled}

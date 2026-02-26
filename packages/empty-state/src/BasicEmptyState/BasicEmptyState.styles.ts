@@ -1,41 +1,23 @@
-import { css, cx } from '@leafygreen-ui/emotion';
 import { Theme } from '@leafygreen-ui/lib';
-import { color, spacing } from '@leafygreen-ui/tokens';
 
-export const rootStyles = css`
-  padding: ${spacing[1000]}px;
-  display: flex;
-  gap: ${spacing[400]}px;
-  align-items: center;
-  justify-content: center;
-`;
+function cn(...classes: Array<string | false | undefined | null>): string {
+  return classes.filter(Boolean).join(' ');
+}
 
-export const textContainerStyles = css`
-  max-width: 466px;
-`;
+export const rootStyles = 'p-[40px] flex gap-[16px] items-center justify-center';
+
+export const textContainerStyles = 'max-w-[466px]';
 
 export const getBadgeStyles = (className?: string) =>
-  cx(
-    css`
-      margin-bottom: ${spacing[300]}px;
-    `,
-    className,
-  );
+  cn('mb-[12px]', className);
 
-export const titleStyles = css`
-  margin-bottom: ${spacing[300]}px;
-`;
+export const titleStyles = 'mb-[12px]';
 
-export const getDescriptionStyles = (theme: Theme) => css`
-  color: ${color[theme].text.secondary.default};
-`;
+export const descriptionThemeStyles: Record<Theme, string> = {
+  [Theme.Light]: 'text-[#5C6C75]',
+  [Theme.Dark]: 'text-[#C1C7C6]',
+};
 
-export const buttonContainerStyles = css`
-  display: flex;
-  gap: ${spacing[300]}px;
-  margin-top: ${spacing[600]}px;
-`;
+export const buttonContainerStyles = 'flex gap-[12px] mt-[24px]';
 
-export const externalLinkStyles = css`
-  margin-top: ${spacing[300]}px;
-`;
+export const externalLinkStyles = 'mt-[12px]';

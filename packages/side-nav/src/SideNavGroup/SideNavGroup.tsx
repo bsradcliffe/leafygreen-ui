@@ -1,10 +1,10 @@
 import React, { useMemo } from 'react';
 
-import { cx } from '@leafygreen-ui/emotion';
 import { useIdAllocator } from '@leafygreen-ui/hooks';
 import { isComponentGlyph } from '@leafygreen-ui/icon';
 import { isComponentType } from '@leafygreen-ui/lib';
 
+import { cn } from '../cn';
 import { SideNavGroupCollapsed } from '../SideNavGroupCollapsed';
 import { SideNavGroupOpen } from '../SideNavGroupOpen';
 
@@ -121,7 +121,7 @@ function SideNavGroup({
   };
 
   return (
-    <li className={cx(listItemStyle, className)} {...rest}>
+    <li className={cn(listItemStyle, className)} {...rest}>
       {collapsible ? (
         // collapsed, items in menu are hidden by default but can be toggled open on click
         <>

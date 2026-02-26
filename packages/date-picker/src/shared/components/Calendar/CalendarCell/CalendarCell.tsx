@@ -2,24 +2,29 @@ import React, {
   FocusEventHandler,
   KeyboardEventHandler,
   MouseEventHandler,
+  useState,
 } from 'react';
 
-import { cx } from '@leafygreen-ui/emotion';
 import { useForwardedRef } from '@leafygreen-ui/hooks';
 import { useDarkMode } from '@leafygreen-ui/leafygreen-provider';
 import { keyMap } from '@leafygreen-ui/lib';
 
 import {
+  activeIndicatorBg,
+  calendarCellClassName,
   calendarCellCurrentStyles,
-  calendarCellHighlightStyles,
-  calendarCellHoverStyles,
-  calendarCellRangeHoverStyles,
-  calendarCellRangeStyles,
+  calendarCellHighlightIndicatorStyle,
+  calendarCellHoverIndicatorBg,
+  calendarCellHoverTextColor,
+  calendarCellInlineStyle,
+  calendarCellRangeElements,
+  calendarCellRangeHoverIndicatorBg,
   calendarCellStateStyles,
-  calendarCellStyles,
-  cellTextCurrentStyles,
-  cellTextStyles,
-  indicatorBaseStyles,
+  cellTextClassName,
+  cellTextCurrentInlineStyle,
+  cellTextCurrentUnderlineStyle,
+  indicatorBaseClassName,
+  indicatorBaseInlineStyle,
   indicatorClassName,
 } from './CalendarCell.styles';
 import {
@@ -27,6 +32,10 @@ import {
   CalendarCellRangeState,
   CalendarCellState,
 } from './CalendarCell.types';
+
+function cn(...classes: Array<string | false | undefined | null>): string {
+  return classes.filter(Boolean).join(' ');
+}
 
 /**
  * A single calendar cell.
@@ -60,6 +69,9 @@ export const CalendarCell = React.forwardRef<
     const isActive = state === CalendarCellState.Active;
     const isInRange = rangeState !== CalendarCellRangeState.None;
 
+    const [isHovered, setIsHovered] = useState(false);
+    const [isFocused, setIsFocused] = useState(false);
+
     const handleClick: MouseEventHandler<HTMLTableCellElement> = e => {
       if (!isDisabled) {
         (onClick as MouseEventHandler<HTMLTableCellElement>)?.(e);
@@ -73,12 +85,67 @@ export const CalendarCell = React.forwardRef<
       }
     };
 
-    const handleFocus: FocusEventHandler<HTMLTableCellElement> = e => {
+    const handleFocusEvent: FocusEventHandler<HTMLTableCellElement> = e => {
       // not checking `isHighlighted` since this event is triggered
       // before the prop changes
       if (state === CalendarCellState.Disabled) {
         e.currentTarget.blur();
       }
+      setIsFocused(true);
+    };
+
+    const handleBlur: FocusEventHandler<HTMLTableCellElement> = () => {
+      setIsFocused(false);
+    };
+
+    const handleMouseEnter = () => setIsHovered(true);
+    const handleMouseLeave = () => setIsHovered(false);
+
+    // Compute range pseudo-element styles
+    const rangeElements = !isDisabled
+      ? calendarCellRangeElements[theme][rangeState]
+      : {};
+
+    // Compute the cell style by merging all states
+    const cellStyle: React.CSSProperties = {
+      ...calendarCellInlineStyle,
+      ...calendarCellStateStyles[theme][state],
+      ...(isCurrent ? calendarCellCurrentStyles[theme][state] : {}),
+      ...('cellStyle' in rangeElements ? rangeElements.cellStyle : {}),
+      // Hover styles
+      ...(isHovered && !isDisabled
+        ? {
+            ...(calendarCellHoverTextColor[theme][state]
+              ? { color: calendarCellHoverTextColor[theme][state] }
+              : {}),
+          }
+        : {}),
+    };
+
+    // Highlight styles (focus outline on the cell)
+    const highlightStyle: React.CSSProperties =
+      isFocusable && (isFocused || isHighlighted)
+        ? { outline: 'none', zIndex: 1 }
+        : {};
+
+    // Indicator styles
+    const indicatorStyle: React.CSSProperties = {
+      ...indicatorBaseInlineStyle,
+      // Active indicator background
+      ...(isActive ? { backgroundColor: activeIndicatorBg[theme] } : {}),
+      // Highlight focus ring on indicator
+      ...(isFocusable && (isFocused || isHighlighted)
+        ? calendarCellHighlightIndicatorStyle[theme]
+        : {}),
+      // Hover background on indicator
+      ...(isHovered && !isDisabled
+        ? {
+            backgroundColor:
+              isInRange && !isActive
+                ? calendarCellRangeHoverIndicatorBg[theme]
+                : (calendarCellHoverIndicatorBg[theme][state] ?? undefined),
+          }
+        : {}),
     };
 
     return (
@@ -92,31 +159,39 @@ export const CalendarCell = React.forwardRef<
         aria-selected={isActive}
         aria-disabled={state === CalendarCellState.Disabled}
         tabIndex={isFocusable ? 0 : -1}
-        className={cx(
-          calendarCellStyles,
-          calendarCellStateStyles[theme][state],
-          calendarCellHoverStyles[theme][state],
-          {
-            [calendarCellRangeStyles[theme][rangeState]]: !isDisabled,
-            [calendarCellCurrentStyles[theme][state]]: isCurrent,
-            [calendarCellRangeHoverStyles[theme]]: isInRange && !isActive,
-            [calendarCellHighlightStyles[theme]]: isFocusable,
-          },
-          className,
-        )}
+        className={cn(calendarCellClassName, className)}
+        style={{ ...cellStyle, ...highlightStyle }}
         onClick={handleClick}
         onKeyDown={handleKeyDown}
-        onFocus={handleFocus}
+        onFocus={handleFocusEvent}
+        onBlur={handleBlur}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
         {...rest}
       >
-        <div className={cx(indicatorBaseStyles, indicatorClassName)}></div>
+        {/* Range before pseudo-element */}
+        {'before' in rangeElements && rangeElements.before && (
+          <div style={rangeElements.before} />
+        )}
+        {/* Range after pseudo-element */}
+        {'after' in rangeElements && rangeElements.after && (
+          <div style={rangeElements.after} />
+        )}
+        <div
+          className={cn(indicatorBaseClassName, indicatorClassName)}
+          style={indicatorStyle}
+        />
         <span
           aria-hidden={true} // hidden, since the `td` announces the value via `aria-label`
-          className={cx(cellTextStyles, {
-            [cellTextCurrentStyles]: isCurrent,
-          })}
+          className={cellTextClassName}
+          style={{
+            position: 'relative',
+            ...(isCurrent ? cellTextCurrentInlineStyle : {}),
+          }}
         >
           {children}
+          {/* Current date underline indicator (replaces ::after) */}
+          {isCurrent && <span style={cellTextCurrentUnderlineStyle} />}
         </span>
       </td>
     );

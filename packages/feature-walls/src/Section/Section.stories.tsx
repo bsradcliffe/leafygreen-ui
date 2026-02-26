@@ -5,7 +5,6 @@ import {
   StoryType,
 } from '@lg-tools/storybook-utils';
 
-import { css } from '@leafygreen-ui/emotion';
 import { spacing } from '@leafygreen-ui/tokens';
 import { Body, Subtitle } from '@leafygreen-ui/typography';
 
@@ -15,21 +14,11 @@ const sampleText = {
   title: 'Title',
 };
 
-const removeStorybookPadding = css`
-  margin: 0 -100px;
-`;
+const removeStorybookPadding = 'mx-[-100px] my-0';
 
-const sectionChildContainerStyles = css`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: ${spacing[300]}px;
-`;
+const sectionChildContainerStyles = `w-full flex flex-col gap-[${spacing[300]}px]`;
 
-const sectionChildrenContainerStyles = css`
-  display: flex;
-  gap: ${spacing[400]}px;
-`;
+const sectionChildrenContainerStyles = `flex gap-[${spacing[400]}px]`;
 
 const SectionChild = ({ index }: { index: number }) => {
   return (

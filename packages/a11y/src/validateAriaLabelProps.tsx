@@ -1,4 +1,8 @@
-// Validate that either aria-label or aria-labelledby are present within props.
+/**
+ * Validate that either aria-label or aria-labelledby are present within props.
+ *
+ * @deprecated RAC validates internally.
+ */
 export function validateAriaLabelProps(
   props: Record<string, any>,
   componentName: string,

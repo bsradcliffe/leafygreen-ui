@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Button, Size } from '@leafygreen-ui/button';
-import { cx } from '@leafygreen-ui/emotion';
 import { useForwardedRef, useIdAllocator } from '@leafygreen-ui/hooks';
 import LeafyGreenProvider, {
   useDarkMode,
@@ -11,6 +10,7 @@ import {
   useInferredPolymorphic,
 } from '@leafygreen-ui/polymorphic';
 
+import { cn } from '../cn';
 import { Menu } from '../Menu';
 import { getLgIds } from '../utils/getLgIds';
 
@@ -89,7 +89,7 @@ export const SplitButton = InferredPolymorphic<
 
     return (
       <div
-        className={cx(buttonContainerStyles, className)}
+        className={cn(buttonContainerStyles, className)}
         ref={containerRef}
         data-testid={lgIds.root}
         data-lgid={lgIds.root}
@@ -99,7 +99,7 @@ export const SplitButton = InferredPolymorphic<
             as={Component}
             {...sharedButtonProps}
             {...buttonProps}
-            className={cx(buttonBaseStyles, {
+            className={cn(buttonBaseStyles, {
               [buttonThemeStyles(theme, variant)]: !disabled,
             })}
             data-testid={lgIds.button}

@@ -1,4 +1,3 @@
-import { css } from '@leafygreen-ui/emotion';
 import { Theme } from '@leafygreen-ui/lib';
 import {
   color,
@@ -9,24 +8,23 @@ import {
 
 const CLOSE_BUTTON_SIZE = 16;
 
-export const getHeaderStyles = (theme: Theme) => css`
-  color: ${color[theme].text[Variant.InverseSecondary][
-    InteractionState.Default
-  ]};
-  margin-bottom: ${spacing[100]}px;
-  padding: ${spacing[150]}px ${spacing[150]}px 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
+export const getHeaderStyles = (theme: Theme) =>
+  [
+    `text-[${color[theme].text[Variant.InverseSecondary][InteractionState.Default]}]`,
+    `mb-[${spacing[100]}px]`,
+    `pt-[${spacing[150]}px] px-[${spacing[150]}px]`,
+    'flex',
+    'justify-between',
+    'items-center',
+  ].join(' ');
 
-export const closeButtonStyles = css`
-  height: ${CLOSE_BUTTON_SIZE}px;
-  width: ${CLOSE_BUTTON_SIZE}px;
-`;
+export const closeButtonStyles = [
+  `h-[${CLOSE_BUTTON_SIZE}px]`,
+  `w-[${CLOSE_BUTTON_SIZE}px]`,
+].join(' ');
 
-export const pinTooltipNoteStyles = css`
-  display: flex;
-  align-items: center;
-  gap: ${spacing[50]}px;
-`;
+export const pinTooltipNoteStyles = [
+  'flex',
+  'items-center',
+  `gap-[${spacing[50]}px]`,
+].join(' ');

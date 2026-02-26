@@ -1,4 +1,5 @@
-import { css, cx } from '@leafygreen-ui/emotion';
+import { CSSProperties } from 'react';
+
 import { Theme } from '@leafygreen-ui/lib';
 import {
   color,
@@ -7,78 +8,74 @@ import {
   transitionDuration,
 } from '@leafygreen-ui/tokens';
 
+import { cn } from '../cn';
+
 const TRANSITION_DURATION = transitionDuration.slower;
 
-const baseContainerStyles = css`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: ${spacing[400]}px;
-`;
+const baseContainerStyles = [
+  'flex',
+  'flex-col',
+  'items-center',
+  `gap-[${spacing[400]}px]`,
+].join(' ');
 
 export const getContainerStyles = (className?: string) =>
-  cx(baseContainerStyles, className);
+  cn(baseContainerStyles, className);
 
-const getGridStyles = ({ repeatCount }: { repeatCount: number }) => css`
-  display: grid;
-  grid-template-columns: repeat(${repeatCount}, 1fr);
-  gap: ${spacing[400]}px;
-  width: 100%;
-`;
-
-export const getVisibleChildrenContainerStyles = ({
+export const getVisibleChildrenContainerStyle = ({
   repeatCount,
 }: {
   repeatCount: number;
-}) => css`
-  ${getGridStyles({ repeatCount })}
-`;
+}): CSSProperties => ({
+  display: 'grid',
+  gridTemplateColumns: `repeat(${repeatCount}, 1fr)`,
+  gap: `${spacing[400]}px`,
+  width: '100%',
+});
 
-export const childContainerStyles = css`
-  width: 100%;
-  height: fit-content;
-`;
+export const childContainerStyles = 'w-full h-fit';
 
-export const getExpandableWrapperStyles = ({
+export const getExpandableWrapperStyle = ({
   isExpanded,
 }: {
   isExpanded: boolean;
-}) => css`
-  display: grid;
-  grid-template-rows: ${isExpanded ? '1fr' : '0fr'};
-  transition: grid-template-rows ${TRANSITION_DURATION}ms ease-in-out;
-  width: 100%;
-`;
+}): CSSProperties => ({
+  display: 'grid',
+  gridTemplateRows: isExpanded ? '1fr' : '0fr',
+  transition: `grid-template-rows ${TRANSITION_DURATION}ms ease-in-out`,
+  width: '100%',
+});
 
-export const getExpandableChildrenContainerStyles = ({
+export const getExpandableChildrenContainerStyle = ({
   repeatCount,
 }: {
   repeatCount: number;
-}) => css`
-  ${getGridStyles({ repeatCount })}
-  overflow: hidden;
-  min-height: 0;
-`;
+}): CSSProperties => ({
+  display: 'grid',
+  gridTemplateColumns: `repeat(${repeatCount}, 1fr)`,
+  gap: `${spacing[400]}px`,
+  width: '100%',
+  overflow: 'hidden',
+  minHeight: 0,
+});
 
-export const getExpandButtonStyles = (theme: Theme) => css`
-  height: 20px;
-  background: transparent;
-  border: none;
-  box-shadow: none;
-  color: ${color[theme].text.primary.default};
-  font-weight: ${fontWeights.regular};
+export const getExpandButtonStyles = (theme: Theme): string =>
+  [
+    'h-[20px]',
+    'bg-transparent',
+    'border-none',
+    'shadow-none',
+    `font-[${fontWeights.regular}]`,
+    'hover:bg-transparent',
+    'hover:border-none',
+    'hover:shadow-none',
+    'focus-visible:bg-transparent',
+  ].join(' ');
 
-  &:hover {
-    background: transparent;
-    border: none;
-    box-shadow: none;
-  }
+export const getExpandButtonStyle = (theme: Theme): CSSProperties => ({
+  color: color[theme].text.primary.default,
+});
 
-  &:focus-visible {
-    background: transparent;
-  }
-
-  svg {
-    color: ${color[theme].icon.secondary.default};
-  }
-`;
+export const getExpandButtonIconStyle = (theme: Theme): CSSProperties => ({
+  color: color[theme].icon.secondary.default,
+});

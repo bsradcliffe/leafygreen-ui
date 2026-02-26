@@ -1,18 +1,9 @@
-import { css } from '@leafygreen-ui/emotion';
-import { spacing, typeScales } from '@leafygreen-ui/tokens';
+// typeScales.large: fontSize=18, lineHeight=24
+// spacing[1] = 4px
 
-export const labelDescriptionContainerStyle = css`
-  display: flex;
-  flex-direction: column;
-  margin-bottom: ${spacing[1]}px;
-`;
+export const labelDescriptionContainerStyle = 'flex flex-col mb-[4px]';
 
-export const wrapperStyle = css`
-  display: flex;
-  flex-direction: column;
-`;
+export const wrapperStyle = 'flex flex-col';
 
-export const largeLabelStyles = css`
-  font-size: ${typeScales.large.fontSize}px;
-  line-height: ${typeScales.large.lineHeight}px;
-`;
+// font-size: 18px; line-height: 24px
+export const largeLabelStyles = 'text-[18px] leading-[24px]';

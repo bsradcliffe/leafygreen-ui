@@ -13,7 +13,6 @@ import {
   testLocales,
   testTimeZoneLabels,
 } from '@leafygreen-ui/date-utils/testing';
-import { css } from '@leafygreen-ui/emotion';
 import LeafyGreenProvider from '@leafygreen-ui/leafygreen-provider';
 import { Modal } from '@leafygreen-ui/modal';
 import { Size } from '@leafygreen-ui/tokens';
@@ -102,9 +101,7 @@ export const LiveExample: StoryFn<typeof DatePicker> = props => {
 
   return (
     <div
-      className={css`
-        width: 200px;
-      `}
+      style={{ width: '200px' }}
     >
       <DatePicker
         {...props}

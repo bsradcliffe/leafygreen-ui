@@ -1,159 +1,70 @@
-import { css, cx } from '@leafygreen-ui/emotion';
-import { createUniqueClassName, Theme } from '@leafygreen-ui/lib';
-import { palette } from '@leafygreen-ui/palette';
-import { transitionDuration } from '@leafygreen-ui/tokens';
+import { Theme } from '@leafygreen-ui/lib';
 
 import { Size } from '../types';
 
-export const svgInnerOutlineClassName = createUniqueClassName('pipeline');
-export const svgOuterOutlineClassName = createUniqueClassName('pipeline');
-export const svgInnerClassName = createUniqueClassName('pipeline');
+// Static class names to replace createUniqueClassName
+export const svgInnerOutlineClassName = 'lg-pipeline-inner-outline';
+export const svgOuterOutlineClassName = 'lg-pipeline-outer-outline';
+export const svgInnerClassName = 'lg-pipeline-inner';
 
-export const counterVisibleStyles = css`
-  display: flex;
-`;
+export const counterVisibleStyles = 'flex';
 
-export const counterSvgBaseStyles = css`
-  position: absolute;
-  width: 100%;
-  height: calc(100% + 10px);
-  display: flex;
-`;
+export const counterSvgBaseStyles =
+  'absolute w-full h-[calc(100%+10px)] flex';
 
-export const counterSvgColStyles = css`
-  width: 50%;
-  position: relative;
-  overflow: hidden;
-`;
+export const counterSvgColStyles =
+  'w-1/2 relative overflow-hidden';
 
 export const counterSizeStyles: Record<Size, string> = {
-  [Size.XSmall]: css`
-    min-width: 44px;
-    margin-left: -6px;
-
-    &::before {
-      padding: 0 18px;
-    }
-  `,
-  [Size.Small]: css`
-    min-width: 48px;
-    margin-left: -8px;
-
-    &::before {
-      padding: 0 21px;
-    }
-  `,
-  [Size.Normal]: css`
-    min-width: 54px;
-    margin-left: -9px;
-
-    &::before {
-      padding: 0 23px;
-    }
-  `,
-  [Size.Large]: css`
-    min-width: 66px;
-    margin-left: -11px;
-
-    &::before {
-      padding: 0px 28px;
-    }
-  `,
+  [Size.XSmall]:
+    'min-w-[44px] -ml-[6px] before:px-[18px] before:py-0',
+  [Size.Small]:
+    'min-w-[48px] -ml-[8px] before:px-[21px] before:py-0',
+  [Size.Normal]:
+    'min-w-[54px] -ml-[9px] before:px-[23px] before:py-0',
+  [Size.Large]:
+    'min-w-[66px] -ml-[11px] before:px-[28px] before:py-0',
 };
 
-export const counterBaseStyles = cx(
-  css`
-    display: none;
-    flex-grow: 1;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    margin-left: -11px;
-    &::before {
-      white-space: nowrap;
-      content: '+' counter(hiddenCount);
-      z-index: 1;
-    }
+// transitionDuration.slower = 300ms
+export const counterBaseStyles = [
+  'hidden',
+  'grow',
+  'items-center',
+  'justify-center',
+  'relative',
+  '-ml-[11px]',
+  "before:whitespace-nowrap before:[content:'+'_counter(hiddenCount)] before:z-[1]",
+  `[&_.${svgInnerClassName}]:transition-all [&_.${svgInnerClassName}]:duration-300 [&_.${svgInnerClassName}]:ease-in-out`,
+  `[&_.${svgInnerOutlineClassName}]:fill-[rgba(255,255,255,0)] [&_.${svgInnerOutlineClassName}]:transition-all [&_.${svgInnerOutlineClassName}]:duration-300 [&_.${svgInnerOutlineClassName}]:ease-in-out`,
+  `[&_.${svgOuterOutlineClassName}]:fill-[rgba(255,255,255,0)] [&_.${svgOuterOutlineClassName}]:transition-all [&_.${svgOuterOutlineClassName}]:duration-300 [&_.${svgOuterOutlineClassName}]:ease-in-out`,
+  'focus-visible:outline-none focus:outline-none',
+].join(' ');
 
-    .${svgInnerClassName} {
-      transition: all ${transitionDuration.slower}ms ease-in-out;
-    }
+export const svgStyles =
+  'absolute top-1/2 -translate-y-1/2';
 
-    .${svgInnerOutlineClassName}, .${svgOuterOutlineClassName} {
-      fill: rgba(255, 255, 255, 0);
-      transition: all ${transitionDuration.slower}ms ease-in-out;
-    }
+export const svgLayer1Styles =
+  `${svgStyles} left-0`;
 
-    &:focus-visible,
-    &:focus {
-      outline: none;
-    }
-  `,
-);
+export const svgLayer2Styles =
+  `${svgStyles} right-0`;
 
-export const svgStyles = css`
-  position: absolute;
-  top: 50%;
-  transform: translate(0%, -50%);
-`;
-
-export const svgLayer1Styles = cx(
-  svgStyles,
-  css`
-    left: 0;
-  `,
-);
-
-export const svgLayer2Styles = cx(
-  svgStyles,
-  css`
-    right: 0;
-  `,
-);
-
+// palette.blue.dark1 = #1254B7, palette.blue.dark2 = #083C90
+// palette.blue.light1 = #0498EC, palette.blue.light2 = #C3E7FE, palette.blue.light3 = #E1F7FF
 export const counterThemeStyles: Record<Theme, string> = {
-  [Theme.Light]: css`
-    color: ${palette.blue.dark1};
-
-    .${svgInnerClassName} {
-      fill: ${palette.blue.light3};
-    }
-
-    &:focus-visible {
-      .${svgOuterOutlineClassName} {
-        fill: ${palette.blue.light1};
-      }
-    }
-
-    &:hover {
-      .${svgInnerOutlineClassName} {
-        fill: ${palette.blue.light3};
-      }
-      .${svgInnerClassName} {
-        fill: ${palette.blue.light2};
-      }
-    }
-  `,
-  [Theme.Dark]: css`
-    color: ${palette.blue.light2};
-
-    .${svgInnerClassName} {
-      fill: ${palette.blue.dark2};
-    }
-
-    &:focus-visible {
-      .${svgOuterOutlineClassName} {
-        fill: ${palette.blue.light1};
-      }
-    }
-
-    &:hover {
-      .${svgInnerOutlineClassName} {
-        fill: ${palette.blue.dark2};
-      }
-      .${svgInnerClassName} {
-        fill: ${palette.blue.dark1};
-      }
-    }
-  `,
+  [Theme.Light]: [
+    'text-[#1254B7]',
+    `[&_.${svgInnerClassName}]:fill-[#E1F7FF]`,
+    `[&:focus-visible_.${svgOuterOutlineClassName}]:fill-[#0498EC]`,
+    `[&:hover_.${svgInnerOutlineClassName}]:fill-[#E1F7FF]`,
+    `[&:hover_.${svgInnerClassName}]:fill-[#C3E7FE]`,
+  ].join(' '),
+  [Theme.Dark]: [
+    'text-[#C3E7FE]',
+    `[&_.${svgInnerClassName}]:fill-[#083C90]`,
+    `[&:focus-visible_.${svgOuterOutlineClassName}]:fill-[#0498EC]`,
+    `[&:hover_.${svgInnerOutlineClassName}]:fill-[#083C90]`,
+    `[&:hover_.${svgInnerClassName}]:fill-[#1254B7]`,
+  ].join(' '),
 };

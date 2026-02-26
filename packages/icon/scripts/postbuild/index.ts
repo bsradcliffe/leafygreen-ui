@@ -3,12 +3,13 @@ import fs from 'fs';
 import path from 'path';
 
 /**
- * Validates that built icon files do not import @emotion packages directly.
- * Icons should only depend on @leafygreen-ui/emotion, not @emotion/* packages.
+ * Validates that built icon files do not import any emotion packages.
+ * Icons have been migrated off Emotion and should not depend on
+ * @leafygreen-ui/emotion or @emotion/* packages.
  */
 function validateBuiltIcons(): void {
   const distDirs = ['dist/esm', 'dist/umd'];
-  const emotionPattern = /@emotion\//g;
+  const emotionPattern = /@emotion\/|@leafygreen-ui\/emotion/g;
   let hasErrors = false;
   const errors: Array<{ file: string; matches: Array<string> }> = [];
 
@@ -29,7 +30,7 @@ function validateBuiltIcons(): void {
       const filePath = path.join(fullPath, file);
       const content = fs.readFileSync(filePath, 'utf-8');
 
-      // Check for @emotion imports/requires
+      // Check for any emotion imports/requires
       const matches = content.match(emotionPattern);
 
       if (matches) {
@@ -41,15 +42,15 @@ function validateBuiltIcons(): void {
   }
 
   if (hasErrors) {
-    console.error('❌ ERROR: Found @emotion imports in built icon files!\n');
+    console.error('ERROR: Found emotion imports in built icon files!\n');
     console.error(
-      'Icons should only depend on @leafygreen-ui/emotion, not @emotion/* packages directly.\n',
+      'Icons should not depend on @leafygreen-ui/emotion or @emotion/* packages.\n',
     );
-    console.error('Files with @emotion imports:');
+    console.error('Files with emotion imports:');
     for (const error of errors) {
       console.error(`  - ${error.file}`);
       for (const match of error.matches) {
-        console.error(`    → ${match}`);
+        console.error(`    -> ${match}`);
       }
     }
     console.error('\nThis indicates a build configuration issue.');

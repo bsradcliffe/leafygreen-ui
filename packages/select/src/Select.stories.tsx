@@ -8,7 +8,6 @@ import { StoryFn } from '@storybook/react';
 import { userEvent, within } from '@storybook/test';
 
 import { Button } from '@leafygreen-ui/button';
-import { css, cx } from '@leafygreen-ui/emotion';
 import BeakerIcon from '@leafygreen-ui/icon/dist/Beaker';
 import LeafyGreenProvider from '@leafygreen-ui/leafygreen-provider';
 import { RenderMode } from '@leafygreen-ui/popover';
@@ -92,9 +91,7 @@ const meta: StoryMetaType<typeof Select> = {
         disabled: [false, true],
       },
       args: {
-        className: css`
-          width: 256px;
-        `,
+        className: 'w-[256px]',
       },
       decorator: (Instance, context) => {
         return (
@@ -156,13 +153,9 @@ export const LiveExample: StoryFn<SelectProps> = ({
   <Select
     {...args}
     data-test="hello-world"
-    className={cx(
-      css`
-        min-width: 200px;
-        max-width: 400px;
-      `,
-      className,
-    )}
+    className={['min-w-[200px] max-w-[400px]', className]
+      .filter(Boolean)
+      .join(' ')}
     // eslint-disable-next-line no-console
     onChange={v => console.log(v)}
     aria-label="hello world"
@@ -219,12 +212,7 @@ export const InitialLongSelectOpen = {
   render: () => {
     return (
       <Select
-        className={cx(
-          css`
-            min-width: 200px;
-            max-width: 400px;
-          `,
-        )}
+        className="min-w-[200px] max-w-[400px]"
         aria-label="hey"
         // eslint-disable-next-line react/no-children-prop
         children={childrenArray}
@@ -238,12 +226,7 @@ export const InitialLongSelectOpen = {
   },
   decorators: [
     (StoryFn, _ctx) => (
-      <div
-        className={css`
-          height: 100vh;
-          padding: 0;
-        `}
-      >
+      <div style={{ height: '100vh', padding: 0 }}>
         <StoryFn />
       </div>
     ),
@@ -255,21 +238,8 @@ export const ControlledOpenState: StoryFn = () => {
   const [value, setValue] = useState('');
 
   return (
-    <div
-      className={css`
-        display: flex;
-        flex-direction: column;
-        gap: 16px;
-        min-width: 300px;
-      `}
-    >
-      <div
-        className={css`
-          display: flex;
-          gap: 8px;
-          align-items: center;
-        `}
-      >
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', minWidth: '300px' }}>
+      <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
         <Button onClick={() => setIsOpen(true)} size="small">
           Open Select
         </Button>
@@ -318,33 +288,20 @@ export const ControlledOpenStateWithInitialValue: StoryFn = () => {
   const [value, setValue] = useState('banana'); // Start with a selected value
 
   return (
-    <div
-      className={css`
-        display: flex;
-        flex-direction: column;
-        gap: 16px;
-        min-width: 300px;
-      `}
-    >
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', minWidth: '300px' }}>
       <div
-        className={css`
-          padding: 12px;
-          background-color: #f3f4f6;
-          border-radius: 6px;
-          font-size: 14px;
-        `}
+        style={{
+          padding: '12px',
+          backgroundColor: '#f3f4f6',
+          borderRadius: '6px',
+          fontSize: '14px',
+        }}
       >
         <strong>State:</strong> Open = {isOpen ? 'true' : 'false'}, Value ={' '}
         {value || 'none'}
       </div>
 
-      <div
-        className={css`
-          display: flex;
-          gap: 8px;
-          flex-wrap: wrap;
-        `}
-      >
+      <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
         <Button onClick={() => setIsOpen(!isOpen)} size="small">
           {isOpen ? 'Close' : 'Open'} Select
         </Button>
@@ -408,33 +365,27 @@ export const ControlledOpenStateWithExternalTrigger: StoryFn = () => {
 
   return (
     <div
-      className={css`
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-        min-width: 350px;
-        padding: 20px;
-        border: 1px solid #e5e7eb;
-        border-radius: 8px;
-      `}
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '20px',
+        minWidth: '350px',
+        padding: '20px',
+        border: '1px solid #e5e7eb',
+        borderRadius: '8px',
+      }}
     >
       <h3
-        className={css`
-          margin: 0 0 8px 0;
-          color: #374151;
-          font-size: 18px;
-        `}
+        style={{
+          margin: '0 0 8px 0',
+          color: '#374151',
+          fontSize: '18px',
+        }}
       >
         Settings Panel
       </h3>
 
-      <div
-        className={css`
-          display: flex;
-          gap: 12px;
-          align-items: center;
-        `}
-      >
+      <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
         <Button
           onClick={() => setIsSelectOpen(true)}
           size="default"
@@ -486,13 +437,13 @@ export const ControlledOpenStateWithExternalTrigger: StoryFn = () => {
 
       {value && (
         <div
-          className={css`
-            padding: 8px 12px;
-            background-color: #dcfce7;
-            border-radius: 4px;
-            font-size: 14px;
-            color: #166534;
-          `}
+          style={{
+            padding: '8px 12px',
+            backgroundColor: '#dcfce7',
+            borderRadius: '4px',
+            fontSize: '14px',
+            color: '#166534',
+          }}
         >
           Selected theme: <strong>{value}</strong>
         </div>

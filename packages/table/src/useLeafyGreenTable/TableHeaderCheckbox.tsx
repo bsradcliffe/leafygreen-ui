@@ -2,7 +2,6 @@ import React from 'react';
 import { Table } from '@tanstack/react-table';
 
 import { Checkbox } from '@leafygreen-ui/checkbox';
-import { cx } from '@leafygreen-ui/emotion';
 import { useDarkMode } from '@leafygreen-ui/leafygreen-provider';
 
 import { useRowContext } from '../Row/RowContext';
@@ -10,6 +9,10 @@ import { useTableContext } from '../TableContext';
 
 import { disabledTableRowCheckStyles } from './useLeafyGreenTable.styles';
 import { LGRowData, LGTableDataType } from '.';
+
+function cn(...classes: Array<string | false | undefined | null>): string {
+  return classes.filter(Boolean).join(' ');
+}
 
 export const TableHeaderCheckbox = <T extends LGRowData>({
   table,
@@ -21,9 +24,9 @@ export const TableHeaderCheckbox = <T extends LGRowData>({
   const { lgIds } = useTableContext();
   return (
     <Checkbox
-      className={cx({
-        [disabledTableRowCheckStyles[theme]]: rowIsDisabled,
-      })}
+      className={cn(
+        rowIsDisabled && disabledTableRowCheckStyles[theme],
+      )}
       disabled={rowIsDisabled}
       checked={table.getIsAllRowsSelected()}
       indeterminate={table.getIsSomeRowsSelected()}

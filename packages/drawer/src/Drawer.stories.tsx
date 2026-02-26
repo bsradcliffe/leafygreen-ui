@@ -10,7 +10,6 @@ import { StoryFn, StoryObj } from '@storybook/react';
 import { expect, within } from '@storybook/test';
 
 import { Button } from '@leafygreen-ui/button';
-import { css } from '@leafygreen-ui/emotion';
 import CloudIcon from '@leafygreen-ui/icon/dist/Cloud';
 import SparkleIcon from '@leafygreen-ui/icon/dist/Sparkle';
 import { IconButton } from '@leafygreen-ui/icon-button';
@@ -51,11 +50,11 @@ const snapshotStoryExcludedControlParams = [
 const DrawerCustomTitle = () => {
   return (
     <div
-      className={css`
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-      `}
+      style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+      }}
     >
       <Body
         as="h2"
@@ -64,11 +63,7 @@ const DrawerCustomTitle = () => {
       >
         Custom title
       </Body>
-      <div
-        className={css`
-          display: flex;
-        `}
-      >
+      <div style={{ display: 'flex' }}>
         <IconButton
           aria-label="Go to sleep"
           onClick={() => console.log('cloud click')}
@@ -93,16 +88,14 @@ export default {
     (StoryFn, ctx) => (
       <LeafyGreenProvider darkMode={ctx?.args?.darkMode}>
         <div
-          className={css`
-            height: 100%;
-            display: flex;
-            align-items: center;
-            margin: -100px;
-            width: 100vw;
-            border: 1px solid
-              ${color[ctx?.args?.darkMode ? Theme.Dark : Theme.Light].border
-                .secondary.default};
-          `}
+          style={{
+            height: '100%',
+            display: 'flex',
+            alignItems: 'center',
+            margin: '-100px',
+            width: '100vw',
+            border: `1px solid ${color[ctx?.args?.darkMode ? Theme.Dark : Theme.Light].border.secondary.default}`,
+          }}
         >
           <StoryFn />
         </div>
@@ -156,11 +149,11 @@ const LongContent = () => {
 
   return (
     <div
-      className={css`
-        display: flex;
-        flex-direction: column;
-        gap: ${spacing[100]}px;
-      `}
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: `${spacing[100]}px`,
+      }}
     >
       {paragraphs}
     </div>
@@ -208,22 +201,17 @@ const TemplateComponent: StoryFn<StoryDrawerProps> = ({
       };
 
   return (
-    <div
-      className={css`
-        height: 500px;
-        width: 100%;
-      `}
-    >
+    <div style={{ height: '500px', width: '100%' }}>
       <DrawerLayout {...layoutProps}>
         <main
-          className={css`
-            padding: ${spacing[400]}px;
-            overflow: auto;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            gap: ${spacing[200]}px;
-          `}
+          style={{
+            padding: `${spacing[400]}px`,
+            overflow: 'auto',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'flex-start',
+            gap: `${spacing[200]}px`,
+          }}
         >
           {renderTrigger()}
           <LongContent />
@@ -257,17 +245,15 @@ const MultipleDrawersComponent: StoryFn<DrawerProps> = (args: DrawerProps) => {
     <DrawerLayout
       displayMode={DisplayMode.Overlay}
       isDrawerOpen={openA || openB || openC}
-      className={css`
-        height: 500px;
-      `}
+      style={{ height: '500px' }}
     >
       <DrawerStackProvider>
         <div
-          className={css`
-            display: flex;
-            flex-direction: column;
-            gap: ${spacing[400]}px;
-          `}
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: `${spacing[400]}px`,
+          }}
         >
           <Button onClick={() => setOpenA(prevOpen => !prevOpen)}>
             Toggle Drawer A

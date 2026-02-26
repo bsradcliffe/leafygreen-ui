@@ -9,7 +9,6 @@ import { EnterHandler, ExitHandler } from 'react-transition-group/Transition';
 import isUndefined from 'lodash/isUndefined';
 
 import { useDescendant } from '@leafygreen-ui/descendants';
-import { css, cx } from '@leafygreen-ui/emotion';
 import ChevronDownIcon from '@leafygreen-ui/icon/dist/ChevronDown';
 import { IconButton } from '@leafygreen-ui/icon-button';
 import { keyMap } from '@leafygreen-ui/lib';
@@ -18,6 +17,7 @@ import {
   useInferredPolymorphic,
 } from '@leafygreen-ui/polymorphic';
 
+import { cn } from '../cn';
 import {
   MenuDescendantsContext,
   SubMenuProvider,
@@ -27,10 +27,10 @@ import {
 import { InternalMenuItemContent } from '../MenuItem/InternalMenuItemContent';
 
 import {
-  getSubmenuListStyles,
   getSubmenuToggleStyles,
   subMenuContainerClassName,
   subMenuContainerStyles,
+  submenuListStyles,
 } from './SubMenu.styles';
 import { InternalSubMenuProps } from './SubMenu.types';
 import { useChildrenHeight } from './useChildrenHeight';
@@ -181,7 +181,7 @@ export const SubMenu = InferredPolymorphic<InternalSubMenuProps, 'button'>(
       <>
         <li
           role="none"
-          className={cx(subMenuContainerClassName, subMenuContainerStyles)}
+          className={cn(subMenuContainerClassName, subMenuContainerStyles)}
           data-testid={lgIds.submenu}
           data-lgid={lgIds.submenu}
         >
@@ -232,10 +232,8 @@ export const SubMenu = InferredPolymorphic<InternalSubMenuProps, 'button'>(
                 aria-label={title}
                 data-state={state}
                 data-open={open}
-                className={cx(getSubmenuListStyles(), {
-                  [css`
-                    max-height: ${subMenuHeight + 1}px;
-                  `]: state === 'entered',
+                className={cn(submenuListStyles, {
+                  [`max-h-[${subMenuHeight + 1}px]`]: state === 'entered',
                 })}
               >
                 {children}

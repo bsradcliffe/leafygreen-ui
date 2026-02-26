@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { cx } from '@leafygreen-ui/emotion';
 import { Icon } from '@leafygreen-ui/icon';
 import { IconButton } from '@leafygreen-ui/icon-button';
 import { useDarkMode } from '@leafygreen-ui/leafygreen-provider';
@@ -13,6 +12,10 @@ import {
   rotatedStyles,
 } from './ToggleExpandedIcon.styles';
 import { type ToggleExpandedIconProps } from './ToggleExpandedIcon.types';
+
+function cn(...classes: Array<string | false | undefined | null>): string {
+  return classes.filter(Boolean).join(' ');
+}
 
 /**
  * @internal
@@ -31,10 +34,8 @@ const ToggleExpandedIcon = ({
       aria-label={`${isExpanded ? 'Collapse' : 'Expand'} row`}
       disabled={disabled}
       onClick={toggleExpanded}
-      className={cx(
-        {
-          [rotatedStyles]: isExpanded,
-        },
+      className={cn(
+        isExpanded && rotatedStyles,
         iconButtonTransitionStyles,
       )}
       data-lgid={lgIds.expandButton}

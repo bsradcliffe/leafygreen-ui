@@ -2,6 +2,8 @@ import { ReactNode } from 'react';
 
 /**
  * A union interface requiring _either_ `aria-label` or `aria-labelledby`
+ *
+ * @deprecated RAC hook params enforce label requirements.
  */
 export type AriaLabelProps =
   | {
@@ -37,6 +39,8 @@ export type AriaLabelProps =
 
 /**
  * A union interface requiring _either_ `label`, `aria-label` or `aria-labelledby`
+ *
+ * @deprecated RAC hook params enforce label requirements.
  */
 export type AriaLabelPropsWithLabel =
   | ({
@@ -59,6 +63,8 @@ export type AriaLabelPropsWithLabel =
 /**
  * Conditionally requires {@link AriaLabelProps}
  * if `children` is not provided
+ *
+ * @deprecated RAC hook params enforce label requirements.
  */
 export type AriaLabelPropsWithChildren =
   | ({

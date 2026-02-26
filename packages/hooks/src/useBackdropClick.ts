@@ -34,6 +34,8 @@ interface UseBackdropClickOptions {
  *
  * Note: Disable this hook (with the `enabled` arg)
  * if the `foreground` element(s) are not in view (e.g. menu, tooltip, etc.).
+ *
+ * @deprecated RAC DismissButton + overlay dismiss handles this.
  */
 export function useBackdropClick(
   /**

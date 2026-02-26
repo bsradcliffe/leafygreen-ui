@@ -9,9 +9,9 @@ import { Body, H3, Link } from '@leafygreen-ui/typography';
 
 import {
   buttonContainerStyles,
+  descriptionThemeStyles,
   externalLinkStyles,
   getBadgeStyles,
-  getDescriptionStyles,
   rootStyles,
   textContainerStyles,
   titleStyles,
@@ -64,7 +64,7 @@ export const BasicEmptyState = forwardRef(
               />
             )}
             <H3 className={titleStyles}>{title}</H3>
-            <Body className={getDescriptionStyles(theme)}>{description}</Body>
+            <Body className={descriptionThemeStyles[theme]}>{description}</Body>
             {!!primaryButton && (
               <div className={buttonContainerStyles}>
                 <Button {...primaryButton.props} variant="primary" />

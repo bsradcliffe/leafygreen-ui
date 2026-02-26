@@ -1,21 +1,17 @@
 import { Size } from '@leafygreen-ui/button';
-import { css } from '@leafygreen-ui/emotion';
 import { Theme } from '@leafygreen-ui/lib';
 import { palette } from '@leafygreen-ui/palette';
 
 import { Variant } from '../SplitButton/SplitButton.types';
 
-export const triggerBaseStyles = css`
-  border-top-left-radius: 0px;
-  border-bottom-left-radius: 0px;
-  margin-left: -1px;
-
-  &:focus,
-  &:focus-visible,
-  &:hover {
-    z-index: 1;
-  }
-`;
+export const triggerBaseStyles = [
+  'rounded-tl-none',
+  'rounded-bl-none',
+  '-ml-px',
+  'focus:z-[1]',
+  'focus-visible:z-[1]',
+  'hover:z-[1]',
+].join(' ');
 
 export const triggerBorderColor: Record<Theme, Record<Variant, string>> = {
   [Theme.Light]: {
@@ -43,31 +39,22 @@ export const triggerCaretColor: Record<Theme, Record<Variant, string>> = {
   },
 };
 
-export const triggerThemeStyles = (theme: Theme, variant: Variant) => css`
-  &,
-  &:hover,
-  &:focus,
-  &:focus-visible,
-  &:active {
-    border-left-color: ${triggerBorderColor[theme][variant]};
-  }
-
-  svg {
-    color: ${triggerCaretColor[theme][variant]};
-  }
-`;
+export const triggerThemeStyles = (theme: Theme, variant: Variant) => {
+  const borderColor = triggerBorderColor[theme][variant];
+  const caretColor = triggerCaretColor[theme][variant];
+  return [
+    `border-l-[${borderColor}]`,
+    `hover:border-l-[${borderColor}]`,
+    `focus:border-l-[${borderColor}]`,
+    `focus-visible:border-l-[${borderColor}]`,
+    `active:border-l-[${borderColor}]`,
+    `[&_svg]:text-[${caretColor}]`,
+  ].join(' ');
+};
 
 export const triggerSizeStyles: Record<Size, string> = {
-  [Size.XSmall]: css`
-    width: 24px;
-  `,
-  [Size.Small]: css`
-    width: 32px;
-  `,
-  [Size.Default]: css`
-    width: 32px;
-  `,
-  [Size.Large]: css`
-    width: 44px;
-  `,
+  [Size.XSmall]: 'w-[24px]',
+  [Size.Small]: 'w-[32px]',
+  [Size.Default]: 'w-[32px]',
+  [Size.Large]: 'w-[44px]',
 };

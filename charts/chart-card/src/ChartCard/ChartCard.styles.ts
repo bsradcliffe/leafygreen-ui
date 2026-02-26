@@ -1,6 +1,5 @@
 import { CSS, Transform } from '@dnd-kit/utilities';
 
-import { css, cx } from '@leafygreen-ui/emotion';
 import { Theme } from '@leafygreen-ui/lib';
 import {
   borderRadius,
@@ -11,38 +10,41 @@ import {
   Variant,
 } from '@leafygreen-ui/tokens';
 
+import { cn } from '../cn';
+
 import { ChartCardStates } from './ChartCard.types';
 
-const getBaseContainerStyles = (theme: Theme) => css`
-  background: ${color[theme].background[Variant.Primary][
-    InteractionState.Default
-  ]};
-  border: 1px solid
-    ${color[theme].border[Variant.Disabled][InteractionState.Default]};
-  border-radius: ${borderRadius[200]}px;
-  overflow: hidden;
-  width: 100%;
-  display: grid;
-  grid-template-rows: 40px 0fr;
-  transition: grid-template-rows ${transitionDuration.slower}ms ease-in-out;
-`;
+const getBaseContainerStyles = (theme: Theme) =>
+  [
+    `bg-[${color[theme].background[Variant.Primary][InteractionState.Default]}]`,
+    `border border-solid border-[${color[theme].border[Variant.Disabled][InteractionState.Default]}]`,
+    `rounded-[${borderRadius[200]}px]`,
+    'overflow-hidden',
+    'w-full',
+    'grid',
+    'grid-rows-[40px_0fr]',
+    `[transition:grid-template-rows_${transitionDuration.slower}ms_ease-in-out]`,
+  ].join(' ');
 
 const getSortableContainerStyles = (
   transform: Transform | null,
   transition?: string,
-) => css`
-  transform: ${CSS.Transform.toString(transform)};
-  transition: ${transition};
-`;
+) => {
+  const transformStr = CSS.Transform.toString(transform);
+  return [
+    `[transform:${transformStr}]`,
+    transition ? `[transition:${transition}]` : '',
+  ]
+    .filter(Boolean)
+    .join(' ');
+};
 
-const getDraggingContainerStyles = () => css`
-  opacity: 0.3;
-`;
+const draggingContainerStyles = 'opacity-30';
 
 // TODO: This should be a token once we audit our shadows
-const getOverlayContainerStyles = () => css`
-  box-shadow: 0 18px 18px -15px rgba(0, 30, 43, 0.2);
-`;
+const overlayContainerStyles = '[box-shadow:0_18px_18px_-15px_rgba(0,30,43,0.2)]';
+
+export const openContainerStyles = 'grid-rows-[40px_1fr]';
 
 export const getContainerStyles = ({
   theme,
@@ -61,20 +63,14 @@ export const getContainerStyles = ({
   state: ChartCardStates;
   className?: string;
 }) =>
-  cx(
+  cn(
     getBaseContainerStyles(theme),
-    {
-      [openContainerStyles]: isOpen,
-      [getSortableContainerStyles(transform, transition)]: isDraggable,
-      [getDraggingContainerStyles()]: state === ChartCardStates.Dragging,
-      [getOverlayContainerStyles()]: state === ChartCardStates.Overlay,
-    },
+    isOpen && openContainerStyles,
+    isDraggable && getSortableContainerStyles(transform, transition),
+    state === ChartCardStates.Dragging && draggingContainerStyles,
+    state === ChartCardStates.Overlay && overlayContainerStyles,
     className,
   );
-
-export const openContainerStyles = css`
-  grid-template-rows: 40px 1fr;
-`;
 
 export const getHeaderStyles = ({
   theme,
@@ -87,46 +83,29 @@ export const getHeaderStyles = ({
   isDraggable: boolean;
   className?: string;
 }) =>
-  cx(
-    css`
-      width: 100%;
-      height: 100%;
-      padding: ${spacing[150]}px ${spacing[300]}px;
-      display: grid;
-      grid-template-columns: auto 1fr;
-      background: 'none';
-    `,
-    {
-      [css`
-        cursor: move;
-      `]: isDraggable,
-      [css`
-        background: ${color[theme].background[Variant.Primary][
-          InteractionState.Hover
-        ]};
-      `]: state === ChartCardStates.Overlay,
-    },
+  cn(
+    [
+      'w-full',
+      'h-full',
+      `p-[${spacing[150]}px_${spacing[300]}px]`,
+      'grid',
+      'grid-cols-[auto_1fr]',
+    ].join(' '),
+    isDraggable && 'cursor-move',
+    state === ChartCardStates.Overlay &&
+      `bg-[${color[theme].background[Variant.Primary][InteractionState.Hover]}]`,
     className,
   );
 
-export const childrenContainerStyles = css`
-  overflow: hidden;
-`;
+export const childrenContainerStyles = 'overflow-hidden';
 
-export const toggleButtonStyles = css`
-  margin-right: ${spacing[100]}px;
-`;
+export const toggleButtonStyles = `mr-[${spacing[100]}px]`;
 
-export const toggleIconStyles = css`
-  transform: rotate(-90deg);
-  transition: transform ${transitionDuration.slower}ms ease-in-out;
-`;
+export const toggleIconStyles = [
+  '-rotate-90',
+  `[transition:transform_${transitionDuration.slower}ms_ease-in-out]`,
+].join(' ');
 
-export const openToggleIconStyles = css`
-  transform: rotate(0deg);
-`;
+export const openToggleIconStyles = 'rotate-0';
 
-export const leftInnerContainerStyles = css`
-  display: flex;
-  align-items: center;
-`;
+export const leftInnerContainerStyles = 'flex items-center';

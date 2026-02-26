@@ -23,8 +23,7 @@ async function getBatchBuildOptions(
       input: batch.map(icon => `${GENERATED_DIR}/${icon}.tsx`),
       output: esmConfig.output,
       plugins: [
-        // Ensure @emotion packages are externalized (not bundled into icons)
-        nodeExternals({ deps: true, include: [/@emotion/] }),
+        nodeExternals({ deps: true }),
         ...(esmConfig.plugins as Array<InputPluginOption>),
       ],
     },
@@ -41,8 +40,7 @@ async function getBatchBuildOptions(
           },
         ],
         plugins: [
-          // Ensure @emotion packages are externalized (not bundled into icons)
-          nodeExternals({ deps: true, include: [/@emotion/] }),
+          nodeExternals({ deps: true }),
           ...(umdConfig.plugins as Array<InputPluginOption>),
         ],
       };

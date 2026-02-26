@@ -1,19 +1,7 @@
-import { css } from '@leafygreen-ui/emotion';
-import { spacing } from '@leafygreen-ui/tokens';
+export const rootStyles = 'w-full';
 
-export const rootStyles = css`
-  width: 100%;
-`;
+export const headerStyles = 'w-[250px] mb-[20px]';
 
-export const headerStyles = css`
-  width: 250px;
-  margin-bottom: 20px;
-`;
+export const lineStyles = 'mb-[16px]';
 
-export const lineStyles = css`
-  margin-bottom: ${spacing[3]}px;
-`;
-
-export const lastLineStyles = css`
-  width: 350px;
-`;
+export const lastLineStyles = 'w-[350px]';

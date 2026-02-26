@@ -1,7 +1,5 @@
 import React, { ForwardedRef } from 'react';
 
-import { cx } from '@leafygreen-ui/emotion';
-
 import { useRowContext } from '../Row/RowContext';
 import { useTableContext } from '../TableContext';
 import ToggleExpandedIcon from '../ToggleExpandedIcon';
@@ -13,6 +11,10 @@ import {
   InternalCellWithRTProps,
 } from './Cell.types';
 import InternalCellBase from './InternalCellBase';
+
+function cn(...classes: Array<string | false | undefined | null>): string {
+  return classes.filter(Boolean).join(' ');
+}
 
 /**
  * @internal
@@ -35,7 +37,7 @@ const InternalCellWithRTForwardRef = <T extends LGRowData>(
 
   return (
     <InternalCellBase
-      className={cx(
+      className={cn(
         getCellStyles(depth, isExpandable, isSelectable),
         className,
       )}

@@ -8,7 +8,7 @@ import { getNodeTextContent } from '@leafygreen-ui/lib';
 import { ComboboxContext } from '../ComboboxContext';
 import { wrapJSX } from '../utils';
 
-import { getInputOptionStyles } from './ComboboxOption.styles';
+import { getInputOptionClassName } from './ComboboxOption.styles';
 import {
   ComboboxOptionProps,
   InternalComboboxOptionProps,
@@ -107,7 +107,7 @@ export const InternalComboboxOption = React.forwardRef<
         disabled={disabled}
         aria-label={ariaLabel || displayNameStr || value}
         darkMode={darkMode}
-        className={getInputOptionStyles({
+        className={getInputOptionClassName({
           size,
           isSelected,
           isMultiselectWithoutIcons: multiSelectWithoutIcons,

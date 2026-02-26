@@ -1,8 +1,6 @@
-import { css, cx } from '@leafygreen-ui/emotion';
+import { cn } from '../../../cn';
 
-export const baseInputStyles = css`
-  width: auto;
-`;
+export const baseInputStyles = 'w-auto';
 
 export const getInputStyles = ({ className }: { className?: string }) =>
-  cx(baseInputStyles, className);
+  cn(baseInputStyles, className);

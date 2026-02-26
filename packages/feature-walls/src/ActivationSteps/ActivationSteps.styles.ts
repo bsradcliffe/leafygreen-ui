@@ -1,63 +1,66 @@
-import { css, cx } from '@leafygreen-ui/emotion';
+import { CSSProperties } from 'react';
+
 import { Theme } from '@leafygreen-ui/lib';
 import { palette } from '@leafygreen-ui/palette';
 import { color, spacing, transitionDuration } from '@leafygreen-ui/tokens';
 
+import { cn } from '../cn';
+
 const CARD_HORIZONTAL_SPACING = spacing[800];
 const TRANSITION_DURATION = transitionDuration.slower;
 
-export const cardStyles = css`
-  overflow: hidden;
-  padding: ${spacing[800]}px ${CARD_HORIZONTAL_SPACING}px 0
-    ${CARD_HORIZONTAL_SPACING}px;
-`;
+export const cardStyles = [
+  'overflow-hidden',
+  `p-[${spacing[800]}px_${CARD_HORIZONTAL_SPACING}px_0_${CARD_HORIZONTAL_SPACING}px]`,
+].join(' ');
 
-export const verticalStepperStyles = css`
-  padding-bottom: ${spacing[400]}px;
-`;
+export const verticalStepperStyles = `pb-[${spacing[400]}px]`;
 
-export const childrenContainerStyles = css`
-  height: 100%;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: ${spacing[200]}px;
-`;
+export const childrenContainerStyles = [
+  'h-full',
+  'w-full',
+  'flex',
+  'flex-col',
+  'justify-between',
+  `gap-[${spacing[200]}px]`,
+].join(' ');
 
-const getBaseMessageContainerStyles = (theme: Theme) => css`
-  width: calc(100% + 2 * ${CARD_HORIZONTAL_SPACING}px);
-  margin: 0 -${CARD_HORIZONTAL_SPACING}px;
-  background-color: ${color[theme].background.success.default};
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: ${spacing[100]}px;
+const baseMessageContainerStyles = [
+  'flex',
+  'justify-center',
+  'items-center',
+  `gap-[${spacing[100]}px]`,
+  `[transition-property:content-visibility,opacity,padding,transform]`,
+  `[transition-duration:${TRANSITION_DURATION}ms]`,
+  '[transition-timing-function:ease-in-out]',
+  '[transition-behavior:allow-discrete]',
+  '[content-visibility:hidden]',
+  'opacity-0',
+  'p-0',
+  '[transform:scaleY(0)_translateY(100%)]',
+].join(' ');
 
-  transition-property: content-visibility, opacity, padding, transform;
-  transition-duration: ${TRANSITION_DURATION}ms;
-  transition-timing-function: ease-in-out;
-  transition-behavior: allow-discrete;
-  content-visibility: hidden;
-  opacity: 0;
-  padding: 0;
-  transform: scaleY(0) translateY(100%);
-`;
+const visibleMessageContainerStyles = [
+  '[content-visibility:visible]',
+  'opacity-100',
+  `py-[${spacing[100]}px]`,
+  'px-0',
+  '[transform:scaleY(1)_translateY(0)]',
+].join(' ');
 
-const visibleMessageContainerStyles = css`
-  content-visibility: visible;
-  opacity: 1;
-  padding: ${spacing[100]}px 0;
-  transform: scaleY(1) translateY(0);
-`;
-
-export const getMessageContainerStyles = (theme: Theme, showMessage: boolean) =>
-  cx(getBaseMessageContainerStyles(theme), {
+export const getMessageContainerStyles = (theme: Theme, showMessage: boolean): { className: string; style: CSSProperties } => ({
+  className: cn(baseMessageContainerStyles, {
     [visibleMessageContainerStyles]: showMessage,
-  });
+  }),
+  style: {
+    width: `calc(100% + 2 * ${CARD_HORIZONTAL_SPACING}px)`,
+    margin: `0 -${CARD_HORIZONTAL_SPACING}px`,
+    backgroundColor: color[theme].background.success.default,
+  },
+});
 
 export const getIconFill = (theme: Theme) => color[theme].icon.success.default;
 
-export const getMessageStyles = (theme: Theme) => css`
-  color: ${palette.green[theme === Theme.Light ? 'dark2' : 'light2']};
-`;
+export const getMessageStyle = (theme: Theme): CSSProperties => ({
+  color: palette.green[theme === Theme.Light ? 'dark2' : 'light2'],
+});

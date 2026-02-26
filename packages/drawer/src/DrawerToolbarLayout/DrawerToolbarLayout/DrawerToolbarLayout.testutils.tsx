@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { faker } from '@faker-js/faker';
 
-import { css } from '@leafygreen-ui/emotion';
 import { spacing } from '@leafygreen-ui/tokens';
 import { Body } from '@leafygreen-ui/typography';
 
@@ -25,11 +24,11 @@ export const LongContent = () => {
 
   return (
     <div
-      className={css`
-        display: flex;
-        flex-direction: column;
-        gap: ${spacing[100]}px;
-      `}
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: `${spacing[100]}px`,
+      }}
     >
       {paragraphs}
     </div>
@@ -54,11 +53,11 @@ export const DrawerContent = () => {
 
   return (
     <div
-      className={css`
-        display: flex;
-        flex-direction: column;
-        gap: ${spacing[100]}px;
-      `}
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: `${spacing[100]}px`,
+      }}
     >
       {paragraphs}
     </div>

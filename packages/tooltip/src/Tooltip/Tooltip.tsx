@@ -178,9 +178,11 @@ function Tooltip({
     >
       {({ align, justify, referenceElPos }: PopoverFunctionParameters) => {
         const {
-          notchContainer: notchContainerStyles,
-          notch: notchStyles,
-          tooltip: tooltipAdjustmentStyles,
+          notchContainerStyle,
+          notchContainerClassName,
+          notchStyle,
+          notchClassName,
+          tooltipStyle,
         } = notchPositionStyles({
           align,
           justify,
@@ -200,9 +202,9 @@ function Tooltip({
                 className,
                 isCompact,
                 isLeftOrRightAligned,
-                tooltipAdjustmentStyles,
                 theme,
               })}
+              style={!isCompact ? tooltipStyle : undefined}
               ref={tooltipRef}
             >
               <Body
@@ -213,9 +215,13 @@ function Tooltip({
                 {children}
               </Body>
               {showNotch && (
-                <div className={notchContainerStyles}>
+                <div
+                  className={notchContainerClassName}
+                  style={notchContainerStyle}
+                >
                   <SvgNotch
-                    className={notchStyles}
+                    className={notchClassName}
+                    style={notchStyle}
                     fill={getNotchFill(theme)}
                   />
                 </div>

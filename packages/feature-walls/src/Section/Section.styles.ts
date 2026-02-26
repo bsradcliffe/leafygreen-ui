@@ -1,20 +1,21 @@
-import { css, cx } from '@leafygreen-ui/emotion';
 import { spacing } from '@leafygreen-ui/tokens';
+
+import { cn } from '../cn';
 
 const CONTAINER_MAX_WIDTH = 1040;
 
-export const cardStyles = css`
-  max-width: ${CONTAINER_MAX_WIDTH}px;
-  width: 100%;
-  padding: ${spacing[800]}px;
-`;
+export const cardStyles = [
+  `max-w-[${CONTAINER_MAX_WIDTH}px]`,
+  'w-full',
+  `p-[${spacing[800]}px]`,
+].join(' ');
 
-const baseSectionStyles = css`
-  max-width: ${CONTAINER_MAX_WIDTH}px;
-  display: flex;
-  flex-direction: column;
-  gap: ${spacing[400]}px;
-`;
+const baseSectionStyles = [
+  `max-w-[${CONTAINER_MAX_WIDTH}px]`,
+  'flex',
+  'flex-col',
+  `gap-[${spacing[400]}px]`,
+].join(' ');
 
 export const getSectionStyles = (className?: string) =>
-  cx(baseSectionStyles, className);
+  cn(baseSectionStyles, className);

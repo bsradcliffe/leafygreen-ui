@@ -1,116 +1,141 @@
-import { transparentize } from 'polished';
-
-import { css, cx } from '@leafygreen-ui/emotion';
 import { palette } from '@leafygreen-ui/palette';
+
+import { cn } from '../cn';
 
 export const timeout1 = 400;
 export const timeout2 = 100;
 
 const size = 24;
 
+/**
+ * Returns Tailwind class strings for the beacon element.
+ *
+ * Due to the complexity of the multi-keyframe animation (pulse-outer, pulse-outer-2, pulse-inner),
+ * the animated variant uses inline `style` objects instead of Tailwind utility classes.
+ * Tailwind does not support defining or referencing custom @keyframes within utility classes.
+ */
 export const beaconStyles = (
   prefersReducedMotion: boolean,
   darkMode: boolean,
 ) => {
   const color = darkMode ? palette.blue.light2 : palette.blue.base;
 
-  const sharedCss = css`
-    position: relative;
-
-    div {
-      width: ${size}px;
-      height: ${size}px;
-      border-radius: 50%;
-      background-color: ${transparentize(0.5, color)};
-      transform-origin: center;
-      position: relative;
-    }
-  `;
+  // Shared styles for the wrapper and inner div
+  const sharedStyles = [
+    'relative',
+    `[&>div]:w-[${size}px]`,
+    `[&>div]:h-[${size}px]`,
+    '[&>div]:rounded-full',
+    `[&>div]:bg-[${color}80]`, // 50% opacity hex
+    '[&>div]:origin-center',
+    '[&>div]:relative',
+  ].join(' ');
 
   if (prefersReducedMotion) {
-    return cx(
-      sharedCss,
-      css`
-        div {
-          box-shadow: 0px 0px 0px 4px ${transparentize(0.83, color)};
-        }
-      `,
+    return cn(
+      sharedStyles,
+      `[&>div]:shadow-[0px_0px_0px_4px_${color}2B]`, // ~17% opacity
     );
   }
 
-  return cx(
-    sharedCss,
-    css`
-      &::before,
-      &::after {
-        content: '';
-        position: absolute;
-        border-radius: 50%;
-        translate: -50% -50%;
-        top: 50%;
-        left: 50%;
-        scale: 0.9;
+  // For animation, we return just the shared styles.
+  // The animation keyframes must be applied via inline styles or a global stylesheet,
+  // since Tailwind does not support custom @keyframes definitions in utility classes.
+  return sharedStyles;
+};
+
+/**
+ * Inline style objects for the beacon animation.
+ * These are needed because Tailwind cannot define custom @keyframes.
+ */
+export const getBeaconAnimationStyles = (darkMode: boolean) => {
+  const color = darkMode ? palette.blue.light2 : palette.blue.base;
+
+  const wrapperStyle: React.CSSProperties = {
+    position: 'relative',
+  };
+
+  const innerDivStyle: React.CSSProperties = {
+    width: `${size}px`,
+    height: `${size}px`,
+    borderRadius: '50%',
+    backgroundColor: `${color}80`,
+    transformOrigin: 'center',
+    position: 'relative',
+    animation: 'pulse-inner 2.3s infinite cubic-bezier(0.42, 0, 0.58, 0.72)',
+  };
+
+  const beforeStyle: React.CSSProperties = {
+    content: '""',
+    position: 'absolute',
+    borderRadius: '50%',
+    translate: '-50% -50%',
+    top: '50%',
+    left: '50%',
+    scale: '0.9',
+    opacity: 0,
+    width: `${size}px`,
+    height: `${size}px`,
+    background: 'rgba(255, 255, 255, 0)',
+    boxShadow: `0px 0px 0px 0px ${color}00`,
+    animation: 'pulse-outer 2.3s infinite cubic-bezier(0.42, 0, 0.61, 0.69)',
+  };
+
+  const afterStyle: React.CSSProperties = {
+    content: '""',
+    position: 'absolute',
+    borderRadius: '50%',
+    translate: '-50% -50%',
+    top: '50%',
+    left: '50%',
+    scale: '0.9',
+    opacity: 0,
+    width: `${size}px`,
+    height: `${size}px`,
+    background: 'rgba(255, 255, 255, 0)',
+    boxShadow: `0px 0px 0px 0px ${color}00`,
+    animation:
+      'pulse-outer-2 2.3s infinite cubic-bezier(0.42, 0, 0.46, 0.72)',
+  };
+
+  const keyframes = `
+    @keyframes pulse-outer {
+      10% {
+        box-shadow: 0px 0px 0px 0px ${color}0D;
+        opacity: 1;
+      }
+      40%, 100% {
+        scale: 1;
+        box-shadow: 0px 0px 0px 15px ${color}4D;
         opacity: 0;
-        width: ${size}px;
-        height: ${size}px;
-        background: rgba(255, 255, 255, 0);
-        box-shadow: 0px 0px 0px 0px ${transparentize(1, color)};
       }
-
-      // inner most pulse ring
-      &::before {
-        animation: pulse-outer 2.3s infinite cubic-bezier(0.42, 0, 0.61, 0.69);
+    }
+    @keyframes pulse-outer-2 {
+      10% {
+        box-shadow: 0px 0px 0px 0px ${color}0D;
+        opacity: 1;
       }
-
-      // outer mosts pulse ring
-      &::after {
-        animation: pulse-outer-2 2.3s infinite cubic-bezier(0.42, 0, 0.46, 0.72);
+      35%, 100% {
+        scale: 1;
+        box-shadow: 0px 0px 0px 18px ${color}4D;
+        opacity: 0;
       }
-
-      @keyframes pulse-outer {
-        10% {
-          box-shadow: 0px 0px 0px 0px ${transparentize(0.95, color)};
-          opacity: 1;
-        }
-
-        40%,
-        100% {
-          // this should scale up to 1 and have 0 opacity by 42% and remain that way until 100%
-          scale: 1;
-          box-shadow: 0px 0px 0px 15px ${transparentize(0.7, color)};
-          opacity: 0;
-        }
+    }
+    @keyframes pulse-inner {
+      40% {
+        scale: 1.3;
       }
-
-      @keyframes pulse-outer-2 {
-        10% {
-          box-shadow: 0px 0px 0px 0px ${transparentize(0.95, color)};
-          opacity: 1;
-        }
-
-        35%,
-        100% {
-          // this should scale up to 1 and have 0 opacity by 35% and remain that way until 100%. This is 35% so that it gives the illusion of disappearing before the first ring.
-          scale: 1;
-          box-shadow: 0px 0px 0px 18px ${transparentize(0.7, color)};
-          opacity: 0;
-        }
+      73% {
+        scale: 1;
       }
+    }
+  `;
 
-      div {
-        animation: pulse-inner 2.3s infinite cubic-bezier(0.42, 0, 0.58, 0.72);
-
-        @keyframes pulse-inner {
-          40% {
-            // at 0% this will start to slowly scale and by 40% this should scale to 1.3
-            scale: 1.3;
-          }
-          73% {
-            // By 73% this should scale back to 1. From 73% to 100% it will remain at 1.
-            scale: 1;
-          }
-        }
-      }
-    `,
-  );
+  return {
+    wrapperStyle,
+    innerDivStyle,
+    beforeStyle,
+    afterStyle,
+    keyframes,
+  };
 };

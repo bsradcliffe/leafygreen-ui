@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
 
-import { cx } from '@leafygreen-ui/emotion';
 import { Theme } from '@leafygreen-ui/lib';
 
+import { cn } from '../cn';
 import { MenuContext } from '../MenuContext';
 
 import {
@@ -23,7 +23,7 @@ export function MenuSeparator({ className }: MenuSeparatorProps) {
   return (
     <li
       role="separator"
-      className={cx(
+      className={cn(
         borderStyle,
         borderThemeStyle[theme],
         {

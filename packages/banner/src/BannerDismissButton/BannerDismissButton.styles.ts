@@ -1,136 +1,109 @@
-import { css } from '@leafygreen-ui/emotion';
 import { Theme } from '@leafygreen-ui/lib';
 import { palette } from '@leafygreen-ui/palette';
 
 import { Variant } from '../shared.types';
 
-export const baseStyles = css`
-  width: 24px;
-  height: 24px;
-  position: absolute;
-  right: 8px; // Icon is 24px(it's 24px to include hover background), in figma its 16px(does not include the hover background) (24px - 16px)/2 = 4. The space between the icon and the banner is 12px from the right, 12px - 4px = 8px
-  top: 8px;
-  flex-shrink: 0;
-  cursor: pointer;
-`;
+export const baseStyles = [
+  'w-[24px]',
+  'h-[24px]',
+  'absolute',
+  'right-[8px]',
+  'top-[8px]',
+  'shrink-0',
+  'cursor-pointer',
+].join(' ');
 
-const darkModeInfoStyles = css`
-  color: ${palette.blue.light2};
+const darkModeInfoStyles = [
+  `text-[${palette.blue.light2}]`,
+  `active:text-[${palette.blue.light2}]`,
+  `hover:text-[${palette.blue.light2}]`,
+  `focus-visible:text-[${palette.blue.light2}]`,
+  `active:shadow-[0_0_0_2px_${palette.blue.dark3},0_0_0_4px_${palette.blue.light1}]`,
+  `hover:shadow-[0_0_0_2px_${palette.blue.dark3},0_0_0_4px_${palette.blue.light1}]`,
+  `focus-visible:shadow-[0_0_0_2px_${palette.blue.dark3},0_0_0_4px_${palette.blue.light1}]`,
+  `active:before:bg-[${palette.blue.dark2}]`,
+  `hover:before:bg-[${palette.blue.dark2}]`,
+  `focus-visible:before:bg-[${palette.blue.dark2}]`,
+].join(' ');
 
-  &:active,
-  &:hover,
-  &:focus-visible {
-    color: ${palette.blue.light2};
-    box-shadow: 0 0 0 2px ${palette.blue.dark3},
-      0 0 0 4px ${palette.blue.light1};
+const darkModeWarningStyles = [
+  `text-[${palette.yellow.light2}]`,
+  `active:text-[${palette.yellow.light2}]`,
+  `hover:text-[${palette.yellow.light2}]`,
+  `focus-visible:text-[${palette.yellow.light2}]`,
+  `active:shadow-[0_0_0_2px_${palette.yellow.dark3},0_0_0_4px_${palette.blue.light1}]`,
+  `hover:shadow-[0_0_0_2px_${palette.yellow.dark3},0_0_0_4px_${palette.blue.light1}]`,
+  `focus-visible:shadow-[0_0_0_2px_${palette.yellow.dark3},0_0_0_4px_${palette.blue.light1}]`,
+  `active:before:bg-[${palette.yellow.dark2}]`,
+  `hover:before:bg-[${palette.yellow.dark2}]`,
+  `focus-visible:before:bg-[${palette.yellow.dark2}]`,
+].join(' ');
 
-    &::before {
-      background-color: ${palette.blue.dark2};
-    }
-  }
-`;
+const darkModeDangerStyles = [
+  `text-[${palette.red.light2}]`,
+  `active:text-[${palette.red.light2}]`,
+  `hover:text-[${palette.red.light2}]`,
+  `focus-visible:text-[${palette.red.light2}]`,
+  `active:shadow-[0_0_0_2px_${palette.red.dark3},0_0_0_4px_${palette.blue.light1}]`,
+  `hover:shadow-[0_0_0_2px_${palette.red.dark3},0_0_0_4px_${palette.blue.light1}]`,
+  `focus-visible:shadow-[0_0_0_2px_${palette.red.dark3},0_0_0_4px_${palette.blue.light1}]`,
+  `active:before:bg-[${palette.red.dark2}]`,
+  `hover:before:bg-[${palette.red.dark2}]`,
+  `focus-visible:before:bg-[${palette.red.dark2}]`,
+].join(' ');
 
-const darkModeWarningStyles = css`
-  color: ${palette.yellow.light2};
-  &:active,
-  &:hover,
-  &:focus-visible {
-    color: ${palette.yellow.light2};
-    box-shadow: 0 0 0 2px ${palette.yellow.dark3},
-      0 0 0 4px ${palette.blue.light1};
+const darkModeSuccessStyles = [
+  `text-[${palette.green.light2}]`,
+  `active:text-[${palette.green.light2}]`,
+  `hover:text-[${palette.green.light2}]`,
+  `focus-visible:text-[${palette.green.light2}]`,
+  `active:shadow-[0_0_0_2px_${palette.green.dark3},0_0_0_4px_${palette.blue.light1}]`,
+  `hover:shadow-[0_0_0_2px_${palette.green.dark3},0_0_0_4px_${palette.blue.light1}]`,
+  `focus-visible:shadow-[0_0_0_2px_${palette.green.dark3},0_0_0_4px_${palette.blue.light1}]`,
+  `active:before:bg-[${palette.green.dark2}]`,
+  `hover:before:bg-[${palette.green.dark2}]`,
+  `focus-visible:before:bg-[${palette.green.dark2}]`,
+].join(' ');
 
-    &::before {
-      background-color: ${palette.yellow.dark2};
-    }
-  }
-`;
+const lightModeInfoStyles = [
+  `text-[${palette.blue.dark2}]`,
+  `active:text-[${palette.blue.dark2}]`,
+  `hover:text-[${palette.blue.dark2}]`,
+  `focus-visible:text-[${palette.blue.dark2}]`,
+  `active:before:bg-[${palette.blue.light2}]`,
+  `hover:before:bg-[${palette.blue.light2}]`,
+  `focus-visible:before:bg-[${palette.blue.light2}]`,
+].join(' ');
 
-const darkModeDangerStyles = css`
-  color: ${palette.red.light2};
+const lightModeWarningStyles = [
+  `text-[${palette.yellow.dark2}]`,
+  `active:text-[${palette.yellow.dark2}]`,
+  `hover:text-[${palette.yellow.dark2}]`,
+  `focus-visible:text-[${palette.yellow.dark2}]`,
+  `active:before:bg-[${palette.yellow.light2}]`,
+  `hover:before:bg-[${palette.yellow.light2}]`,
+  `focus-visible:before:bg-[${palette.yellow.light2}]`,
+].join(' ');
 
-  &:active,
-  &:hover,
-  &:focus-visible {
-    color: ${palette.red.light2};
-    box-shadow: 0 0 0 2px ${palette.red.dark3}, 0 0 0 4px ${palette.blue.light1};
+const lightModeDangerStyles = [
+  `text-[${palette.red.dark2}]`,
+  `active:text-[${palette.red.dark2}]`,
+  `hover:text-[${palette.red.dark2}]`,
+  `focus-visible:text-[${palette.red.dark2}]`,
+  `active:before:bg-[${palette.red.light2}]`,
+  `hover:before:bg-[${palette.red.light2}]`,
+  `focus-visible:before:bg-[${palette.red.light2}]`,
+].join(' ');
 
-    &::before {
-      background-color: ${palette.red.dark2};
-    }
-  }
-`;
-
-const darkModeSuccessStyles = css`
-  color: ${palette.green.light2};
-
-  &:active,
-  &:hover,
-  &:focus-visible {
-    color: ${palette.green.light2};
-    box-shadow: 0 0 0 2px ${palette.green.dark3},
-      0 0 0 4px ${palette.blue.light1};
-
-    &::before {
-      background-color: ${palette.green.dark2};
-    }
-  }
-`;
-
-const lightModeInfoStyles = css`
-  color: ${palette.blue.dark2};
-
-  &:active,
-  &:hover,
-  &:focus-visible {
-    color: ${palette.blue.dark2};
-
-    &::before {
-      background-color: ${palette.blue.light2};
-    }
-  }
-`;
-
-const lightModeWarningStyles = css`
-  color: ${palette.yellow.dark2};
-
-  &:active,
-  &:hover,
-  &:focus-visible {
-    color: ${palette.yellow.dark2};
-
-    &::before {
-      background-color: ${palette.yellow.light2};
-    }
-  }
-`;
-
-const lightModeDangerStyles = css`
-  color: ${palette.red.dark2};
-
-  &:active,
-  &:hover,
-  &:focus-visible {
-    color: ${palette.red.dark2};
-
-    &::before {
-      background-color: ${palette.red.light2};
-    }
-  }
-`;
-
-const lightModeSuccessStyles = css`
-  color: ${palette.green.dark2};
-
-  &:active,
-  &:hover,
-  &:focus-visible {
-    color: ${palette.green.dark2};
-
-    &::before {
-      background-color: ${palette.green.light2};
-    }
-  }
-`;
+const lightModeSuccessStyles = [
+  `text-[${palette.green.dark2}]`,
+  `active:text-[${palette.green.dark2}]`,
+  `hover:text-[${palette.green.dark2}]`,
+  `focus-visible:text-[${palette.green.dark2}]`,
+  `active:before:bg-[${palette.green.light2}]`,
+  `hover:before:bg-[${palette.green.light2}]`,
+  `focus-visible:before:bg-[${palette.green.light2}]`,
+].join(' ');
 
 export const variantStyles: Record<Theme, Record<Variant, string>> = {
   [Theme.Dark]: {

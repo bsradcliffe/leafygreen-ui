@@ -1,8 +1,9 @@
 import React from 'react';
 
-import { cx } from '@leafygreen-ui/emotion';
 import XIcon from '@leafygreen-ui/icon/dist/X';
 import { IconButton } from '@leafygreen-ui/icon-button';
+
+import { cn } from '../cn';
 
 import { baseStyles, variantStyles } from './BannerDismissButton.styles';
 import { BannerDismissButtonProps } from './BannerDismissButton.types';
@@ -17,7 +18,7 @@ const BannerDismissButton = ({
   variant,
 }: BannerDismissButtonProps) => (
   <IconButton
-    className={cx(baseStyles, variantStyles[theme][variant])}
+    className={cn(baseStyles, variantStyles[theme][variant])}
     aria-label="Close Message"
     onClick={onClose}
     darkMode={darkMode}

@@ -1,75 +1,32 @@
-import { css } from '@leafygreen-ui/emotion';
 import { createUniqueClassName, Theme } from '@leafygreen-ui/lib';
-import { palette } from '@leafygreen-ui/palette';
-import {
-  BaseFontSize,
-  fontFamilies,
-  fontWeights,
-  transitionDuration,
-} from '@leafygreen-ui/tokens';
+import { BaseFontSize } from '@leafygreen-ui/tokens';
 
 import { bodyTypeScaleStyles } from '../styles';
 
 export const anchorClassName = createUniqueClassName();
 
-export const linkStyles = css`
-  font-family: ${fontFamilies.default};
-  display: inline;
-  align-items: center;
-  text-decoration: none;
-  text-decoration-color: transparent;
-  cursor: pointer;
-  font-size: inherit;
-  line-height: inherit;
-  appearance: none;
-  background: none;
-  border: none;
-  padding: 0;
-
-  &:hover,
-  &[data-hover='true'],
-  &:focus-visible,
-  &[data-focus='true'] {
-    text-decoration: underline;
-    transition: text-decoration ${transitionDuration.default}ms ease-in-out;
-    text-underline-offset: 4px;
-    text-decoration-thickness: 2px;
-  }
-
-  &:focus {
-    outline: none;
-  }
-`;
+export const linkStyles = [
+  "font-[\'Euclid_Circular_A\',\'Helvetica_Neue\',Helvetica,Arial,sans-serif]",
+  'inline items-center no-underline [text-decoration-color:transparent] cursor-pointer',
+  'text-[inherit] leading-[inherit] appearance-none bg-none border-none p-0',
+  'hover:underline hover:[transition:text-decoration_150ms_ease-in-out] hover:[text-underline-offset:4px] hover:[text-decoration-thickness:2px]',
+  '[&[data-hover=true]]:underline [&[data-hover=true]]:[transition:text-decoration_150ms_ease-in-out] [&[data-hover=true]]:[text-underline-offset:4px] [&[data-hover=true]]:[text-decoration-thickness:2px]',
+  'focus-visible:underline focus-visible:[transition:text-decoration_150ms_ease-in-out] focus-visible:[text-underline-offset:4px] focus-visible:[text-decoration-thickness:2px]',
+  '[&[data-focus=true]]:underline [&[data-focus=true]]:[transition:text-decoration_150ms_ease-in-out] [&[data-focus=true]]:[text-underline-offset:4px] [&[data-focus=true]]:[text-decoration-thickness:2px]',
+  'focus:outline-none',
+].join(' ');
 
 export const linkModeStyles: Record<Theme, string> = {
-  [Theme.Light]: css`
-    color: ${palette.blue.base};
-    font-weight: ${fontWeights.regular};
-
-    &:hover,
-    &[data-hover='true'] {
-      text-decoration-color: ${palette.gray.light2};
-    }
-
-    &:focus-visible,
-    &[data-focus='true'] {
-      text-decoration-color: ${palette.blue.base};
-    }
-  `,
-  [Theme.Dark]: css`
-    color: ${palette.blue.light1};
-    font-weight: ${fontWeights.semiBold};
-
-    &:hover,
-    &[data-hover='true'] {
-      text-decoration-color: ${palette.gray.dark2};
-    }
-
-    &:focus-visible,
-    &[data-focus='true'] {
-      text-decoration-color: ${palette.blue.base};
-    }
-  `,
+  [Theme.Light]: [
+    'text-[#016BF8] font-normal',
+    'hover:[text-decoration-color:#E8EDEB] [&[data-hover=true]]:[text-decoration-color:#E8EDEB]',
+    'focus-visible:[text-decoration-color:#016BF8] [&[data-focus=true]]:[text-decoration-color:#016BF8]',
+  ].join(' '),
+  [Theme.Dark]: [
+    'text-[#0498EC] font-semibold',
+    'hover:[text-decoration-color:#3D4F58] [&[data-hover=true]]:[text-decoration-color:#3D4F58]',
+    'focus-visible:[text-decoration-color:#016BF8] [&[data-focus=true]]:[text-decoration-color:#016BF8]',
+  ].join(' '),
 };
 
 export const linkScaleStyles = (baseFontSize?: BaseFontSize) => {

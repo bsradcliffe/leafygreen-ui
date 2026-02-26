@@ -1,4 +1,3 @@
-import { css, cx } from '@leafygreen-ui/emotion';
 import { Theme } from '@leafygreen-ui/lib';
 import {
   color,
@@ -7,19 +6,21 @@ import {
   Variant,
 } from '@leafygreen-ui/tokens';
 
-const getBaseTitleBarStyles = (theme: Theme) => css`
-  width: 100%;
-  border-bottom: 1px solid
-    ${color[theme].border[Variant.Secondary][InteractionState.Default]};
-  background-color: ${color[theme].background[Variant.Primary][
-    InteractionState.Default
-  ]};
-  padding: 14px ${spacing[400]}px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: ${spacing[200]}px;
-`;
+import { cn } from '../cn';
+
+const getBaseTitleBarStyles = (theme: Theme) =>
+  [
+    'w-full',
+    `border-b`,
+    `border-b-[${color[theme].border[Variant.Secondary][InteractionState.Default]}]`,
+    `bg-[${color[theme].background[Variant.Primary][InteractionState.Default]}]`,
+    `py-[14px]`,
+    `px-[${spacing[400]}px]`,
+    'flex',
+    'justify-center',
+    'items-center',
+    `gap-[${spacing[200]}px]`,
+  ].join(' ');
 
 export const getTitleBarStyles = ({
   className,
@@ -28,5 +29,5 @@ export const getTitleBarStyles = ({
   theme: Theme;
   className?: string;
 }) => {
-  return cx(getBaseTitleBarStyles(theme), className);
+  return cn(getBaseTitleBarStyles(theme), className);
 };

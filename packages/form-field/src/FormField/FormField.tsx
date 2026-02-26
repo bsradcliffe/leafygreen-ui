@@ -1,6 +1,5 @@
 import React, { forwardRef } from 'react';
 
-import { cx } from '@leafygreen-ui/emotion';
 import LeafyGreenProvider from '@leafygreen-ui/leafygreen-provider';
 import { Size } from '@leafygreen-ui/tokens';
 import {
@@ -21,6 +20,10 @@ import {
 } from './FormField.styles';
 import { type FormFieldProps, FormFieldState } from './FormField.types';
 import { useFormFieldProps } from './useFormFieldProps';
+
+function cn(...classes: Array<string | false | undefined | null>): string {
+  return classes.filter(Boolean).join(' ');
+}
 
 /**
  * Creates a form field element with the appropriate styles and attributes for each element.
@@ -81,16 +84,17 @@ export const FormField = forwardRef<HTMLDivElement, FormFieldProps>(
           value={{ disabled, size, state, inputProps, optional, lgIds }}
         >
           <div
-            className={cx(fontStyles, className)}
+            className={cn(fontStyles, className)}
             ref={fwdRef}
             data-lgid={lgIds.root}
             data-testid={lgIds.root}
             {...rest}
           >
             <div
-              className={cx(textContainerStyle, {
-                [marginBottom]: !!(label || description),
-              })}
+              className={cn(
+                textContainerStyle,
+                !!(label || description) && marginBottom,
+              )}
             >
               {label && (
                 <Label

@@ -1,31 +1,31 @@
-import { css, cx } from '@leafygreen-ui/emotion';
 import { spacing, transitionDuration } from '@leafygreen-ui/tokens';
+
+import { cn } from '../../../cn';
 
 const LG_MARKDOWN_CODE_MAX_HEIGHT = 220;
 const TRANSITION_DURATION = transitionDuration.slower;
 
-const baseContentWrapperStyles = css`
-  padding: 0 ${spacing[300]}px;
-  display: grid;
-  transition-property: grid-template-rows, opacity, padding, visibility;
-  transition-duration: ${TRANSITION_DURATION}ms;
-  transition-timing-function: ease-in-out;
-  grid-template-rows: 0fr;
-  opacity: 0;
-  visibility: hidden;
+const baseContentWrapperStyles = [
+  `px-[${spacing[300]}px]`,
+  'py-0',
+  'grid',
+  `transition-[grid-template-rows,opacity,padding,visibility]`,
+  `duration-[${TRANSITION_DURATION}ms]`,
+  'ease-in-out',
+  'grid-rows-[0fr]',
+  'opacity-0',
+  'invisible',
 
-  pre {
-    max-height: ${LG_MARKDOWN_CODE_MAX_HEIGHT}px;
-    overflow-y: auto;
-  }
-`;
+  `[&_pre]:max-h-[${LG_MARKDOWN_CODE_MAX_HEIGHT}px]`,
+  '[&_pre]:overflow-y-auto',
+].join(' ');
 
-const expandedContentWrapperStyles = css`
-  padding: ${spacing[300]}px;
-  grid-template-rows: 1fr;
-  opacity: 1;
-  visibility: visible;
-`;
+const expandedContentWrapperStyles = [
+  `p-[${spacing[300]}px]`,
+  'grid-rows-[1fr]',
+  'opacity-100',
+  'visible',
+].join(' ');
 
 export const getContentWrapperStyles = ({
   className,
@@ -34,7 +34,7 @@ export const getContentWrapperStyles = ({
   className?: string;
   isExpanded: boolean;
 }) =>
-  cx(
+  cn(
     baseContentWrapperStyles,
     {
       [expandedContentWrapperStyles]: isExpanded,
@@ -42,7 +42,4 @@ export const getContentWrapperStyles = ({
     className,
   );
 
-export const innerContentWrapperStyles = css`
-  overflow: hidden;
-  min-height: 0;
-`;
+export const innerContentWrapperStyles = 'overflow-hidden min-h-0';

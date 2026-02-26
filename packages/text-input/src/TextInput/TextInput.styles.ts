@@ -1,5 +1,1 @@
-import { css } from '@leafygreen-ui/emotion';
-
-export const textInputStyle = css`
-  width: 100%;
-`;
+export const textInputStyle = 'w-full';

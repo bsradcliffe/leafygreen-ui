@@ -1,7 +1,6 @@
 import React, { useContext, useMemo } from 'react';
 import isUndefined from 'lodash/isUndefined';
 
-import { css, cx } from '@leafygreen-ui/emotion';
 import { useAvailableSpace, useForwardedRef } from '@leafygreen-ui/hooks';
 import { Icon } from '@leafygreen-ui/icon';
 import { useDarkMode } from '@leafygreen-ui/leafygreen-provider';
@@ -14,17 +13,25 @@ import { ComboboxContext } from '../ComboboxContext';
 import { DropdownWidthBasis } from '../types';
 
 import {
-  autoWidthStyles,
-  getMenuThemeStyles,
-  loadingIconStyle,
+  autoWidthStyle,
+  getMenuThemeStyle,
+  loadingIconClassName,
+  menuBaseClassName,
   menuBaseStyle,
-  menuList,
+  menuListClassName,
+  menuMessageBaseClassName,
   menuMessageBaseStyle,
   menuMessageSizeStyle,
   menuMessageThemeStyle,
+  menuStyleTag,
+  popoverClassName,
   popoverStyle,
   popoverThemeStyle,
 } from './Menu.styles';
+
+function cn(...classes: Array<string | false | undefined | null>): string {
+  return classes.filter(Boolean).join(' ');
+}
 
 type ComboboxMenuProps = {
   children?: React.ReactNode;
@@ -68,25 +75,29 @@ export const ComboboxMenu = React.forwardRef<HTMLDivElement, ComboboxMenuProps>(
      * Includes error, empty, search and default states
      */
     const renderedMenuContents = useMemo((): JSX.Element => {
-      const messageStyles = cx(
-        menuMessageBaseStyle,
-        menuMessageThemeStyle[theme],
-        menuMessageSizeStyle(size),
-      );
+      const messageStyle: React.CSSProperties = {
+        ...menuMessageBaseStyle,
+        ...menuMessageThemeStyle[theme],
+        ...menuMessageSizeStyle(size),
+      };
 
-      const errorMessageStyles = cx(
-        menuMessageBaseStyle,
-        menuMessageSizeStyle(size),
-      );
+      const errorMessageStyle: React.CSSProperties = {
+        ...menuMessageBaseStyle,
+        ...menuMessageSizeStyle(size),
+      };
 
       switch (searchState) {
         case 'loading': {
           return (
-            <span className={messageStyles}>
+            <span
+              className={cn(menuMessageBaseClassName)}
+              style={messageStyle}
+            >
+              <style>{menuStyleTag}</style>
               <Icon
                 glyph="Refresh"
                 color={darkMode ? palette.blue.light1 : palette.blue.base}
-                className={loadingIconStyle}
+                className={loadingIconClassName}
               />
               {searchLoadingMessage}
             </span>
@@ -95,7 +106,10 @@ export const ComboboxMenu = React.forwardRef<HTMLDivElement, ComboboxMenuProps>(
 
         case 'error': {
           return (
-            <Error className={errorMessageStyles}>
+            <Error
+              className={cn(menuMessageBaseClassName)}
+              style={errorMessageStyle}
+            >
               <Icon
                 glyph="Warning"
                 color={darkMode ? palette.red.light1 : palette.red.base}
@@ -113,10 +127,17 @@ export const ComboboxMenu = React.forwardRef<HTMLDivElement, ComboboxMenuProps>(
             'length' in children &&
             (children as Array<React.ReactNode>).length > 0
           ) {
-            return <ul className={menuList}>{children}</ul>;
+            return <ul className={menuListClassName}>{children}</ul>;
           }
 
-          return <span className={messageStyles}>{searchEmptyMessage}</span>;
+          return (
+            <span
+              className={cn(menuMessageBaseClassName)}
+              style={messageStyle}
+            >
+              {searchEmptyMessage}
+            </span>
+          );
         }
       }
     }, [
@@ -138,9 +159,14 @@ export const ComboboxMenu = React.forwardRef<HTMLDivElement, ComboboxMenuProps>(
         justify="middle"
         refEl={refEl}
         adjustOnMutation={true}
-        className={cx(popoverStyle(menuWidth), popoverThemeStyle[theme], {
-          [autoWidthStyles]: dropdownWidthBasis === DropdownWidthBasis.Option,
-        })}
+        className={cn(popoverClassName)}
+        style={{
+          ...popoverStyle(menuWidth),
+          ...popoverThemeStyle[theme],
+          ...(dropdownWidthBasis === DropdownWidthBasis.Option
+            ? autoWidthStyle
+            : {}),
+        }}
       >
         <div
           ref={ref}
@@ -148,13 +174,12 @@ export const ComboboxMenu = React.forwardRef<HTMLDivElement, ComboboxMenuProps>(
           role="listbox"
           aria-labelledby={labelId}
           aria-expanded={isOpen}
-          className={cx(
-            menuBaseStyle,
-            getMenuThemeStyles(theme),
-            css`
-              max-height: ${maxHeightValue};
-            `,
-          )}
+          className={cn(menuBaseClassName)}
+          style={{
+            ...menuBaseStyle,
+            ...getMenuThemeStyle(theme),
+            maxHeight: maxHeightValue,
+          }}
           onMouseDownCapture={e => e.preventDefault()}
         >
           {renderedMenuContents}

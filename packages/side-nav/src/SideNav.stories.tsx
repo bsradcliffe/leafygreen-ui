@@ -6,14 +6,13 @@ import {
   StoryType,
 } from '@lg-tools/storybook-utils';
 
-import { css, cx } from '@leafygreen-ui/emotion';
 import { Icon } from '@leafygreen-ui/icon';
 import LeafyGreenProvider from '@leafygreen-ui/leafygreen-provider';
 import { Theme } from '@leafygreen-ui/lib';
-import { palette } from '@leafygreen-ui/palette';
 import { Option, Select, Size } from '@leafygreen-ui/select';
 import { Body, H1 } from '@leafygreen-ui/typography';
 
+import { cn } from './cn';
 import {
   CollapsedSideNavItem,
   SideNav,
@@ -22,9 +21,7 @@ import {
   type SideNavProps,
 } from '.';
 
-const basicStyles = css`
-  height: 50vh;
-`;
+const basicStyles = 'h-[50vh]';
 
 const meta: StoryMetaType<typeof SideNav> = {
   title: 'Composition/Data Display/SideNav',
@@ -81,59 +78,31 @@ export const LiveExample: StoryType<typeof SideNav> = ({
   className,
   ...args
 }: SideNavProps) => {
-  return <SideNav className={cx(basicStyles, className)} {...args} />;
+  return <SideNav className={cn(basicStyles, className)} {...args} />;
 };
 LiveExample.parameters = {
   chromatic: { disableSnapshot: true },
 };
 
-const appContainer = css`
-  display: grid;
-  grid-template-areas: 'mongonav mongonav' 'nav content';
-  grid-template-rows: auto 1fr;
-  grid-template-columns: auto 1fr;
-  height: 100vh;
-  width: 100%;
-`;
+const appContainer =
+  'grid [grid-template-areas:"mongonav_mongonav"_"nav_content"] grid-rows-[auto_1fr] grid-cols-[auto_1fr] h-screen w-full';
 
-const mongoNavBaseStyles = css`
-  grid-area: mongonav;
-  width: 100%;
-  height: 105px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1;
-`;
+const mongoNavBaseStyles =
+  '[grid-area:mongonav] w-full h-[105px] flex items-center justify-center z-[1]';
 
 const mongoNavThemeStyles: Record<Theme, string> = {
-  [Theme.Light]: css`
-    background-color: ${palette.white};
-    box-shadow: 0 2px 4px 0 ${palette.gray.light2};
-  `,
-  [Theme.Dark]: css`
-    background-color: ${palette.gray.dark4};
-    box-shadow: 0 2px 4px 0 ${palette.black};
-  `,
+  [Theme.Light]: 'bg-white shadow-[0_2px_4px_0_#E8EDEB]',
+  [Theme.Dark]: 'bg-[#112733] shadow-[0_2px_4px_0_#001E2B]',
 };
 
-const sideNavStyles = css`
-  grid-area: nav;
-`;
+const sideNavStyles = '[grid-area:nav]';
 
-const contentStyles = css`
-  grid-area: content;
-  padding: 24px 48px;
-  margin: auto;
-  max-width: 72ch;
-  height: 100%;
-  max-height: 100%;
-  overflow-y: auto;
-`;
+const contentStyles =
+  '[grid-area:content] py-[24px] px-[48px] mx-auto max-w-[72ch] h-full max-h-full overflow-y-auto';
 
 const MongoNavPlaceholder = ({ darkMode, ...props }: any) => (
   <header
-    className={cx(
+    className={cn(
       mongoNavBaseStyles,
       mongoNavThemeStyles[darkMode ? Theme.Dark : Theme.Light],
     )}
@@ -255,20 +224,13 @@ export const OrgSettings = ({
           >
             <li
               role="menuitem"
-              className={css`
-                padding: 0 16px;
-                margin-bottom: 16px;
-              `}
+              className="px-[16px] mb-[16px]"
             >
               <Select
                 defaultValue="greenery"
                 aria-labelledby="context-label"
                 size={Size.Small}
-                className={css`
-                  > div {
-                    width: 100%;
-                  }
-                `}
+                className="[&>div]:w-full"
               >
                 <Option value="leafycorp">LeafyCorp</Option>
                 <Option value="greenery">Greenery</Option>

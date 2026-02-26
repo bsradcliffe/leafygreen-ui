@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { cx } from '@leafygreen-ui/emotion';
 import { Overline } from '@leafygreen-ui/typography';
 
+import { cn } from '../cn';
 import { AccessibleGlyph } from '../AccessibleGlyph';
 import { useSideNavContext } from '../SideNav';
 
@@ -30,7 +30,7 @@ export function SideNavGroupHeader({
         <AccessibleGlyph
           isActiveGroup={isActiveGroup}
           accessibleGlyph={accessibleGlyph}
-          className={cx(iconCustomStyle, iconCustomThemeStyle[theme])}
+          className={cn(iconCustomStyle, iconCustomThemeStyle[theme])}
         />
       )}
       <Overline className={overlineStyle}>{header}</Overline>

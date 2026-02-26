@@ -2,7 +2,6 @@ import React from 'react';
 import { StoryMetaType } from '@lg-tools/storybook-utils';
 import { StoryFn } from '@storybook/react';
 
-import { css } from '@leafygreen-ui/emotion';
 import { palette } from '@leafygreen-ui/palette';
 
 import { Size } from './Toggle/types';
@@ -53,11 +52,11 @@ export const WithLabel: StoryFn<ToggleProps> = ({ ...args }) => (
     <label
       htmlFor="toggle"
       id="label"
-      className={css`
-        display: block;
-        margin-bottom: 16px;
-        color: ${args.darkMode ? palette.white : palette.gray.dark2};
-      `}
+      style={{
+        display: 'block',
+        marginBottom: 16,
+        color: args.darkMode ? palette.white : palette.gray.dark2,
+      }}
     >
       This is a label for my toggle.
     </label>

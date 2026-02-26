@@ -1,8 +1,8 @@
 import React, { ComponentPropsWithRef, ReactElement } from 'react';
 
 import { useDescendant } from '@leafygreen-ui/descendants';
-import { cx } from '@leafygreen-ui/emotion';
 
+import { cn } from '../cn';
 import { MenuDescendantsContext, useMenuContext } from '../MenuContext';
 
 import { getFocusableMenuItemWrapperStyles } from './FocusableMenuItem.styles';
@@ -30,7 +30,7 @@ export const FocusableMenuItem = React.forwardRef<
 
   return child ? (
     <div
-      className={cx(getFocusableMenuItemWrapperStyles(theme), className)}
+      className={cn(getFocusableMenuItemWrapperStyles(theme), className)}
       role="menuitem"
       {...rest}
     >

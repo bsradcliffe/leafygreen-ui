@@ -29,7 +29,6 @@
   },
   "dependencies": {
     "@leafygreen-ui/a11y": "workspace:^",
-    "@leafygreen-ui/emotion": "workspace:^",
     "@leafygreen-ui/hooks": "workspace:^",
     "@leafygreen-ui/icon": "workspace:^",
     "@leafygreen-ui/lib": "workspace:^",
@@ -37,7 +36,6 @@
     "@leafygreen-ui/tokens": "workspace:^",
     "@leafygreen-ui/typography": "workspace:^",
     "@lg-tools/test-harnesses": "workspace:^",
-    "polished": "^4.2.2",
     "lodash": "^4.17.21"
   },
   "peerDependencies": {

@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { css, cx } from '@leafygreen-ui/emotion';
 import { getNodeTextContent } from '@leafygreen-ui/lib';
 import {
   Polymorph,
@@ -9,6 +8,8 @@ import {
 } from '@leafygreen-ui/polymorphic';
 
 import { CommonTypographyProps } from '../types';
+
+import { cn } from './cn';
 
 interface LocalProps extends CommonTypographyProps {
   /**
@@ -27,51 +28,20 @@ type StaticWidthTextProps<T extends PolymorphicAs> = PolymorphicPropsWithRef<
   LocalProps
 >;
 
-const staticWidthTextStyle = ({
-  pseudoElement,
-  maxFontWeight,
-}: Pick<StaticWidthTextProps<any>, 'pseudoElement' | 'maxFontWeight'>) => {
-  const pseudoSelector = `&:${pseudoElement}`;
+const staticWidthTextBaseStyles = [
+  'font-[inherit] text-[inherit]',
+  'whitespace-nowrap overflow-hidden text-ellipsis',
+  'relative inline-flex flex-col items-start justify-center no-underline min-w-0 max-w-full',
+].join(' ');
 
-  return css`
-    /* Inherit relevant properties from the parent */
-    font-weight: inherit;
-    font-size: inherit;
+const pseudoBeforeStyles =
+  'before:[content:attr(data-text)] before:h-0 before:invisible before:overflow-hidden before:select-none before:pointer-events-none';
 
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+const pseudoAfterStyles =
+  'after:[content:attr(data-text)] after:h-0 after:invisible after:overflow-hidden after:select-none after:pointer-events-none';
 
-    position: relative;
-    display: inline-flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
-    text-decoration: none;
-    min-width: 0;
-    max-width: 100%;
-
-    ${pseudoSelector} {
-      content: attr(data-text);
-      height: 0;
-      font-weight: ${maxFontWeight};
-      visibility: hidden;
-      overflow: hidden;
-      user-select: none;
-      pointer-events: none;
-    }
-  `;
-};
-
-const childWrapper = css`
-  flex: 1;
-  min-width: 0;
-  max-width: 100%;
-
-  white-space: inherit;
-  overflow: inherit;
-  text-overflow: inherit;
-`;
+const childWrapper =
+  'flex-1 min-w-0 max-w-full [white-space:inherit] [overflow:inherit] [text-overflow:inherit]';
 
 /**
  *
@@ -99,10 +69,21 @@ export function StaticWidthText<T extends PolymorphicAs = 'span'>({
 }: StaticWidthTextProps<T>) {
   // calling getNodeTextContent in case a node gets passed in without TS
   const textContent = getNodeTextContent(children);
+
+  const pseudoStyles =
+    pseudoElement === 'before' ? pseudoBeforeStyles : pseudoAfterStyles;
+
+  const pseudoWeightStyle =
+    pseudoElement === 'before'
+      ? `before:font-[${maxFontWeight}]`
+      : `after:font-[${maxFontWeight}]`;
+
   return (
     <Polymorph
-      className={cx(
-        staticWidthTextStyle({ pseudoElement, maxFontWeight }),
+      className={cn(
+        staticWidthTextBaseStyles,
+        pseudoStyles,
+        pseudoWeightStyle,
         className,
       )}
       as={as ?? ('span' as PolymorphicAs)}

@@ -1,5 +1,6 @@
-import { css, cx } from '@leafygreen-ui/emotion';
 import { spacing, transitionDuration } from '@leafygreen-ui/tokens';
+
+import { cn } from '../../cn';
 
 /**
  * The length of the box shadow for the RichLink component that
@@ -8,55 +9,52 @@ import { spacing, transitionDuration } from '@leafygreen-ui/tokens';
 const LINK_BOX_SHADOW_LENGTH = 4;
 const TRANSITION_DURATION = transitionDuration.slower;
 
-export const containerStyles = css`
-  display: flex;
-  flex-direction: column;
-`;
+export const containerStyles = 'flex flex-col';
 
-export const headerStyles = css`
-  display: flex;
-  align-items: center;
-  gap: ${spacing[200]}px;
-`;
+export const headerStyles = [
+  'flex',
+  'items-center',
+  `gap-[${spacing[200]}px]`,
+].join(' ');
 
-const baseIconStyles = css`
-  transition: transform ${TRANSITION_DURATION}ms ease-in-out;
-  transform: rotate(0deg);
-`;
+const baseIconStyles = [
+  `transition-transform`,
+  `duration-[${TRANSITION_DURATION}ms]`,
+  'ease-in-out',
+  'rotate-0',
+].join(' ');
 
-const expandedIconStyles = css`
-  transform: rotate(180deg);
-`;
+const expandedIconStyles = 'rotate-180';
 
 export const getIconStyles = (isExpanded: boolean) =>
-  cx(baseIconStyles, {
+  cn(baseIconStyles, {
     [expandedIconStyles]: isExpanded,
   });
 
-const baseLinksWrapperStyles = css`
-  display: grid;
-  padding-top: ${spacing[100]}px;
-  transition-property: height, grid-template-rows, opacity, visibility;
-  transition-duration: ${TRANSITION_DURATION}ms;
-  transition-timing-function: ease-in-out;
-  grid-template-rows: 0fr;
-  opacity: 0;
-  visibility: hidden;
-`;
+const baseLinksWrapperStyles = [
+  'grid',
+  `pt-[${spacing[100]}px]`,
+  `transition-[height,grid-template-rows,opacity,visibility]`,
+  `duration-[${TRANSITION_DURATION}ms]`,
+  'ease-in-out',
+  'grid-rows-[0fr]',
+  'opacity-0',
+  'invisible',
+].join(' ');
 
-const expandedLinksWrapperStyles = css`
-  grid-template-rows: 1fr;
-  opacity: 1;
-  visibility: visible;
-`;
+const expandedLinksWrapperStyles = [
+  'grid-rows-[1fr]',
+  'opacity-100',
+  'visible',
+].join(' ');
 
 export const getLinksWrapperStyles = (isExpanded: boolean) =>
-  cx(baseLinksWrapperStyles, {
+  cn(baseLinksWrapperStyles, {
     [expandedLinksWrapperStyles]: isExpanded,
   });
 
-export const linksInnerWrapperStyles = css`
-  overflow: hidden;
-  margin: -${LINK_BOX_SHADOW_LENGTH}px;
-  padding: ${LINK_BOX_SHADOW_LENGTH}px;
-`;
+export const linksInnerWrapperStyles = [
+  'overflow-hidden',
+  `-m-[${LINK_BOX_SHADOW_LENGTH}px]`,
+  `p-[${LINK_BOX_SHADOW_LENGTH}px]`,
+].join(' ');

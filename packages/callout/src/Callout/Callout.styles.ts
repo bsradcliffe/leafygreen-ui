@@ -1,12 +1,7 @@
-import { css } from '@leafygreen-ui/emotion';
-import { Theme } from '@leafygreen-ui/lib';
+import { injectStyles, Theme } from '@leafygreen-ui/lib';
 import { palette } from '@leafygreen-ui/palette';
 import { color, fontFamilies, spacing } from '@leafygreen-ui/tokens';
-import {
-  anchorClassName,
-  linkModeStyles,
-  linkStyles,
-} from '@leafygreen-ui/typography';
+import { anchorClassName } from '@leafygreen-ui/typography';
 
 import { Variant } from './Callout.types';
 
@@ -71,34 +66,87 @@ export const calloutColor: Record<Theme, Record<Variant, ColorSet>> = {
 };
 
 export const getBaseStyles = (theme: Theme, variant: Variant) =>
-  css`
-    font-family: ${fontFamilies.default};
-    color: ${color[theme].text.primary.default};
-    padding-inline-start: ${spacing[300]}px;
-    position: relative;
-
-    &::after {
-      content: '';
-      position: absolute;
-      width: 3px;
-      top: 0px;
-      bottom: 0px;
-      left: 0;
-      border-radius: 2px;
-      background-color: ${calloutColor[theme][variant].bar};
-    }
-  `;
+  [
+    `font-[${fontFamilies.default}]`,
+    `text-[${color[theme].text.primary.default}]`,
+    `ps-[${spacing[300]}px]`,
+    'relative',
+    // ::after pseudo-element for left bar
+    `after:content-['']`,
+    'after:absolute',
+    'after:w-[3px]',
+    'after:top-0',
+    'after:bottom-0',
+    'after:left-0',
+    'after:rounded-[2px]',
+    `after:bg-[${calloutColor[theme][variant].bar}]`,
+  ].join(' ');
 
 export const getHeaderStyles = (theme: Theme, variant: Variant) =>
-  css`
-    width: 100%;
-    margin-block-end: ${spacing[100]}px;
-    color: ${calloutColor[theme][variant].headerText};
-  `;
+  [
+    'w-full',
+    `mb-[${spacing[100]}px]`,
+    `text-[${calloutColor[theme][variant].headerText}]`,
+  ].join(' ');
 
-export const getContentStyles = (theme: Theme) => css`
-  a:not(.${anchorClassName}) {
-    ${linkStyles}
-    ${linkModeStyles[theme]}
-  }
-`;
+/**
+ * Content styles use injectStyles because they require descendant selectors
+ * targeting `a` elements that are not already styled by @leafygreen-ui/typography's
+ * Link component (identified by anchorClassName).
+ * This pattern cannot be expressed with Tailwind utility classes.
+ */
+function getContentStylesClassName(theme: Theme): string {
+  const id = `lg-callout-content-${theme}`;
+
+  // Link color values per theme
+  const linkColor = theme === Theme.Light ? '#016BF8' : '#0498EC';
+  const fontWeight = theme === Theme.Light ? 'normal' : '600';
+  const hoverDecorationColor =
+    theme === Theme.Light ? '#E8EDEB' : '#3D4F58';
+  const focusDecorationColor = '#016BF8';
+
+  injectStyles(
+    id,
+    `
+.${id} a:not(.${anchorClassName}) {
+  font-family: 'Euclid Circular A', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  display: inline;
+  align-items: center;
+  text-decoration: none;
+  text-decoration-color: transparent;
+  cursor: pointer;
+  color: ${linkColor};
+  font-weight: ${fontWeight};
+  line-height: inherit;
+  appearance: none;
+  background: none;
+  border: none;
+  padding: 0;
+}
+.${id} a:not(.${anchorClassName}):hover,
+.${id} a:not(.${anchorClassName})[data-hover="true"] {
+  text-decoration: underline;
+  transition: text-decoration 150ms ease-in-out;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 2px;
+  text-decoration-color: ${hoverDecorationColor};
+}
+.${id} a:not(.${anchorClassName}):focus-visible,
+.${id} a:not(.${anchorClassName})[data-focus="true"] {
+  text-decoration: underline;
+  transition: text-decoration 150ms ease-in-out;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 2px;
+  text-decoration-color: ${focusDecorationColor};
+}
+.${id} a:not(.${anchorClassName}):focus {
+  outline: none;
+}
+`,
+  );
+
+  return id;
+}
+
+export const getContentStyles = (theme: Theme): string =>
+  getContentStylesClassName(theme);

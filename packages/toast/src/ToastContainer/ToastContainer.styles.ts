@@ -1,10 +1,6 @@
 import { TransitionStatus } from 'react-transition-group';
-import { mix } from 'polished';
 
-import { css } from '@leafygreen-ui/emotion';
 import { Theme } from '@leafygreen-ui/lib';
-import { palette } from '@leafygreen-ui/palette';
-import { spacing, transitionDuration } from '@leafygreen-ui/tokens';
 
 import { TOAST_CONSTANTS } from '../constants';
 import { toastBGColor } from '../InternalToast';
@@ -15,70 +11,46 @@ import { toastBGColor } from '../InternalToast';
  * and set the attribute `data-debug` to any data you want to debug
  */
 const DEBUG = false;
-const debugData = (extraStyle?: string) => css`
-  &::before {
-    content: attr(data-debug);
-    color: white;
-    background-color: black;
-    position: absolute;
-    bottom: 0%;
-    left: 0%;
-    z-index: 10;
-    font-family: monospace;
-    pointer-events: none;
-    ${extraStyle};
-  }
-`;
 
-export const portalStyles = css`
-  position: relative;
-`;
+/**
+ * Replaces polished `mix()` with CSS `color-mix()`.
+ * mix(weight, color1, color2) mixes color1 at `weight` proportion.
+ */
+function mixColor(weight: number, color1: string, color2: string): string {
+  return `color-mix(in srgb, ${color1} ${Math.round(weight * 100)}%, ${color2})`;
+}
 
-export const toastContainerStyles = css`
-  position: fixed;
-  display: flex;
-  flex-direction: column-reverse;
+export const portalStyles = 'relative';
 
-  left: ${spacing[3] - TOAST_CONSTANTS.inset}px;
-  bottom: ${spacing[3] - TOAST_CONSTANTS.inset}px;
-  width: ${TOAST_CONSTANTS.maxWidth + 2 * TOAST_CONSTANTS.inset}px;
-  max-height: calc(100vh - ${spacing[3]}px);
-  z-index: 0;
-  overflow: unset;
-
+export const toastContainerStyles = [
+  'fixed',
+  'flex',
+  'flex-col-reverse',
+  `left-[${16 - TOAST_CONSTANTS.inset}px]`,
+  `bottom-[${16 - TOAST_CONSTANTS.inset}px]`,
+  `w-[${TOAST_CONSTANTS.maxWidth + 2 * TOAST_CONSTANTS.inset}px]`,
+  'max-h-[calc(100vh-16px)]',
+  'z-0',
+  'overflow-visible',
   // Hide the toast initially
-  min-height: ${0}px;
-  opacity: 0;
-  visibility: hidden;
+  'min-h-0',
+  'opacity-0',
+  'invisible',
+  // 3D perspective
+  '[perspective:1600px]',
+  '[perspective-origin:bottom]',
+  '[transform-style:preserve-3d]',
+  'transition-[transform,bottom,opacity]',
+  'ease-in-out',
+  'duration-[var(--transition-duration-slower)]',
+  // Scrollbar hiding
+  '[scroll-behavior:unset]',
+  '[scrollbar-width:none]',
+  '[-ms-overflow-style:none]',
+  '[&::-webkit-scrollbar]:hidden',
+].join(' ');
 
-  perspective: 1600px;
-  perspective-origin: bottom;
-  transform-style: preserve-3d;
-  transition: ease-in-out ${transitionDuration.slower}ms;
-  transition-property: transform, bottom, opacity;
-
-  /* Scrollbars */
-  scroll-behavior: unset; // _not_ smooth. We need this to be instant
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE and old Edge */
-  &::-webkit-scrollbar {
-    display: none; /* Chrome, Safari and Opera */
-  }
-
-  /* Debug */
-  ${DEBUG && `outline: 1px solid teal;`}
-  ${DEBUG &&
-  debugData(
-    css`
-      background-color: teal;
-    `,
-  )}
-`;
-
-export const toastContainerVisibleStyles = css`
-  opacity: 1;
-  visibility: visible;
-`;
+export const toastContainerVisibleStyles = 'opacity-100 visible';
 
 export function getContainerStatefulStyles({
   recentToastsLength,
@@ -87,17 +59,10 @@ export function getContainerStatefulStyles({
   recentToastsLength: number;
   topToastHeight: number;
 }) {
-  return css`
-    // In the default state, the container is the height of the first toast + inset
-    height: ${topToastHeight + TOAST_CONSTANTS.inset * 2}px;
-
-    // Move the entire container up as toasts get added,
-    // so the bottom toast is always 16px from the bottom
-    // (note, recentToastsLength should never exceed 3 )
-    transform: translateY(
-      -${TOAST_CONSTANTS.yOffset * (recentToastsLength - 1)}px
-    );
-  `;
+  return [
+    `h-[${topToastHeight + TOAST_CONSTANTS.inset * 2}px]`,
+    `[transform:translateY(-${TOAST_CONSTANTS.yOffset * (recentToastsLength - 1)}px)]`,
+  ].join(' ');
 }
 
 export const getContainerInteractedStyles = ({
@@ -107,59 +72,49 @@ export const getContainerInteractedStyles = ({
   totalStackHeight: number;
   bottomOffset: number;
 }) => {
-  // Set the height of the container to the total stack height
   const height = bottomOffset + totalStackHeight + TOAST_CONSTANTS.inset * 2;
 
-  return css`
-    height: ${height}px;
-    // set the container back when hovered/expanded
-    transform: translateY(0);
-  `;
+  return [
+    `h-[${height}px]`,
+    '[transform:translateY(0)]',
+  ].join(' ');
 };
 
-export const containerExpandedStyles = css`
-  // When expanded, force the height to 100vh regardless of the total stack height
-  height: 100vh;
-  bottom: 0;
-  transform: translateY(0);
-  overflow: auto;
-`;
+export const containerExpandedStyles = [
+  'h-screen',
+  'bottom-0',
+  '[transform:translateY(0)]',
+  'overflow-auto',
+].join(' ');
 
 /** Styles applied when `isExpanded` but `!shouldExpand` */
-export const containerCollapsingStyles = css`
-  bottom: ${spacing[3] - TOAST_CONSTANTS.inset}px;
-`;
+export const containerCollapsingStyles =
+  `bottom-[${16 - TOAST_CONSTANTS.inset}px]`;
 
 /**
  * Scroll Container
  */
-export const scrollContainerStyles = css`
-  position: relative;
-  width: 100%;
-  height: 100%;
-  margin: 0;
-  transform-style: inherit;
-  transition: margin ${transitionDuration.default}ms ease-in-out;
-
-  /* Debug */
-  ${DEBUG && `outline: 1px solid orangered;`}
-`;
+export const scrollContainerStyles = [
+  'relative',
+  'w-full',
+  'h-full',
+  'm-0',
+  '[transform-style:inherit]',
+  'transition-[margin]',
+  'duration-[var(--transition-duration-default)]',
+  'ease-in-out',
+].join(' ');
 
 export function scrollContainerExpandedStyles(totalStackHeight: number) {
-  /*
-   * Scroll container should be the height of the whole stack.
-   * This may overflow the container.
-   */
-  return css`
-    margin: ${spacing[3]}px 0;
-    height: ${totalStackHeight}px;
-  `;
+  return [
+    'my-[16px]',
+    'mx-0',
+    `h-[${totalStackHeight}px]`,
+  ].join(' ');
 }
 
 /** Styles applied when `isExpanded` but `!shouldExpand` */
-export const scrollContainerTransitionOutStyles = css`
-  margin: 0;
-`;
+export const scrollContainerTransitionOutStyles = 'm-0';
 
 /**
  * Stateful Toast styling
@@ -177,44 +132,26 @@ export function getToastTransitionStyles({
     case 'entered': {
       const y = index * TOAST_CONSTANTS.yOffset;
       const z = -index * TOAST_CONSTANTS.zOffset;
-      const bgColor = mix(1 - index * 0.2, toastBGColor[theme], palette.white);
+      const bgColor = mixColor(1 - index * 0.2, toastBGColor[theme], '#FFFFFF');
 
-      return css`
-        opacity: 1;
-        z-index: ${3 - index};
-        transform: translate3d(0, ${y}px, ${z}px) scale(1);
-        background-color: ${bgColor};
-        // Slow down any hover animations
-        transition-duration: ${transitionDuration.slower}ms;
-
-        ${DEBUG &&
-        debugData(
-          css`
-            top: unset;
-            left: unset;
-            bottom: 0;
-            right: 0;
-          `,
-        )}
-      `;
+      return [
+        'opacity-100',
+        `z-[${3 - index}]`,
+        `[transform:translate3d(0,${y}px,${z}px)_scale(1)]`,
+        `[background-color:${bgColor}]`,
+        'duration-[var(--transition-duration-slower)]',
+      ].join(' ');
     }
 
     case 'exiting': {
-      return css`
-        opacity: 0;
-      `;
+      return 'opacity-0';
     }
 
     default:
-      return css`
-        transform: translate3d(
-            0,
-            ${TOAST_CONSTANTS.yOffset}px,
-            -${TOAST_CONSTANTS.zOffset}px
-          )
-          scale(0.9);
-        opacity: 0;
-      `;
+      return [
+        `[transform:translate3d(0,${TOAST_CONSTANTS.yOffset}px,-${TOAST_CONSTANTS.zOffset}px)_scale(0.9)]`,
+        'opacity-0',
+      ].join(' ');
   }
 }
 
@@ -227,15 +164,10 @@ export function getToastUnhoveredStyles({
   index: number;
   topToastHeight: number;
 }) {
-  /**
-   * When not hovered, set the max-height of each toast
-   * to the height of the top-most toast,
-   * so tall toasts below the top don't peek out
-   */
-  return css`
-    max-height: ${index === 0 ? 'unset' : `${topToastHeight}px`};
-    color: ${index > 0 ? toastBGColor[theme] : 'initial'} !important;
-  `;
+  return [
+    index === 0 ? '[max-height:unset]' : `max-h-[${topToastHeight}px]`,
+    index > 0 ? `!text-[${toastBGColor[theme]}]` : '[color:initial]',
+  ].join(' ');
 }
 
 export function getToastHoverStyles({
@@ -247,9 +179,9 @@ export function getToastHoverStyles({
   height: number;
   theme: Theme;
 }) {
-  return css`
-    max-height: ${height * 2}px;
-    background-color: ${toastBGColor[theme]};
-    transform: translate3d(0, -${positionY}px, 0);
-  `;
+  return [
+    `max-h-[${height * 2}px]`,
+    `[background-color:${toastBGColor[theme]}]`,
+    `[transform:translate3d(0,-${positionY}px,0)]`,
+  ].join(' ');
 }

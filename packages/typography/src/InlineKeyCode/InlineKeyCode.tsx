@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { cx } from '@leafygreen-ui/emotion';
 import { useDarkMode } from '@leafygreen-ui/leafygreen-provider';
 
 import { codeTypeScaleStyles } from '../styles';
+import { cn } from '../utils/cn';
 import { useUpdatedBaseFontSize } from '../utils/useUpdatedBaseFontSize';
 
 import {
@@ -24,7 +24,7 @@ function InlineKeyCode({
 
   return (
     <code
-      className={cx(
+      className={cn(
         inlineKeyCodeStyles,
         inlineKeyCodeColor[theme],
         codeTypeScaleStyles[baseFontSize],

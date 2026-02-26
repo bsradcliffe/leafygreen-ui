@@ -6,19 +6,13 @@ import {
 } from '@lg-tools/storybook-utils';
 import { StoryFn, StoryObj } from '@storybook/react';
 
-import { css } from '@leafygreen-ui/emotion';
 import LeafyGreenProvider from '@leafygreen-ui/leafygreen-provider';
 import { spacing } from '@leafygreen-ui/tokens';
 import { Body, Subtitle } from '@leafygreen-ui/typography';
 
 import { ExpandableGrid, ExpandableGridProps } from '.';
 
-const childContainerStyles = css`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: ${spacing[300]}px;
-`;
+const childContainerStyles = `w-full flex flex-col gap-[${spacing[300]}px]`;
 
 const ExpandableGridChild = ({ index }: { index: number }) => {
   return (

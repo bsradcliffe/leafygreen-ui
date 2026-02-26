@@ -1,88 +1,48 @@
-import { transparentize } from 'polished';
-
-import { css } from '@leafygreen-ui/emotion';
 import { Theme } from '@leafygreen-ui/lib';
-import { palette } from '@leafygreen-ui/palette';
-import { transitionDuration } from '@leafygreen-ui/tokens';
 
 import { Size, Variant } from '../types';
 
+/**
+ * Pre-computed transparent ripple colors (replaces polished transparentize)
+ */
 const rippleOpacity = 0.76;
 
 export const rippleColors: Record<Theme, Record<Variant, string>> = {
   [Theme.Light]: {
-    [Variant.Default]: palette.gray.light2,
-    [Variant.Primary]: palette.green.dark1,
-    [Variant.PrimaryOutline]: transparentize(rippleOpacity, palette.green.base),
-    [Variant.Danger]: palette.red.light1,
-    [Variant.DangerOutline]: transparentize(rippleOpacity, palette.red.base),
-    [Variant.BaseGreen]: palette.green.light1,
+    [Variant.Default]: '#E8EDEB',
+    [Variant.Primary]: '#00A35C',
+    [Variant.PrimaryOutline]: `rgba(0, 237, 100, ${1 - rippleOpacity})`,
+    [Variant.Danger]: '#FF6960',
+    [Variant.DangerOutline]: `rgba(219, 48, 48, ${1 - rippleOpacity})`,
+    [Variant.BaseGreen]: '#71F6BA',
   },
   [Theme.Dark]: {
-    [Variant.Default]: palette.gray.base,
-    [Variant.Primary]: palette.green.dark1,
-    [Variant.PrimaryOutline]: transparentize(rippleOpacity, palette.green.base),
-    [Variant.Danger]: palette.red.dark2,
-    [Variant.DangerOutline]: transparentize(rippleOpacity, palette.red.light1),
-    [Variant.BaseGreen]: palette.green.dark1,
+    [Variant.Default]: '#889397',
+    [Variant.Primary]: '#00A35C',
+    [Variant.PrimaryOutline]: `rgba(0, 237, 100, ${1 - rippleOpacity})`,
+    [Variant.Danger]: '#970606',
+    [Variant.DangerOutline]: `rgba(255, 105, 96, ${1 - rippleOpacity})`,
+    [Variant.BaseGreen]: '#00A35C',
   },
 };
 
-export const rippleStyle = css`
-  overflow: hidden;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  border-radius: 5px;
-`;
+export const rippleClassName =
+  'overflow-hidden absolute inset-0 rounded-[5px]';
 
-export const buttonContentStyle = css`
-  display: grid;
-  grid-auto-flow: column;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  width: 100%;
-  position: relative;
-  user-select: none;
-  z-index: 0;
-  transition: all ${transitionDuration.default} ease-in-out;
-`;
+export const buttonContentClassName =
+  'grid grid-flow-col justify-center items-center h-full w-full relative select-none z-0 transition-all duration-[var(--transition-duration-default)] ease-in-out';
 
-export const buttonContentSizeStyle: Record<Size, string> = {
-  [Size.XSmall]: css`
-    padding: 0 7px; // 8px - 1px border
-    gap: 6px;
-  `,
-
-  [Size.Small]: css`
-    padding: 0 11px; // 12px - 1px border
-    gap: 6px;
-  `,
-
-  [Size.Default]: css`
-    padding: 0 11px; // 12px - 1px border
-    gap: 6px;
-  `,
-
-  [Size.Large]: css`
-    padding: 0 15px; // 16px - 1px border
-    gap: 8px;
-  `,
+export const buttonContentSizeClassName: Record<Size, string> = {
+  [Size.XSmall]: 'px-[7px] gap-[6px]',
+  [Size.Small]: 'px-[11px] gap-[6px]',
+  [Size.Default]: 'px-[11px] gap-[6px]',
+  [Size.Large]: 'px-[15px] gap-[8px]',
 };
 
-export const centeredSpinnerContainerStyles = css`
-  position: absolute;
-`;
+export const centeredSpinnerContainerClassName = 'absolute';
 
-export const centeredSpinnerStyles = css`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-`;
+export const centeredSpinnerClassName =
+  'absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2';
 
 export const buttonSpinnerSize: Record<Size, number> = {
   [Size.XSmall]: 16,
@@ -92,18 +52,12 @@ export const buttonSpinnerSize: Record<Size, number> = {
 };
 
 export const spinnerColor: Record<Theme, string> = {
-  [Theme.Dark]: palette.gray.light1,
-  [Theme.Light]: palette.gray.dark1,
+  [Theme.Dark]: '#C1C7C6',
+  [Theme.Light]: '#5C6C75',
 };
 
-export const hiddenContentStyles = css`
-  visibility: hidden;
-`;
+export const hiddenContentClassName = 'invisible';
 
-export const leftGlyphStyles = css`
-  justify-self: right;
-`;
+export const leftGlyphClassName = 'justify-self-end';
 
-export const rightGlyphStyles = css`
-  justify-self: left;
-`;
+export const rightGlyphClassName = 'justify-self-start';

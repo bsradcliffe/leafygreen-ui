@@ -1,4 +1,3 @@
-import { css, cx } from '@leafygreen-ui/emotion';
 import { Theme } from '@leafygreen-ui/lib';
 import {
   color,
@@ -8,31 +7,33 @@ import {
   Variant,
 } from '@leafygreen-ui/tokens';
 
+import { cn } from '../cn';
+
 const CONTAINER_MAX_WIDTH = 400;
 const FOCUS_RING_WIDTH = 4;
 
-const baseOuterWrapperStyles = css`
-  max-width: ${CONTAINER_MAX_WIDTH}px;
-  overflow: hidden;
-  margin: -${FOCUS_RING_WIDTH}px;
-  padding: ${FOCUS_RING_WIDTH}px;
-  display: grid;
-  grid-template-rows: 1fr;
-  gap: ${spacing[200]}px;
-`;
+const baseOuterWrapperStyles = [
+  `max-w-[${CONTAINER_MAX_WIDTH}px]`,
+  'overflow-hidden',
+  `-m-[${FOCUS_RING_WIDTH}px]`,
+  `p-[${FOCUS_RING_WIDTH}px]`,
+  'grid',
+  'grid-rows-[1fr]',
+  `gap-[${spacing[200]}px]`,
+].join(' ');
 
-const transitionStyles = css`
-  transform-origin: bottom right;
-  transition-property: grid-template-rows, opacity, transform;
-  transition-duration: ${transitionDuration.slower}ms;
-  transition-timing-function: ease-out;
-`;
+const transitionStyles = [
+  'origin-bottom-right',
+  `transition-[grid-template-rows,opacity,transform]`,
+  `duration-[${transitionDuration.slower}ms]`,
+  'ease-out',
+].join(' ');
 
-const hiddenWrapperStyles = css`
-  grid-template-rows: 0fr;
-  opacity: 0;
-  transform: scale(0.8);
-`;
+const hiddenWrapperStyles = [
+  'grid-rows-[0fr]',
+  'opacity-0',
+  'scale-[0.8]',
+].join(' ');
 
 export const getOuterWrapperStyles = ({
   enableTransition,
@@ -41,31 +42,30 @@ export const getOuterWrapperStyles = ({
   enableTransition: boolean;
   shouldHide: boolean;
 }) =>
-  cx(baseOuterWrapperStyles, {
+  cn(baseOuterWrapperStyles, {
     [transitionStyles]: enableTransition,
     [hiddenWrapperStyles]: shouldHide,
   });
 
-export const innerWrapperStyles = css`
-  min-height: 0;
-  display: flex;
-  flex-direction: column;
-  gap: ${spacing[200]}px;
-  align-items: flex-start;
-`;
+export const innerWrapperStyles = [
+  'min-h-0',
+  'flex',
+  'flex-col',
+  `gap-[${spacing[200]}px]`,
+  'items-start',
+].join(' ');
 
-export const headerStyles = css`
-  display: flex;
-  align-items: center;
-  gap: ${spacing[50]}px;
-`;
+export const headerStyles = [
+  'flex',
+  'items-center',
+  `gap-[${spacing[50]}px]`,
+].join(' ');
 
-export const getLabelStyles = (theme: Theme) => css`
-  color: ${color[theme].text[Variant.Secondary][InteractionState.Default]};
-`;
+export const getLabelStyles = (theme: Theme) =>
+  `text-[${color[theme].text[Variant.Secondary][InteractionState.Default]}]`;
 
-export const childrenContainerStyles = css`
-  display: flex;
-  flex-direction: column;
-  gap: ${spacing[200]}px;
-`;
+export const childrenContainerStyles = [
+  'flex',
+  'flex-col',
+  `gap-[${spacing[200]}px]`,
+].join(' ');

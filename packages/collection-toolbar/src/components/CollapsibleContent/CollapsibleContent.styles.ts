@@ -1,36 +1,36 @@
-import { css, cx } from '@leafygreen-ui/emotion';
 import { spacing, transitionDuration } from '@leafygreen-ui/tokens';
 
-export const collapsibleContentBaseStyles = css`
-  display: grid;
-  width: -webkit-fill-available;
-  transition-property: height, grid-template-rows, opacity, visibility;
-  transition-duration: ${transitionDuration.slower}ms;
-  transition-timing-function: ease-in-out;
+import { cn } from '../../cn';
 
-  grid-template-rows: 1fr;
-  opacity: 1;
-  visibility: visible;
-`;
+export const collapsibleContentBaseStyles = [
+  'grid',
+  'w-[-webkit-fill-available]',
+  `transition-[height,grid-template-rows,opacity,visibility]`,
+  `duration-[${transitionDuration.slower}ms]`,
+  'ease-in-out',
+  'grid-rows-[1fr]',
+  'opacity-100',
+  'visible',
+].join(' ');
 
-const collapsedStyles = css`
-  grid-template-rows: 0fr;
-  opacity: 0;
-  visibility: hidden;
-`;
+const collapsedStyles = [
+  'grid-rows-[0fr]',
+  'opacity-0',
+  'invisible',
+].join(' ');
 
 export const getCollapsibleContentStyles = ({
   isCollapsed,
 }: {
   isCollapsed?: boolean;
 }) =>
-  cx(collapsibleContentBaseStyles, {
-    [collapsedStyles]: isCollapsed,
+  cn(collapsibleContentBaseStyles, {
+    [collapsedStyles]: !!isCollapsed,
   });
 
-export const innerContentWrapperStyles = css`
-  display: grid;
-  gap: ${spacing[200]}px;
-  overflow: hidden;
-  min-height: 0;
-`;
+export const innerContentWrapperStyles = [
+  'grid',
+  `gap-[${spacing[200]}px]`,
+  'overflow-hidden',
+  'min-h-0',
+].join(' ');

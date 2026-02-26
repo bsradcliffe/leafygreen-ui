@@ -5,7 +5,7 @@
 * @checksum 2985e7c22cafc8aee7499ec3e9e99d3c
 */
 import * as React from "react";
-import { css, cx } from '@leafygreen-ui/emotion';
+import { cn } from '../cn';
 import { useIdAllocator } from '@leafygreen-ui/hooks';
 import { generateAccessibleProps, sizeMap } from '../glyphCommon';
 import { LGGlyph } from '../types';
@@ -23,21 +23,13 @@ const Plus = ({
   const titleId = useIdAllocator({
     prefix: 'icon-title'
   });
-  const fillStyle = css`
-        color: ${fill};
-      `;
-  const noFlexShrink = css`
-        flex-shrink: 0;
-      `;
   const accessibleProps = generateAccessibleProps(role, 'Plus', {
     title,
     titleId,
     ['aria-label']: ariaLabel,
     ['aria-labelledby']: ariaLabelledby
   });
-  return <svg className={cx({
-    [fillStyle]: fill != null
-  }, noFlexShrink, className)} height={typeof size === 'number' ? size : sizeMap[size]} width={typeof size === 'number' ? size : sizeMap[size]} role={role} {...accessibleProps} {...props} viewBox="0 0 16 16">{title && <title id={titleId}>{title}</title>}<path fillRule="evenodd" clipRule="evenodd" d="M7.5 2C6.94772 2 6.5 2.44772 6.5 3V6.5H3C2.44772 6.5 2 6.94772 2 7.5V8.5C2 9.05228 2.44772 9.5 3 9.5H6.5V13C6.5 13.5523 6.94772 14 7.5 14H8.5C9.05228 14 9.5 13.5523 9.5 13V9.5H13C13.5523 9.5 14 9.05228 14 8.5V7.5C14 6.94771 13.5523 6.5 13 6.5H9.5V3C9.5 2.44772 9.05228 2 8.5 2H7.5Z" fill={'currentColor'} /></svg>;
+  return <svg className={cn('shrink-0', className)} style={fill != null ? { color: fill } : undefined} height={typeof size === 'number' ? size : sizeMap[size]} width={typeof size === 'number' ? size : sizeMap[size]} role={role} {...accessibleProps} {...props} viewBox="0 0 16 16">{title && <title id={titleId}>{title}</title>}<path fillRule="evenodd" clipRule="evenodd" d="M7.5 2C6.94772 2 6.5 2.44772 6.5 3V6.5H3C2.44772 6.5 2 6.94772 2 7.5V8.5C2 9.05228 2.44772 9.5 3 9.5H6.5V13C6.5 13.5523 6.94772 14 7.5 14H8.5C9.05228 14 9.5 13.5523 9.5 13V9.5H13C13.5523 9.5 14 9.05228 14 8.5V7.5C14 6.94771 13.5523 6.5 13 6.5H9.5V3C9.5 2.44772 9.05228 2 8.5 2H7.5Z" fill={'currentColor'} /></svg>;
 };
 Plus.displayName = 'Plus';
 Plus.isGlyph = true;

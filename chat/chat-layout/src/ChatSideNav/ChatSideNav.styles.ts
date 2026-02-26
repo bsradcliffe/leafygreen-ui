@@ -1,4 +1,3 @@
-import { css, cx } from '@leafygreen-ui/emotion';
 import { Theme } from '@leafygreen-ui/lib';
 import {
   addOverflowShadow,
@@ -8,6 +7,7 @@ import {
   Variant,
 } from '@leafygreen-ui/tokens';
 
+import { cn } from '../cn';
 import {
   COLLAPSED_SIDE_NAV_WIDTH_WITH_BORDER,
   gridAreas,
@@ -15,17 +15,18 @@ import {
   SIDE_NAV_TRANSITION_DURATION,
 } from '../constants';
 
-const getBaseWrapperStyles = (theme: Theme) => css`
-  grid-area: ${gridAreas.sideNav};
-  border-right: 1px solid
-    ${color[theme].border[Variant.Secondary][InteractionState.Default]};
-  height: 100%;
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  z-index: 1;
-`;
+const getBaseWrapperStyles = (theme: Theme) =>
+  [
+    `[grid-area:${gridAreas.sideNav}]`,
+    'border-r',
+    `border-r-[${color[theme].border[Variant.Secondary][InteractionState.Default]}]`,
+    'h-full',
+    'absolute',
+    'left-0',
+    'top-0',
+    'bottom-0',
+    'z-[1]',
+  ].join(' ');
 
 export const getWrapperStyles = ({
   className,
@@ -34,22 +35,23 @@ export const getWrapperStyles = ({
   className?: string;
   theme: Theme;
 }) => {
-  return cx(getBaseWrapperStyles(theme), className);
+  return cn(getBaseWrapperStyles(theme), className);
 };
 
-const baseContainerStyles = css`
-  position: relative;
-  z-index: 1;
-  height: 100%;
-  display: grid;
-  grid-template-rows: auto 1fr auto;
-  transition: max-width ${SIDE_NAV_TRANSITION_DURATION}ms ease-in-out;
-  max-width: ${PINNED_SIDE_NAV_WIDTH_WITH_BORDER}px;
-`;
+const baseContainerStyles = [
+  'relative',
+  'z-[1]',
+  'h-full',
+  'grid',
+  'grid-rows-[auto_1fr_auto]',
+  `transition-[max-width]`,
+  `duration-[${SIDE_NAV_TRANSITION_DURATION}ms]`,
+  'ease-in-out',
+  `max-w-[${PINNED_SIDE_NAV_WIDTH_WITH_BORDER}px]`,
+].join(' ');
 
-const collapsedContainerStyles = css`
-  max-width: ${COLLAPSED_SIDE_NAV_WIDTH_WITH_BORDER}px;
-`;
+const collapsedContainerStyles =
+  `max-w-[${COLLAPSED_SIDE_NAV_WIDTH_WITH_BORDER}px]`;
 
 export const getContainerStyles = ({
   shouldRenderExpanded,
@@ -60,7 +62,7 @@ export const getContainerStyles = ({
   showOverflowShadow: boolean;
   theme: Theme;
 }) =>
-  cx(baseContainerStyles, {
+  cn(baseContainerStyles, {
     [collapsedContainerStyles]: !shouldRenderExpanded,
     [addOverflowShadow({ isInside: false, side: Side.Right, theme })]:
       showOverflowShadow,

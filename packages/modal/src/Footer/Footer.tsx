@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { cx } from '@leafygreen-ui/emotion';
+import { cn } from '../cn';
 
 import { footerStyle } from './Footer.styles';
 import { FooterProps } from './Footer.types';
@@ -10,7 +10,7 @@ import { FooterProps } from './Footer.types';
  * Internal modal Footer component
  */
 const Footer = ({ children, className }: FooterProps) => {
-  return <div className={cx(footerStyle, className)}>{children}</div>;
+  return <div className={cn(footerStyle, className)}>{children}</div>;
 };
 
 Footer.displayName = 'Footer';

@@ -1,8 +1,6 @@
-import { css, cx } from '@leafygreen-ui/emotion';
+import { cn } from '../../../cn';
 
-const baseComboboxStyles = css`
-  width: fit-content;
-`;
+const baseComboboxStyles = 'w-fit';
 
 export const getComboboxStyles = ({ className }: { className?: string }) =>
-  cx(baseComboboxStyles, className);
+  cn(baseComboboxStyles, className);

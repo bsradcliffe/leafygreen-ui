@@ -1,43 +1,36 @@
-import { css, cx } from '@leafygreen-ui/emotion';
 import {
   breakpoints,
   spacing,
   transitionDuration,
 } from '@leafygreen-ui/tokens';
 
+import { cn } from '../../cn';
 import { Variant } from '../../shared.types';
 import { CUSTOM_BREAKPOINT } from '../constants';
 
-export const baseStyles = css`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: ${spacing[100]}px;
-  margin-left: ${spacing[1800]}px;
+export const baseStyles = [
+  'flex',
+  'flex-row',
+  'items-center',
+  `gap-[${spacing[100]}px]`,
+  `ml-[${spacing[1800]}px]`,
+  `[@media_only_screen_and_(max-width:${CUSTOM_BREAKPOINT}px)]:ml-0`,
+].join(' ');
 
-  @media only screen and (max-width: ${CUSTOM_BREAKPOINT}px) {
-    margin-left: 0;
-  }
-`;
+const iconBaseStyles = [
+  `transition-transform`,
+  `duration-[${transitionDuration.default}ms]`,
+  'ease-in-out',
+].join(' ');
 
-const iconBaseStyles = css`
-  transition: transform ${transitionDuration.default}ms ease-in-out;
-`;
-
-const iconExpandedStyles = css`
-  transform: rotate(180deg);
-`;
+const iconExpandedStyles = 'rotate-180';
 
 export const getIconStyles = ({ isExpanded }: { isExpanded: boolean }) =>
-  cx(iconBaseStyles, {
+  cn(iconBaseStyles, {
     [iconExpandedStyles]: isExpanded,
   });
 
-const compactStyles = css`
-  @media only screen and (max-width: ${breakpoints.Desktop}px) {
-    margin-left: 0;
-  }
-`;
+const compactStyles = `[@media_only_screen_and_(max-width:${breakpoints.Desktop}px)]:ml-0`;
 
 export const getActionStyles = ({
   className,
@@ -46,7 +39,7 @@ export const getActionStyles = ({
   className?: string;
   variant?: Variant;
 }) =>
-  cx(
+  cn(
     baseStyles,
     {
       [compactStyles]: variant === Variant.Compact,

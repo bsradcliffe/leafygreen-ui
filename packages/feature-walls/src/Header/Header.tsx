@@ -1,11 +1,12 @@
 import React, { forwardRef } from 'react';
 
 import { Button, Variant } from '@leafygreen-ui/button';
-import { cx } from '@leafygreen-ui/emotion';
 import LeafyGreenProvider, {
   useDarkMode,
 } from '@leafygreen-ui/leafygreen-provider';
 import { Body, H2, Subtitle } from '@leafygreen-ui/typography';
+
+import { cn } from '../cn';
 
 import {
   buttonsContainerStyles,
@@ -34,14 +35,14 @@ export const Header = forwardRef<HTMLDivElement, HeaderProps>(
 
     return (
       <LeafyGreenProvider darkMode={darkMode}>
-        <div className={cx(containerStyles, className)} ref={fwdRef} {...rest}>
+        <div className={cn(containerStyles, className)} ref={fwdRef} {...rest}>
           <div className={textContainerStyles}>
             {subtitle && (
-              <Subtitle className={textStyles.subtitle}>{subtitle}</Subtitle>
+              <Subtitle style={textStyles.subtitle}>{subtitle}</Subtitle>
             )}
-            <H2 className={textStyles.title}>{title}</H2>
+            <H2 style={textStyles.title}>{title}</H2>
             {description && (
-              <Body className={textStyles.description}>{description}</Body>
+              <Body style={textStyles.description}>{description}</Body>
             )}
           </div>
           <div className={buttonsContainerStyles}>

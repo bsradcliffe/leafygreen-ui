@@ -8,7 +8,6 @@ import {
 import { StoryContext, StoryObj } from '@storybook/react';
 
 import { Button } from '@leafygreen-ui/button';
-import { css } from '@leafygreen-ui/emotion';
 import LeafyGreenProvider, {
   LeafyGreenProviderProps,
 } from '@leafygreen-ui/leafygreen-provider';
@@ -42,9 +41,7 @@ const meta: StoryMetaType<typeof InternalToast> = {
         actionElement: [undefined, <Button size="small">Action</Button>],
       },
       args: {
-        className: css`
-          position: relative;
-        `,
+        className: 'relative',
       },
       excludeCombinations: [
         {
@@ -83,9 +80,7 @@ const meta: StoryMetaType<typeof InternalToast> = {
     description: 'Exercitation incididunt ea proident velit mollit',
     variant: Variant.Note,
     progress: 0,
-    className: css`
-      z-index: 1;
-    `,
+    className: 'z-[1]',
   },
   argTypes: {
     variant: {

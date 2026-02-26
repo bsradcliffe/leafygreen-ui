@@ -29,7 +29,6 @@
   },
   "dependencies": {
     "@leafygreen-ui/button": "workspace:^",
-    "@leafygreen-ui/emotion": "workspace:^",
     "@leafygreen-ui/form-field": "workspace:^",
     "@leafygreen-ui/hooks": "workspace:^",
     "@leafygreen-ui/icon": "workspace:^",
@@ -42,7 +41,6 @@
     "@lg-tools/test-harnesses": "workspace:^",
     "@types/react-is": "^18.0.0",
     "lodash": "^4.17.21",
-    "polished": "^4.1.3",
     "react-is": "^18.0.1"
   },
   "peerDependencies": {

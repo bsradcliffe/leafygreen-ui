@@ -1,8 +1,11 @@
-import { css, cx } from '@leafygreen-ui/emotion';
 import { Theme } from '@leafygreen-ui/lib';
-import { palette } from '@leafygreen-ui/palette';
-import { color, spacing } from '@leafygreen-ui/tokens';
+import { color } from '@leafygreen-ui/tokens';
 
+import { cn } from '../cn';
+
+/**
+ * Base panel styles with theme and layout variants.
+ */
 export const getBasePanelStyle = ({
   hasTitle,
   theme,
@@ -12,58 +15,34 @@ export const getBasePanelStyle = ({
   theme: Theme;
   className?: string;
 }) =>
-  cx(
-    css`
-      display: flex;
-      align-items: center;
-      flex-shrink: 0;
-      flex-direction: row;
-      justify-content: space-between;
-      gap: ${spacing[100]}px;
-
-      z-index: 2; // Above the shadows
-      grid-area: panel;
-
-      border-bottom: 1px solid;
-      padding-inline: ${spacing[400]}px ${spacing[200]}px;
-      height: 36px;
-
-      svg {
-        width: 16px;
-        height: 16px;
-      }
-    `,
-    {
-      [css`
-        justify-content: flex-end;
-      `]: !hasTitle,
-    },
+  cn(
+    // layout
+    'flex items-center shrink-0 flex-row justify-between',
+    // spacing
+    'gap-[4px] pl-[16px] pr-[8px] h-[36px]',
+    // stacking & grid
+    'z-[2] [grid-area:panel]',
+    // border
+    'border-b border-solid border-b-[1px]',
+    // svg sizing
+    '[&_svg]:w-[16px] [&_svg]:h-[16px]',
+    !hasTitle && 'justify-end',
     basePanelThemeStyle[theme],
     className,
   );
 
 export const basePanelThemeStyle: Record<Theme, string> = {
-  [Theme.Light]: css`
-    background-color: ${palette.white};
-    border-color: ${palette.gray.light2};
-  `,
-  [Theme.Dark]: css`
-    background-color: ${palette.gray.dark2};
-    border-color: ${palette.gray.dark1};
-  `,
+  [Theme.Light]:
+    // palette.white, palette.gray.light2
+    'bg-[#FFFFFF] border-[#E8EDEB]',
+  [Theme.Dark]:
+    // palette.gray.dark2, palette.gray.dark1
+    'bg-[#3D4F58] border-[#5C6C75]',
 };
 
-export const panelLeftStyles = css`
-  display: flex;
-  align-items: center;
-  gap: ${spacing[200]}px;
-`;
+export const panelLeftStyles = 'flex items-center gap-[8px]';
 
-export const panelIconsStyles = css`
-  display: flex;
-  gap: ${spacing[100]}px;
-`;
+export const panelIconsStyles = 'flex gap-[4px]';
 
-export const getPanelTitleStyles = (theme: Theme) => css`
-  color: ${color[theme].text.secondary.default};
-`;
+export const getPanelTitleStyles = (theme: Theme) =>
+  `text-[${color[theme].text.secondary.default}]`;

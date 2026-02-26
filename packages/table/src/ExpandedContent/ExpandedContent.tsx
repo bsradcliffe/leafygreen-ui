@@ -1,7 +1,6 @@
 import React, { ForwardedRef } from 'react';
 import { RowData } from '@tanstack/react-table';
 
-import { cx } from '@leafygreen-ui/emotion';
 import { useMergeRefs } from '@leafygreen-ui/hooks';
 import { useDarkMode } from '@leafygreen-ui/leafygreen-provider';
 
@@ -37,7 +36,7 @@ const ExpandedContentWithRef = <T extends RowData>(
     >
       <td
         colSpan={row.getVisibleCells().length}
-        className={cx(baseStyles)}
+        className={baseStyles}
         data-lgid={lgIds.cell}
         data-testid={lgIds.cell}
       >

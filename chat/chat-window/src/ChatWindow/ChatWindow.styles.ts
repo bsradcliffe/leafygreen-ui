@@ -1,28 +1,29 @@
-import { css, cx } from '@leafygreen-ui/emotion';
 import { spacing } from '@leafygreen-ui/tokens';
 
-const baseContainerStyles = css`
-  overflow: hidden;
-  position: relative;
-  width: 100%;
-  height: 100%;
-  max-height: 100%;
-  justify-self: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
+import { cn } from '../cn';
+
+const baseContainerStyles = [
+  'overflow-hidden',
+  'relative',
+  'w-full',
+  'h-full',
+  'max-h-full',
+  'justify-self-center',
+  'flex',
+  'flex-col',
+  'items-center',
+].join(' ');
 
 export const getContainerStyles = ({ className }: { className?: string }) =>
-  cx(baseContainerStyles, className);
+  cn(baseContainerStyles, className);
 
-export const hiddenSpacerStyles = css`
-  flex: 1;
-`;
+export const hiddenSpacerStyles = 'flex-1';
 
-export const inputBarWrapperStyles = css`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  padding: 0 ${spacing[400]}px ${spacing[400]}px;
-`;
+export const inputBarWrapperStyles = [
+  'w-full',
+  'flex',
+  'justify-center',
+  `px-[${spacing[400]}px]`,
+  `pb-[${spacing[400]}px]`,
+  'pt-0',
+].join(' ');

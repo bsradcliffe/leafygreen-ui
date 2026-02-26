@@ -1,72 +1,51 @@
-import { css, cx } from '@leafygreen-ui/emotion';
 import { Theme } from '@leafygreen-ui/lib';
 import { palette } from '@leafygreen-ui/palette';
 
+import { cn } from '../cn';
+
 export const bodyThemeStyles: Record<Theme, string> = {
-  [Theme.Light]: css`
-    color: ${palette.gray.light1};
-  `,
-  [Theme.Dark]: css`
-    color: ${palette.black};
-  `,
+  [Theme.Light]: `text-[${palette.gray.light1}]`,
+  [Theme.Dark]: `text-[${palette.black}]`,
 };
 
-export const bodyTitleStyles = css`
-  margin-bottom: 4px;
-`;
+export const bodyTitleStyles = 'mb-[4px]';
 
-export const buttonStyles = css`
-  height: 28px;
-`;
+export const buttonStyles = 'h-[28px]';
 
-const closeStyles = css`
-  position: absolute;
-  top: 10px;
-  right: 10px;
-`;
+const closeStyles = [
+  'absolute',
+  'top-[10px]',
+  'right-[10px]',
+].join(' ');
 
-const closeHoverStyles = css`
-  color: ${palette.gray.dark2};
-  &:hover,
-  &:active {
-    &::before {
-      background-color: ${palette.gray.light3};
-    }
-  }
-`;
+const closeHoverStyles = [
+  `text-[${palette.gray.dark2}]`,
+  `hover:before:bg-[${palette.gray.light3}]`,
+  `active:before:bg-[${palette.gray.light3}]`,
+].join(' ');
 
 export const getCloseButtonStyle = (isDarkMode?: boolean) =>
-  cx(closeStyles, {
-    [closeHoverStyles]: isDarkMode,
+  cn(closeStyles, {
+    [closeHoverStyles]: !!isDarkMode,
   });
 
-export const contentStyles = css`
-  margin-bottom: 16px;
-`;
+export const contentStyles = 'mb-[16px]';
 
-export const footerStyles = css`
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  gap: 16px;
-`;
+export const footerStyles = [
+  'flex',
+  'justify-end',
+  'items-center',
+  'gap-[16px]',
+].join(' ');
 
 export const stepStyles: Record<Theme, string> = {
-  [Theme.Light]: css`
-    color: ${palette.gray.base};
-  `,
-  [Theme.Dark]: css`
-    color: ${palette.gray.dark2};
-  `,
+  [Theme.Light]: `text-[${palette.gray.base}]`,
+  [Theme.Dark]: `text-[${palette.gray.dark2}]`,
 };
 
-const tooltipMultiStepStyles = css`
-  padding: 32px 16px 16px;
-`;
+const tooltipMultiStepStyles = 'pt-[32px] px-[16px] pb-[16px]';
 
-const tooltipStyles = css`
-  cursor: auto;
-`;
+const tooltipStyles = 'cursor-auto';
 
 export const getTooltipStyles = ({
   isStandalone,
@@ -75,7 +54,7 @@ export const getTooltipStyles = ({
   isStandalone?: boolean;
   tooltipClassName?: string;
 }) =>
-  cx(
+  cn(
     { [tooltipMultiStepStyles]: !isStandalone },
     tooltipStyles,
     tooltipClassName,

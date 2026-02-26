@@ -1,16 +1,13 @@
-import { css } from '@leafygreen-ui/emotion';
+import React from 'react';
+
 import { fontWeights } from '@leafygreen-ui/tokens';
 
-export const calendarGridStyles = css`
-  height: max-content;
-  border-collapse: collapse;
-`;
+export const calendarGridClassName = 'h-max border-collapse';
 
-export const calendarHeaderCellStyles = css`
-  font-weight: ${fontWeights.regular};
-  text-transform: capitalize;
-`;
+export const calendarHeaderCellClassName = 'capitalize';
 
-export const calendarThStyles = css`
-  padding: 0;
-`;
+export const calendarHeaderCellInlineStyle: React.CSSProperties = {
+  fontWeight: fontWeights.regular,
+};
+
+export const calendarThClassName = 'p-0';

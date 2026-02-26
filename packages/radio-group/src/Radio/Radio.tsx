@@ -1,10 +1,10 @@
 import React from 'react';
 
-import { css, cx } from '@leafygreen-ui/emotion';
 import { useIdAllocator } from '@leafygreen-ui/hooks';
 import { useDarkMode } from '@leafygreen-ui/leafygreen-provider';
 import { Description, Label } from '@leafygreen-ui/typography';
 
+import { cn } from '../cn';
 import { Size } from '../types';
 
 import {
@@ -12,15 +12,8 @@ import {
   containerStyle,
   descriptionStyles,
   disabledStyle,
-  hoverThemeStyles,
+  getInputDisplayStyles,
   inputBaseStyle,
-  inputClassName,
-  inputDisplayBaseStyle,
-  inputDisplayClassName,
-  inputDisplaySizeStyles,
-  inputDisplayThemeStyles,
-  inputDisplayWrapperClassName,
-  inputThemeStyles,
   labelBaseStyle,
   labelWeightStyle,
   radioBoxBaseStyle,
@@ -72,17 +65,15 @@ function Radio({
   };
 
   return (
-    <div className={cx(containerStyle, containerSizeStyle[normalizedSize])}>
+    <div className={cn(containerStyle, containerSizeStyle[normalizedSize])}>
       <Label
         disabled={disabled}
         darkMode={darkMode}
         htmlFor={id!}
-        className={cx(
+        className={cn(
           labelBaseStyle,
           {
-            [css`
-              font-size: 12px;
-            `]: size === Size.XSmall, // TODO: keeping this style until XS is deprecated
+            'text-[12px]': size === Size.XSmall, // TODO: keeping this style until XS is deprecated
             [labelWeightStyle]: !bold,
             [disabledStyle]: disabled,
           },
@@ -100,34 +91,26 @@ function Radio({
           aria-checked={checked}
           aria-disabled={disabled}
           aria-describedby={descriptionId}
-          className={cx(
-            inputClassName,
-            inputBaseStyle,
-            inputThemeStyles[theme],
-          )}
+          className={inputBaseStyle}
         />
 
         <div
-          className={cx(
+          className={cn(
             radioBoxBaseStyle,
             radioBoxSizeStyles[normalizedSize],
             {
-              [css`
-                margin-top: 3px;
-                margin-right: 4px;
-              `]: size === Size.XSmall, // TODO: keeping this style until XS is deprecated
-              [hoverThemeStyles[theme]]: !disabled,
+              'mt-[3px] mr-[4px]': size === Size.XSmall, // TODO: keeping this style until XS is deprecated
             },
-            inputDisplayWrapperClassName,
+            !disabled && 'group',
           )}
         >
           <div
-            className={cx(
-              inputDisplayClassName,
-              inputDisplayBaseStyle,
-              inputDisplayThemeStyles[theme],
-              inputDisplaySizeStyles[normalizedSize],
-            )}
+            className={getInputDisplayStyles({
+              theme,
+              size: normalizedSize,
+              checked: !!checked,
+              disabled,
+            })}
           />
         </div>
 
@@ -137,7 +120,7 @@ function Radio({
       {description && (
         <Description
           id={descriptionId}
-          className={cx(descriptionStyles, { [disabledStyle]: disabled })}
+          className={cn(descriptionStyles, { [disabledStyle]: disabled })}
         >
           {description}
         </Description>

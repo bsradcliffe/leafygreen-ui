@@ -1,49 +1,44 @@
-import { css } from '@leafygreen-ui/emotion';
 import { Theme } from '@leafygreen-ui/lib';
-import { color, fontWeights, spacing } from '@leafygreen-ui/tokens';
 
 import { Size } from './NumberInput.types';
 
-export const labelDescriptionStyles = css`
-  margin-bottom: ${spacing[1]}px;
-  display: flex;
-  flex-direction: column;
-`;
+// spacing[1] = 4px
+export const labelDescriptionStyles = [
+  'mb-[4px]',
+  'flex',
+  'flex-col',
+].join(' ');
 
-export const wrapperBaseStyles = css`
-  display: flex;
-  position: relative;
-  z-index: 0; // Establish new stacking context
-`;
+export const wrapperBaseStyles = [
+  'flex',
+  'relative',
+  'z-0',
+].join(' ');
 
 export const wrapperSizeStyles: Record<Size, string> = {
-  [Size.XSmall]: css`
-    height: 22px;
-  `,
-  [Size.Small]: css`
-    height: 28px;
-  `,
-  [Size.Default]: css`
-    height: 36px;
-  `,
-  [Size.Large]: css`
-    height: 48px;
-  `,
+  [Size.XSmall]: 'h-[22px]',
+  [Size.Small]: 'h-[28px]',
+  [Size.Default]: 'h-[36px]',
+  [Size.Large]: 'h-[48px]',
 };
 
-export const wrapperGapStyles = css`
-  gap: 12px;
-`;
+// gap: 12px
+export const wrapperGapStyles = 'gap-[12px]';
 
-export const unitBaseStyles = css`
-  align-self: center;
-  font-weight: ${fontWeights.semiBold};
-`;
+// fontWeights.semiBold = 600
+export const unitBaseStyles = [
+  'self-center',
+  'font-semibold',
+].join(' ');
 
-export const getUnitThemeStyles = (theme: Theme) => css`
-  color: ${color[theme].text.secondary.default};
-`;
+// color.light.text.secondary.default = #5C6C75, dark = #C1C7C6
+export const getUnitThemeStyles = (theme: Theme) =>
+  theme === Theme.Light
+    ? 'text-[#5C6C75]'
+    : 'text-[#C1C7C6]';
 
-export const getUnitDisabledStyles = (theme: Theme) => css`
-  color: ${color[theme].text.disabled.default};
-`;
+// color.light.text.disabled.default = #889397, dark = #5C6C75
+export const getUnitDisabledStyles = (theme: Theme) =>
+  theme === Theme.Light
+    ? 'text-[#889397]'
+    : 'text-[#5C6C75]';

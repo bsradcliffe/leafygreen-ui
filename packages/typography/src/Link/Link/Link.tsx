@@ -1,6 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
 
-import { cx } from '@leafygreen-ui/emotion';
 import ArrowRightIcon from '@leafygreen-ui/icon/dist/ArrowRight';
 import OpenNewTabIcon from '@leafygreen-ui/icon/dist/OpenNewTab';
 import { useDarkMode } from '@leafygreen-ui/leafygreen-provider';
@@ -10,6 +9,7 @@ import {
   useInferredPolymorphic,
 } from '@leafygreen-ui/polymorphic';
 
+import { cn } from '../../utils/cn';
 import { useUpdatedBaseFontSize } from '../../utils/useUpdatedBaseFontSize';
 import {
   anchorClassName,
@@ -98,19 +98,20 @@ const Link = InferredPolymorphic<BaseLinkProps, 'span'>(
         <ArrowRightIcon
           role="presentation"
           size={12}
-          className={cx({
-            [arrowRightIconHover]: arrowAppearance === ArrowAppearance.Hover,
-            [arrowRightIconPersist]:
-              arrowAppearance === ArrowAppearance.Persist,
-          })}
+          className={cn(
+            arrowAppearance === ArrowAppearance.Hover && arrowRightIconHover,
+            arrowAppearance === ArrowAppearance.Persist &&
+              arrowRightIconPersist,
+          )}
         />
       );
     }
 
     return (
       <Component
-        className={cx(
+        className={cn(
           anchorClassName,
+          'group',
           linkStyles,
           linkScaleStyles(baseFontSize),
           linkModeStyles[theme],

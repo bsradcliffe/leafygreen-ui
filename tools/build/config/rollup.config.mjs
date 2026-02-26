@@ -11,6 +11,7 @@ import { nodeExternals } from 'rollup-plugin-node-externals';
 import nodePolyfills from 'rollup-plugin-polyfill-node';
 
 import { getUMDGlobals } from './utils/getUMDGlobals.mjs';
+import lgTailwind from './rollup-plugin-tailwind.mjs';
 import { defaultsDeep } from 'lodash-es';
 
 const extensions = ['.ts', '.tsx'];
@@ -79,6 +80,7 @@ const createConfigForFormat = (output, overrides = {}) => {
     input: ['src/index.ts'],
     output,
     plugins: [
+      lgTailwind(),
       nodePolyfills(),
       nodeExternals({ deps: true }),
       nodeResolve({ extensions }),

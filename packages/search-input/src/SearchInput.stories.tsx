@@ -10,7 +10,6 @@ import { userEvent, within } from '@storybook/test';
 import kebabCase from 'lodash/kebabCase';
 import startCase from 'lodash/startCase';
 
-import { css } from '@leafygreen-ui/emotion';
 import { Body, H2 } from '@leafygreen-ui/typography';
 
 import { Size, State } from './SearchInput/SearchInput.types';
@@ -209,11 +208,7 @@ export const LiveExample: StoryFn<SearchInputProps> = (
   };
 
   return (
-    <div
-      className={css`
-        width: 256px;
-      `}
-    >
+    <div className="w-[256px]">
       <SearchInput
         aria-label="Item"
         onChange={handleChange}
@@ -231,14 +226,7 @@ export const LiveExample: StoryFn<SearchInputProps> = (
         ))}
       </SearchInput>
       {currentPage && (
-        <div
-          className={css`
-            min-width: min-content;
-            margin-block: 20px;
-            padding: 20px;
-            outline: 1px solid green;
-          `}
-        >
+        <div className="min-w-min my-[20px] p-[20px] outline outline-1 outline-green-500">
           <H2>{startCase(currentPage.name)}</H2>
           <Body>{currentPage.description}</Body>
         </div>
@@ -257,9 +245,7 @@ LiveExample.argTypes = {
 
 export const Basic: StoryFn<SearchInputProps> = (props: SearchInputProps) => (
   <SearchInput
-    className={css`
-      width: 200px;
-    `}
+    className="w-[200px]"
     {...props}
   />
 );
@@ -271,9 +257,7 @@ export const WithResults: StoryFn<SearchInputProps> = (
   props: SearchInputProps,
 ) => (
   <SearchInput
-    className={css`
-      width: 200px;
-    `}
+    className="w-[200px]"
     onChange={() => {
       console.log('SB: Change');
     }}
@@ -315,11 +299,7 @@ export const Generated = () => {};
 export const InitialLongSearchOpen = {
   render: () => {
     return (
-      <div
-        className={css`
-          width: 256px;
-        `}
-      >
+      <div className="w-[256px]">
         <SearchInput aria-label="Item">
           {data.map(item => (
             <SearchResult
@@ -342,12 +322,7 @@ export const InitialLongSearchOpen = {
   },
   decorators: [
     (StoryFn, _ctx) => (
-      <div
-        className={css`
-          height: 100vh;
-          padding: 0;
-        `}
-      >
+      <div className="h-screen p-0">
         <StoryFn />
       </div>
     ),

@@ -25,7 +25,6 @@
   "dependencies": {
     "@leafygreen-ui/a11y": "workspace:^",
     "@leafygreen-ui/button": "workspace:^",
-    "@leafygreen-ui/emotion": "workspace:^",
     "@leafygreen-ui/hooks": "workspace:^",
     "@leafygreen-ui/icon": "workspace:^",
     "@leafygreen-ui/icon-button": "workspace:^",
@@ -35,8 +34,7 @@
     "@leafygreen-ui/tooltip": "workspace:^",
     "@leafygreen-ui/typography": "workspace:^",
     "focus-trap": "6.9.4",
-    "focus-trap-react": "9.0.2",
-    "polished": "^4.2.2"
+    "focus-trap-react": "9.0.2"
   },
   "devDependencies": {
     "@lg-tools/build": "workspace:^"

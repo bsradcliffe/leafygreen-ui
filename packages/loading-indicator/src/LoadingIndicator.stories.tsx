@@ -6,9 +6,8 @@ import {
 } from '@lg-tools/storybook-utils';
 import { StoryFn } from '@storybook/react';
 
-import { css } from '@leafygreen-ui/emotion';
 import { DarkModeProps } from '@leafygreen-ui/lib';
-import { Size, spacing } from '@leafygreen-ui/tokens';
+import { Size } from '@leafygreen-ui/tokens';
 import { Body, InlineCode } from '@leafygreen-ui/typography';
 
 import { PageLoader, Spinner } from '.';
@@ -32,24 +31,12 @@ const meta: StoryMetaType<any> = {
 
 export default meta;
 
-const storyRootStyles = css`
-  display: flex;
-  gap: 48px;
-  align-items: end;
-  flex-wrap: wrap;
-  justify-content: center;
-  padding: 10px 0;
-`;
+const storyRootStyles =
+  'flex gap-[48px] items-end flex-wrap justify-center py-[10px]';
 
-const displayOptionContainerStyles = css`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
+const displayOptionContainerStyles = 'flex flex-col items-center';
 
-const labelStyles = css`
-  margin-top: ${spacing[5]}px;
-`;
+const labelStyles = 'mt-[20px]';
 
 const Template: StoryFn<typeof Spinner> = (
   props: {

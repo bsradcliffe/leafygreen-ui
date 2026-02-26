@@ -1,8 +1,8 @@
-import { css, cx } from '@leafygreen-ui/emotion';
-import { Theme } from '@leafygreen-ui/lib';
+import { injectStyles, Theme } from '@leafygreen-ui/lib';
 import { addOverflowShadow, Side } from '@leafygreen-ui/tokens';
 import { toolbarClassName } from '@leafygreen-ui/toolbar';
 
+import { cn } from '../../cn';
 import {
   DRAWER_TOOLBAR_WIDTH,
   EMBEDDED_TOOLBAR_OVERFLOW_PADDING,
@@ -17,119 +17,202 @@ import { getDrawerWidth } from '../../Drawer/Drawer.utils';
 
 const SHADOW_WIDTH = 36; // Width of the shadow padding on the left side
 
-const getOpenOverlayStyles = (size: number, hasToolbar: boolean) => css`
-  grid-template-columns: ${hasToolbar
-    ? `${DRAWER_TOOLBAR_WIDTH}px ${size}px`
-    : `${size}px`};
+/**
+ * Base grid styles with descendant selectors for toolbar and drawer class names.
+ * Two variants: with and without toolbar.
+ */
+function getBaseStylesClass(hasToolbar: boolean): string {
+  const variant = hasToolbar ? 'tb' : 'no';
+  const id = `lg-panel-grid-base-${variant}`;
+  injectStyles(
+    id,
+    `
+    .${id} {
+      display: grid;
+      grid-template-columns: ${hasToolbar ? `${DRAWER_TOOLBAR_WIDTH}px 0px` : `0px`};
+      grid-template-areas: ${hasToolbar ? `'${GRID_AREA.toolbar} ${GRID_AREA.innerDrawer}'` : `'${GRID_AREA.innerDrawer}'`};
+      grid-area: ${GRID_AREA.drawer};
+      justify-self: end;
+      animation-timing-function: ${TRANSITION_TIMING_FUNCTION};
+      animation-duration: ${TRANSITION_DURATION}ms;
+      z-index: 0;
+      height: 100%;
+      overflow: hidden;
+      position: relative;
+      transition-property: grid-template-columns;
+      transition-duration: ${TRANSITION_DURATION}ms;
+      transition-timing-function: ${TRANSITION_TIMING_FUNCTION};
+    }
 
-  @media only screen and (max-width: ${MOBILE_BREAKPOINT}px) {
-    grid-template-columns: ${hasToolbar
-      ? `${DRAWER_TOOLBAR_WIDTH}px calc(100vw - ${DRAWER_TOOLBAR_WIDTH}px)`
-      : `100vw`};
-  }
-`;
+    .${id} .${toolbarClassName} {
+      grid-area: ${GRID_AREA.toolbar};
+    }
 
-const getClosedOverlayStyles = (hasToolbar: boolean) => css`
-  grid-template-columns: ${hasToolbar
-    ? `${DRAWER_TOOLBAR_WIDTH}px 0px`
-    : `0px`};
-`;
+    .${id} .${drawerClassName} {
+      grid-area: ${GRID_AREA.innerDrawer};
+      position: unset;
+      transform: unset;
+      overflow: hidden;
+      opacity: 1;
+      border-right: 0;
+      height: 100%;
+      animation: none;
+      width: 100%;
+      ${hasToolbar ? 'border-left: 0;' : ''}
+    }
 
-const baseEmbeddedStyles = css`
-  width: 100%;
-`;
-
-const getOpenEmbeddedStyles = (hasToolbar: boolean) => css`
-  grid-template-columns: ${hasToolbar
-    ? `${DRAWER_TOOLBAR_WIDTH}px auto`
-    : `auto`};
-
-  @media only screen and (max-width: ${MOBILE_BREAKPOINT}px) {
-    width: auto;
-    grid-template-columns: ${hasToolbar
-      ? `${DRAWER_TOOLBAR_WIDTH}px calc(100vw - ${DRAWER_TOOLBAR_WIDTH}px)`
-      : `100vw`};
-  }
-`;
-
-const openEmbeddedPaddingStyles = css`
-  // Allows the focus outline since the wrapper has overflow hidden
-  padding-left: ${EMBEDDED_TOOLBAR_OVERFLOW_PADDING}px;
-  margin-left: -${EMBEDDED_TOOLBAR_OVERFLOW_PADDING}px;
-`;
-
-const getClosedEmbeddedStyles = (hasToolbar: boolean) => css`
-  @media only screen and (max-width: ${MOBILE_BREAKPOINT}px) {
-    grid-template-columns: ${hasToolbar
-      ? `${DRAWER_TOOLBAR_WIDTH}px 0px`
-      : `0px`};
-  }
-`;
-
-const getOverlayShadowStyles = ({ theme }: { theme: Theme }) => css`
-  ${addOverflowShadow({ isInside: false, side: Side.Left, theme })};
-
-  // Need this to show the box shadow since we are using overflow: hidden
-  padding-left: ${SHADOW_WIDTH}px;
-
-  &::before {
-    transition-property: opacity;
-    transition-duration: ${TRANSITION_DURATION}ms;
-    transition-timing-function: ${TRANSITION_TIMING_FUNCTION};
-    opacity: 1;
-    left: ${SHADOW_WIDTH}px;
-  }
-`;
-
-const getBaseStyles = (hasToolbar: boolean) => css`
-  display: grid;
-  grid-template-columns: ${hasToolbar
-    ? `${DRAWER_TOOLBAR_WIDTH}px 0px`
-    : `0px`};
-  grid-template-areas: ${hasToolbar
-    ? `'${GRID_AREA.toolbar} ${GRID_AREA.innerDrawer}'`
-    : `'${GRID_AREA.innerDrawer}'`};
-  grid-area: ${GRID_AREA.drawer};
-  justify-self: end;
-  animation-timing-function: ${TRANSITION_TIMING_FUNCTION};
-  animation-duration: ${TRANSITION_DURATION}ms;
-  z-index: 0;
-  height: 100%;
-  overflow: hidden;
-  position: relative;
-  transition-property: grid-template-columns;
-  transition-duration: ${TRANSITION_DURATION}ms;
-  transition-timing-function: ${TRANSITION_TIMING_FUNCTION};
-
-  .${toolbarClassName} {
-    grid-area: ${GRID_AREA.toolbar};
-  }
-
-  .${drawerClassName} {
-    grid-area: ${GRID_AREA.innerDrawer};
-    position: unset;
-    transform: unset;
-    overflow: hidden;
-    opacity: 1;
-    border-right: 0;
-    height: 100%;
-    animation: none;
-    width: 100%;
-    ${hasToolbar ? 'border-left: 0;' : ''}
-
-    > div::before {
+    .${id} .${drawerClassName} > div::before {
       box-shadow: unset;
     }
+  `,
+  );
+  return id;
+}
+
+/**
+ * Overlay open: grid-template-columns sized to the drawer.
+ */
+function getOpenOverlayClass(size: number, hasToolbar: boolean): string {
+  const variant = hasToolbar ? 'tb' : 'no';
+  const id = `lg-panel-grid-overlay-open-${variant}-${size}`;
+  injectStyles(
+    id,
+    `
+    .${id} {
+      grid-template-columns: ${hasToolbar ? `${DRAWER_TOOLBAR_WIDTH}px ${size}px` : `${size}px`};
+    }
+
+    @media only screen and (max-width: ${MOBILE_BREAKPOINT}px) {
+      .${id} {
+        grid-template-columns: ${hasToolbar ? `${DRAWER_TOOLBAR_WIDTH}px calc(100vw - ${DRAWER_TOOLBAR_WIDTH}px)` : `100vw`};
+      }
+    }
+  `,
+  );
+  return id;
+}
+
+/**
+ * Overlay closed: columns collapse to 0.
+ */
+function getClosedOverlayClass(hasToolbar: boolean): string {
+  const variant = hasToolbar ? 'tb' : 'no';
+  const id = `lg-panel-grid-overlay-closed-${variant}`;
+  injectStyles(
+    id,
+    `
+    .${id} {
+      grid-template-columns: ${hasToolbar ? `${DRAWER_TOOLBAR_WIDTH}px 0px` : `0px`};
+    }
+  `,
+  );
+  return id;
+}
+
+/**
+ * Embedded open: auto columns.
+ */
+function getOpenEmbeddedClass(hasToolbar: boolean): string {
+  const variant = hasToolbar ? 'tb' : 'no';
+  const id = `lg-panel-grid-embedded-open-${variant}`;
+  injectStyles(
+    id,
+    `
+    .${id} {
+      grid-template-columns: ${hasToolbar ? `${DRAWER_TOOLBAR_WIDTH}px auto` : `auto`};
+    }
+
+    @media only screen and (max-width: ${MOBILE_BREAKPOINT}px) {
+      .${id} {
+        width: auto;
+        grid-template-columns: ${hasToolbar ? `${DRAWER_TOOLBAR_WIDTH}px calc(100vw - ${DRAWER_TOOLBAR_WIDTH}px)` : `100vw`};
+      }
+    }
+  `,
+  );
+  return id;
+}
+
+/**
+ * Embedded open padding: offset for focus outline with toolbar.
+ */
+const openEmbeddedPaddingId = 'lg-panel-grid-embedded-open-padding';
+injectStyles(
+  openEmbeddedPaddingId,
+  `
+  .${openEmbeddedPaddingId} {
+    padding-left: ${EMBEDDED_TOOLBAR_OVERFLOW_PADDING}px;
+    margin-left: -${EMBEDDED_TOOLBAR_OVERFLOW_PADDING}px;
   }
-`;
+`,
+);
 
-const closedOverlayShadowStyles = css`
-  padding-left: 0;
+/**
+ * Embedded closed: mobile responsive.
+ */
+function getClosedEmbeddedClass(hasToolbar: boolean): string {
+  const variant = hasToolbar ? 'tb' : 'no';
+  const id = `lg-panel-grid-embedded-closed-${variant}`;
+  injectStyles(
+    id,
+    `
+    @media only screen and (max-width: ${MOBILE_BREAKPOINT}px) {
+      .${id} {
+        grid-template-columns: ${hasToolbar ? `${DRAWER_TOOLBAR_WIDTH}px 0px` : `0px`};
+      }
+    }
+  `,
+  );
+  return id;
+}
 
-  ::before {
+const baseEmbeddedStyles = 'w-full';
+
+/**
+ * Overlay shadow: pseudo-element with transition.
+ */
+function getOverlayShadowClass(theme: Theme): string {
+  const shadowClassName = addOverflowShadow({
+    isInside: false,
+    side: Side.Left,
+    theme,
+  });
+  const id = `lg-panel-grid-overlay-shadow-${theme}`;
+  injectStyles(
+    id,
+    `
+    .${id} {
+      padding-left: ${SHADOW_WIDTH}px;
+    }
+
+    .${id}::before {
+      transition-property: opacity;
+      transition-duration: ${TRANSITION_DURATION}ms;
+      transition-timing-function: ${TRANSITION_TIMING_FUNCTION};
+      opacity: 1;
+      left: ${SHADOW_WIDTH}px;
+    }
+  `,
+  );
+  return cn(shadowClassName, id);
+}
+
+/**
+ * Overlay closed shadow: collapse padding, hide pseudo-element.
+ */
+const closedOverlayShadowId = 'lg-panel-grid-overlay-shadow-closed';
+injectStyles(
+  closedOverlayShadowId,
+  `
+  .${closedOverlayShadowId} {
+    padding-left: 0;
+  }
+
+  .${closedOverlayShadowId}::before {
     opacity: 0;
   }
-`;
+`,
+);
 
 export const getEmbeddedStyles = ({
   hasToolbar,
@@ -138,10 +221,10 @@ export const getEmbeddedStyles = ({
   hasToolbar: boolean;
   isDrawerOpen?: boolean;
 }) =>
-  cx(baseEmbeddedStyles, {
-    [getOpenEmbeddedStyles(hasToolbar)]: isDrawerOpen,
-    [openEmbeddedPaddingStyles]: isDrawerOpen && hasToolbar,
-    [getClosedEmbeddedStyles(hasToolbar)]: !isDrawerOpen,
+  cn(baseEmbeddedStyles, {
+    [getOpenEmbeddedClass(hasToolbar)]: !!isDrawerOpen,
+    [openEmbeddedPaddingId]: !!isDrawerOpen && hasToolbar,
+    [getClosedEmbeddedClass(hasToolbar)]: !isDrawerOpen,
   });
 
 export const getOverlayStyles = ({
@@ -155,10 +238,10 @@ export const getOverlayStyles = ({
   size: number;
   theme: Theme;
 }) =>
-  cx(getOverlayShadowStyles({ theme }), {
-    [cx(closedOverlayShadowStyles, getClosedOverlayStyles(hasToolbar))]:
+  cn(getOverlayShadowClass(theme), {
+    [cn(closedOverlayShadowId, getClosedOverlayClass(hasToolbar))]:
       !isDrawerOpen,
-    [getOpenOverlayStyles(size, hasToolbar)]: isDrawerOpen,
+    [getOpenOverlayClass(size, hasToolbar)]: !!isDrawerOpen,
   });
 
 export const getPanelGridStyles = ({
@@ -181,8 +264,8 @@ export const getPanelGridStyles = ({
   const drawerWidth = getDrawerWidth({ size: sizeProp });
   const size = hasToolbar ? drawerWidth.withToolbar : drawerWidth.default;
 
-  return cx(
-    getBaseStyles(hasToolbar),
+  return cn(
+    getBaseStylesClass(hasToolbar),
     {
       [getOverlayStyles({ hasToolbar, isDrawerOpen, size, theme })]: isOverlay,
       [getEmbeddedStyles({ hasToolbar, isDrawerOpen })]: isEmbedded,

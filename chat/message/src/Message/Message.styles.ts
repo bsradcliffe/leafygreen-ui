@@ -1,4 +1,3 @@
-import { css, cx } from '@leafygreen-ui/emotion';
 import { Theme } from '@leafygreen-ui/lib';
 import { palette } from '@leafygreen-ui/palette';
 import {
@@ -9,25 +8,31 @@ import {
   Variant,
 } from '@leafygreen-ui/tokens';
 
-const getBaseContainerStyles = (theme: Theme) => css`
-  position: relative;
-  max-width: 100%;
-  width: 100%;
-  white-space: pre-line;
-  overflow-wrap: break-word;
-  display: flex;
-  flex-direction: column;
-  gap: ${spacing[200]}px;
-  color: ${color[theme].text[Variant.Primary][InteractionState.Default]};
-`;
+import { cn } from '../cn';
 
-const getSenderContainerStyles = (theme: Theme) => css`
-  width: auto;
-  border-radius: ${borderRadius[300]}px ${borderRadius[300]}px 0;
-  background-color: ${palette.gray[theme === Theme.Dark ? 'dark2' : 'light2']};
-  padding: ${spacing[300]}px;
-  align-self: flex-end;
-`;
+const getBaseContainerStyles = (theme: Theme) =>
+  [
+    'relative',
+    'max-w-full',
+    'w-full',
+    'whitespace-pre-line',
+    'break-words',
+    'flex',
+    'flex-col',
+    `gap-[${spacing[200]}px]`,
+    `text-[${color[theme].text[Variant.Primary][InteractionState.Default]}]`,
+  ].join(' ');
+
+const getSenderContainerStyles = (theme: Theme) =>
+  [
+    'w-auto',
+    `rounded-tl-[${borderRadius[300]}px]`,
+    `rounded-tr-[${borderRadius[300]}px]`,
+    'rounded-bl-none',
+    `bg-[${palette.gray[theme === Theme.Dark ? 'dark2' : 'light2']}]`,
+    `p-[${spacing[300]}px]`,
+    'self-end',
+  ].join(' ');
 
 export const getContainerStyles = ({
   className,
@@ -38,7 +43,7 @@ export const getContainerStyles = ({
   isSender: boolean;
   theme: Theme;
 }) =>
-  cx(
+  cn(
     getBaseContainerStyles(theme),
     {
       [getSenderContainerStyles(theme)]: isSender,

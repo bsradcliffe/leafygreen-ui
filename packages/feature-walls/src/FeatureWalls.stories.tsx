@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { storybookArgTypes } from '@lg-tools/storybook-utils';
 
-import { css } from '@leafygreen-ui/emotion';
 import LeafyGreenProvider from '@leafygreen-ui/leafygreen-provider';
 
 import { generateMockActivationSteps } from './ActivationSteps/ActivationSteps.utils';
@@ -52,9 +51,7 @@ export const LiveExample = ({ darkMode }: { darkMode: boolean }) => {
         />
         <br />
         <ActivationSteps
-          className={css`
-            height: 500px;
-          `}
+          className="h-[500px]"
           currentStep={currentStep}
           steps={generateMockActivationSteps(3, handleNext, handleBack)}
           title="Getting started with [feature name]"

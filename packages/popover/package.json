@@ -16,7 +16,6 @@
   },
   "dependencies": {
     "@floating-ui/react": "^0.26.28",
-    "@leafygreen-ui/emotion": "workspace:^",
     "@leafygreen-ui/hooks": "workspace:^",
     "@leafygreen-ui/lib": "workspace:^",
     "@leafygreen-ui/portal": "workspace:^",

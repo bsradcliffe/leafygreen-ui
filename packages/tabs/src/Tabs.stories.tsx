@@ -8,7 +8,6 @@ import { StoryFn } from '@storybook/react';
 
 import { Button } from '@leafygreen-ui/button';
 import { Card } from '@leafygreen-ui/card';
-import { css } from '@leafygreen-ui/emotion';
 import { Icon } from '@leafygreen-ui/icon';
 import ExportIcon from '@leafygreen-ui/icon/dist/Export';
 import SaveIcon from '@leafygreen-ui/icon/dist/Save';
@@ -21,12 +20,7 @@ import { Body, Subtitle } from '@leafygreen-ui/typography';
 import { Size, Tab, Tabs, TabsProps } from './';
 
 const CardWithMargin = (props: any) => (
-  <Card
-    {...props}
-    className={css`
-      margin: 1em;
-    `}
-  />
+  <Card {...props} style={{ margin: '1em' }} />
 );
 
 const Lipsum = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ullamcorper nulla non metus auctor fringilla.`;
@@ -118,9 +112,7 @@ export const LiveExample: StoryFn<TabsProps<string>> = ({
 }: TabsProps<string>) => (
   <LeafyGreenProvider baseFontSize={baseFontSize === 16 ? 16 : 14}>
     <Tabs
-      className={css`
-        max-width: 66vw;
-      `}
+      style={{ maxWidth: '66vw' }}
       aria-label="Tabs to demonstrate usage of Leafygreen UI Tab Components"
       {...props}
     />
@@ -194,9 +186,7 @@ export const WithTooltip: StoryFn<TabsProps<string>> = ({
 }: TabsProps<string>) => (
   <LeafyGreenProvider baseFontSize={baseFontSize === 16 ? 16 : 14}>
     <Tabs
-      className={css`
-        max-width: 66vw;
-      `}
+      style={{ maxWidth: '66vw' }}
       aria-label="Tabs example with Tooltip"
       {...props}
     >

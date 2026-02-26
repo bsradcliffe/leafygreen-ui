@@ -28,6 +28,9 @@ function useGlobalId({ id: idOverride, prefix }: Params): string {
   return idOverride ? idOverride : `${prefix ?? 'lg'}-${defaultId}`;
 }
 
+/**
+ * @deprecated RAC generates IDs internally via useId().
+ */
 export default function useId({ prefix, id: idOverride }: Params): string {
   return useGlobalId({ id: idOverride, prefix });
 }

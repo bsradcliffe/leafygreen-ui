@@ -1,8 +1,6 @@
-import { css, cx } from '@leafygreen-ui/emotion';
+import { cn } from '../../../cn';
 
-const baseButtonStyles = css`
-  flex: 1;
-`;
+const baseButtonStyles = 'flex-1';
 
 export const getButtonStyles = (className?: string) =>
-  cx(baseButtonStyles, className);
+  cn(baseButtonStyles, className);

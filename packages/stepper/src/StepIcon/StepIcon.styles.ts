@@ -1,25 +1,25 @@
-import { css } from '@leafygreen-ui/emotion';
 import { Theme } from '@leafygreen-ui/lib';
 import { palette } from '@leafygreen-ui/palette';
-import { spacing, transitionDuration } from '@leafygreen-ui/tokens';
+import { transitionDuration } from '@leafygreen-ui/tokens';
 
+import { cn } from '../cn';
 import { type StepState, StepStates } from '../types';
 
-export const baseStyles = css`
-  box-sizing: content-box;
-  margin-bottom: ${spacing[1]}px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid;
-  transition: ${transitionDuration.slower}ms box-shadow ease;
-  z-index: 1;
-
-  svg {
-    width: 100%;
-  }
-`;
+export const baseStyles = [
+  'box-content',
+  'mb-[4px]',
+  'rounded-full',
+  'flex',
+  'items-center',
+  'justify-center',
+  'border',
+  'border-solid',
+  `transition-shadow`,
+  `duration-[${transitionDuration.slower}ms]`,
+  'ease-[ease]',
+  'z-[1]',
+  '[&_svg]:w-full',
+].join(' ');
 
 export const themedStateColor = {
   [Theme.Dark]: {
@@ -72,8 +72,28 @@ export const themedStateBorderColor = {
   },
 };
 
-export const getThemedStateStyles = (theme: Theme, state: StepState) => css`
-  color: ${themedStateColor[theme][state]};
-  background-color: ${themedStateBgColor[theme][state]};
-  border-color: ${themedStateBorderColor[theme][state]};
-`;
+export const getThemedStateStyles = (theme: Theme, state: StepState) =>
+  [
+    `text-[${themedStateColor[theme][state]}]`,
+    `bg-[${themedStateBgColor[theme][state]}]`,
+    `border-[${themedStateBorderColor[theme][state]}]`,
+  ].join(' ');
+
+export const getStepIconStyles = ({
+  theme,
+  state,
+  size,
+  className,
+}: {
+  theme: Theme;
+  state: StepState;
+  size: number;
+  className?: string;
+}) =>
+  cn(
+    baseStyles,
+    `w-[${size}px]`,
+    `h-[${size}px]`,
+    getThemedStateStyles(theme, state),
+    className,
+  );

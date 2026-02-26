@@ -1,21 +1,20 @@
-import { css } from '@leafygreen-ui/emotion';
 import { fontFamilies, fontWeights, spacing } from '@leafygreen-ui/tokens';
 
-export const containerStyle = css`
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: ${spacing[500]}px;
-`;
+export const containerStyle = [
+  'grid',
+  'grid-cols-[1fr_auto]',
+  `gap-[${spacing[500]}px]`,
+].join(' ');
 
-export const nameStyle = css`
-  display: grid;
-  grid-template-columns: auto 1fr;
-  text-align: left;
-  overflow: hidden;
-`;
+export const nameStyle = [
+  'grid',
+  'grid-cols-[auto_1fr]',
+  'text-left',
+  'overflow-hidden',
+].join(' ');
 
-export const valueStyle = css`
-  text-align: right;
-  font-family: ${fontFamilies.default};
-  font-weight: ${fontWeights.semiBold};
-`;
+export const valueStyle = [
+  'text-right',
+  `font-[${fontFamilies.default}]`,
+  `font-[${fontWeights.semiBold}]`,
+].join(' ');

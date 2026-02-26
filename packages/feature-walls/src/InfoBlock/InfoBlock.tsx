@@ -49,24 +49,29 @@ export const InfoBlock = forwardRef<HTMLDivElement, InfoBlockProps>(
       badgePropsArray !== undefined &&
       badgePropsArray.length > 0;
 
+    const container = getContainerStyles(variant, className);
+    const mediaContainer = getMediaContainerStyles(theme, variant);
+
     return (
       <LeafyGreenProvider darkMode={darkMode}>
         <ContainerComponent
           {...rest}
           {...(isCardVariant ? { darkMode } : {})}
-          className={getContainerStyles(variant, className)}
+          className={container.className}
+          style={container.style}
           ref={fwdRef}
         >
           {hasMedia && (
             <div
-              className={getMediaContainerStyles(theme, variant)}
+              className={mediaContainer.className}
+              style={mediaContainer.style}
               data-testid={LGIDS_INFO_BLOCK.mediaWrapper}
             >
               {media}
             </div>
           )}
-          <div className={getContentContainerStyles(variant, hasMedia)}>
-            <div className={getTextContainerStyles(variant)}>
+          <div style={getContentContainerStyles(variant, hasMedia)}>
+            <div style={getTextContainerStyles(variant)}>
               {shouldRenderSingleBadge && (
                 <Badge
                   data-testid={LGIDS_INFO_BLOCK.badge}

@@ -52,6 +52,8 @@ function LeafyGreenProvider({
   const forceUseTopLayer =
     forceUseTopLayerProp || migrationContext.forceUseTopLayer;
 
+  const theme = darkModeState ? 'dark' : 'light';
+
   return (
     <UsingKeyboardProvider>
       <PortalContextProvider popover={popoverPortalContainer}>
@@ -61,7 +63,9 @@ function LeafyGreenProvider({
             setDarkMode={setDarkMode}
           >
             <MigrationProvider forceUseTopLayer={forceUseTopLayer}>
-              {children}
+              <div data-theme={theme} style={{ display: 'contents' }}>
+                {children}
+              </div>
             </MigrationProvider>
           </DarkModeProvider>
         </TypographyProvider>

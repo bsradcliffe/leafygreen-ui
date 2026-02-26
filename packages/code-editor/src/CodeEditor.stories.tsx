@@ -18,7 +18,6 @@ import * as CodeMirrorModule from 'codemirror';
 import * as ParserTypescriptModule from 'prettier/parser-typescript';
 import * as StandaloneModule from 'prettier/standalone';
 
-import { css } from '@leafygreen-ui/emotion';
 // @ts-ignore LG icons don't currently support TS
 import CloudIcon from '@leafygreen-ui/icon/dist/Cloud';
 import LeafyGreenProvider from '@leafygreen-ui/leafygreen-provider';
@@ -68,10 +67,7 @@ const meta: StoryMetaType<typeof CodeEditor> = {
         }
       >
         <div
-          className={css`
-            width: 100vw;
-            padding: 0;
-          `}
+          className="w-screen p-0"
         >
           <Story />
         </div>

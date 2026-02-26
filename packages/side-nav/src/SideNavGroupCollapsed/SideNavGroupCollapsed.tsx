@@ -1,12 +1,11 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Transition, TransitionStatus } from 'react-transition-group';
 
-import { css, cx } from '@leafygreen-ui/emotion';
 import { useIdAllocator } from '@leafygreen-ui/hooks';
 import ChevronRight from '@leafygreen-ui/icon/dist/ChevronRight';
 import { useUsingKeyboardContext } from '@leafygreen-ui/leafygreen-provider';
-import { palette } from '@leafygreen-ui/palette';
 
+import { cn } from '../cn';
 import { ulStyleOverrides, useSideNavContext } from '../SideNav';
 import {
   baseStyle,
@@ -47,6 +46,7 @@ export function SideNavGroupCollapsed({
   const { usingKeyboard } = useUsingKeyboardContext();
 
   const [ulHeight, setUlHeight] = useState(0);
+  const [enteredStyle, setEnteredStyle] = useState('');
 
   const menuId = useIdAllocator({ prefix: 'menu' });
 
@@ -60,12 +60,14 @@ export function SideNavGroupCollapsed({
 
   // compute the entered ul wrapper styles based on the ul height
   useEffect(() => {
-    transitionStyles['entered'] = css`
-      opacity: 1;
-      max-height: ${ulHeight + 1}px; // +1 for border
-      border-bottom: 1px solid
-        ${darkMode ? palette.gray.dark1 : palette.gray.light2};
-    `;
+    transitionStyles['entered'] = [
+      'opacity-100',
+      `!max-h-[${ulHeight + 1}px]`,
+      darkMode
+        ? 'border-b border-b-[#5C6C75]'
+        : 'border-b border-b-[#E8EDEB]',
+    ].join(' ');
+    setEnteredStyle(transitionStyles['entered']);
   }, [open, ulHeight, darkMode]);
 
   return (
@@ -74,20 +76,18 @@ export function SideNavGroupCollapsed({
         {...groupHeaderProps}
         aria-controls={menuId}
         aria-expanded={open}
-        className={cx(
+        className={cn(
           buttonClassName,
           baseStyle,
           themeStyle[theme],
           collapsibleBaseStyle,
           collapsibleThemeStyle[theme],
-          css`
-            width: ${width}px;
-          `,
           {
             [collapsibleFocusThemeStyle[theme]]: usingKeyboard,
             [indentedStyle(indentLevel, darkMode)]: indentLevel > 1,
           },
         )}
+        style={{ width: `${width}px` }}
         onClick={() => setOpen((curr: boolean) => !curr)}
       >
         <SideNavGroupHeader
@@ -98,7 +98,7 @@ export function SideNavGroupCollapsed({
         <ChevronRight
           role="presentation"
           size={12}
-          className={cx(expandIconStyle, {
+          className={cn(expandIconStyle, {
             [openExpandIconStyle]: open,
           })}
         />
@@ -114,13 +114,13 @@ export function SideNavGroupCollapsed({
         {(state: TransitionStatus) => (
           <div
             ref={nodeRef}
-            className={cx(collapsibleGroupBaseStyles, transitionStyles[state])}
+            className={cn(collapsibleGroupBaseStyles, transitionStyles[state])}
           >
             <ul
               ref={ulRef}
               id={menuId}
               aria-labelledby={menuGroupLabelId}
-              className={cx(ulStyleOverrides, ulStyles, {
+              className={cn(ulStyleOverrides, ulStyles, {
                 [ulTransitionStyles]: ['entering', 'entered'].includes(state),
               })}
             >

@@ -1,20 +1,19 @@
-import { css } from '@leafygreen-ui/emotion';
-import { Theme } from '@leafygreen-ui/lib';
-import {
-  color,
-  InteractionState,
-  Property,
-  spacing,
-  Variant,
-} from '@leafygreen-ui/tokens';
+/**
+ * Concatenates class name strings, filtering out falsy values.
+ */
+export function cn(
+  ...classes: Array<string | false | undefined | null>
+): string {
+  return classes.filter(Boolean).join(' ');
+}
 
-export const getContainerStyles = (darkMode: boolean): string => css`
-  background-color: ${color[darkMode ? Theme.Dark : Theme.Light][
-    Property.Background
-  ][Variant.Primary][InteractionState.Default]};
-  padding: ${spacing[200]}px;
-`;
+/** Light mode background: white (#FFFFFF) */
+const lightContainerStyles = 'bg-[#FFFFFF] p-200';
 
-export const AmountTextStyles = css`
-  margin-bottom: ${spacing[400]}px;
-`;
+/** Dark mode background: black (#001E2B) */
+const darkContainerStyles = 'bg-[#001E2B] p-200';
+
+export const getContainerStyles = (darkMode: boolean): string =>
+  darkMode ? darkContainerStyles : lightContainerStyles;
+
+export const amountTextStyles = 'mb-400';

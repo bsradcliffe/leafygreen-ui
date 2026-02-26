@@ -10,7 +10,6 @@ import { StoryObj } from '@storybook/react';
 import { fn, userEvent, within } from '@storybook/test';
 
 import { Button } from '@leafygreen-ui/button';
-import { css, cx } from '@leafygreen-ui/emotion';
 import { Icon } from '@leafygreen-ui/icon';
 import CaretDown from '@leafygreen-ui/icon/dist/CaretDown';
 import CloudIcon from '@leafygreen-ui/icon/dist/Cloud';
@@ -22,6 +21,7 @@ const { getAlign, getJustify } = TestUtils;
 
 import { useEventListener } from '@leafygreen-ui/hooks';
 
+import { cn } from './cn';
 import {
   Menu,
   MenuGroup,
@@ -33,15 +33,17 @@ import {
 } from '.';
 
 const getDecoratorStyles = (args: Partial<MenuProps>) => {
-  return css`
-    width: 256px;
-    height: 250px;
-    display: flex;
-    align-items: ${['left', 'right'].includes(args.align!)
-      ? 'end'
-      : getAlign(args.align!, args.justify!)};
-    justify-content: ${getJustify(args.align!, args.justify!)};
-  `;
+  const alignItems = ['left', 'right'].includes(args.align!)
+    ? 'end'
+    : getAlign(args.align!, args.justify!);
+  const justifyContent = getJustify(args.align!, args.justify!);
+  return cn(
+    'w-[256px]',
+    'h-[250px]',
+    'flex',
+    `items-${alignItems}`,
+    `justify-${justifyContent}`,
+  );
 };
 
 const meta: StoryMetaType<typeof Menu> = {
@@ -468,12 +470,7 @@ export const InitialLongMenuOpen: InitialLongMenuOpenStory = {
   },
   decorators: [
     (StoryFn: React.FC, _ctx: any) => (
-      <div
-        className={css`
-          height: 100vh;
-          padding: 0;
-        `}
-      >
+      <div style={{ height: '100vh', padding: 0 }}>
         <StoryFn />
       </div>
     ),
@@ -481,14 +478,6 @@ export const InitialLongMenuOpen: InitialLongMenuOpenStory = {
 };
 
 export const MovingMenuTrigger = () => {
-  const markerStyles = css`
-    position: absolute;
-    color: black;
-    text-align: center;
-    outline: 1px solid black;
-    cursor: default;
-  `;
-
   const [open, setOpen] = useState(false);
   const [position, setPosition] = useState({ top: 0, left: 0 });
   const anchorRef = useRef<HTMLDivElement>(null);
@@ -512,6 +501,14 @@ export const MovingMenuTrigger = () => {
     { dependencies: [setOpen] },
   );
 
+  const markerBaseStyle: React.CSSProperties = {
+    position: 'absolute',
+    color: 'black',
+    textAlign: 'center',
+    outline: '1px solid black',
+    cursor: 'default',
+  };
+
   return (
     <div className="App">
       <div
@@ -519,24 +516,20 @@ export const MovingMenuTrigger = () => {
         style={{ position: 'absolute', width: 1, height: 1, ...position }}
       />
       <div
-        className={cx(
-          markerStyles,
-          css`
-            top: 40vh;
-            left: 50vw;
-          `,
-        )}
+        style={{
+          ...markerBaseStyle,
+          top: '40vh',
+          left: '50vw',
+        }}
       >
         Click here for a shorter menu
       </div>
       <div
-        className={cx(
-          markerStyles,
-          css`
-            top: 10vh;
-            left: 50vw;
-          `,
-        )}
+        style={{
+          ...markerBaseStyle,
+          top: '10vh',
+          left: '50vw',
+        }}
       >
         Click here for a long menu
       </div>

@@ -2,7 +2,6 @@ import React, { Fragment, useState } from 'react';
 import { StoryFn } from '@storybook/react';
 
 import { Button } from '@leafygreen-ui/button';
-import { css, cx } from '@leafygreen-ui/emotion';
 
 import {
   Cell,
@@ -90,12 +89,7 @@ export const DynamicDataComponent: StoryFn<StoryTableProps> = args => {
                   <HeaderCell
                     key={header.id}
                     header={header}
-                    className={cx({
-                      [css`
-                        // since the table is not fixed, the width is not respected. This prevents the width from getting any smaller.
-                        min-width: 120px;
-                      `]: index === 5,
-                    })}
+                    className={index === 5 ? 'min-w-[120px]' : undefined}
                   >
                     {flexRender(
                       header.column.columnDef.header,

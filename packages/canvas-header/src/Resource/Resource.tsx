@@ -6,23 +6,29 @@ import React, {
   useState,
 } from 'react';
 
-import { cx } from '@leafygreen-ui/emotion';
 import Icon from '@leafygreen-ui/icon';
 import { useDarkMode } from '@leafygreen-ui/leafygreen-provider';
 import { keyMap } from '@leafygreen-ui/lib';
 import Tooltip, { Justify } from '@leafygreen-ui/tooltip';
 
+import { cn } from '../cn';
 import { LGIDS } from '../constants';
 
 import {
+  getResourceCopyIconBeforeStyle,
+  getResourceCopyIconWrapperStyle,
   getResourceCopyIconWrapperStyles,
+  getResourceNameButtonFocusStyle,
+  getResourceNameButtonStyle,
   getResourceNameButtonStyles,
+  getResourceNameHoverStyle,
   getResourceNameStyles,
   resourceBadgeStyles,
   resourceBaseStyles,
   resourceCopiedStyles,
   resourceIconBaseStyles,
   resourceNameButtonClassName,
+  resourceVisibleStyles,
 } from './Resource.styles';
 import { ResourceProps } from './Resource.types';
 
@@ -36,6 +42,8 @@ export const Resource = React.forwardRef<HTMLDivElement, ResourceProps>(
     forwardRef,
   ) => {
     const [copied, setCopied] = useState(false);
+    const [isHovered, setIsHovered] = useState(false);
+    const [isFocused, setIsFocused] = useState(false);
     const { theme } = useDarkMode();
     const timerRef = useRef<NodeJS.Timeout | null>(null);
     const copyIconRef = useRef<HTMLSpanElement | null>(null);
@@ -65,30 +73,48 @@ export const Resource = React.forwardRef<HTMLDivElement, ResourceProps>(
 
     if (!resourceName) return null;
 
+    const isActive = isHovered || isFocused;
+
     return (
       <div ref={forwardRef} className={resourceBaseStyles}>
         {!!resourceIcon && (
           <span className={resourceIconBaseStyles}>{resourceIcon}</span>
         )}
         <span
-          className={cx(
+          className={cn(
             resourceNameButtonClassName,
             getResourceNameButtonStyles(theme),
           )}
+          style={{
+            ...getResourceNameButtonStyle(theme),
+            ...(isFocused ? getResourceNameButtonFocusStyle(theme) : {}),
+          }}
           role="button"
           tabIndex={0}
           aria-label="Copy resource name to clipboard"
           onClick={handleClick}
           onKeyDown={handleKeyDown}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
           data-testid={LGIDS.resourceName}
         >
-          <span className={getResourceNameStyles(theme)}>{resourceName}</span>
+          <span
+            className={getResourceNameStyles()}
+            style={isActive ? getResourceNameHoverStyle(theme) : undefined}
+          >
+            {resourceName}
+          </span>
           <span
             ref={copyIconRef}
-            className={cx(getResourceCopyIconWrapperStyles(theme), {
-              [resourceCopiedStyles]: copied, // show the icon until the tooltip goes away
+            className={cn(getResourceCopyIconWrapperStyles(), {
+              [resourceCopiedStyles]: copied,
+              [resourceVisibleStyles]: isActive,
             })}
+            style={getResourceCopyIconWrapperStyle(theme)}
           >
+            <span style={getResourceCopyIconBeforeStyle(theme)} aria-hidden />
             <Icon glyph={'Copy'} />
           </span>
           <Tooltip open={copied} justify={Justify.Middle} refEl={copyIconRef}>

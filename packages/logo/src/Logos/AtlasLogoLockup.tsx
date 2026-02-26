@@ -1,7 +1,6 @@
 import React, { ReactElement } from 'react';
 
-import { css, cx } from '@leafygreen-ui/emotion';
-
+import { cn } from '../cn';
 import {
   BaseLogoProps,
   SupportedColors,
@@ -39,13 +38,8 @@ export const AtlasLogoLockup = React.forwardRef(
     return (
       <svg
         {...getAccessibleProps({ 'aria-label': ariaLabel, role })}
-        className={cx(
-          css`
-            width: auto;
-            height: ${height}px;
-          `,
-          className,
-        )}
+        className={cn(className)}
+        style={{ width: 'auto', height: `${height}px` }}
         height={height}
         viewBox="0 0 179 33"
         fill="none"

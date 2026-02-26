@@ -1,8 +1,7 @@
 import React from 'react';
 import flatMap from 'lodash/flatMap';
-import { transparentize } from 'polished';
 
-import { css, cx } from '@leafygreen-ui/emotion';
+import { injectStyles } from '@leafygreen-ui/lib';
 import { palette } from '@leafygreen-ui/palette';
 import { spacing } from '@leafygreen-ui/tokens';
 
@@ -32,6 +31,10 @@ import {
   TreeItem,
 } from './renderingPlugin.types';
 
+function cn(...classes: Array<string | false | undefined | null>): string {
+  return classes.filter(Boolean).join(' ');
+}
+
 function Token({ kind, children }: TokenProps) {
   return <span className={kind}>{children}</span>;
 }
@@ -60,53 +63,50 @@ export function processToken(token: TreeItem, key?: number): React.ReactNode {
   return token;
 }
 
-const cellStyle = css`
-  border-spacing: 0;
-  vertical-align: top;
-  padding: 0 ${spacing[300]}px;
-`;
-
-function getHighlightedRowStyle(darkMode: boolean) {
-  let backgroundColor: string, backgroundImage: string, borderColor: string;
-
-  if (darkMode) {
-    backgroundColor = transparentize(0.7, palette.yellow.dark3);
-    backgroundImage = 'none';
-    borderColor = palette.gray.dark3;
-  } else {
-    backgroundColor = palette.yellow.light3;
-    backgroundImage = 'none';
-    borderColor = palette.yellow.light2;
+const cellClassName = 'lg-code-cell';
+injectStyles(cellClassName, `
+  .${cellClassName} {
+    border-spacing: 0;
+    vertical-align: top;
+    padding: 0 ${spacing[300]}px;
   }
+`);
 
-  return css`
-    background-color: ${backgroundColor};
-    background-image: ${backgroundImage};
-    // Fixes an issue in Safari where the gradient applied to the table row would be applied
-    // to each cell in the row instead of being continuous across cells.
-    background-attachment: fixed;
+// Pre-computed transparent colors replacing polished transparentize
+const highlightBgLight = palette.yellow.light3;
+const highlightBgDark = 'rgba(76, 33, 0, 0.3)'; // transparentize(0.7, palette.yellow.dark3)
+const highlightBorderLight = palette.yellow.light2;
+const highlightBorderDark = palette.gray.dark3;
 
-    // Selects all children of a highlighted row, and adds a border top
-    & > td {
+function getHighlightedRowClassName(darkMode: boolean): string {
+  const id = darkMode
+    ? 'lg-code-highlighted-row-dark'
+    : 'lg-code-highlighted-row-light';
+
+  const backgroundColor = darkMode ? highlightBgDark : highlightBgLight;
+  const borderColor = darkMode ? highlightBorderDark : highlightBorderLight;
+
+  injectStyles(id, `
+    .${id} {
+      background-color: ${backgroundColor};
+      background-image: none;
+      background-attachment: fixed;
+    }
+    .${id} > td {
       border-top: 1px solid ${borderColor};
     }
-
-    // Selects following rows after a highlighted row, and adds a border top
-    // We don't add border bottoms here to support consecutive highlighted rows.
-    & + tr > td {
+    .${id} + tr > td {
       border-top: 1px solid ${borderColor};
     }
-
-    // Remove borders between consecutive highlighted rows
-    & + & > td {
+    .${id} + .${id} > td {
       border-top: 0;
     }
-
-    // If the highlighted row is the last child, then we add a border bottom
-    &:last-child > td {
+    .${id}:last-child > td {
       border-bottom: 1px solid ${borderColor};
     }
-  `;
+  `);
+
+  return id;
 }
 
 export function LineTableRow({
@@ -121,25 +121,23 @@ export function LineTableRow({
     : palette.yellow.dark2;
 
   return (
-    <tr className={cx({ [getHighlightedRowStyle(darkMode)]: highlighted })}>
+    <tr className={cn(highlighted && getHighlightedRowClassName(darkMode))}>
       {lineNumber && (
         <td
-          className={cx(
-            cellStyle,
-            css`
-              user-select: none;
-              text-align: right;
-              padding-left: ${spacing[400]}px;
-              padding-right: 0;
-              color: ${highlighted ? highlightedNumberColor : numberColor};
-            `,
-          )}
+          className={cellClassName}
+          style={{
+            userSelect: 'none',
+            textAlign: 'right',
+            paddingLeft: `${spacing[400]}px`,
+            paddingRight: 0,
+            color: highlighted ? highlightedNumberColor : numberColor,
+          }}
         >
           {lineNumber}
         </td>
       )}
 
-      <td className={cellStyle}>{children}</td>
+      <td className={cellClassName}>{children}</td>
     </tr>
   );
 }
@@ -347,11 +345,7 @@ export function TableContent({ lines }: TableContentProps) {
         ) : (
           // We create placeholder content when a line break appears to preserve the line break's height
           // It needs to be inline-block for the table row to not collapse.
-          <div
-            className={css`
-              display: inline-block;
-            `}
-          />
+          <div className="inline-block" />
         );
 
         return (

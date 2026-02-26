@@ -1,48 +1,20 @@
-import { css } from '@leafygreen-ui/emotion';
 import { Theme } from '@leafygreen-ui/lib';
-import { palette } from '@leafygreen-ui/palette';
-import { spacing } from '@leafygreen-ui/tokens';
 
-export const rootStyles = css`
-  max-width: 648px;
-  text-align: center;
-`;
+export const rootStyles = 'max-w-[648px] text-center';
 
-export const featuresContainerStyles = css`
-  display: flex;
-  gap: ${spacing[4]}px;
-  justify-content: center;
-`;
+export const featuresContainerStyles = 'flex gap-[24px] justify-center';
 
-export const featureContainerStyles = css`
-  width: 200px;
-  max-width: 200px;
-`;
+export const featureContainerStyles = 'w-[200px] max-w-[200px]';
 
-export const titleStyles = css`
-  margin-bottom: ${spacing[4]}px;
-`;
+export const titleStyles = 'mb-[24px]';
 
-export const graphicWrapperStyles = css`
-  margin-bottom: ${spacing[3]}px;
-`;
+export const graphicWrapperStyles = 'mb-[16px]';
 
 export const featureDescriptionStyles: Record<Theme, string> = {
-  [Theme.Dark]: css`
-    color: ${palette.gray.light1};
-  `,
-  [Theme.Light]: css`
-    color: ${palette.gray.dark1};
-  `,
+  [Theme.Dark]: 'text-[#C1C7C6]',
+  [Theme.Light]: 'text-[#5C6C75]',
 };
 
-export const buttonContainerStyles = css`
-  display: flex;
-  justify-content: center;
-  gap: 12px;
-  margin-top: ${spacing[4]}px;
-`;
+export const buttonContainerStyles = 'flex justify-center gap-[12px] mt-[24px]';
 
-export const externalLinkStyles = css`
-  margin-top: ${spacing[4]}px;
-`;
+export const externalLinkStyles = 'mt-[24px]';

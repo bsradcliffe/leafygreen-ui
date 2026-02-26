@@ -1,57 +1,55 @@
-import { css } from '@leafygreen-ui/emotion';
 import { Theme } from '@leafygreen-ui/lib';
-import { color, spacing, typeScales } from '@leafygreen-ui/tokens';
 
 import { State } from '../PasswordInput/PasswordInput.types';
 
-export const wrapperStyles = css`
-  padding: 0;
-  margin: 0;
-  list-style-type: none;
+/**
+ * Resolved token values:
+ * spacing[100] = 4px
+ * spacing[50] = 2px
+ * typeScales.body1.fontSize = 13px
+ * typeScales.body1.lineHeight = 20px
+ *
+ * color.light.text.error.default = #DB3030
+ * color.light.text.primary.default = #001E2B
+ * color.light.text.secondary.default = #5C6C75
+ * color.light.icon.error.default = #DB3030
+ * color.light.icon.success.default = #00A35C
+ * color.light.icon.disabled.default = #C1C7C6
+ *
+ * color.dark.text.error.default = #FF6960
+ * color.dark.text.primary.default = #E8EDEB
+ * color.dark.text.secondary.default = #C1C7C6
+ * color.dark.icon.error.default = #FF6960
+ * color.dark.icon.success.default = #00ED64
+ * color.dark.icon.disabled.default = #5C6C75
+ */
 
-  // Adding margin to the first item only, this way if there are no items the parent wrapper will not have any margins
-  li:first-of-type {
-    margin-top: ${spacing[100]}px;
-  }
-`;
+export const wrapperStyles = [
+  'p-0',
+  'm-0',
+  'list-none',
+  '[&_li:first-of-type]:mt-[4px]',
+].join(' ');
 
-export const baseStyles = css`
-  font-size: ${typeScales.body1.fontSize}px;
-  line-height: ${typeScales.body1.lineHeight}px;
-  display: flex;
-  gap: ${spacing[100]}px;
-`;
+export const baseStyles = [
+  'text-[13px]',
+  'leading-[20px]',
+  'flex',
+  'gap-[4px]',
+].join(' ');
 
 export const getStateStyles = (theme: Theme) => ({
-  [State.Error]: css`
-    color: ${color[theme].text.error.default};
-  `,
-  [State.Warning]: css`
-    color: ${color[theme].text.error.default};
-  `,
-  [State.Valid]: css`
-    color: ${color[theme].text.primary.default};
-  `,
-  [State.None]: css`
-    color: ${color[theme].text.secondary.default};
-  `,
+  [State.Error]: theme === Theme.Light ? 'text-[#DB3030]' : 'text-[#FF6960]',
+  [State.Warning]: theme === Theme.Light ? 'text-[#DB3030]' : 'text-[#FF6960]',
+  [State.Valid]: theme === Theme.Light ? 'text-[#001E2B]' : 'text-[#E8EDEB]',
+  [State.None]: theme === Theme.Light ? 'text-[#5C6C75]' : 'text-[#C1C7C6]',
 });
 
-export const iconBaseStyles = css`
-  margin-top: ${spacing[50]}px;
-`;
+export const iconBaseStyles = 'mt-[2px]';
 
 export const getIconStateStyles = (theme: Theme) => ({
-  [State.Error]: css`
-    color: ${color[theme].icon.error.default};
-  `,
-  [State.Warning]: css`
-    color: ${color[theme].icon.error.default};
-  `,
-  [State.Valid]: css`
-    color: ${color[theme].icon.success.default};
-  `,
-  [State.None]: css`
-    color: ${color[theme].icon.disabled.default};
-  `,
+  [State.Error]: theme === Theme.Light ? 'text-[#DB3030]' : 'text-[#FF6960]',
+  [State.Warning]: theme === Theme.Light ? 'text-[#DB3030]' : 'text-[#FF6960]',
+  [State.Valid]: theme === Theme.Light ? 'text-[#00A35C]' : 'text-[#00ED64]',
+  [State.None]: theme === Theme.Light ? 'text-[#C1C7C6]' : 'text-[#5C6C75]',
 });

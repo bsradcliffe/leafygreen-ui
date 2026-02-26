@@ -1,4 +1,3 @@
-import { css, cx } from '@leafygreen-ui/emotion';
 import { Theme } from '@leafygreen-ui/lib';
 import { palette } from '@leafygreen-ui/palette';
 import {
@@ -8,6 +7,7 @@ import {
   Variant,
 } from '@leafygreen-ui/tokens';
 
+import { cn } from '../../cn';
 import {
   COLLAPSED_SIDE_NAV_WIDTH,
   PINNED_SIDE_NAV_WIDTH,
@@ -22,26 +22,22 @@ const AVATAR_WRAPPER_HORIZONTAL_PADDING = 14;
  */
 const HEADER_SUB_CONTAINER_HEIGHT = 48 + 1;
 
-const getBorderBottomStyle = (theme: Theme) => css`
-  border-bottom: 1px solid
-    ${color[theme].border[Variant.Secondary][InteractionState.Default]};
-`;
+const getBorderBottomStyle = (theme: Theme) =>
+  `border-b border-b-[${color[theme].border[Variant.Secondary][InteractionState.Default]}]`;
 
-const getBaseHeaderStyles = (theme: Theme) => css`
-  overflow: hidden;
-  background-color: ${color[theme].background[Variant.Secondary][
-    InteractionState.Default
-  ]};
-  width: 100%;
-  max-width: ${PINNED_SIDE_NAV_WIDTH}px;
-  transition: max-width ${SIDE_NAV_TRANSITION_DURATION}ms ease-in-out;
+const getBaseHeaderStyles = (theme: Theme) =>
+  [
+    'overflow-hidden',
+    `bg-[${color[theme].background[Variant.Secondary][InteractionState.Default]}]`,
+    'w-full',
+    `max-w-[${PINNED_SIDE_NAV_WIDTH}px]`,
+    `transition-[max-width]`,
+    `duration-[${SIDE_NAV_TRANSITION_DURATION}ms]`,
+    'ease-in-out',
+    getBorderBottomStyle(theme),
+  ].join(' ');
 
-  ${getBorderBottomStyle(theme)};
-`;
-
-const collapsedHeaderStyles = css`
-  max-width: ${COLLAPSED_SIDE_NAV_WIDTH}px;
-`;
+const collapsedHeaderStyles = `max-w-[${COLLAPSED_SIDE_NAV_WIDTH}px]`;
 
 export const getHeaderStyles = ({
   className,
@@ -52,7 +48,7 @@ export const getHeaderStyles = ({
   shouldRenderExpanded: boolean;
   theme: Theme;
 }) =>
-  cx(
+  cn(
     getBaseHeaderStyles(theme),
     {
       [collapsedHeaderStyles]: !shouldRenderExpanded,
@@ -60,20 +56,21 @@ export const getHeaderStyles = ({
     className,
   );
 
-const baseAvatarContainerStyles = css`
-  height: ${HEADER_SUB_CONTAINER_HEIGHT}px;
-  padding: 0 ${AVATAR_WRAPPER_HORIZONTAL_PADDING}px;
-  display: grid;
-  grid-template-columns: ${ASSISTANT_AVATAR_SIZE}px auto;
-  align-items: center;
-  gap: ${spacing[150]}px;
-  transition: grid-template-columns ${SIDE_NAV_TRANSITION_DURATION}ms
-    ease-in-out;
-`;
+const baseAvatarContainerStyles = [
+  `h-[${HEADER_SUB_CONTAINER_HEIGHT}px]`,
+  `px-[${AVATAR_WRAPPER_HORIZONTAL_PADDING}px]`,
+  'py-0',
+  'grid',
+  `grid-cols-[${ASSISTANT_AVATAR_SIZE}px_auto]`,
+  'items-center',
+  `gap-[${spacing[150]}px]`,
+  `transition-[grid-template-columns]`,
+  `duration-[${SIDE_NAV_TRANSITION_DURATION}ms]`,
+  'ease-in-out',
+].join(' ');
 
-const collapsedAvatarContainerStyles = css`
-  grid-template-columns: ${ASSISTANT_AVATAR_SIZE}px 0fr;
-`;
+const collapsedAvatarContainerStyles =
+  `grid-cols-[${ASSISTANT_AVATAR_SIZE}px_0fr]`;
 
 export const getAvatarContainerStyles = ({
   addBorderBottom,
@@ -84,100 +81,84 @@ export const getAvatarContainerStyles = ({
   shouldRenderExpanded: boolean;
   theme: Theme;
 }) =>
-  cx(baseAvatarContainerStyles, {
+  cn(baseAvatarContainerStyles, {
     [collapsedAvatarContainerStyles]: !shouldRenderExpanded,
     [getBorderBottomStyle(theme)]: addBorderBottom,
   });
 
-const baseAssistantNameStyles = css`
-  width: 198px;
-  opacity: 1;
-  transition-property: opacity;
-  transition-duration: ${SIDE_NAV_TRANSITION_DURATION}ms;
-  transition-timing-function: ease-in-out;
-`;
+const baseAssistantNameStyles = [
+  'w-[198px]',
+  'opacity-100',
+  `transition-opacity`,
+  `duration-[${SIDE_NAV_TRANSITION_DURATION}ms]`,
+  'ease-in-out',
+].join(' ');
 
-const hiddenAssistantNameStyles = css`
-  opacity: 0;
-`;
+const hiddenAssistantNameStyles = 'opacity-0';
 
 export const getAssistantNameStyles = ({
   shouldRender,
 }: {
   shouldRender: boolean;
 }) =>
-  cx(baseAssistantNameStyles, {
+  cn(baseAssistantNameStyles, {
     [hiddenAssistantNameStyles]: !shouldRender,
   });
 
 export const getButtonStyles = (theme: Theme) => {
   const textColor = palette.green[theme === Theme.Dark ? 'light2' : 'dark2'];
 
-  return css`
-    border-radius: 0;
-    border: none;
-    height: ${HEADER_SUB_CONTAINER_HEIGHT}px;
+  return [
+    'rounded-none',
+    'border-none',
+    `h-[${HEADER_SUB_CONTAINER_HEIGHT}px]`,
     // Non-token value used because ButtonContent padding is not customizable
-    padding: ${spacing[300]}px 9px;
-    width: 100%;
-    background-color: ${color[theme].background[Variant.Secondary][
-      InteractionState.Default
-    ]};
-    color: ${textColor};
+    `py-[${spacing[300]}px]`,
+    'px-[9px]',
+    'w-full',
+    `bg-[${color[theme].background[Variant.Secondary][InteractionState.Default]}]`,
+    `text-[${textColor}]`,
 
-    &:hover,
-    &:active {
-      box-shadow: none;
-      background-color: ${color[theme].background[Variant.Secondary][
-        InteractionState.Hover
-      ]};
-      color: ${textColor};
-    }
+    'hover:shadow-none',
+    'active:shadow-none',
+    `hover:bg-[${color[theme].background[Variant.Secondary][InteractionState.Hover]}]`,
+    `active:bg-[${color[theme].background[Variant.Secondary][InteractionState.Hover]}]`,
+    `hover:text-[${textColor}]`,
+    `active:text-[${textColor}]`,
 
-    &:focus-visible {
-      box-shadow: none;
-      background-color: ${color[theme].background[Variant.Secondary][
-        InteractionState.Focus
-      ]};
-      color: ${color[theme].text[Variant.Secondary][InteractionState.Focus]};
-
-      svg {
-        color: ${color[theme].text[Variant.Secondary][InteractionState.Focus]};
-      }
-    }
+    'focus-visible:shadow-none',
+    `focus-visible:bg-[${color[theme].background[Variant.Secondary][InteractionState.Focus]}]`,
+    `focus-visible:text-[${color[theme].text[Variant.Secondary][InteractionState.Focus]}]`,
+    `[&:focus-visible_svg]:text-[${color[theme].text[Variant.Secondary][InteractionState.Focus]}]`,
 
     // Override the justify-content property in ButtonContent
-    div:nth-child(2) {
-      justify-content: flex-start;
-    }
-  `;
+    '[&_div:nth-child(2)]:justify-start',
+  ].join(' ');
 };
 
-export const buttonChildrenStyles = css`
-  display: grid;
-  grid-template-columns: ${ASSISTANT_AVATAR_SIZE}px auto;
-  align-items: center;
-  gap: ${spacing[200]}px;
-  text-align: left;
-`;
+export const buttonChildrenStyles = [
+  'grid',
+  `grid-cols-[${ASSISTANT_AVATAR_SIZE}px_auto]`,
+  'items-center',
+  `gap-[${spacing[200]}px]`,
+  'text-left',
+].join(' ');
 
-const baseButtonTextStyles = css`
-  width: 200px;
-  opacity: 1;
-  transition-property: opacity;
-  transition-duration: ${SIDE_NAV_TRANSITION_DURATION}ms;
-  transition-timing-function: ease-in-out;
-`;
+const baseButtonTextStyles = [
+  'w-[200px]',
+  'opacity-100',
+  `transition-opacity`,
+  `duration-[${SIDE_NAV_TRANSITION_DURATION}ms]`,
+  'ease-in-out',
+].join(' ');
 
-const hiddenButtonTextStyles = css`
-  opacity: 0;
-`;
+const hiddenButtonTextStyles = 'opacity-0';
 
 export const getButtonTextStyles = ({
   shouldRender,
 }: {
   shouldRender: boolean;
 }) =>
-  cx(baseButtonTextStyles, {
+  cn(baseButtonTextStyles, {
     [hiddenButtonTextStyles]: !shouldRender,
   });

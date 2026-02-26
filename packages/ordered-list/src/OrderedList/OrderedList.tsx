@@ -4,7 +4,6 @@ import {
   DescendantsProvider,
   useInitDescendants,
 } from '@leafygreen-ui/descendants';
-import { cx } from '@leafygreen-ui/emotion';
 import LeafyGreenProvider, {
   useDarkMode,
 } from '@leafygreen-ui/leafygreen-provider';
@@ -13,6 +12,10 @@ import { OrderedListContext } from '../OrderedListContext';
 
 import { baseStyles } from './OrderedList.styles';
 import { OrderedListProps } from './OrderedList.types';
+
+function cn(...classes: Array<string | false | undefined | null>): string {
+  return classes.filter(Boolean).join(' ');
+}
 
 const OrderedList = React.forwardRef(
   (
@@ -31,7 +34,7 @@ const OrderedList = React.forwardRef(
           descendants={descendants}
           dispatch={dispatch}
         >
-          <ol {...rest} ref={ref} className={cx(baseStyles, className)}>
+          <ol {...rest} ref={ref} className={cn(baseStyles, className)}>
             {children}
           </ol>
         </DescendantsProvider>

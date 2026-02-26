@@ -1,8 +1,6 @@
 import React, { forwardRef, ReactElement, Ref, useContext } from 'react';
 import { useInView } from 'react-intersection-observer';
 
-import { cx } from '@leafygreen-ui/emotion';
-
 import PipelineContext from '../PipelineContext';
 import { Size, StageProps } from '../types';
 
@@ -14,6 +12,10 @@ import {
   stageTextStyles,
   stageTextThemeStyles,
 } from './Stage.styles';
+
+function cn(...classes: Array<string | false | undefined | null>): string {
+  return classes.filter(Boolean).join(' ');
+}
 
 /**
  * # Stage
@@ -55,7 +57,7 @@ export const Stage = forwardRef(
         {...rest}
         ref={ref}
         data-stage-visible={isVisible}
-        className={cx(
+        className={cn(
           stageBaseStyles,
           stageSvgThemeStyles[theme],
           stageSvgSizeStyles[size as Size],
@@ -66,7 +68,7 @@ export const Stage = forwardRef(
         <span
           // if this ref is added to the <li> this component will keep re-rendering
           ref={setRef}
-          className={cx(
+          className={cn(
             stageTextStyles,
             stageTextSizeStyles[size as Size],
             stageTextThemeStyles[theme],

@@ -1,11 +1,11 @@
 import React from 'react';
 
-import { cx } from '@leafygreen-ui/emotion';
 import ChevronLeft from '@leafygreen-ui/icon/dist/ChevronLeft';
 import ChevronRight from '@leafygreen-ui/icon/dist/ChevronRight';
 import { Align, Justify, RenderMode, Tooltip } from '@leafygreen-ui/tooltip';
 import { InlineKeyCode } from '@leafygreen-ui/typography';
 
+import { cn } from '../cn';
 import { useSideNavContext } from '../SideNav/SideNavContext';
 
 import {
@@ -43,7 +43,7 @@ export function CollapseToggle({
           aria-label="Collapse navigation"
           aria-controls={navId}
           aria-expanded={!collapsed}
-          className={cx(
+          className={cn(
             buttonBaseStyles,
             buttonThemeStyles[theme],
             {
@@ -53,7 +53,7 @@ export function CollapseToggle({
           )}
           {...rest}
         >
-          <div className={cx(iconClassName, iconWrapper)}>
+          <div className={cn(iconClassName, iconWrapper)}>
             <Chevron role="presentation" />
           </div>
         </button>

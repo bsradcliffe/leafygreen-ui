@@ -1,10 +1,4 @@
-import { css, cx } from '@leafygreen-ui/emotion';
-
-const hiddenTabPanelStyle = css`
-  display: none;
-`;
+import { cn } from '../cn';
 
 export const getTabPanelStyles = (isSelected: boolean) =>
-  cx({
-    [hiddenTabPanelStyle]: !isSelected,
-  });
+  cn(!isSelected && 'hidden');

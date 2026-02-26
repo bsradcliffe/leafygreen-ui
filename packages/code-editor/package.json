@@ -49,7 +49,6 @@
     "@leafygreen-ui/badge": "workspace:^",
     "@leafygreen-ui/button": "workspace:^",
     "@leafygreen-ui/checkbox": "workspace:^",
-    "@leafygreen-ui/emotion": "workspace:^",
     "@leafygreen-ui/hooks": "workspace:^",
     "@leafygreen-ui/icon": "workspace:^",
     "@leafygreen-ui/icon-button": "workspace:^",

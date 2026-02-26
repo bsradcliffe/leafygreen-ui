@@ -1,11 +1,11 @@
 import React from 'react';
 
-import { cx } from '@leafygreen-ui/emotion';
 import LeafyGreenProvider, {
   useDarkMode,
 } from '@leafygreen-ui/leafygreen-provider';
 import { H2 } from '@leafygreen-ui/typography';
 
+import { cn } from '../cn';
 import { LGIDS } from '../constants';
 import { Resource } from '../Resource';
 
@@ -37,11 +37,12 @@ export const CanvasHeader = React.forwardRef<HTMLDivElement, CanvasHeaderProps>(
     forwardRef,
   ) => {
     const { darkMode, theme } = useDarkMode(darkModeProp);
+    const titleStyles = getTitleStyles(theme);
     return (
       <LeafyGreenProvider darkMode={darkMode}>
         <div
           data-testid={LGIDS.root}
-          className={cx(
+          className={cn(
             canvasHeaderClassname,
             canvasHeaderBaseStyles,
             className,
@@ -51,7 +52,7 @@ export const CanvasHeader = React.forwardRef<HTMLDivElement, CanvasHeaderProps>(
         >
           {!!backLink && <div className={backLinkStyles}>{backLink}</div>}
           <div className={titleWrapperStyles}>
-            <H2 data-testid={LGIDS.pageTitle} className={getTitleStyles(theme)}>
+            <H2 data-testid={LGIDS.pageTitle} className={titleStyles.className} style={titleStyles.style}>
               {pageTitle}
             </H2>
             {!!badges && <div className={badgesStyles}>{badges}</div>}

@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { css, cx } from '@leafygreen-ui/emotion';
 import { useIdAllocator } from '@leafygreen-ui/hooks';
 
+import { cn } from './cn';
 import { generateAccessibleProps, Size, sizeMap } from './glyphCommon';
 import { LGGlyph, SVGR } from './types';
 
@@ -30,9 +30,6 @@ export function createGlyphComponent(
     ...rest
   }: LGGlyph.ComponentProps) => {
     const titleId = useIdAllocator({ prefix: 'icon-title' });
-    const fillStyle = css`
-      color: ${fill};
-    `;
 
     // Note: We do not currently support title prop for custom glyphs. TODO: LG-5828
 
@@ -46,12 +43,8 @@ export function createGlyphComponent(
 
     return (
       <Glyph
-        className={cx(
-          {
-            [fillStyle]: fill != null,
-          },
-          className,
-        )}
+        className={cn(className)}
+        style={fill != null ? { color: fill } : undefined}
         height={renderedSize}
         width={renderedSize}
         role={role}

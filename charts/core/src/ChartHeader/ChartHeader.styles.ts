@@ -1,4 +1,3 @@
-import { css, cx } from '@leafygreen-ui/emotion';
 import { Theme } from '@leafygreen-ui/lib';
 import {
   color,
@@ -7,28 +6,25 @@ import {
   Variant,
 } from '@leafygreen-ui/tokens';
 
+import { cn } from '../cn';
+
 export const getContainerStyles = (theme: Theme, showDivider?: boolean) =>
-  cx(
-    css`
-      border-bottom: 1px solid
-        ${color[theme].border[Variant.Disabled][InteractionState.Default]};
-      display: grid;
-      grid-area: chartHeader; // grid-template-area defined by Chart component
-      grid-template-columns: auto 1fr;
-      height: 36px;
-      padding: ${spacing[100]}px ${spacing[300]}px;
-      width: 100%;
-    `,
-    {
-      [css`
-        border-top: 1px solid
-          ${color[theme].border[Variant.Disabled][InteractionState.Default]};
-      `]: showDivider,
-    },
+  cn(
+    [
+      `border-b border-solid border-b-[${color[theme].border[Variant.Disabled][InteractionState.Default]}]`,
+      'grid',
+      '[grid-area:chartHeader]',
+      'grid-cols-[auto_1fr]',
+      'h-[36px]',
+      `py-[${spacing[100]}px] px-[${spacing[300]}px]`,
+      'w-full',
+    ].join(' '),
+    showDivider &&
+      `border-t border-solid border-t-[${color[theme].border[Variant.Disabled][InteractionState.Default]}]`,
   );
 
-export const titleStyles = css`
-  display: flex;
-  align-items: center;
-  gap: ${spacing[100]}px;
-`;
+export const titleStyles = [
+  'flex',
+  'items-center',
+  `gap-[${spacing[100]}px]`,
+].join(' ');

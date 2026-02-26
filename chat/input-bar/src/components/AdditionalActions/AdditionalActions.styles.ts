@@ -1,10 +1,6 @@
-import { css, cx } from '@leafygreen-ui/emotion';
+import { cn } from '../../cn';
 
-export const baseContainerStyles = css`
-  width: 100%;
-  display: flex;
-  align-items: center;
-`;
+export const baseContainerStyles = 'w-full flex items-center';
 
 export const getContainerStyles = (className?: string) =>
-  cx(baseContainerStyles, className);
+  cn(baseContainerStyles, className);

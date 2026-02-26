@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { cx } from '@leafygreen-ui/emotion';
 import { useDarkMode } from '@leafygreen-ui/leafygreen-provider';
 import {
   DropdownWidthBasis,
@@ -9,6 +8,7 @@ import {
   Select,
 } from '@leafygreen-ui/select';
 
+import { cn } from '../cn';
 import { UnitOption } from '../NumberInput/NumberInput.types';
 import { UnitSelectButton } from '../UnitSelectButton';
 
@@ -56,7 +56,7 @@ export function UnitSelect({
         onChange={handleChange}
         aria-labelledby="Unit Picker"
         value={currentUnitOption.displayName}
-        className={cx(
+        className={cn(
           selectStyles,
           {
             [getSelectDisabledStyles(theme)]: disabled,

@@ -24,7 +24,6 @@
   "dependencies": {
     "@leafygreen-ui/button": "workspace:^",
     "@leafygreen-ui/descendants": "workspace:^",
-    "@leafygreen-ui/emotion": "workspace:^",
     "@leafygreen-ui/icon": "workspace:^",
     "@leafygreen-ui/lib": "workspace:^",
     "@leafygreen-ui/palette": "workspace:^",

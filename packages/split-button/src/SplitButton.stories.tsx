@@ -11,7 +11,6 @@ import {
 import { StoryFn } from '@storybook/react';
 
 import { Size } from '@leafygreen-ui/button';
-import { css } from '@leafygreen-ui/emotion';
 import { glyphs, Icon } from '@leafygreen-ui/icon';
 import { MenuItem } from '@leafygreen-ui/menu';
 import { TestUtils } from '@leafygreen-ui/popover';
@@ -57,12 +56,12 @@ const meta: StoryMetaType<typeof SplitButton> = {
       },
       decorator: (Instance, ctx) => (
         <div
-          className={css`
-            height: 300px;
-            display: flex;
-            align-items: ${getAlign(ctx?.args.align, ctx?.args.justify)};
-            justify-content: ${getJustify(ctx?.args.align, ctx?.args.justify)};
-          `}
+          style={{
+            height: '300px',
+            display: 'flex',
+            alignItems: getAlign(ctx?.args.align, ctx?.args.justify),
+            justifyContent: getJustify(ctx?.args.align, ctx?.args.justify),
+          }}
         >
           <Instance />
         </div>

@@ -1,4 +1,3 @@
-import { css, cx } from '@leafygreen-ui/emotion';
 import { Theme } from '@leafygreen-ui/lib';
 import {
   color,
@@ -8,30 +7,28 @@ import {
   Variant,
 } from '@leafygreen-ui/tokens';
 
-const containerStyles = css`
-  display: flex;
-  gap: ${spacing[100]}px;
-  align-items: center;
-  opacity: 1;
-  transition-property: opacity, display;
-  transition-duration: ${transitionDuration.slower}ms;
-  transition-timing-function: ease-out;
-  transition-behavior: allow-discrete;
-`;
+import { cn } from '../../cn';
 
-const fadedContainerStyles = css`
-  opacity: 0;
-  display: none;
-`;
+const containerStyles = [
+  'flex',
+  `gap-[${spacing[100]}px]`,
+  'items-center',
+  'opacity-100',
+  `transition-[opacity,display]`,
+  `duration-[${transitionDuration.slower}ms]`,
+  'ease-out',
+  '[transition-behavior:allow-discrete]',
+].join(' ');
+
+const fadedContainerStyles = 'opacity-0 hidden';
 
 export const getContainerStyles = (shouldFade: boolean) =>
-  cx(containerStyles, {
+  cn(containerStyles, {
     [fadedContainerStyles]: shouldFade,
   });
 
 export const getIconFill = (theme: Theme) =>
   color[theme].icon[Variant.Success][InteractionState.Default];
 
-export const getTextStyles = (theme: Theme) => css`
-  color: ${color[theme].text[Variant.Secondary][InteractionState.Default]};
-`;
+export const getTextStyles = (theme: Theme) =>
+  `text-[${color[theme].text[Variant.Secondary][InteractionState.Default]}]`;

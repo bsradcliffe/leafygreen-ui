@@ -7,7 +7,6 @@ import {
 import { StoryFn, StoryObj } from '@storybook/react';
 
 import { Button } from '@leafygreen-ui/button';
-import { css } from '@leafygreen-ui/emotion';
 import LeafyGreenProvider from '@leafygreen-ui/leafygreen-provider';
 import { palette } from '@leafygreen-ui/palette';
 import { spacing } from '@leafygreen-ui/tokens';
@@ -43,14 +42,14 @@ export default {
     (StoryFn, ctx) => (
       <LeafyGreenProvider darkMode={ctx?.args.darkMode}>
         <div
-          className={css`
-            height: 100%;
-            display: flex;
-            align-items: center;
-            margin: -100px;
-            width: 100vw;
-            border-bottom: 3px solid ${palette.green.base};
-          `}
+          style={{
+            height: '100%',
+            display: 'flex',
+            alignItems: 'center',
+            margin: '-100px',
+            width: '100vw',
+            borderBottom: `3px solid ${palette.green.base}`,
+          }}
         >
           <StoryFn />
         </div>
@@ -82,42 +81,40 @@ const CloudNavLayoutMock: React.FC<{ children?: React.ReactNode }> = ({
   children,
 }) => (
   <div
-    className={css`
-      display: grid;
-      grid-template:
-        'lg-cloud_nav-side_nav lg-cloud_nav-top_nav' max-content
-        'lg-cloud_nav-side_nav lg-cloud_nav-content' 1fr / 48px auto;
-      height: 100vh;
-      width: 100vw;
-      max-height: 100vh;
-      max-width: 100vw;
-      overflow: hidden;
-    `}
+    style={{
+      display: 'grid',
+      gridTemplate: `'lg-cloud_nav-side_nav lg-cloud_nav-top_nav' max-content 'lg-cloud_nav-side_nav lg-cloud_nav-content' 1fr / 48px auto`,
+      height: '100vh',
+      width: '100vw',
+      maxHeight: '100vh',
+      maxWidth: '100vw',
+      overflow: 'hidden',
+    }}
   >
     <div
-      className={css`
-        grid-area: lg-cloud_nav-side_nav;
-        background-color: ${palette.gray.dark1};
-      `}
+      style={{
+        gridArea: 'lg-cloud_nav-side_nav',
+        backgroundColor: palette.gray.dark1,
+      }}
     ></div>
     <div
-      className={css`
-        grid-area: lg-cloud_nav-side_nav;
-        background-color: ${palette.gray.dark1};
-      `}
+      style={{
+        gridArea: 'lg-cloud_nav-side_nav',
+        backgroundColor: palette.gray.dark1,
+      }}
     ></div>
     <div
-      className={css`
-        grid-area: lg-cloud_nav-top_nav;
-        background-color: ${palette.gray.dark1};
-        height: 48px;
-      `}
+      style={{
+        gridArea: 'lg-cloud_nav-top_nav',
+        backgroundColor: palette.gray.dark1,
+        height: '48px',
+      }}
     ></div>
     <div
-      className={css`
-        grid-area: lg-cloud_nav-content;
-        overflow: scroll;
-      `}
+      style={{
+        gridArea: 'lg-cloud_nav-content',
+        overflow: 'scroll',
+      }}
     >
       {children}
     </div>
@@ -144,17 +141,13 @@ const Component: StoryFn<DrawerLayoutProps> = ({
     const { openDrawer } = useDrawerToolbarContext();
 
     return (
-      <main
-        className={css`
-          padding: ${spacing[400]}px;
-        `}
-      >
+      <main style={{ padding: `${spacing[400]}px` }}>
         <div
-          className={css`
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-          `}
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'flex-start',
+          }}
         >
           <Button onClick={() => openDrawer('Code')}>Open Code Drawer</Button>
           <Button onClick={() => setHasToolbarData(prev => !prev)}>
@@ -174,12 +167,7 @@ const Component: StoryFn<DrawerLayoutProps> = ({
   };
 
   return (
-    <div
-      className={css`
-        height: 90vh;
-        width: 100%;
-      `}
-    >
+    <div style={{ height: '90vh', width: '100%' }}>
       <DrawerLayout {...props}>
         <MainContent />
       </DrawerLayout>
@@ -197,11 +185,7 @@ const ComponentOpen: StoryFn<DrawerLayoutProps> = (args: DrawerLayoutProps) => {
     }, []);
 
     return (
-      <main
-        className={css`
-          padding: ${spacing[400]}px;
-        `}
-      >
+      <main style={{ padding: `${spacing[400]}px` }}>
         <LongContent />
         <LongContent />
       </main>
@@ -209,12 +193,7 @@ const ComponentOpen: StoryFn<DrawerLayoutProps> = (args: DrawerLayoutProps) => {
   };
 
   return (
-    <div
-      className={css`
-        height: 90vh;
-        width: 100%;
-      `}
-    >
+    <div style={{ height: '90vh', width: '100%' }}>
       <DrawerLayout {...args}>
         <MainContent />
       </DrawerLayout>
@@ -232,11 +211,7 @@ const OverlayCloudNavComponent: StoryFn<DrawerLayoutProps> = ({
         displayMode="overlay"
         darkMode={darkMode}
       >
-        <div
-          className={css`
-            padding: ${spacing[400]}px;
-          `}
-        >
+        <div style={{ padding: `${spacing[400]}px` }}>
           <LongContent />
           <LongContent />
         </div>
@@ -296,11 +271,7 @@ const DynamicComponent: StoryFn<DrawerLayoutProps> = ({
     const { openDrawer } = useDrawerToolbarContext();
 
     return (
-      <main
-        className={css`
-          padding: ${spacing[400]}px;
-        `}
-      >
+      <main style={{ padding: `${spacing[400]}px` }}>
         <Button onClick={() => openDrawer('Code')}>Open Code Drawer</Button>
         <div>Time Stamp: ${timestampStr}</div>
         <LongContent />
@@ -309,12 +280,7 @@ const DynamicComponent: StoryFn<DrawerLayoutProps> = ({
   };
 
   return (
-    <div
-      className={css`
-        height: 90vh;
-        width: 100%;
-      `}
-    >
+    <div style={{ height: '90vh', width: '100%' }}>
       <DrawerLayout displayMode={displayMode} toolbarData={DRAWER_TOOLBAR_DATA}>
         <MainContent />
       </DrawerLayout>
@@ -381,11 +347,7 @@ const EmbeddedCloudNavComponent: StoryFn<DrawerLayoutProps> = (
         displayMode="embedded"
         resizable={args.resizable}
       >
-        <main
-          className={css`
-            padding: ${spacing[400]}px;
-          `}
-        >
+        <main style={{ padding: `${spacing[400]}px` }}>
           <LongContent />
           <LongContent />
         </main>

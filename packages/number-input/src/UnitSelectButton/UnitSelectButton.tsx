@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { flushSync } from 'react-dom';
 
 import { Button } from '@leafygreen-ui/button';
-import { cx } from '@leafygreen-ui/emotion';
 import { useForwardedRef } from '@leafygreen-ui/hooks';
 import { useDarkMode } from '@leafygreen-ui/leafygreen-provider';
 import {
@@ -12,6 +11,7 @@ import {
 import { Size } from '@leafygreen-ui/tokens';
 import { Align, Justify, RenderMode, Tooltip } from '@leafygreen-ui/tooltip';
 
+import { cn } from '../cn';
 import {
   baseStyles,
   sizeStyles,
@@ -86,7 +86,7 @@ export const UnitSelectButton = React.forwardRef<
       </Tooltip>
       <Button
         {...props}
-        className={cx(
+        className={cn(
           baseStyles,
           themeStyles[theme],
           sizeStyles[props.size || Size.Default],

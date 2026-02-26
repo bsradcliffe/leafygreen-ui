@@ -4,7 +4,6 @@ import { faker } from '@faker-js/faker';
 import { StoryFn, StoryObj } from '@storybook/react';
 
 import { Button } from '@leafygreen-ui/button';
-import { css } from '@leafygreen-ui/emotion';
 import { color, spacing } from '@leafygreen-ui/tokens';
 import { Body } from '@leafygreen-ui/typography';
 
@@ -20,12 +19,7 @@ const LongContent = () => {
 
   return (
     <div
-      className={css`
-        display: inline-flex;
-        flex-direction: column;
-        gap: ${spacing[100]}px;
-        align-items: baseline;
-      `}
+      className={`inline-flex flex-col gap-[${spacing[100]}px] items-baseline`}
     >
       <Button>Press Tab</Button>
       {paragraphs}

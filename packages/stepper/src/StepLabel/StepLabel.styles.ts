@@ -1,7 +1,7 @@
-import { css } from '@leafygreen-ui/emotion';
 import { Theme } from '@leafygreen-ui/lib';
 import { palette } from '@leafygreen-ui/palette';
 
+import { cn } from '../cn';
 import { StepState, StepStates } from '../Stepper';
 
 export const themedStateColor = {
@@ -24,12 +24,23 @@ export const themedStateColor = {
 export const getThemedStateColorStyles = (
   theme: Theme,
   state: StepState,
-) => css`
-  color: ${themedStateColor[theme][state]};
-`;
+) => `text-[${themedStateColor[theme][state]}]`;
 
-export const multipleStyles = css`
-  text-decoration-line: underline;
-  text-decoration-style: dotted;
-  text-underline-position: under;
-`;
+export const multipleStyles = [
+  'underline',
+  'decoration-dotted',
+  'underline-offset-[under]',
+].join(' ');
+
+export const getStepLabelStyles = ({
+  theme,
+  state,
+}: {
+  theme: Theme;
+  state: StepState;
+}) =>
+  cn(getThemedStateColorStyles(theme, state), {
+    [multipleStyles]:
+      state === StepStates.CompletedMultiple ||
+      state === StepStates.UpcomingMultiple,
+  });

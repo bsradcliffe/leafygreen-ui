@@ -4,7 +4,6 @@ import React from 'react';
 import { StoryMetaType } from '@lg-tools/storybook-utils';
 import { StoryObj } from '@storybook/react';
 
-import { css } from '@leafygreen-ui/emotion';
 import { Icon } from '@leafygreen-ui/icon';
 
 import { MenuProps } from '../Menu';
@@ -47,10 +46,10 @@ export const LiveExample = {
   render: args => {
     return (
       <div
-        className={css`
-          width: 256px;
-          outline: 1px dashed gray;
-        `}
+        style={{
+          width: 256,
+          outline: '1px dashed gray',
+        }}
       >
         <SubMenu {...(args as any)} initialOpen>
           <MenuItem>Apple</MenuItem>

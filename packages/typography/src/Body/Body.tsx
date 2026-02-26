@@ -1,25 +1,33 @@
 import React from 'react';
 
-import { css, cx } from '@leafygreen-ui/emotion';
 import { useDarkMode } from '@leafygreen-ui/leafygreen-provider';
 import {
   Polymorphic,
   PolymorphicAs,
   usePolymorphic,
 } from '@leafygreen-ui/polymorphic';
-import {
-  FontWeight,
-  fontWeights as fontWeightTokens,
-} from '@leafygreen-ui/tokens';
+import { FontWeight } from '@leafygreen-ui/tokens';
 
 import {
   baseTypographyStyles,
   bodyTypeScaleStyles,
   defaultTextColor,
 } from '../styles';
+import { cn } from '../utils/cn';
 import { useUpdatedBaseFontSize } from '../utils/useUpdatedBaseFontSize';
 
 import { BaseBodyProps } from './Body.types';
+
+const fontWeightStyles: Record<string, string> = {
+  regular:
+    'font-normal [&_strong]:font-semibold [&_b]:font-semibold',
+  medium:
+    'font-medium [&_strong]:font-semibold [&_b]:font-semibold',
+  semiBold:
+    'font-semibold [&_strong]:font-semibold [&_b]:font-semibold',
+  bold:
+    'font-bold [&_strong]:font-semibold [&_b]:font-semibold',
+};
 
 const Body = Polymorphic<BaseBodyProps>(
   ({
@@ -34,22 +42,13 @@ const Body = Polymorphic<BaseBodyProps>(
     const baseFontSize = useUpdatedBaseFontSize(baseFontSizeOverride);
     const { Component } = usePolymorphic(as);
 
-    // Currently hardcoding selectors to keys; could consider a dynamic solution that runs once
-    const fontWeight = css`
-      font-weight: ${fontWeightTokens[weight]};
-      strong,
-      b {
-        font-weight: ${fontWeightTokens.semiBold};
-      }
-    `;
-
     return (
       <Component
-        className={cx(
+        className={cn(
           baseTypographyStyles,
           bodyTypeScaleStyles[baseFontSize],
           defaultTextColor[theme],
-          fontWeight,
+          fontWeightStyles[weight],
           className,
         )}
         {...rest}

@@ -1,7 +1,6 @@
 import React from 'react';
 
-import { cx } from '@leafygreen-ui/emotion';
-
+import { cn } from '../cn';
 import { Direction } from '../NumberInput/NumberInput.types';
 
 import { Arrow } from './Arrow';
@@ -20,7 +19,7 @@ import { ArrowsProps } from './Arrows.types';
 export const Arrows = ({ disabled, onClick, onKeyDown, size }: ArrowsProps) => {
   return (
     <div
-      className={cx(arrowsBaseStyles, arrowsSizeStyles[size], {
+      className={cn(arrowsBaseStyles, arrowsSizeStyles[size], {
         [arrowsAnimateStyles]: !disabled,
         [arrowDisabledStyles]: disabled,
       })}

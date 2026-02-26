@@ -1,85 +1,76 @@
-import { css, cx } from '@leafygreen-ui/emotion';
 import {
   breakpoints,
   spacing,
   transitionDuration,
 } from '@leafygreen-ui/tokens';
 
+import { cn } from '../cn';
+
 const CONTAINER_MAX_WIDTH = 1040;
 const TRANSITION_DURATION = transitionDuration.slowest;
 
-export const cardStyles = css`
-  max-width: ${CONTAINER_MAX_WIDTH}px;
-  width: 100%;
-  padding: ${spacing[800]}px;
-`;
+export const cardStyles = [
+  `max-w-[${CONTAINER_MAX_WIDTH}px]`,
+  'w-full',
+  `p-[${spacing[800]}px]`,
+].join(' ');
 
-const baseSectionStyles = css`
-  max-width: ${CONTAINER_MAX_WIDTH}px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-
-  @media (max-width: ${breakpoints.Tablet}px) {
-    grid-template-columns: 1fr;
-  }
-`;
+const baseSectionStyles = [
+  `max-w-[${CONTAINER_MAX_WIDTH}px]`,
+  'grid',
+  'grid-cols-[1fr_1fr]',
+  `max-[${breakpoints.Tablet}px]:grid-cols-1`,
+].join(' ');
 
 export const getSectionStyles = (className?: string) =>
-  cx(baseSectionStyles, className);
+  cn(baseSectionStyles, className);
 
-export const textContainerStyles = css`
-  display: flex;
-  flex-direction: column;
-  gap: ${spacing[600]}px;
-`;
+export const textContainerStyles = [
+  'flex',
+  'flex-col',
+  `gap-[${spacing[600]}px]`,
+].join(' ');
 
-export const mediaCarouselContainerStyles = css`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
+export const mediaCarouselContainerStyles = [
+  'flex',
+  'justify-center',
+  'items-center',
+].join(' ');
 
-export const mediaCarouselStyles = css`
-  position: relative;
-  overflow: hidden;
-  height: auto;
-  transition: height ${TRANSITION_DURATION}ms ease-in-out;
-`;
+export const mediaCarouselStyles = [
+  'relative',
+  'overflow-hidden',
+  'h-auto',
+  `[transition:height_${TRANSITION_DURATION}ms_ease-in-out]`,
+].join(' ');
 
-const baseMediaSlideStyles = css`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  display: flex;
-  flex-shrink: 0;
-  justify-content: center;
-  align-items: center;
-  padding: 0 ${spacing[600]}px;
-  transition-property: opacity, visibility;
-  transition-duration: ${TRANSITION_DURATION}ms;
-  transition-timing-function: ease-in-out;
-  opacity: 0;
-  visibility: hidden;
+const baseMediaSlideStyles = [
+  'absolute',
+  'top-0',
+  'left-0',
+  'w-full',
+  'flex',
+  'shrink-0',
+  'justify-center',
+  'items-center',
+  `px-[${spacing[600]}px]`,
+  `[transition-property:opacity,visibility]`,
+  `[transition-duration:${TRANSITION_DURATION}ms]`,
+  '[transition-timing-function:ease-in-out]',
+  'opacity-0',
+  'invisible',
+  '[&_img]:w-full',
+  '[&_img]:h-full',
+  '[&_img]:object-cover',
+].join(' ');
 
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  @media (max-width: ${breakpoints.Tablet}px) {
-    padding: ${spacing[600]}px 0 0;
-  }
-`;
-
-const mediaSlideActiveStyles = css`
-  position: relative;
-  opacity: 1;
-  visibility: visible;
-`;
+const mediaSlideActiveStyles = [
+  'relative',
+  'opacity-100',
+  'visible',
+].join(' ');
 
 export const getMediaSlideStyles = (isActive: boolean) =>
-  cx(baseMediaSlideStyles, {
+  cn(baseMediaSlideStyles, {
     [mediaSlideActiveStyles]: isActive,
   });

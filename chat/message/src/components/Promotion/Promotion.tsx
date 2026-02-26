@@ -2,13 +2,13 @@ import React, { forwardRef } from 'react';
 
 import { Badge, Variant } from '@leafygreen-ui/badge';
 import { CompoundSubComponent } from '@leafygreen-ui/compound-component';
-import { cx } from '@leafygreen-ui/emotion';
 import { Icon } from '@leafygreen-ui/icon';
 import LeafyGreenProvider, {
   useDarkMode,
 } from '@leafygreen-ui/leafygreen-provider';
 import { Body, Link } from '@leafygreen-ui/typography';
 
+import { cn } from '../../cn';
 import { MessageSubcomponentProperty } from '../../shared.types';
 
 import { badgeStyles, promotionContainerStyles } from './Promotion.styles';
@@ -38,7 +38,7 @@ export const Promotion = CompoundSubComponent(
         <LeafyGreenProvider darkMode={darkMode}>
           <div
             ref={fwdRef}
-            className={cx(promotionContainerStyles, className)}
+            className={cn(promotionContainerStyles, className)}
             {...rest}
           >
             <Badge variant={Variant.Green} className={badgeStyles}>

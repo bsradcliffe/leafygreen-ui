@@ -1,12 +1,18 @@
-import { css } from '@leafygreen-ui/emotion';
 import { Theme } from '@leafygreen-ui/lib';
-import {
-  BaseFontSize,
-  color,
-  fontFamilies,
-  fontWeights,
-  typeScales,
-} from '@leafygreen-ui/tokens';
+import { BaseFontSize } from '@leafygreen-ui/tokens';
+
+const errorBaseStyles =
+  "font-[\'Euclid_Circular_A\',\'Helvetica_Neue\',Helvetica,Arial,sans-serif] font-normal [margin-block-start:0] [margin-block-end:0]";
+
+const errorColorStyles: Record<Theme, string> = {
+  [Theme.Light]: 'text-[#DB3030]',
+  [Theme.Dark]: 'text-[#FF6960]',
+};
+
+const errorTypeScaleStyles: Record<BaseFontSize, string> = {
+  [BaseFontSize.Body1]: 'text-[13px] leading-[20px]',
+  [BaseFontSize.Body2]: 'text-[16px] leading-[20px]',
+};
 
 export const getErrorMessageStyle = ({
   theme,
@@ -14,27 +20,6 @@ export const getErrorMessageStyle = ({
 }: {
   theme: Theme;
   baseFontSize: BaseFontSize;
-}) => {
-  const fontSize =
-    baseFontSize === BaseFontSize.Body1
-      ? typeScales.body1.fontSize
-      : typeScales.body2.fontSize;
-  const lineHeight =
-    baseFontSize === BaseFontSize.Body1 ? typeScales.body1.lineHeight : 20;
-
-  return css`
-    font-family: ${fontFamilies.default};
-    font-weight: ${fontWeights.regular};
-    font-size: inherit;
-    line-height: inherit;
-
-    /* Unsets browser defaults */
-    margin-block-start: 0;
-    margin-block-end: 0;
-
-    /* Variable Styles */
-    color: ${color[theme].text.error.default};
-    font-size: ${fontSize}px;
-    line-height: ${lineHeight}px;
-  `;
+}): string => {
+  return `${errorBaseStyles} ${errorColorStyles[theme]} ${errorTypeScaleStyles[baseFontSize]}`;
 };

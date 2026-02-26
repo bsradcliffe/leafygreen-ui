@@ -1,9 +1,12 @@
-import { css, cx } from '@leafygreen-ui/emotion';
 import { spacing } from '@leafygreen-ui/tokens';
 
 import { VerticalAlignment } from '../Table/Table.types';
 
 import { Align } from './Cell.types';
+
+function cn(...classes: Array<string | false | undefined | null>): string {
+  return classes.filter(Boolean).join(' ');
+}
 
 /** The base left & right padding in the table */
 export const baseTableSidePadding = spacing[600];
@@ -14,7 +17,11 @@ const iconSize = 28;
 /** the default height of a cell */
 export const standardCellHeight = spacing[5] + spacing[2];
 
-export const getCellPadding = ({
+/**
+ * Computes first-child padding classes for a cell based on depth, expandability, and selectability.
+ * Returns Tailwind `first:` prefixed classes.
+ */
+export const getCellPaddingClasses = ({
   depth = 0,
   isExpandable,
   isSelectable,
@@ -25,15 +32,10 @@ export const getCellPadding = ({
 }) => {
   if (depth === 0) {
     if (isSelectable) {
-      return css`
-        padding-left: ${spacing[200]}px;
-        padding-right: ${spacing[200]}px;
-      `;
+      return `first:pl-[${spacing[200]}px] first:pr-[${spacing[200]}px]`;
     } else {
-      return css`
-        padding-left: ${baseTableSidePadding +
-        (isExpandable ? 0 : spacing[200])}px;
-      `;
+      const pl = baseTableSidePadding + (isExpandable ? 0 : spacing[200]);
+      return `first:pl-[${pl}px]`;
     }
   }
 
@@ -41,68 +43,55 @@ export const getCellPadding = ({
   const thisIconPadding = isExpandable ? spacing[200] : 0;
   const depthPadding =
     iconSize * depth - (parentIconsPadding + thisIconPadding);
-  return css`
-    padding-left: ${baseTableSidePadding + depthPadding}px;
-  `;
+  return `first:pl-[${baseTableSidePadding + depthPadding}px]`;
 };
 
 export const getCellStyles = (
   depth = 0,
   isExpandable = false,
   isSelectable = false,
-) => css`
-  &:first-child {
-    ${getCellPadding({
-      depth,
-      isExpandable,
-      isSelectable,
-    })}
-  }
-`;
+) =>
+  getCellPaddingClasses({
+    depth,
+    isExpandable,
+    isSelectable,
+  });
 
-export const getCellContainerStyles = (align: Align = 'left') => css`
-  display: flex;
-  align-items: center;
-  min-height: ${standardCellHeight}px;
-  justify-content: ${align};
-  text-align: ${align};
+export const getCellContainerStyles = (align: Align = 'left') => {
+  const alignStyles: Record<string, string> = {
+    left: '[justify-content:left] text-left [&>div]:[justify-content:left]',
+    center:
+      '[justify-content:center] text-center [&>div]:[justify-content:center]',
+    right: '[justify-content:right] text-right [&>div]:[justify-content:right]',
+  };
 
-  > div {
-    justify-content: ${align};
-  }
-`;
+  return cn(
+    'flex items-center',
+    `min-h-[${standardCellHeight}px]`,
+    alignStyles[align] || alignStyles.left,
+  );
+};
 
 export const getBaseCellStyles = (
   verticalAlignment: VerticalAlignment = VerticalAlignment.Top,
-) => css`
-  padding: 0 ${spacing[200]}px;
-  vertical-align: ${verticalAlignment};
+) => {
+  const alignMap: Record<string, string> = {
+    [VerticalAlignment.Top]: 'align-top',
+    [VerticalAlignment.Middle]: 'align-middle',
+    [VerticalAlignment.Bottom]: 'align-bottom',
+  };
 
-  &:focus-visible {
-    box-shadow: inset;
-  }
+  return cn(
+    `px-[${spacing[200]}px] py-0`,
+    alignMap[verticalAlignment] || 'align-top',
+    'focus-visible:[box-shadow:inset]',
+    `last:pr-[${baseTableSidePadding}px]`,
+  );
+};
 
-  &:last-child {
-    padding-right: ${baseTableSidePadding}px;
-  }
-`;
-
-export const cellInnerStyles = css`
-  display: flex;
-  align-items: center;
-  min-width: 100%;
-`;
+export const cellInnerStyles = 'flex items-center min-w-full';
 
 export const getCellEllipsisStyles = (shouldTruncate: boolean) =>
-  cx({
-    [css`
-      flex: 1;
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      contain: inline-size; // 🤯
-      // This is a workaround to ensure interactive styles (e.g., hover and focus) are not clipped within cells because of overflow: hidden
-      margin: -${spacing[100]}px;
-      padding: ${spacing[100]}px;
-    `]: shouldTruncate,
-  });
+  shouldTruncate
+    ? `flex-1 overflow-hidden whitespace-nowrap text-ellipsis [contain:inline-size] -m-[${spacing[100]}px] p-[${spacing[100]}px]`
+    : '';

@@ -1,4 +1,3 @@
-import { css, cx } from '@leafygreen-ui/emotion';
 import {
   descriptionClassName,
   inputOptionContentClassName,
@@ -9,6 +8,7 @@ import { createUniqueClassName, Theme } from '@leafygreen-ui/lib';
 import { palette } from '@leafygreen-ui/palette';
 import { color, spacing } from '@leafygreen-ui/tokens';
 
+import { cn } from '../cn';
 import { MenuVariant } from '../Menu/Menu.types';
 import { menuColor } from '../styles';
 import { getLgIds } from '../utils';
@@ -18,11 +18,7 @@ const lgIds = getLgIds();
 
 export const menuItemClassName = createUniqueClassName(lgIds.item);
 
-export const menuItemContainerStyles = css`
-  width: 100%;
-  padding: 0;
-  list-style: none;
-`;
+export const menuItemContainerStyles = 'w-full p-0 list-none';
 
 interface MenuItemStyleArgs {
   active: boolean;
@@ -33,8 +29,8 @@ interface MenuItemStyleArgs {
   menuVariant: MenuVariant;
 }
 
-const DEFAULT_MENU_ITEM_PADDING = spacing[200];
-const COMPACT_MENU_ITEM_PADDING = spacing[150];
+const DEFAULT_MENU_ITEM_PADDING = spacing[200]; // 8
+const COMPACT_MENU_ITEM_PADDING = spacing[150]; // 6
 
 export const getMenuItemStyles = ({
   active,
@@ -43,116 +39,92 @@ export const getMenuItemStyles = ({
   theme,
   variant,
   menuVariant,
-}: MenuItemStyleArgs) =>
-  cx(
+}: MenuItemStyleArgs) => {
+  const padding =
+    menuVariant === MenuVariant.Default
+      ? DEFAULT_MENU_ITEM_PADDING
+      : COMPACT_MENU_ITEM_PADDING;
+
+  return cn(
     // Base styles
-    css`
-      display: block;
-      width: 100%;
-      min-height: ${spacing[800]}px;
-      background-color: ${menuColor[theme].background.default};
-      padding: ${menuVariant === MenuVariant.Default
-          ? DEFAULT_MENU_ITEM_PADDING
-          : COMPACT_MENU_ITEM_PADDING}px
-        ${spacing[300]}px;
+    'block',
+    'w-full',
+    `min-h-[${spacing[800]}px]`,
+    `bg-[${menuColor[theme].background.default}]`,
+    `[padding:${padding}px_${spacing[300]}px]`,
+    `[&_.${titleClassName}]:text-[${menuColor[theme].text.default}]`,
+    `[&_.${leftGlyphClassName}]:text-[${menuColor[theme].icon.default}]`,
 
-      .${titleClassName} {
-        color: ${menuColor[theme].text.default};
-      }
-      .${leftGlyphClassName} {
-        color: ${menuColor[theme].icon.default};
-      }
-    `,
-    {
-      // Active
-      [css`
-        &,
-        &:hover {
-          background-color: ${menuColor[theme].background.active};
+    // Active
+    active &&
+      cn(
+        `bg-[${menuColor[theme].background.active}]`,
+        `hover:bg-[${menuColor[theme].background.active}]`,
+        `[&::before]:scale-y-100`,
+        `[&::before]:[translate:0_-50%]`,
+        `[&::before]:bg-[${menuColor[theme].border.active}]`,
+        `hover:[&::before]:scale-y-100`,
+        `hover:[&::before]:[translate:0_-50%]`,
+        `hover:[&::before]:bg-[${menuColor[theme].border.active}]`,
+        `[&_.${titleClassName}]:text-[${menuColor[theme].text.active}]`,
+        `[&_.${titleClassName}]:font-bold`,
+        `hover:[&_.${titleClassName}]:text-[${menuColor[theme].text.active}]`,
+        `hover:[&_.${titleClassName}]:font-bold`,
+        `[&_.${leftGlyphClassName}]:text-[${menuColor[theme].icon.active}]`,
+        `hover:[&_.${leftGlyphClassName}]:text-[${menuColor[theme].icon.active}]`,
+      ),
 
-          &::before {
-            transform: scaleY(1) translateY(-50%);
-            background-color: ${menuColor[theme].border.active};
-          }
+    // Highlighted
+    highlighted &&
+      cn(
+        `bg-[${menuColor[theme].background.focus}]`,
+        `hover:bg-[${menuColor[theme].background.focus}]`,
+        `focus-visible:bg-[${menuColor[theme].background.focus}]`,
+        `[&::before]:scale-y-100`,
+        `[&::before]:[translate:0_-50%]`,
+        `[&::before]:bg-[${menuColor[theme].border.focus}]`,
+        `hover:[&::before]:scale-y-100`,
+        `hover:[&::before]:[translate:0_-50%]`,
+        `hover:[&::before]:bg-[${menuColor[theme].border.focus}]`,
+        `focus-visible:[&::before]:scale-y-100`,
+        `focus-visible:[&::before]:[translate:0_-50%]`,
+        `focus-visible:[&::before]:bg-[${menuColor[theme].border.focus}]`,
+        `[&_.${titleClassName}]:text-[${menuColor[theme].text.focus}]`,
+        `hover:[&_.${titleClassName}]:text-[${menuColor[theme].text.focus}]`,
+        `focus-visible:[&_.${titleClassName}]:text-[${menuColor[theme].text.focus}]`,
+        `[&_.${leftGlyphClassName}]:text-[${menuColor[theme].icon.focus}]`,
+        `hover:[&_.${leftGlyphClassName}]:text-[${menuColor[theme].icon.focus}]`,
+        `focus-visible:[&_.${leftGlyphClassName}]:text-[${menuColor[theme].icon.focus}]`,
+      ),
 
-          .${titleClassName} {
-            color: ${menuColor[theme].text.active};
-            font-weight: bold;
-          }
+    // Destructive
+    variant === Variant.Destructive &&
+      cn(
+        `[&_.${titleClassName}]:text-[${color[theme].text.error.default}]`,
+        `[&_.${leftGlyphClassName}]:text-[${color[theme].icon.error.default}]`,
+        `hover:bg-[${color[theme].background.error.hover}]`,
+        `hover:[&_.${titleClassName}]:text-[${color[theme].text.error.hover}]`,
+        `hover:[&_.${leftGlyphClassName}]:text-[${color[theme].icon.error.hover}]`,
+      ),
 
-          .${leftGlyphClassName} {
-            color: ${menuColor[theme].icon.active};
-          }
-        }
-      `]: active,
-
-      // Highlighted
-      [css`
-        &,
-        &:hover,
-        &:focus-visible {
-          background-color: ${menuColor[theme].background.focus};
-
-          &::before {
-            transform: scaleY(1) translateY(-50%);
-            background-color: ${menuColor[theme].border.focus};
-          }
-
-          .${titleClassName} {
-            color: ${menuColor[theme].text.focus};
-          }
-          .${leftGlyphClassName} {
-            color: ${menuColor[theme].icon.focus};
-          }
-        }
-      `]: highlighted,
-
-      // Destructive
-      [css`
-        .${titleClassName} {
-          color: ${color[theme].text.error.default};
-        }
-        .${leftGlyphClassName} {
-          color: ${color[theme].icon.error.default};
-        }
-
-        &:hover {
-          background-color: ${color[theme].background.error.hover};
-          .${titleClassName} {
-            color: ${color[theme].text.error.hover};
-          }
-          .${leftGlyphClassName} {
-            color: ${color[theme].icon.error.hover};
-          }
-        }
-      `]: variant === Variant.Destructive,
-
-      // Disabled
-      [css`
-        &,
-        &:hover {
-          background-color: ${menuColor[theme].background.default};
-          .${titleClassName} {
-            color: ${color[theme].text.disabled.default};
-          }
-          .${leftGlyphClassName} {
-            color: ${color[theme].icon.disabled.default};
-          }
-        }
-      `]: disabled,
-    },
+    // Disabled
+    disabled &&
+      cn(
+        `bg-[${menuColor[theme].background.default}]`,
+        `hover:bg-[${menuColor[theme].background.default}]`,
+        `[&_.${titleClassName}]:text-[${color[theme].text.disabled.default}]`,
+        `hover:[&_.${titleClassName}]:text-[${color[theme].text.disabled.default}]`,
+        `[&_.${leftGlyphClassName}]:text-[${color[theme].icon.disabled.default}]`,
+        `hover:[&_.${leftGlyphClassName}]:text-[${color[theme].icon.disabled.default}]`,
+      ),
   );
+};
 
 export const getMenuItemContentStyles = ({
   hasGlyph,
 }: {
   hasGlyph: boolean;
-}) => css`
-  ${!hasGlyph &&
-  css`
-    padding-inline-start: ${spacing[300]}px;
-  `}
-`;
+}) => cn(!hasGlyph && `[padding-inline-start:${spacing[300]}px]`);
 
 interface NestedItemStyleArgs {
   theme: Theme;
@@ -176,28 +148,21 @@ export const getNestedMenuItemStyles = ({
   const groupInset = groupDepth * baseGroupInset;
   const totalInset = submenuInset + groupInset;
 
-  return cx(
-    {
-      // The inset border for submenu items
-      [css`
-        &::after {
-          content: '';
-          position: absolute;
-          top: 0;
-          right: 0;
-          left: ${totalInset}px;
-          height: 1px;
-          background-color: ${menuColor[theme].border.default};
-        }
-      `]: submenuDepth > 0,
-    },
-    css`
-      .${inputOptionContentClassName} {
-        position: relative;
-        padding-left: ${totalInset}px;
-        border-top: 1px solid transparent;
-      }
-    `,
+  return cn(
+    // The inset border for submenu items
+    submenuDepth > 0 &&
+      cn(
+        `[&::after]:content-['']`,
+        `[&::after]:absolute`,
+        `[&::after]:top-0`,
+        `[&::after]:right-0`,
+        `[&::after]:left-[${totalInset}px]`,
+        `[&::after]:h-px`,
+        `[&::after]:bg-[${menuColor[theme].border.default}]`,
+      ),
+    `[&_.${inputOptionContentClassName}]:relative`,
+    `[&_.${inputOptionContentClassName}]:pl-[${totalInset}px]`,
+    `[&_.${inputOptionContentClassName}]:[border-top:1px_solid_transparent]`,
   );
 };
 
@@ -209,109 +174,67 @@ export const getDarkInLightModeMenuItemStyles = ({
   disabled,
   highlighted,
 }: MenuItemStyleArgs) => {
-  return cx(
-    css`
-      background-color: ${color.dark.background.primary.default};
+  return cn(
+    `bg-[${color.dark.background.primary.default}]`,
+    `[&_.${titleClassName}]:text-[${color.dark.text.primary.default}]`,
+    `[&_.${descriptionClassName}]:text-[${color.dark.text.secondary.default}]`,
+    `[&_.${leftGlyphClassName}]:text-[${color.dark.icon.primary.default}]`,
+    `hover:bg-[${color.dark.background.primary.hover}]`,
+    `hover:[&_.${titleClassName}]:text-[${color.dark.text.primary.hover}]`,
+    `hover:[&_.${descriptionClassName}]:text-[${color.dark.text.secondary.hover}]`,
+    `hover:[&_.${leftGlyphClassName}]:text-[${color.dark.icon.primary.hover}]`,
 
-      .${titleClassName} {
-        color: ${color.dark.text.primary.default};
-      }
-      .${descriptionClassName} {
-        color: ${color.dark.text.secondary.default};
-      }
-      .${leftGlyphClassName} {
-        color: ${color.dark.icon.primary.default};
-      }
+    // Active styles
+    active &&
+      cn(
+        `bg-[${color.dark.background.primary.default}]`,
+        `hover:bg-[${color.dark.background.primary.default}]`,
+        `[&_.${titleClassName}]:text-[${palette.green.base}]`,
+        `hover:[&_.${titleClassName}]:text-[${palette.green.base}]`,
+        `[&_.${leftGlyphClassName}]:text-[${palette.green.base}]`,
+        `hover:[&_.${leftGlyphClassName}]:text-[${palette.green.base}]`,
+        `[&::before]:bg-[${palette.green.base}]`,
+        `hover:[&::before]:bg-[${palette.green.base}]`,
+      ),
 
-      &:hover {
-        background-color: ${color.dark.background.primary.hover};
+    // Highlighted
+    highlighted &&
+      cn(
+        `bg-[${color.dark.background.primary.focus}]`,
+        `hover:bg-[${color.dark.background.primary.focus}]`,
+        `focus-visible:bg-[${color.dark.background.primary.focus}]`,
+        `[&_.${titleClassName}]:text-[${color.dark.text.primary.focus}]`,
+        `hover:[&_.${titleClassName}]:text-[${color.dark.text.primary.focus}]`,
+        `focus-visible:[&_.${titleClassName}]:text-[${color.dark.text.primary.focus}]`,
+        `[&_.${descriptionClassName}]:text-[${color.dark.text.secondary.focus}]`,
+        `hover:[&_.${descriptionClassName}]:text-[${color.dark.text.secondary.focus}]`,
+        `focus-visible:[&_.${descriptionClassName}]:text-[${color.dark.text.secondary.focus}]`,
+        `[&_.${leftGlyphClassName}]:text-[${color.dark.icon.primary.focus}]`,
+        `hover:[&_.${leftGlyphClassName}]:text-[${color.dark.icon.primary.focus}]`,
+        `focus-visible:[&_.${leftGlyphClassName}]:text-[${color.dark.icon.primary.focus}]`,
+      ),
 
-        .${titleClassName} {
-          color: ${color.dark.text.primary.hover};
-        }
-        .${descriptionClassName} {
-          color: ${color.dark.text.secondary.hover};
-        }
-        .${leftGlyphClassName} {
-          color: ${color.dark.icon.primary.hover};
-        }
-      }
-    `,
-    {
-      // Active styles
-      [css`
-        &,
-        &:hover {
-          background-color: ${color.dark.background.primary.default};
+    // Destructive
+    variant === Variant.Destructive &&
+      cn(
+        `[&_.${titleClassName}]:text-[${color.dark.text.error.default}]`,
+        `[&_.${leftGlyphClassName}]:text-[${color.dark.icon.error.default}]`,
+        `hover:bg-[${color.dark.background.error.hover}]`,
+        `hover:[&_.${titleClassName}]:text-[${color.dark.text.error.hover}]`,
+        `hover:[&_.${leftGlyphClassName}]:text-[${color.dark.icon.error.hover}]`,
+      ),
 
-          .${titleClassName} {
-            color: ${palette.green.base};
-          }
-          .${leftGlyphClassName} {
-            color: ${palette.green.base};
-          }
-
-          &::before {
-            background-color: ${palette.green.base};
-          }
-        }
-      `]: active,
-
-      // Highlighted
-      [css`
-        &,
-        &:hover,
-        &:focus-visible {
-          background-color: ${color.dark.background.primary.focus};
-
-          .${titleClassName} {
-            color: ${color.dark.text.primary.focus};
-          }
-          .${descriptionClassName} {
-            color: ${color.dark.text.secondary.focus};
-          }
-          .${leftGlyphClassName} {
-            color: ${color.dark.icon.primary.focus};
-          }
-        }
-      `]: highlighted,
-
-      [css`
-        .${titleClassName} {
-          color: ${color.dark.text.error.default};
-        }
-        .${leftGlyphClassName} {
-          color: ${color.dark.icon.error.default};
-        }
-
-        &:hover {
-          background-color: ${color.dark.background.error.hover};
-          .${titleClassName} {
-            color: ${color.dark.text.error.hover};
-          }
-          .${leftGlyphClassName} {
-            color: ${color.dark.icon.error.hover};
-          }
-        }
-      `]: variant === Variant.Destructive,
-
-      // Disabled
-      [css`
-        &,
-        &:hover {
-          background-color: ${color.dark.background.primary.default};
-
-          .${titleClassName} {
-            color: ${color.dark.text.disabled.default};
-          }
-          .${descriptionClassName} {
-            color: ${color.dark.text.disabled.default};
-          }
-          .${leftGlyphClassName} {
-            color: ${color.dark.icon.disabled.default};
-          }
-        }
-      `]: disabled,
-    },
+    // Disabled
+    disabled &&
+      cn(
+        `bg-[${color.dark.background.primary.default}]`,
+        `hover:bg-[${color.dark.background.primary.default}]`,
+        `[&_.${titleClassName}]:text-[${color.dark.text.disabled.default}]`,
+        `hover:[&_.${titleClassName}]:text-[${color.dark.text.disabled.default}]`,
+        `[&_.${descriptionClassName}]:text-[${color.dark.text.disabled.default}]`,
+        `hover:[&_.${descriptionClassName}]:text-[${color.dark.text.disabled.default}]`,
+        `[&_.${leftGlyphClassName}]:text-[${color.dark.icon.disabled.default}]`,
+        `hover:[&_.${leftGlyphClassName}]:text-[${color.dark.icon.disabled.default}]`,
+      ),
   );
 };

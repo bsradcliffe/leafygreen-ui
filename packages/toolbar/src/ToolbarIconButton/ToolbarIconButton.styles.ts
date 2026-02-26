@@ -1,47 +1,34 @@
-import { css, cx } from '@leafygreen-ui/emotion';
 import { Theme } from '@leafygreen-ui/lib';
 import { palette } from '@leafygreen-ui/palette';
 import { borderRadius } from '@leafygreen-ui/tokens';
 
+import { cn } from '../cn';
 import { ICON_BUTTON_HEIGHT } from '../constants';
 
-export const baseIconButtonStyles = css`
-  &,
-  &:hover,
-  &[data-hover='true'],
-  &::before {
-    border-radius: ${borderRadius[150]}px;
-  }
+const baseIconButtonStyle = [
+  `[&]:rounded-[${borderRadius[150]}px]`,
+  `[&:hover]:rounded-[${borderRadius[150]}px]`,
+  `[&[data-hover='true']]:rounded-[${borderRadius[150]}px]`,
+  `[&::before]:rounded-[${borderRadius[150]}px]`,
+  '[&::before]:bg-transparent',
+].join(' ');
 
-  &::before {
-    background-color: transparent;
-  }
-`;
-
-export const getIconButtonActiveStyles = ({ theme }: { theme: Theme }) =>
-  css`
-    // Override styles from IconButton
-    &,
-    &:is(:hover, [data-hover='true'], :focus-visible, [data-focus='true']) {
-      background-color: ${theme === Theme.Light
-        ? palette.green.light3
-        : palette.green.dark3};
-
-      color: ${theme === Theme.Light
-        ? palette.green.dark2
-        : palette.green.light1};
-    }
-
-    // Override ::before styles from IconButton
-    &:is(
-        :hover,
-        [data-hover='true'],
-        :focus-visible,
-        [data-focus='true']
-      )::before {
-      background-color: transparent;
-    }
-  `;
+const iconButtonActiveStyles: Record<Theme, string> = {
+  [Theme.Light]: [
+    `[&]:bg-[${palette.green.light3}]`,
+    `[&]:text-[${palette.green.dark2}]`,
+    `[&:is(:hover,[data-hover='true'],:focus-visible,[data-focus='true'])]:bg-[${palette.green.light3}]`,
+    `[&:is(:hover,[data-hover='true'],:focus-visible,[data-focus='true'])]:text-[${palette.green.dark2}]`,
+    `[&:is(:hover,[data-hover='true'],:focus-visible,[data-focus='true'])::before]:bg-transparent`,
+  ].join(' '),
+  [Theme.Dark]: [
+    `[&]:bg-[${palette.green.dark3}]`,
+    `[&]:text-[${palette.green.light1}]`,
+    `[&:is(:hover,[data-hover='true'],:focus-visible,[data-focus='true'])]:bg-[${palette.green.dark3}]`,
+    `[&:is(:hover,[data-hover='true'],:focus-visible,[data-focus='true'])]:text-[${palette.green.light1}]`,
+    `[&:is(:hover,[data-hover='true'],:focus-visible,[data-focus='true'])::before]:bg-transparent`,
+  ].join(' '),
+};
 
 export const getIconButtonStyles = ({
   active,
@@ -54,18 +41,14 @@ export const getIconButtonStyles = ({
   disabled: boolean;
   className?: string;
 }) =>
-  cx(
-    css`
-      ${baseIconButtonStyles}
-    `,
-    {
-      [getIconButtonActiveStyles({ theme })]: active && !disabled,
-    },
+  cn(
+    baseIconButtonStyle,
+    active && !disabled && iconButtonActiveStyles[theme],
     className,
   );
 
-export const triggerStyles = css`
-  display: flex;
-  height: ${ICON_BUTTON_HEIGHT}px;
-  align-items: center;
-`;
+export const triggerStyles = [
+  'flex',
+  `h-[${ICON_BUTTON_HEIGHT}px]`,
+  'items-center',
+].join(' ');

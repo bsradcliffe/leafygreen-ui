@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 
-import { cx } from '@leafygreen-ui/emotion';
 import { usePrevious } from '@leafygreen-ui/hooks';
 import LeafyGreenProvider, {
   useDarkMode,
@@ -18,12 +17,16 @@ import {
   useScreenReaderAnnouncer,
 } from './hooks';
 import {
-  getAnimatedTextStyles,
+  animatedTextClassName,
+  animatedTextStyle,
+  getBarFillOverlayStyle,
   getBarFillStyles,
   getBarTrackStyles,
   getContainerStyles,
-  getHeaderIconStyles,
-  getHeaderValueStyles,
+  getHeaderIconColor,
+  getHeaderValueClassName,
+  getHeaderValueColor,
+  headerIconBaseClassName,
   headerStyles,
   hiddenStyles,
   truncatedTextStyles,
@@ -37,6 +40,11 @@ import {
   getValueAriaAttributes,
   resolveProgressBarProps,
 } from './utils';
+
+function cn(...classes: Array<string | false | undefined | null>): string {
+  return classes.filter(Boolean).join(' ');
+}
+
 export function ProgressBar(props: ProgressBarProps) {
   const {
     size,
@@ -128,12 +136,29 @@ export function ProgressBar(props: ProgressBarProps) {
     }
 
     // use CSS variables for width and animation duration to prevent
-    // unnecessary re-generation of emotion classes on every width change
+    // unnecessary re-renders on every width change
     return {
       '--width': `${displayWidth}%`,
       '--width-animation-duration': `${widthAnimationDuration}ms`,
     } as React.CSSProperties;
   };
+
+  const barTrack = getBarTrackStyles({ theme, size });
+  const barFill = getBarFillStyles({
+    theme,
+    variant,
+    disabled,
+    animationMode,
+  });
+  const overlayStyle = getBarFillOverlayStyle({
+    animationMode,
+    theme,
+    variant,
+    disabled,
+  });
+
+  const headerValueColor = getHeaderValueColor({ theme, disabled });
+  const headerIconColor = getHeaderIconColor({ theme, variant, disabled });
 
   return (
     <LeafyGreenProvider darkMode={darkMode}>
@@ -157,7 +182,8 @@ export function ProgressBar(props: ProgressBarProps) {
           {formatValue && (
             <Body
               data-lgid={lgIds.valueText}
-              className={getHeaderValueStyles({ theme, disabled })}
+              className={getHeaderValueClassName}
+              style={{ color: headerValueColor }}
             >
               {isDefined(value) &&
                 getFormattedValue(value, maxValue, formatValue)}
@@ -167,11 +193,8 @@ export function ProgressBar(props: ProgressBarProps) {
                   variant,
                   disabled,
                   props: {
-                    className: getHeaderIconStyles({
-                      theme,
-                      variant,
-                      disabled,
-                    }),
+                    className: headerIconBaseClassName,
+                    style: { color: headerIconColor },
                   },
                 })}
             </Body>
@@ -188,20 +211,29 @@ export function ProgressBar(props: ProgressBarProps) {
         >
           <div
             data-lgid={lgIds.track}
-            className={getBarTrackStyles({ theme, size })}
+            className={barTrack.className}
+            style={barTrack.style}
           >
             <div
               data-lgid={lgIds.fill}
-              style={getWidthStyles()}
-              className={getBarFillStyles({
-                theme,
-                variant,
-                disabled,
-                animationMode,
-              })}
+              style={{ ...getWidthStyles(), ...barFill.style }}
+              className={barFill.className}
               // if on fade-out transition, revert back to base mode
               onTransitionEnd={endTransitionAnimation}
-            ></div>
+            >
+              {overlayStyle && (
+                <span
+                  aria-hidden
+                  className={cn(
+                    'lg-pb-fill-overlay',
+                    (animationMode === AnimationMode.Indeterminate ||
+                      animationMode === AnimationMode.Transition) &&
+                      'lg-pb-indeterminate-overlay',
+                  )}
+                  style={overlayStyle}
+                />
+              )}
+            </div>
           </div>
         </div>
 
@@ -210,7 +242,8 @@ export function ProgressBar(props: ProgressBarProps) {
             id={descId}
             disabled={disabled}
             data-lgid={lgIds.root} // handled by <Description> internally
-            className={cx({ [getAnimatedTextStyles()]: isNewDescription })}
+            className={cn(isNewDescription && animatedTextClassName)}
+            style={isNewDescription ? animatedTextStyle : undefined}
             // if on fade-in transition, reset state after animation ends
             onAnimationEnd={() => setIsNewDescription(false)}
           >

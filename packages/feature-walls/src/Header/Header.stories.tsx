@@ -5,16 +5,13 @@ import {
   StoryType,
 } from '@lg-tools/storybook-utils';
 
-import { css } from '@leafygreen-ui/emotion';
 import ArrowRight from '@leafygreen-ui/icon/dist/ArrowRight';
 
 import { Header } from '..';
 
 import { MOCK_SAMPLE_TEXT } from './Header.utils';
 
-const removeStorybookPadding = css`
-  margin: -100px;
-`;
+const removeStorybookPadding = 'm-[-100px]';
 
 export default {
   title: 'Composition/FeatureWalls/Header',

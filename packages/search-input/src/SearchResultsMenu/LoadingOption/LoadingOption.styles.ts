@@ -1,24 +1,18 @@
-import { css, keyframes } from '@leafygreen-ui/emotion';
-import { spacing } from '@leafygreen-ui/tokens';
+/**
+ * spacing[2] = 8px (deprecated, same as spacing[200])
+ * spacing[1] = 4px (deprecated, same as spacing[100])
+ */
 
-export const loadingOptionStyles = css`
-  display: flex;
-  align-items: center;
-  gap: ${spacing[2]}px;
-  padding-block: ${spacing[1]}px;
-`;
+export const loadingOptionStyles = [
+  'flex',
+  'items-center',
+  'gap-[8px]',
+  'py-[4px]',
+].join(' ');
 
-const loadingSpinner = keyframes`
-  from {
-    transform: rotate(0deg);
-  } 
-  to {
-    transform: rotate(360deg);
-  }
-`;
-
-export const loadingOptionIcon = css`
-  height: 16px;
-  width: 16px;
-  animation: ${loadingSpinner} 1.5s linear infinite;
-`;
+export const loadingOptionIcon = [
+  'h-[16px]',
+  'w-[16px]',
+  'animate-spin',
+  '[animation-duration:1.5s]',
+].join(' ');

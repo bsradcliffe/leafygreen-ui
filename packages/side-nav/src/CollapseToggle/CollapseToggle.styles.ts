@@ -1,105 +1,77 @@
-import { transparentize } from 'polished';
-
-import { prefersReducedMotion } from '@leafygreen-ui/a11y';
-import { css } from '@leafygreen-ui/emotion';
 import { createUniqueClassName, Theme } from '@leafygreen-ui/lib';
-import { palette } from '@leafygreen-ui/palette';
-import { focusRing, spacing, transitionDuration } from '@leafygreen-ui/tokens';
 
 export const iconClassName = createUniqueClassName('collapse-menu');
 
-export const buttonBaseStyles = css`
-  position: absolute;
-  bottom: ${spacing[3]}px;
-  right: -${spacing[3]}px;
-  width: ${spacing[5]}px;
-  height: ${spacing[5]}px;
+/**
+ * Pre-computed transparent shadow values (replaces polished transparentize)
+ * transparentize(0.9, palette.black) = rgba(0, 30, 43, 0.1)
+ * transparentize(0.8, palette.black) = rgba(0, 30, 43, 0.2)
+ */
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 100%;
-
-  cursor: pointer;
-  transition: ${transitionDuration.default}ms ease-in-out;
-  transition-property: color, border-color, box-shadow;
-
-  &:hover {
-    .${iconClassName} {
-      transform: translate3d(-2px, 0, 0);
-    }
-  }
-
-  &:focus {
-    outline: none;
-  }
-
-  &:focus-visible {
-    border-color: transparent;
-  }
-
-  &::-moz-focus-inner {
-    border: 0;
-  }
-`;
+export const buttonBaseStyles = [
+  'absolute',
+  'bottom-[16px]',
+  'right-[-16px]',
+  'w-[32px]',
+  'h-[32px]',
+  'flex',
+  'items-center',
+  'justify-center',
+  'rounded-full',
+  'cursor-pointer',
+  'transition-[color,border-color,box-shadow]',
+  'duration-[var(--transition-duration-default)]',
+  'ease-in-out',
+  'focus:outline-none',
+  'focus-visible:border-transparent',
+].join(' ');
 
 export const buttonThemeStyles: Record<Theme, string> = {
-  [Theme.Light]: css`
-    color: ${palette.green.dark2};
-    box-shadow: 0 3px 4px ${transparentize(0.9, palette.black)};
-    background-color: ${palette.white};
-    border: 1px solid ${palette.gray.light2};
-
-    &:hover {
-      background-color: ${palette.gray.light3};
-      box-shadow: 0 2px 2px ${transparentize(0.8, palette.black)};
-    }
-
-    &:focus-visible {
-      color: ${palette.blue.base};
-      box-shadow: ${focusRing.light.default};
-      background-color: ${palette.gray.light3};
-    }
-  `,
-  [Theme.Dark]: css`
-    color: ${palette.gray.light1};
-    box-shadow: 0 3px 4px ${transparentize(0.9, palette.black)};
-    background-color: ${palette.gray.dark4};
-    border: 1px solid ${palette.gray.dark2};
-
-    &:hover {
-      background-color: ${palette.gray.dark2};
-      box-shadow: 0 2px 2px ${transparentize(0.8, palette.black)};
-    }
-
-    &:focus-visible {
-      color: ${palette.blue.light2};
-      box-shadow: ${focusRing.dark.default};
-      background-color: ${palette.gray.dark2};
-    }
-  `,
+  [Theme.Light]: [
+    'text-[#00684A]',
+    'shadow-[0_3px_4px_rgba(0,30,43,0.1)]',
+    'bg-white',
+    'border',
+    'border-solid',
+    'border-[#E8EDEB]',
+    'hover:bg-[#F9FBFA]',
+    'hover:shadow-[0_2px_2px_rgba(0,30,43,0.2)]',
+    'focus-visible:text-[#016BF8]',
+    'focus-visible:shadow-[0_0_0_2px_#FFFFFF,0_0_0_4px_#016BF8]',
+    'focus-visible:bg-[#F9FBFA]',
+  ].join(' '),
+  [Theme.Dark]: [
+    'text-[#C1C7C6]',
+    'shadow-[0_3px_4px_rgba(0,30,43,0.1)]',
+    'bg-[#112733]',
+    'border',
+    'border-solid',
+    'border-[#3D4F58]',
+    'hover:bg-[#3D4F58]',
+    'hover:shadow-[0_2px_2px_rgba(0,30,43,0.2)]',
+    'focus-visible:text-[#C3E7FE]',
+    'focus-visible:shadow-[0_0_0_2px_#001E2B,0_0_0_4px_#0498EC]',
+    'focus-visible:bg-[#3D4F58]',
+  ].join(' '),
 };
 
-export const buttonCollapsedStyles = css`
-  &:hover {
-    .${iconClassName} {
-      transform: translate3d(2px, 0, 0);
-    }
-  }
-`;
+export const buttonCollapsedStyles = '';
+// Note: The original hover effect on .iconClassName (translate3d) is handled
+// via group-hover in the component
 
-export const iconWrapper = css`
-  transition: transform 80ms ease-in-out;
-  display: inline-block;
-  height: 16px;
+export const iconWrapper = [
+  'transition-transform',
+  'duration-[80ms]',
+  'ease-in-out',
+  'inline-block',
+  'h-[16px]',
+  'motion-reduce:[transition-property:none]',
+].join(' ');
 
-  ${prefersReducedMotion(`
-    transition-property: unset;
-  `)}
-`;
-
-export const keyboardShortcut = css`
-  padding: 0 3px 2px 2px;
-  line-height: 1em;
-  margin-left: ${spacing[2]}px;
-`;
+export const keyboardShortcut = [
+  'px-[3px]',
+  'pb-[2px]',
+  'pl-[2px]',
+  'leading-[1em]',
+  'ml-[8px]',
+].join(' ');

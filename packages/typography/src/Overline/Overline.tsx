@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { cx } from '@leafygreen-ui/emotion';
 import { useDarkMode } from '@leafygreen-ui/leafygreen-provider';
 import {
   Polymorphic,
@@ -9,6 +8,7 @@ import {
 } from '@leafygreen-ui/polymorphic';
 
 import { baseTypographyStyles, defaultTextColor } from '../styles';
+import { cn } from '../utils/cn';
 
 import { overlineStyles } from './Overline.styles';
 import { BaseOverlineProps } from './Overline.types';
@@ -25,7 +25,7 @@ export const Overline = Polymorphic<BaseOverlineProps>(
 
     return (
       <Component
-        className={cx(
+        className={cn(
           baseTypographyStyles,
           overlineStyles,
           defaultTextColor[theme],

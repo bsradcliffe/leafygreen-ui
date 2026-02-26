@@ -1,11 +1,48 @@
 import React, { MouseEventHandler, useState } from 'react';
 import { StoryMetaType } from '@lg-tools/storybook-utils';
-import { darken, lighten, readableColor, transparentize } from 'polished';
 
-import { css, cx } from '@leafygreen-ui/emotion';
 import { HTMLElementProps } from '@leafygreen-ui/lib';
 
 import palette from './palette';
+
+function cn(...classes: Array<string | false | undefined | null>): string {
+  return classes.filter(Boolean).join(' ');
+}
+
+/**
+ * Returns a readable foreground color (black or white) for a given background hex color.
+ * Handles 3, 6, and 8-character hex values (ignoring alpha channel).
+ */
+function readableColor(bgColor: string): string {
+  const hex = bgColor.replace('#', '');
+
+  let fullHex: string;
+
+  if (hex.length === 3) {
+    // Shorthand: #RGB -> #RRGGBB
+    fullHex = hex
+      .split('')
+      .map(c => c + c)
+      .join('');
+  } else if (hex.length === 8) {
+    // 8-char hex with alpha (#RRGGBBAA) -- ignore alpha
+    fullHex = hex.substring(0, 6);
+  } else {
+    fullHex = hex;
+  }
+
+  const r = parseInt(fullHex.substring(0, 2), 16);
+  const g = parseInt(fullHex.substring(2, 4), 16);
+  const b = parseInt(fullHex.substring(4, 6), 16);
+
+  if (isNaN(r) || isNaN(g) || isNaN(b)) {
+    return '#000';
+  }
+
+  // W3C relative luminance
+  const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+  return luminance > 0.5 ? '#000' : '#fff';
+}
 
 type HueName = keyof typeof palette;
 const baseHues: Array<HueName> = ['white', 'black', 'transparent'];
@@ -34,68 +71,66 @@ interface ColorBlockProps extends HTMLElementProps<'div'> {
 
 const BLOCK_WIDTH = 88;
 
-const copiedOverlayStyle = css`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: 'Euclid Circular A', 'Helvetica Neue', Helvetica, Arial,
-    sans-serif;
-  border-radius: inherit;
-`;
+const copiedOverlayClassName = cn(
+  'absolute',
+  'top-0',
+  'left-0',
+  'w-full',
+  'h-full',
+  'flex',
+  'items-center',
+  'justify-center',
+  "font-['Euclid_Circular_A','Helvetica_Neue',Helvetica,Arial,sans-serif]",
+  'rounded-[inherit]',
+);
 
-const colorBlockWrapper = css`
-  display: inline-block;
-  position: relative;
-  width: ${BLOCK_WIDTH}px;
-  padding-bottom: 16px;
-`;
+const colorBlockWrapperClassName = cn(
+  'inline-block',
+  'relative',
+  `w-[${BLOCK_WIDTH}px]`,
+  'pb-[16px]',
+);
 
-const colorBlock = css`
-  position: relative;
-  outline: none;
-  border: none;
-  border-top-color: transparent;
-  width: 100%;
-  padding-bottom: 100%;
-  border-radius: 8px;
-  cursor: pointer;
-  vertical-align: top;
+const colorBlockClassName = cn(
+  'relative',
+  'outline-none',
+  'border-none',
+  'border-t-transparent',
+  'w-full',
+  'pb-[100%]',
+  'rounded-[8px]',
+  'cursor-pointer',
+  'align-top',
+  'focus-visible:[box-shadow:0_0_0_2px_white,0_0_0_4px_#0498ec]',
+);
 
-  &:focus-visible {
-    box-shadow: 0 0 0 2px white, 0 0 0 4px #0498ec;
-  }
-`;
+const hexLabelClassName = cn(
+  'w-[calc(100%-1em)]',
+  'absolute',
+  'left-1/2',
+  'm-auto',
+  'text-[13px]',
+  'text-center',
+  'py-[3px]',
+  'px-[0.3rem]',
+  'rounded-[4px]',
+  '-translate-x-1/2',
+  '-translate-y-[125%]',
+  'pointer-events-none',
+);
 
-const hexLabelStyle = css`
-  width: calc(100% - 1em);
-  position: absolute;
-  left: 50%;
-  margin: auto;
-  font-size: 13px;
-  text-align: center;
-  padding: 3px 0.3rem;
-  border-radius: 4px;
-  transform: translate(-50%, -125%);
-  pointer-events: none;
-`;
+const nameLabelClassName = cn(
+  'text-center',
+  `text-[${palette.gray.dark1}]`,
+  'm-auto',
+  'py-[0.3em]',
+);
 
-const nameLabelStyle = css`
-  text-align: center;
-  color: ${palette.gray.dark1};
-  margin: auto;
-  padding-block: 0.3em;
-`;
-
-const colorRowStyle = css`
-  grid-template-columns: repeat(${ShadeNames.length}, ${BLOCK_WIDTH}px);
-  display: grid;
-  gap: 24px;
-`;
+const colorRowClassName = cn(
+  `grid-cols-[repeat(${ShadeNames.length},${BLOCK_WIDTH}px)]`,
+  'grid',
+  'gap-[24px]',
+);
 
 function ColorBlock({ hue, shade, ...rest }: ColorBlockProps) {
   const [wasCopied, setWasCopied] = useState<boolean>();
@@ -110,28 +145,6 @@ function ColorBlock({ hue, shade, ...rest }: ColorBlockProps) {
     color = (palette[hue] as Record<ShadeName, string>)[shade];
   }
 
-  const colorBlockWrapperDynamic = css`
-    grid-column: ${shade ? ShadeNames.indexOf(shade) + 1 : '0'};
-  `;
-
-  const colorBlockColor = css`
-    transition: all 0.3s ease;
-    background-color: ${color};
-    box-shadow: 0 8px 6px -8px ${transparentize(0.7, darken(0.2, color))},
-      0 2px 3px ${transparentize(0.8, darken(0.5, color))};
-
-    &:hover {
-      transform: scale(1.05);
-      box-shadow: 0 8px 6px -8px ${transparentize(0.7, darken(0.4, color))},
-        0 2px 3px ${transparentize(0.5, darken(0.3, color))};
-    }
-  `;
-
-  const hexLabelColor = css`
-    color: ${readableColor(lighten(0.2, color))};
-    background-color: ${lighten(0.2, color)};
-  `;
-
   const handleClick: MouseEventHandler<HTMLButtonElement> = () => {
     navigator.clipboard.writeText(color);
     setWasCopied(true);
@@ -141,11 +154,35 @@ function ColorBlock({ hue, shade, ...rest }: ColorBlockProps) {
   };
 
   return (
-    <div className={cx(colorBlockWrapper, colorBlockWrapperDynamic)} {...rest}>
-      <button className={cx(colorBlock, colorBlockColor)} onClick={handleClick}>
+    <div
+      className={colorBlockWrapperClassName}
+      style={{
+        gridColumn: shade ? ShadeNames.indexOf(shade) + 1 : '0',
+      }}
+      {...rest}
+    >
+      <button
+        className={colorBlockClassName}
+        style={{
+          transition: 'all 0.3s ease',
+          backgroundColor: color,
+          boxShadow: `0 8px 6px -8px color-mix(in srgb, ${color} 30%, black), 0 2px 3px color-mix(in srgb, ${color} 20%, black)`,
+        }}
+        onMouseEnter={e => {
+          (e.currentTarget as HTMLButtonElement).style.transform = 'scale(1.05)';
+          (e.currentTarget as HTMLButtonElement).style.boxShadow =
+            `0 8px 6px -8px color-mix(in srgb, ${color} 30%, black), 0 2px 3px color-mix(in srgb, ${color} 50%, black)`;
+        }}
+        onMouseLeave={e => {
+          (e.currentTarget as HTMLButtonElement).style.transform = '';
+          (e.currentTarget as HTMLButtonElement).style.boxShadow =
+            `0 8px 6px -8px color-mix(in srgb, ${color} 30%, black), 0 2px 3px color-mix(in srgb, ${color} 20%, black)`;
+        }}
+        onClick={handleClick}
+      >
         {wasCopied && (
           <div
-            className={copiedOverlayStyle}
+            className={copiedOverlayClassName}
             style={{ color: readableColor(color) }}
           >
             Copied!
@@ -153,9 +190,17 @@ function ColorBlock({ hue, shade, ...rest }: ColorBlockProps) {
         )}
       </button>
       {!wasCopied && (
-        <div className={cx(hexLabelStyle, hexLabelColor)}>{color}</div>
+        <div
+          className={hexLabelClassName}
+          style={{
+            color: readableColor(color),
+            backgroundColor: `color-mix(in srgb, ${color} 80%, white)`,
+          }}
+        >
+          {color}
+        </div>
       )}
-      <div className={nameLabelStyle}>{name}</div>
+      <div className={nameLabelClassName}>{name}</div>
     </div>
   );
 }
@@ -186,7 +231,7 @@ export function LiveExample() {
 
   return (
     <div>
-      <div className={colorRowStyle}>
+      <div className={colorRowClassName}>
         <ColorBlock hue="white" name="white" />
         <ColorBlock hue="black" name="black" />
         <ColorBlock hue="transparent" name="transparent" />
@@ -195,7 +240,7 @@ export function LiveExample() {
         const hueValues = palette[hue];
 
         return (
-          <div key={hue} className={colorRowStyle}>
+          <div key={hue} className={colorRowClassName}>
             {(Object.keys(hueValues) as Array<keyof typeof hueValues>).map(
               shade => (
                 <ColorBlock

@@ -13,8 +13,10 @@ import { isDefined } from '@leafygreen-ui/lib';
 import { useSharedDatePickerContext } from '../../../shared/context';
 import { useDatePickerContext } from '../../DatePickerContext';
 import {
-  menuHeaderSelectContainerStyles,
-  menuHeaderStyles,
+  menuHeaderClassName,
+  menuHeaderInlineStyle,
+  menuHeaderSelectContainerClassName,
+  menuHeaderSelectContainerInlineStyle,
 } from '../DatePickerMenu.styles';
 import {
   DatePickerMenuSelectMonth,
@@ -129,7 +131,12 @@ export const DatePickerMenuHeader = forwardRef<
     };
 
   return (
-    <div ref={fwdRef} className={menuHeaderStyles} {...rest}>
+    <div
+      ref={fwdRef}
+      className={menuHeaderClassName}
+      style={menuHeaderInlineStyle}
+      {...rest}
+    >
       <IconButton
         ref={refs.chevronButtonRefs.left}
         data-testid="lg-date_picker-menu-prev_month_button"
@@ -139,7 +146,10 @@ export const DatePickerMenuHeader = forwardRef<
       >
         <Icon glyph="ChevronLeft" />
       </IconButton>
-      <div className={menuHeaderSelectContainerStyles}>
+      <div
+        className={menuHeaderSelectContainerClassName}
+        style={menuHeaderSelectContainerInlineStyle}
+      >
         {isIsoFormat ? (
           <>
             <DatePickerMenuSelectYear updateMonth={updateMonth} />

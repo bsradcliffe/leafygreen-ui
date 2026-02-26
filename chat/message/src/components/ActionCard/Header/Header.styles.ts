@@ -1,4 +1,3 @@
-import { css, cx } from '@leafygreen-ui/emotion';
 import { Theme } from '@leafygreen-ui/lib';
 import {
   color,
@@ -6,6 +5,8 @@ import {
   spacing,
   Variant,
 } from '@leafygreen-ui/tokens';
+
+import { cn } from '../../../cn';
 
 import { State } from '../shared.types';
 
@@ -15,15 +16,16 @@ export const getBaseContainerStyles = ({
 }: {
   isErrorState: boolean;
   theme: Theme;
-}) => css`
-  background-color: ${color[theme].background[
-    isErrorState ? Variant.Error : Variant.Secondary
-  ][InteractionState.Default]};
-  padding: ${spacing[200]}px ${spacing[200]}px ${spacing[300]}px
-    ${spacing[300]}px;
-  display: flex;
-  flex-direction: column;
-`;
+}) =>
+  [
+    `bg-[${color[theme].background[isErrorState ? Variant.Error : Variant.Secondary][InteractionState.Default]}]`,
+    `pt-[${spacing[200]}px]`,
+    `pr-[${spacing[200]}px]`,
+    `pb-[${spacing[300]}px]`,
+    `pl-[${spacing[300]}px]`,
+    'flex',
+    'flex-col',
+  ].join(' ');
 
 export const getContainerStyles = ({
   className,
@@ -33,32 +35,29 @@ export const getContainerStyles = ({
   className?: string;
   isErrorState: boolean;
   theme: Theme;
-}) => cx(getBaseContainerStyles({ isErrorState, theme }), className);
+}) => cn(getBaseContainerStyles({ isErrorState, theme }), className);
 
-export const upperRowStyles = css`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: ${spacing[100]}px;
-`;
+export const upperRowStyles = [
+  'flex',
+  'justify-between',
+  'items-center',
+  `gap-[${spacing[100]}px]`,
+].join(' ');
 
-export const titleContainerStyles = css`
-  display: flex;
-  align-items: center;
-  gap: ${spacing[150]}px;
-`;
+export const titleContainerStyles = [
+  'flex',
+  'items-center',
+  `gap-[${spacing[150]}px]`,
+].join(' ');
 
-const getCanceledTextStyles = (theme: Theme) => css`
-  color: ${color[theme].text[Variant.Secondary][InteractionState.Default]};
-`;
+const getCanceledTextStyles = (theme: Theme) =>
+  `text-[${color[theme].text[Variant.Secondary][InteractionState.Default]}]`;
 
-const getErrorTextStyles = (theme: Theme) => css`
-  color: ${color[theme].text[Variant.OnError][InteractionState.Default]};
-`;
+const getErrorTextStyles = (theme: Theme) =>
+  `text-[${color[theme].text[Variant.OnError][InteractionState.Default]}]`;
 
-const getDefaultTextStyles = (theme: Theme) => css`
-  color: ${color[theme].text[Variant.Primary][InteractionState.Default]};
-`;
+const getDefaultTextStyles = (theme: Theme) =>
+  `text-[${color[theme].text[Variant.Primary][InteractionState.Default]}]`;
 
 export const getTextStyles = ({
   state,
@@ -80,9 +79,9 @@ export const getTextStyles = ({
   }
 };
 
-export const chipsContainerStyles = css`
-  padding-top: ${spacing[200]}px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: ${spacing[200]}px;
-`;
+export const chipsContainerStyles = [
+  `pt-[${spacing[200]}px]`,
+  'flex',
+  'flex-wrap',
+  `gap-[${spacing[200]}px]`,
+].join(' ');

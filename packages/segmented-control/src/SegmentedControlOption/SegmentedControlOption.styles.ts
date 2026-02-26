@@ -1,4 +1,5 @@
-import { css, cx } from '@leafygreen-ui/emotion';
+import React from 'react';
+
 import { Theme } from '@leafygreen-ui/lib';
 import { palette } from '@leafygreen-ui/palette';
 import {
@@ -12,77 +13,78 @@ import {
 import { Size } from '../SegmentedControl/SegmentedControl.types';
 
 /**
- * Styles
+ * CSS custom property values per theme
  */
-const optionThemeStyles: Record<Theme, string> = {
-  [Theme.Light]: css`
-    --base-text-color: ${palette.gray.dark1};
-    --base-background-color: rgba(255, 255, 255, 0);
-    --base-shadow-color: rgba(255, 255, 255, 0);
-    // Hover
-    --hover-text-color: ${palette.gray.dark3};
-    // Selected
-    --active-text-color: ${palette.white};
-    // Disabled
-    --disabled-text-color: ${palette.gray.light1};
-    // Divider
-    --divider-background-color: ${palette.gray.light1};
-  `,
-  [Theme.Dark]: css`
-    --base-text-color: ${palette.gray.light1};
-    --base-background-color: rgba(255, 255, 255, 0);
-    --base-shadow-color: rgba(255, 255, 255, 0);
-    // Hover
-    --hover-text-color: ${palette.gray.light2};
-    // Selected
-    --active-text-color: ${palette.black};
-    // Disabled
-    --disabled-text-color: ${palette.gray.dark2};
-    // Divider
-    --divider-background-color: ${palette.gray.dark2};
-  `,
+const optionThemeVars: Record<Theme, Record<string, string>> = {
+  [Theme.Light]: {
+    '--base-text-color': palette.gray.dark1,
+    '--base-background-color': 'rgba(255, 255, 255, 0)',
+    '--base-shadow-color': 'rgba(255, 255, 255, 0)',
+    '--hover-text-color': palette.gray.dark3,
+    '--active-text-color': palette.white,
+    '--disabled-text-color': palette.gray.light1,
+    '--divider-background-color': palette.gray.light1,
+  },
+  [Theme.Dark]: {
+    '--base-text-color': palette.gray.light1,
+    '--base-background-color': 'rgba(255, 255, 255, 0)',
+    '--base-shadow-color': 'rgba(255, 255, 255, 0)',
+    '--hover-text-color': palette.gray.light2,
+    '--active-text-color': palette.black,
+    '--disabled-text-color': palette.gray.dark2,
+    '--divider-background-color': palette.gray.dark2,
+  },
 };
 
-const optionSizeStyles: Record<Size, string> = {
-  [Size.XSmall]: css`
-    --font-size: 12px;
-    --line-height: 16px;
-    --padding-inline: ${spacing[300]}px;
-    --text-transform: uppercase;
-    --font-weight: ${fontWeights.semiBold};
-    --divider-height: 12px;
-    --padding-block: 3px;
-  `,
-  [Size.Small]: css`
-    --font-size: 13px;
-    --line-height: 20px;
-    --padding-inline: ${spacing[300]}px;
-    --text-transform: none;
-    --font-weight: ${fontWeights.medium};
-    --divider-height: 18px;
-    --padding-block: 3px;
-  `,
-  [Size.Default]: css`
-    --font-size: 13px;
-    --line-height: 24px;
-    --padding-inline: ${spacing[300]}px; // left/right
-    --text-transform: none;
-    --font-weight: ${fontWeights.medium};
-    --divider-height: 18px;
-    --padding-block: 3px;
-  `,
-  [Size.Large]: css`
-    --font-size: 16px;
-    --line-height: 28px;
-    --padding-inline: ${spacing[300]}px;
-    --text-transform: none;
-    --font-weight: ${fontWeights.medium};
-    --divider-height: 20px;
-    --padding-block: ${spacing[100]}px;
-  `,
+const optionSizeVars: Record<Size, Record<string, string>> = {
+  [Size.XSmall]: {
+    '--font-size': '12px',
+    '--line-height': '16px',
+    '--padding-inline': `${spacing[300]}px`,
+    '--text-transform': 'uppercase',
+    '--font-weight': `${fontWeights.semiBold}`,
+    '--divider-height': '12px',
+    '--padding-block': '3px',
+  },
+  [Size.Small]: {
+    '--font-size': '13px',
+    '--line-height': '20px',
+    '--padding-inline': `${spacing[300]}px`,
+    '--text-transform': 'none',
+    '--font-weight': `${fontWeights.medium}`,
+    '--divider-height': '18px',
+    '--padding-block': '3px',
+  },
+  [Size.Default]: {
+    '--font-size': '13px',
+    '--line-height': '24px',
+    '--padding-inline': `${spacing[300]}px`,
+    '--text-transform': 'none',
+    '--font-weight': `${fontWeights.medium}`,
+    '--divider-height': '18px',
+    '--padding-block': '3px',
+  },
+  [Size.Large]: {
+    '--font-size': '16px',
+    '--line-height': '28px',
+    '--padding-inline': `${spacing[300]}px`,
+    '--text-transform': 'none',
+    '--font-weight': `${fontWeights.medium}`,
+    '--divider-height': '20px',
+    '--padding-block': `${spacing[100]}px`,
+  },
 };
 
-export const getContainerStyles = ({
+export const containerClassName = [
+  'relative',
+  'flex',
+  'w-full',
+  'items-center',
+  'justify-center',
+  'z-[3]',
+].join(' ');
+
+export const getContainerInlineStyle = ({
   theme,
   size = 'default',
   baseFontSize = 14,
@@ -90,136 +92,70 @@ export const getContainerStyles = ({
   theme: Theme;
   size: Size;
   baseFontSize: 14 | 16;
-}) =>
-  cx(
-    optionThemeStyles[theme],
-    optionSizeStyles[size],
-    css`
-      position: relative;
-      display: flex;
-      width: 100%;
-      align-items: center;
-      justify-content: center;
-      z-index: 3;
+}): React.CSSProperties =>
+  ({
+    ...optionThemeVars[theme],
+    ...optionSizeVars[size],
+    // Update font size according to baseFontSize
+    ...(size === 'default' && baseFontSize === 16
+      ? { '--font-size': '16px' }
+      : {}),
+  }) as React.CSSProperties;
 
-      &:first-child,
-      &[data-lg-checked='true'],
-      &[data-lg-checked='true'] + [data-lg-checked='false'],
-      &:focus-within + :not(:focus-within) {
-        --divider-background-color: transparent;
-      }
+/**
+ * Divider pseudo-element style.
+ * Applied as a dedicated element instead of ::before.
+ */
+export const getDividerStyle = (): React.CSSProperties => ({
+  content: '""',
+  position: 'absolute',
+  height: 'var(--divider-height)',
+  width: `${spacing[25]}px`,
+  left: `calc(0px - (var(--segment-gap) + ${spacing[25]}px) / 2)`,
+  top: `calc((var(--line-height) + var(--padding-block) * 2 - var(--divider-height)) / 2)`,
+  transition: `background-color ${transitionDuration.default}ms ease-in-out`,
+  backgroundColor: 'var(--divider-background-color)',
+});
 
-      /* 
-      * Adds the divider line to unselected segments 
-      */
-      &::before {
-        --divider-width: ${spacing[25]}px;
-        content: '';
-        position: absolute;
-        height: var(--divider-height);
-        width: var(--divider-width);
-        left: calc(0px - (var(--segment-gap) + var(--divider-width)) / 2);
-        top: calc(
-          (
-              var(--line-height) + var(--padding-block) * 2 -
-                var(--divider-height)
-            ) / 2
-        );
-        transition: background-color ${transitionDuration.default}ms ease-in-out;
-        background-color: var(--divider-background-color);
-      }
-    `,
-    {
-      // Update font size according to baseFontSize
-      [css`
-        --font-size: 16px;
-      `]: size === 'default' && baseFontSize === 16,
-    },
-  );
+export const boxClassName = 'w-full h-full no-underline';
 
-export const boxStyles = css`
-  width: 100%;
-  height: 100%;
-  text-decoration: none;
-`;
+export const buttonClassName = 'flex relative w-full h-full items-center justify-center text-center cursor-pointer outline-none border-none no-underline';
 
-export const buttonStyles = css`
-  font-family: ${fontFamilies.default};
-  display: flex;
-  position: relative;
-  width: 100%;
-  height: 100%;
-  align-items: center;
-  justify-content: center;
-  padding: var(--padding-block) var(--padding-inline);
-  background-color: var(--base-background-color);
-  border-radius: var(--indicator-radius);
-  text-align: center;
-  font-size: var(--font-size);
-  line-height: var(--line-height);
-  text-transform: var(--text-transform, none);
-  font-weight: var(--font-weight);
-  color: var(--base-text-color);
-  box-shadow: 0px 1px 2px var(--base-shadow-color);
-  cursor: pointer;
-  transition: ${transitionDuration.default}ms ease-in-out;
-  transition-property: color, box-shadow;
-  text-decoration: none;
-  outline: none;
-  border: none;
+export const getButtonInlineStyle = (): React.CSSProperties => ({
+  fontFamily: fontFamilies.default,
+  padding: 'var(--padding-block) var(--padding-inline)',
+  backgroundColor: 'var(--base-background-color)',
+  borderRadius: 'var(--indicator-radius)',
+  fontSize: 'var(--font-size)',
+  lineHeight: 'var(--line-height)',
+  textTransform: 'var(--text-transform, none)' as string,
+  fontWeight: 'var(--font-weight)' as string,
+  color: 'var(--base-text-color)',
+  boxShadow: '0px 1px 2px var(--base-shadow-color)',
+  transition: `${transitionDuration.default}ms ease-in-out`,
+  transitionProperty: 'color, box-shadow',
+  textDecoration: 'none',
+});
 
-  svg {
-    transition: color ${transitionDuration.default}ms ease-in-out;
-  }
+export const getButtonFocusStyle = (theme: Theme): React.CSSProperties => ({
+  boxShadow: focusRing[theme].default,
+});
 
-  &:hover {
-    color: var(--hover-text-color);
-  }
+/**
+ * Color override for SVG icons in unselected, non-disabled, non-hovered state.
+ * Must be applied conditionally in the component.
+ */
+export const unselectedIconColor = palette.gray.base;
 
-  &[aria-selected='true'] {
-    color: var(--active-text-color);
-  }
+export const labelClassName = 'flex items-center min-w-0';
 
-  &:disabled {
-    color: var(--disabled-text-color);
-    cursor: not-allowed;
-  }
+export const labelInlineStyle: React.CSSProperties = {
+  minHeight: 'var(--line-height)',
+  gap: 'calc(var(--font-size) / 2)',
+};
 
-  &[aria-selected='false']:not(:disabled):not(:hover) {
-    svg {
-      color: ${palette.gray.base};
-    }
-  }
-`;
+export const labelTextClassName = 'overflow-hidden whitespace-nowrap text-ellipsis';
 
-export const iconOnlyThemeStyles = css`
-  &[aria-selected='false']:not(:disabled):not(:hover) {
-    svg {
-      color: var(--base-text-color);
-    }
-  }
-`;
-
-export const getButtonFocusStyles = (theme: Theme) => css`
-  &:focus {
-    box-shadow: ${focusRing[theme].default};
-  }
-`;
-
-export const labelStyles = css`
-  min-height: var(--line-height);
-  gap: calc(var(--font-size) / 2);
-  display: flex;
-  align-items: center;
-  min-width: 0;
-
-  svg {
-    flex-shrink: 0;
-  }
-`;
-
-export const labelTextStyles = css`
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-`;
+export const labelSvgStyle: React.CSSProperties = {
+  flexShrink: 0,
+};

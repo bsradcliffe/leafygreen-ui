@@ -1,110 +1,79 @@
-import { prefersReducedMotion } from '@leafygreen-ui/a11y';
-import { css } from '@leafygreen-ui/emotion';
 import { Theme } from '@leafygreen-ui/lib';
-import { palette } from '@leafygreen-ui/palette';
-import { spacing, transitionDuration } from '@leafygreen-ui/tokens';
 
-export const collapsibleBaseStyle = css`
-  background-color: transparent;
-  border: none;
-  margin: 0px;
-  transition: ${transitionDuration.faster}ms ease-in-out;
-  transition-property: border-color, background-color, color;
-  cursor: pointer;
-
-  &:focus {
-    outline: none;
-  }
-`;
+export const collapsibleBaseStyle = [
+  'bg-transparent',
+  'border-none',
+  'm-0',
+  'transition-[border-color,background-color,color]',
+  'duration-[var(--transition-duration-faster)]',
+  'ease-in-out',
+  'cursor-pointer',
+  'focus:outline-none',
+].join(' ');
 
 export const collapsibleThemeStyle: Record<Theme, string> = {
-  [Theme.Light]: css`
-    border-bottom: 1px solid ${palette.gray.light2};
-
-    &:hover {
-      background-color: ${palette.gray.light2};
-      border-color: ${palette.green.dark1};
-    }
-  `,
-  [Theme.Dark]: css`
-    border-bottom: 1px solid ${palette.gray.dark1};
-
-    &:hover {
-      background-color: ${palette.gray.dark2};
-      border-color: ${palette.green.base};
-    }
-  `,
+  [Theme.Light]: [
+    'border-b',
+    'border-b-[#E8EDEB]',
+    'hover:bg-[#E8EDEB]',
+    'hover:border-[#00A35C]',
+  ].join(' '),
+  [Theme.Dark]: [
+    'border-b',
+    'border-b-[#5C6C75]',
+    'hover:bg-[#3D4F58]',
+    'hover:border-[#00ED64]',
+  ].join(' '),
 };
 
 export const collapsibleFocusThemeStyle: Record<Theme, string> = {
-  [Theme.Light]: css`
-    &:focus {
-      color: ${palette.blue.dark2};
-      border-color: ${palette.blue.base};
-      background-color: ${palette.blue.light3};
-
-      & svg {
-        color: ${palette.blue.base};
-      }
-    }
-  `,
-  [Theme.Dark]: css`
-    &:focus {
-      color: ${palette.blue.light3};
-      border-color: ${palette.blue.light1};
-      background-color: ${palette.blue.dark3};
-
-      & svg {
-        color: ${palette.blue.light1};
-      }
-    }
-  `,
+  [Theme.Light]: [
+    'focus:text-[#083C90]',
+    'focus:border-[#016BF8]',
+    'focus:bg-[#E1F7FF]',
+    'focus:[&_svg]:text-[#016BF8]',
+  ].join(' '),
+  [Theme.Dark]: [
+    'focus:text-[#E1F7FF]',
+    'focus:border-[#0498EC]',
+    'focus:bg-[#0C2657]',
+    'focus:[&_svg]:text-[#0498EC]',
+  ].join(' '),
 };
 
-export const expandIconStyle = css`
-  transition: ${transitionDuration.default}ms all ease-in-out;
-  margin-left: ${spacing[2]}px;
+export const expandIconStyle = [
+  'transition-all',
+  'duration-[var(--transition-duration-default)]',
+  'ease-in-out',
+  'ml-[8px]',
+  'motion-reduce:transition-none',
+].join(' ');
 
-  ${prefersReducedMotion(`
-    transition: none;
-  `)}
-`;
+export const openExpandIconStyle = 'rotate-90';
 
-export const openExpandIconStyle = css`
-  transform: rotate(90deg);
-`;
+export const collapsibleGroupBaseStyles = [
+  'max-h-0',
+  'overflow-hidden',
+  'opacity-100',
+  'transition-[opacity,max-height]',
+  'duration-[var(--transition-duration-default)]',
+  'ease-in-out',
+  'motion-reduce:[transition-property:opacity]',
+].join(' ');
 
-export const collapsibleGroupBaseStyles = css`
-  max-height: 0;
-  overflow: hidden;
-  opacity: 1;
-  transition: ${transitionDuration.default}ms ease-in-out;
-  transition-property: opacity, max-height;
-
-  ${prefersReducedMotion(`
-    transition: opacity ${transitionDuration.default}ms ease-in-out;
-  `)}
-`;
-
-export const transitionStyles = {
-  entering: css`
-    opacity: 0;
-  `,
+export const transitionStyles: Record<string, string | undefined> = {
+  entering: 'opacity-0',
   entered: '',
-  exiting: css`
-    opacity: 0;
-  `,
-  exited: css`
-    opacity: 0;
-  `,
+  exiting: 'opacity-0',
+  exited: 'opacity-0',
   unmounted: undefined,
 };
 
-export const ulStyles = css`
-  transition: opacity ${transitionDuration.default}ms ease-in-out;
-  opacity: 0;
-`;
+export const ulStyles = [
+  'transition-opacity',
+  'duration-[var(--transition-duration-default)]',
+  'ease-in-out',
+  'opacity-0',
+].join(' ');
 
-export const ulTransitionStyles = css`
-  opacity: 1;
-`;
+export const ulTransitionStyles = 'opacity-100';

@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { cx } from '@leafygreen-ui/emotion';
 import { useDarkMode } from '@leafygreen-ui/leafygreen-provider';
 import {
   Polymorphic,
@@ -9,6 +8,7 @@ import {
 } from '@leafygreen-ui/polymorphic';
 
 import { baseTypographyStyles } from '../styles';
+import { cn } from '../utils/cn';
 
 import { h2Color, h2Styles } from './H2.styles';
 import { BaseH2Props } from './H2.types';
@@ -25,7 +25,7 @@ const H2 = Polymorphic<BaseH2Props>(
 
     return (
       <Component
-        className={cx(
+        className={cn(
           baseTypographyStyles,
           h2Styles,
           h2Color[theme],

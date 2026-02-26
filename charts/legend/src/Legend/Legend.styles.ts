@@ -1,11 +1,12 @@
-import { css, cx } from '@leafygreen-ui/emotion';
 import { spacing } from '@leafygreen-ui/tokens';
 
-const baseLegendStyles = css`
-  display: flex;
-  flex-wrap: wrap;
-  gap: ${spacing[100]}px;
-`;
+import { cn } from '../cn';
+
+const baseLegendStyles = [
+  'flex',
+  'flex-wrap',
+  `gap-[${spacing[100]}px]`,
+].join(' ');
 
 export const getLegendStyles = ({ className }: { className?: string }) =>
-  cx(baseLegendStyles, className);
+  cn(baseLegendStyles, className);

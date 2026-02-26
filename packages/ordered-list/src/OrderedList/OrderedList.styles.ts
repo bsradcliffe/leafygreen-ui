@@ -1,11 +1,3 @@
-import { css } from '@leafygreen-ui/emotion';
-import { spacing } from '@leafygreen-ui/tokens';
-
-export const baseStyles = css`
-  list-style-type: none;
-  display: flex;
-  flex-direction: column;
-  gap: ${spacing[400]}px;
-  padding: 0;
-  margin: 0;
-`;
+// spacing[400] = 16px
+export const baseStyles =
+  'list-none flex flex-col gap-[16px] p-0 m-0';

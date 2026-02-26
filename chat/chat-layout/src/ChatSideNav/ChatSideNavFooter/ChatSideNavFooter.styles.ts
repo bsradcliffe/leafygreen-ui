@@ -1,4 +1,3 @@
-import { css, cx } from '@leafygreen-ui/emotion';
 import { Theme } from '@leafygreen-ui/lib';
 import {
   color,
@@ -7,6 +6,7 @@ import {
   Variant,
 } from '@leafygreen-ui/tokens';
 
+import { cn } from '../../cn';
 import {
   COLLAPSED_SIDE_NAV_WIDTH,
   PINNED_SIDE_NAV_WIDTH,
@@ -20,25 +20,24 @@ const BUTTON_HEIGHT = 48;
  */
 const FOOTER_HEIGHT = 48 + 1;
 
-const getBaseFooterStyles = (theme: Theme) => css`
-  overflow: hidden;
-  background-color: ${color[theme].background[Variant.Secondary][
-    InteractionState.Default
-  ]};
-  width: 100%;
-  max-width: ${PINNED_SIDE_NAV_WIDTH}px;
-  height: ${FOOTER_HEIGHT}px;
-  border-top: 1px solid
-    ${color[theme].border[Variant.Secondary][InteractionState.Default]};
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  transition: max-width ${SIDE_NAV_TRANSITION_DURATION}ms ease-in-out;
-`;
+const getBaseFooterStyles = (theme: Theme) =>
+  [
+    'overflow-hidden',
+    `bg-[${color[theme].background[Variant.Secondary][InteractionState.Default]}]`,
+    'w-full',
+    `max-w-[${PINNED_SIDE_NAV_WIDTH}px]`,
+    `h-[${FOOTER_HEIGHT}px]`,
+    'border-t',
+    `border-t-[${color[theme].border[Variant.Secondary][InteractionState.Default]}]`,
+    'flex',
+    'justify-end',
+    'items-center',
+    `transition-[max-width]`,
+    `duration-[${SIDE_NAV_TRANSITION_DURATION}ms]`,
+    'ease-in-out',
+  ].join(' ');
 
-const collapsedFooterStyles = css`
-  max-width: ${COLLAPSED_SIDE_NAV_WIDTH}px;
-`;
+const collapsedFooterStyles = `max-w-[${COLLAPSED_SIDE_NAV_WIDTH}px]`;
 
 export const getFooterStyles = ({
   className,
@@ -49,7 +48,7 @@ export const getFooterStyles = ({
   shouldRenderExpanded: boolean;
   theme: Theme;
 }) =>
-  cx(
+  cn(
     getBaseFooterStyles(theme),
     {
       [collapsedFooterStyles]: !shouldRenderExpanded,
@@ -57,38 +56,25 @@ export const getFooterStyles = ({
     className,
   );
 
-export const getButtonStyles = (theme: Theme) => css`
-  border-radius: 0;
-  border: none;
-  height: ${BUTTON_HEIGHT}px;
-  width: 100%;
-  background-color: ${color[theme].background[Variant.Secondary][
-    InteractionState.Default
-  ]};
+export const getButtonStyles = (theme: Theme) =>
+  [
+    'rounded-none',
+    'border-none',
+    `h-[${BUTTON_HEIGHT}px]`,
+    'w-full',
+    `bg-[${color[theme].background[Variant.Secondary][InteractionState.Default]}]`,
 
-  &:hover,
-  &:active {
-    box-shadow: none;
-    background-color: ${color[theme].background[Variant.Secondary][
-      InteractionState.Hover
-    ]};
-  }
+    'hover:shadow-none',
+    'active:shadow-none',
+    `hover:bg-[${color[theme].background[Variant.Secondary][InteractionState.Hover]}]`,
+    `active:bg-[${color[theme].background[Variant.Secondary][InteractionState.Hover]}]`,
 
-  &:focus-visible {
-    box-shadow: none;
-    background-color: ${color[theme].background[Variant.Secondary][
-      InteractionState.Focus
-    ]};
-    color: ${color[theme].text[Variant.Secondary][InteractionState.Focus]};
+    'focus-visible:shadow-none',
+    `focus-visible:bg-[${color[theme].background[Variant.Secondary][InteractionState.Focus]}]`,
+    `focus-visible:text-[${color[theme].text[Variant.Secondary][InteractionState.Focus]}]`,
+    `[&:focus-visible_svg]:text-[${color[theme].text[Variant.Secondary][InteractionState.Focus]}]`,
 
-    svg {
-      color: ${color[theme].text[Variant.Secondary][InteractionState.Focus]};
-    }
-  }
-
-  // Override the properties in ButtonContent
-  div:nth-child(2) {
-    padding: ${spacing[400]}px;
-    justify-content: flex-end;
-  }
-`;
+    // Override the properties in ButtonContent
+    `[&_div:nth-child(2)]:p-[${spacing[400]}px]`,
+    '[&_div:nth-child(2)]:justify-end',
+  ].join(' ');

@@ -1,6 +1,5 @@
-import { transparentize } from 'polished';
+import React from 'react';
 
-import { css, cx } from '@leafygreen-ui/emotion';
 import { Theme } from '@leafygreen-ui/lib';
 import { palette } from '@leafygreen-ui/palette';
 import {
@@ -13,130 +12,152 @@ import {
 
 import { Size } from './SegmentedControl.types';
 
-export const wrapperStyle = css`
-  position: relative;
-  display: flex;
-  gap: ${spacing[200]}px;
-  align-items: center;
-  z-index: 0;
-  font-family: ${fontFamilies.default};
-`;
+export const wrapperStyle = [
+  'relative',
+  'flex',
+  `gap-[${spacing[200]}px]`,
+  'items-center',
+  'z-0',
+].join(' ');
 
-export const getLabelStyles = (theme: Theme) => css`
-  white-space: nowrap;
-  color: ${color[theme].text.secondary.default};
-`;
-
-export const optionsWrapperStyleSize: Record<Size, string> = {
-  [Size.XSmall]: css`
-    --indicator-height: 100%;
-    --indicator-radius: ${borderRadius[150]}px;
-    --outer-radius: ${borderRadius[150]}px;
-    --segment-gap: ${spacing[25]}px; // space between segments
-    --wrapper-padding: ${spacing[0]}px;
-  `,
-  [Size.Small]: css`
-    --indicator-height: calc(100% - 2 * var(--wrapper-padding));
-    --indicator-radius: ${borderRadius[150]}px;
-    --outer-radius: ${borderRadius[150]}px;
-    --segment-gap: ${spacing[25]}px; // space between segments
-    --wrapper-padding: ${spacing[50]}px;
-  `,
-  [Size.Default]: css`
-    --indicator-height: calc(100% - 2 * var(--wrapper-padding));
-    --indicator-radius: ${borderRadius[150]}px;
-    --outer-radius: ${borderRadius[200]}px;
-    --segment-gap: ${spacing[25]}px; // space between segments
-    --wrapper-padding: 3px;
-  `,
-  [Size.Large]: css`
-    --indicator-height: calc(100% - 2 * var(--wrapper-padding));
-    --indicator-radius: ${borderRadius[150]}px;
-    --outer-radius: ${borderRadius[200]}px;
-    --segment-gap: ${spacing[25]}px; // space between segments
-    --wrapper-padding: 3px;
-  `,
+export const wrapperInlineStyle: React.CSSProperties = {
+  fontFamily: fontFamilies.default,
 };
 
-export const optionsWrapperStyleTheme: Record<Theme, string> = {
-  [Theme.Light]: css`
-    --background-color: ${palette.gray.light3};
-    --inner-shadow: 0px 1px 2px ${transparentize(0.7, palette.black)} inset;
-    --outer-shadow: 0px 1px 1px ${palette.gray.light2};
-    --hover-background-color: ${palette.white};
-    --indicator-background-color: ${palette.black};
-    --indicator-border-color: ${palette.black};
-  `,
-  [Theme.Dark]: css`
-    --background-color: ${palette.gray.dark4};
-    --border-color: rgba(255, 255, 255, 0);
-    --inner-shadow: 0px 0px 0px 1px ${palette.gray.dark1} inset;
-    --outer-shadow: 0px 0px 0px 0px rgba(255, 255, 255, 0);
-    --hover-background-color: ${palette.gray.dark3};
-    --indicator-background-color: ${palette.gray.light2};
-    --indicator-border-color: ${palette.gray.light2};
-  `,
+export const getLabelStyles = (theme: Theme) => ({
+  className: 'whitespace-nowrap',
+  style: { color: color[theme].text.secondary.default } as React.CSSProperties,
+});
+
+export const optionsWrapperStyleSize: Record<Size, Record<string, string>> = {
+  [Size.XSmall]: {
+    '--indicator-height': '100%',
+    '--indicator-radius': `${borderRadius[150]}px`,
+    '--outer-radius': `${borderRadius[150]}px`,
+    '--segment-gap': `${spacing[25]}px`,
+    '--wrapper-padding': `${spacing[0]}px`,
+  },
+  [Size.Small]: {
+    '--indicator-height': 'calc(100% - 2 * var(--wrapper-padding))',
+    '--indicator-radius': `${borderRadius[150]}px`,
+    '--outer-radius': `${borderRadius[150]}px`,
+    '--segment-gap': `${spacing[25]}px`,
+    '--wrapper-padding': `${spacing[50]}px`,
+  },
+  [Size.Default]: {
+    '--indicator-height': 'calc(100% - 2 * var(--wrapper-padding))',
+    '--indicator-radius': `${borderRadius[150]}px`,
+    '--outer-radius': `${borderRadius[200]}px`,
+    '--segment-gap': `${spacing[25]}px`,
+    '--wrapper-padding': '3px',
+  },
+  [Size.Large]: {
+    '--indicator-height': 'calc(100% - 2 * var(--wrapper-padding))',
+    '--indicator-radius': `${borderRadius[150]}px`,
+    '--outer-radius': `${borderRadius[200]}px`,
+    '--segment-gap': `${spacing[25]}px`,
+    '--wrapper-padding': '3px',
+  },
 };
 
-export const optionsWrapperStyle = ({
+export const optionsWrapperStyleTheme: Record<Theme, Record<string, string>> = {
+  [Theme.Light]: {
+    '--background-color': palette.gray.light3,
+    '--inner-shadow': `0px 1px 2px rgba(0, 0, 0, 0.3) inset`,
+    '--outer-shadow': `0px 1px 1px ${palette.gray.light2}`,
+    '--hover-background-color': palette.white,
+    '--indicator-background-color': palette.black,
+    '--indicator-border-color': palette.black,
+  },
+  [Theme.Dark]: {
+    '--background-color': palette.gray.dark4,
+    '--border-color': 'rgba(255, 255, 255, 0)',
+    '--inner-shadow': `0px 0px 0px 1px ${palette.gray.dark1} inset`,
+    '--outer-shadow': '0px 0px 0px 0px rgba(255, 255, 255, 0)',
+    '--hover-background-color': palette.gray.dark3,
+    '--indicator-background-color': palette.gray.light2,
+    '--indicator-border-color': palette.gray.light2,
+  },
+};
+
+export const optionsWrapperClassName = [
+  'relative',
+  'grid',
+  'grid-flow-col',
+  'items-center',
+  'focus:outline-none',
+].join(' ');
+
+export const getOptionsWrapperInlineStyle = ({
   theme,
   size,
 }: {
   theme: Theme;
   size: Size;
-}) =>
-  cx(
-    optionsWrapperStyleSize[size],
-    optionsWrapperStyleTheme[theme],
-    css`
-      position: relative;
-      display: grid;
-      grid-auto-flow: column;
-      grid-auto-columns: minmax(
-        0,
-        1fr
-      ); // allows the grid tracks to be as small as 0 but as large as 1fr, creating columns that will stay equal
-      gap: var(--segment-gap);
-      align-items: center;
-      padding: var(--wrapper-padding);
-      border-radius: var(--outer-radius);
-      background-color: var(--background-color);
+}): React.CSSProperties =>
+  ({
+    ...optionsWrapperStyleSize[size],
+    ...optionsWrapperStyleTheme[theme],
+    gridAutoColumns: 'minmax(0, 1fr)',
+    gap: 'var(--segment-gap)',
+    padding: 'var(--wrapper-padding)',
+    borderRadius: 'var(--outer-radius)',
+    backgroundColor: 'var(--background-color)',
+  }) as React.CSSProperties;
 
-      &:focus {
-        outline: none;
-      }
+/**
+ * Inline style for the ::after pseudo-element of optionsWrapper.
+ * This must be applied via a dedicated element instead.
+ */
+export const frameShadowStyle: React.CSSProperties = {
+  content: '""',
+  position: 'absolute',
+  width: '100%',
+  height: '100%',
+  borderRadius: 'inherit',
+  boxShadow: 'var(--inner-shadow), var(--outer-shadow)',
+  zIndex: 1,
+  pointerEvents: 'none',
+  inset: 0,
+};
 
-      // Frame shadow
-      &::after {
-        content: '';
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        border-radius: inherit;
-        box-shadow: var(--inner-shadow), var(--outer-shadow);
-        z-index: 1;
-        pointer-events: none;
-      }
-    `,
-  );
+export const selectionIndicatorClassName = 'absolute z-[2]';
 
-export const selectionIndicatorStyle = css`
-  position: absolute;
-  width: 100%;
-  height: var(--indicator-height);
-  z-index: 2;
-  border-radius: var(--indicator-radius);
-  background-color: var(--indicator-background-color);
-  transition: transform ${transitionDuration.default}ms ease-in-out;
-`;
+export const selectionIndicatorInlineStyle: React.CSSProperties = {
+  width: '100%',
+  height: 'var(--indicator-height)',
+  borderRadius: 'var(--indicator-radius)',
+  backgroundColor: 'var(--indicator-background-color)',
+  transition: `transform ${transitionDuration.default}ms ease-in-out`,
+};
 
-export const hoverIndicatorStyle = css`
-  position: absolute;
-  height: var(--indicator-height);
-  width: 100%;
-  border-radius: var(--indicator-radius);
-  background-color: var(--hover-background-color);
-  z-index: 0;
-  opacity: 0;
-  transition: opacity 100ms ease-in-out;
-`;
+export const hoverIndicatorClassName = 'absolute z-0 opacity-0';
+
+export const hoverIndicatorInlineStyle: React.CSSProperties = {
+  height: 'var(--indicator-height)',
+  width: '100%',
+  borderRadius: 'var(--indicator-radius)',
+  backgroundColor: 'var(--hover-background-color)',
+  transition: 'opacity 100ms ease-in-out',
+};
+
+/**
+ * Returns inline styles for the dynamic indicator position.
+ */
+export const getIndicatorDynamicStyle = (
+  index: number | null,
+  childCount: number,
+): React.CSSProperties => {
+  if (index === null) {
+    return { width: 0 };
+  }
+
+  const widthPct = (1 / childCount) * 100;
+  const transformPct = index * 100;
+
+  return {
+    opacity: 1,
+    width: `calc(${widthPct}% - 2 * var(--wrapper-padding))`,
+    transform: `translateX(calc(${transformPct}% + ${2 * index + 1} * var(--wrapper-padding)))`,
+  };
+};

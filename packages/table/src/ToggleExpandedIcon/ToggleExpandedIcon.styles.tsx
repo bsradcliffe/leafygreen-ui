@@ -1,11 +1,9 @@
-import { css } from '@leafygreen-ui/emotion';
 import { Theme } from '@leafygreen-ui/lib';
 import { palette } from '@leafygreen-ui/palette';
 import { transitionDuration } from '@leafygreen-ui/tokens';
 
-export const iconButtonTransitionStyles = css`
-  transition: transform ${transitionDuration.default}ms ease-in-out;
-`;
+export const iconButtonTransitionStyles =
+  `[transition:transform_${transitionDuration.default}ms_ease-in-out]`;
 
 export const iconFills = (theme: Theme, disabled: boolean) => {
   const fills = {
@@ -16,6 +14,4 @@ export const iconFills = (theme: Theme, disabled: boolean) => {
   return fills[theme];
 };
 
-export const rotatedStyles = css`
-  transform: rotate(90deg);
-`;
+export const rotatedStyles = 'rotate-90';

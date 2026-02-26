@@ -1,4 +1,3 @@
-import { css } from '@leafygreen-ui/emotion';
 import { createUniqueClassName, Theme } from '@leafygreen-ui/lib';
 import { palette } from '@leafygreen-ui/palette';
 import { transitionDuration } from '@leafygreen-ui/tokens';
@@ -9,32 +8,35 @@ export const stepIconClassName = createUniqueClassName('step');
 
 const STEP_SIZE = 20;
 
-export const getStepWrapperStyles = (isCompleted: boolean) => css`
-  position: relative;
+export const getStepWrapperStyles = (isCompleted: boolean) =>
+  [
+    'relative',
+    `after:bg-[${isCompleted ? palette.green.dark1 : palette.gray.base}]`,
+    'after:absolute',
+    'after:w-px',
+    `after:h-[calc(100%-${STEP_SIZE}px)]`,
+    'after:left-1/2',
+    `after:transition-[background]`,
+    `after:duration-[${transitionDuration.default}ms]`,
+    'after:ease-[ease]',
+  ].join(' ');
 
-  &::after {
-    background: ${isCompleted ? palette.green.dark1 : palette.gray.base};
-    position: absolute;
-    width: 1px;
-    height: calc(100% - ${STEP_SIZE}px);
-    left: 50%;
-    transition: background ${transitionDuration.default}ms ease;
-  }
-`;
-
-export const stepStyles = css`
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid;
-  transition: ${transitionDuration.default}ms ease;
-  width: ${STEP_SIZE}px;
-  height: ${STEP_SIZE}px;
-  position: relative;
-  font-size: 12px;
-  font-weight: 500;
-`;
+export const stepStyles = [
+  'rounded-full',
+  'flex',
+  'items-center',
+  'justify-center',
+  'border',
+  'border-solid',
+  `transition-all`,
+  `duration-[${transitionDuration.default}ms]`,
+  'ease-[ease]',
+  `w-[${STEP_SIZE}px]`,
+  `h-[${STEP_SIZE}px]`,
+  'relative',
+  'text-xs',
+  'font-medium',
+].join(' ');
 
 export const themedStateColor = {
   [Theme.Dark]: {
@@ -51,14 +53,14 @@ export const themedStateColor = {
 
 export const themedStateBgColor = {
   [Theme.Dark]: {
-    [State.Future]: 'rgba(255, 255, 255, 0)',
+    [State.Future]: 'rgba(255,255,255,0)',
     [State.Completed]: palette.green.base,
-    [State.Current]: 'rgba(255, 255, 255, 0)',
+    [State.Current]: 'rgba(255,255,255,0)',
   },
   [Theme.Light]: {
-    [State.Future]: 'rgba(255, 255, 255, 0)',
+    [State.Future]: 'rgba(255,255,255,0)',
     [State.Completed]: palette.green.dark1,
-    [State.Current]: 'rgba(255, 255, 255, 0)',
+    [State.Current]: 'rgba(255,255,255,0)',
   },
 };
 
@@ -75,8 +77,9 @@ export const themedStateBorderColor = {
   },
 };
 
-export const getThemedStateStyles = (theme: Theme, state: State) => css`
-  color: ${themedStateColor[theme][state]};
-  background-color: ${themedStateBgColor[theme][state]};
-  border-color: ${themedStateBorderColor[theme][state]};
-`;
+export const getThemedStateStyles = (theme: Theme, state: State) =>
+  [
+    `text-[${themedStateColor[theme][state]}]`,
+    `bg-[${themedStateBgColor[theme][state]}]`,
+    `border-[${themedStateBorderColor[theme][state]}]`,
+  ].join(' ');

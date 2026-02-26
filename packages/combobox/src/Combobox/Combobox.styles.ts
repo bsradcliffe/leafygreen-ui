@@ -1,6 +1,5 @@
-import { transparentize } from 'polished';
+import { type CSSProperties } from 'react';
 
-import { css } from '@leafygreen-ui/emotion';
 import { Theme } from '@leafygreen-ui/lib';
 import { palette } from '@leafygreen-ui/palette';
 import {
@@ -95,123 +94,177 @@ export const clearButtonIconSize = 28;
 /** Width of the dropdown caret icon (in px) */
 export const caretIconSize = spacing[400];
 
-export const comboboxParentStyle = (size: Size): string => {
-  return css`
-    font-family: ${fontFamilies.default};
-    width: 100%;
-    min-width: ${fontSize[size] +
-    2 * comboboxPadding[size].xLeftWithChip +
-    caretIconSize +
-    2}px;
-  `;
-};
-
-export const baseComboboxStyles = css`
-  display: flex;
-  align-items: center;
-  gap: ${spacing[200]}px;
-  cursor: text;
-  transition: ${transitionDuration.default}ms ease-in-out;
-  transition-property: background-color, box-shadow, border-color;
-  border: 1px solid;
-  width: 100%;
-  max-width: 100%;
-  border-radius: 6px;
-  position: relative;
-  overflow: hidden;
-
-  // Overflow shadow
-  ::after {
-    content: '';
-    position: absolute;
-    width: 100%;
-    height: 20px;
-    bottom: -21px;
-    left: 50%;
-    translate: -50% 0%;
-    border-radius: 20%;
-    box-shadow: 0 0 0 0 rgb(255 255 255 / 0%);
-    transition: ${transitionDuration.default}ms linear;
-    transition-property: box-shadow;
-  }
-`;
-
-export const comboboxThemeStyles: Record<Theme, string> = {
-  [Theme.Light]: css`
-    color: ${color.light.text.primary.default};
-    background-color: ${color.light.background.primary.default};
-  `,
-  [Theme.Dark]: css`
-    color: ${color.dark.text.primary.default};
-    background-color: ${palette.gray.dark4};
-  `,
-};
-
-export const comboboxSizeStyles = (
-  size: Size,
-  isMultiselectWithSelections: boolean,
-) => css`
-  padding-top: ${comboboxPadding[size].y}px;
-  padding-bottom: ${comboboxPadding[size].y}px;
-  padding-left: ${isMultiselectWithSelections
-    ? `${comboboxPadding[size].xLeftWithChip}px`
-    : `${comboboxPadding[size].xLeftWithoutChip}px`};
-  padding-right: ${comboboxPadding[size].xRight}px;
-`;
-
-export const getComboboxDisabledStyles = (theme: Theme) => css`
-  cursor: not-allowed;
-  color: ${color[theme].text.disabled.default};
-  background-color: ${color[theme].background.disabled.default};
-  border-color: ${color[theme].border.disabled.default};
-`;
-
-export const getComboboxStateStyles = (theme: Theme) => ({
-  [State.Error]: css`
-    border-color: ${color[theme].border.error.default};
-  `,
-  [State.None]: css`
-    border-color: ${color[theme].border.primary.default};
-  `,
-  [State.Valid]: css`
-    border-color: ${color[theme].border.success.default};
-  `,
+export const comboboxParentStyle = (size: Size): CSSProperties => ({
+  fontFamily: fontFamilies.default,
+  width: '100%',
+  minWidth: `${fontSize[size] + 2 * comboboxPadding[size].xLeftWithChip + caretIconSize + 2}px`,
 });
 
-export const comboboxFocusStyle: Record<Theme, string> = {
-  [Theme.Light]: css`
-    &:focus-within {
-      border-color: transparent;
-      box-shadow: ${focusRing[Theme.Light].input};
-    }
-  `,
-  [Theme.Dark]: css`
-    &:focus-within {
-      border-color: transparent;
-      box-shadow: ${focusRing[Theme.Dark].input};
-    }
-  `,
-};
+/**
+ * Stylesheet that must be injected for pseudo-element and nested selectors
+ * that cannot be expressed as inline styles.
+ */
+export const comboboxStyleTag = `
+.lg-combobox-wrapper {
+  transition: ${transitionDuration.default}ms ease-in-out;
+  transition-property: background-color, box-shadow, border-color;
+}
 
-export const iconsWrapperBaseStyles = css`
-  display: flex;
-  align-items: center;
+/* Overflow shadow pseudo-element */
+.lg-combobox-wrapper::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 20px;
+  bottom: -21px;
+  left: 50%;
+  translate: -50% 0%;
+  border-radius: 20%;
+  box-shadow: 0 0 0 0 rgb(255 255 255 / 0%);
+  transition: ${transitionDuration.default}ms linear;
+  transition-property: box-shadow;
+}
+
+/* Light theme overflow shadow */
+.lg-combobox-overflow-shadow-light::after {
+  box-shadow: 0px 0px 7px 5px rgba(0, 30, 43, 0.15);
+}
+
+/* Dark theme overflow shadow */
+.lg-combobox-overflow-shadow-dark::after {
+  width: 95%;
+  box-shadow: 0px -7px 12px 5px rgb(0 0 0 / 50%);
+}
+
+/* Focus styles - Light */
+.lg-combobox-focus-light:focus-within {
+  border-color: transparent;
+  box-shadow: ${focusRing[Theme.Light].input};
+}
+
+/* Focus styles - Dark */
+.lg-combobox-focus-dark:focus-within {
+  border-color: transparent;
+  box-shadow: ${focusRing[Theme.Dark].input};
+}
+
+/* Input element - only add left padding if there are chips */
+.lg-combobox-input:not(:first-child) {
+  padding-left: ${spacing[100]}px;
+}
+
+.lg-combobox-input:placeholder-shown {
+  min-width: 100%;
+}
+
+.lg-combobox-input:focus {
+  outline: none;
+}
+
+/* Placeholder colors - Light */
+.lg-combobox-input-light::placeholder {
+  color: ${palette.gray.base};
+}
+
+/* Placeholder colors - Dark */
+.lg-combobox-input-dark::placeholder {
+  color: ${palette.gray.dark1};
+}
+
+/* Disabled placeholder colors - Light */
+.lg-combobox-input-disabled-light::placeholder {
+  color: ${palette.gray.base};
+}
+
+/* Disabled placeholder colors - Dark */
+.lg-combobox-input-disabled-dark::placeholder {
+  color: ${palette.gray.dark1};
+}
+
+/* scrollX overflow chip margins */
+.lg-combobox-input-wrapper-scrollx > .${chipClassName} {
+  margin-inline: 2px;
+}
+.lg-combobox-input-wrapper-scrollx > .${chipClassName}:first-child {
+  margin-inline-start: 0;
+}
+.lg-combobox-input-wrapper-scrollx > .${chipClassName}:last-child {
+  margin-inline-end: 0;
+}
+
+/* scrollX scrollbar hide */
+.lg-combobox-input-wrapper-scrollx::-webkit-scrollbar {
+  display: none;
+}
 `;
 
-export const iconsWrapperSizeStyles: Record<Size, string> = {
-  [Size.XSmall]: css`
-    gap: ${spacing[100]}px;
-  `,
-  [Size.Small]: css`
-    gap: ${spacing[200]}px;
-  `,
-  [Size.Default]: css`
-    gap: ${spacing[200]}px;
-  `,
-  [Size.Large]: css`
-    gap: ${spacing[200]}px;
-  `,
+export const baseComboboxStyles =
+  'lg-combobox-wrapper flex items-center cursor-text border border-solid w-full max-w-full relative overflow-hidden';
+
+export const comboboxThemeStyle = (theme: Theme): CSSProperties => ({
+  color:
+    theme === Theme.Light
+      ? color.light.text.primary.default
+      : color.dark.text.primary.default,
+  backgroundColor:
+    theme === Theme.Light
+      ? color.light.background.primary.default
+      : palette.gray.dark4,
+});
+
+export const comboboxSizeStyle = (
+  size: Size,
+  isMultiselectWithSelections: boolean,
+): CSSProperties => ({
+  paddingTop: `${comboboxPadding[size].y}px`,
+  paddingBottom: `${comboboxPadding[size].y}px`,
+  paddingLeft: isMultiselectWithSelections
+    ? `${comboboxPadding[size].xLeftWithChip}px`
+    : `${comboboxPadding[size].xLeftWithoutChip}px`,
+  paddingRight: `${comboboxPadding[size].xRight}px`,
+  gap: `${spacing[200]}px`,
+  borderRadius: '6px',
+});
+
+export const getComboboxDisabledStyle = (
+  theme: Theme,
+): CSSProperties => ({
+  cursor: 'not-allowed',
+  color: color[theme].text.disabled.default,
+  backgroundColor: color[theme].background.disabled.default,
+  borderColor: color[theme].border.disabled.default,
+});
+
+export const getComboboxBorderStyle = (
+  theme: Theme,
+  state: State,
+): CSSProperties => {
+  const borderColors: Record<State, string> = {
+    [State.Error]: color[theme].border.error.default,
+    [State.None]: color[theme].border.primary.default,
+    [State.Valid]: color[theme].border.success.default,
+  };
+
+  return {
+    borderColor: borderColors[state],
+  };
 };
+
+export const comboboxFocusClassName: Record<Theme, string> = {
+  [Theme.Light]: 'lg-combobox-focus-light',
+  [Theme.Dark]: 'lg-combobox-focus-dark',
+};
+
+export const comboboxOverflowShadowClassName: Record<Theme, string> = {
+  [Theme.Light]: 'lg-combobox-overflow-shadow-light',
+  [Theme.Dark]: 'lg-combobox-overflow-shadow-dark',
+};
+
+export const iconsWrapperBaseClassName = 'flex items-center';
+
+export const iconsWrapperSizeStyle = (size: Size): CSSProperties => ({
+  gap: size === Size.XSmall ? `${spacing[100]}px` : `${spacing[200]}px`,
+});
 
 export const inputWrapperStyle = ({
   overflow,
@@ -219,171 +272,93 @@ export const inputWrapperStyle = ({
 }: {
   overflow: Overflow;
   size: Size;
-}) => {
-  const baseWrapperStyle = css`
-    flex-grow: 1;
-    width: 100%;
-  `;
+}): { className: string; style: CSSProperties } => {
+  const baseClassName = 'grow w-full';
 
   switch (overflow) {
     case Overflow.scrollX: {
-      return css`
-        ${baseWrapperStyle}
-        display: block;
-        height: ${inputHeight(size)}px;
-        white-space: nowrap;
-        overflow-x: scroll;
-        scroll-behavior: smooth;
-        scrollbar-width: none;
-        line-height: 1;
-
-        &::-webkit-scrollbar {
-          display: none;
-        }
-
-        & > .${chipClassName} {
-          margin-inline: 2px;
-
-          &:first-child {
-            margin-inline-start: 0;
-          }
-
-          &:last-child {
-            margin-inline-end: 0;
-          }
-        }
-      `;
+      return {
+        className: `${baseClassName} block whitespace-nowrap overflow-x-scroll lg-combobox-input-wrapper-scrollx`,
+        style: {
+          height: `${inputHeight(size)}px`,
+          scrollBehavior: 'smooth',
+          scrollbarWidth: 'none',
+          lineHeight: 1,
+        },
+      };
     }
 
-    // TODO - look into animating input element height on wrap
     case Overflow.expandY: {
-      return css`
-        ${baseWrapperStyle}
-        display: flex;
-        flex-wrap: wrap;
-        gap: ${flexGap}px;
-        overflow-x: hidden;
-        min-height: ${inputHeight(size)}px;
-        max-height: calc((${inputHeight(size) * 3}px) + (${flexGap}px * 2));
-      `;
+      return {
+        className: `${baseClassName} flex flex-wrap overflow-x-hidden`,
+        style: {
+          gap: `${flexGap}px`,
+          minHeight: `${inputHeight(size)}px`,
+          maxHeight: `calc(${inputHeight(size) * 3}px + ${flexGap * 2}px)`,
+        },
+      };
     }
   }
 };
 
-export const baseInputElementStyle = css`
-  font-family: ${fontFamilies.default};
-  width: 100%;
-  border: none;
-  cursor: inherit;
-  background-color: inherit;
-  color: inherit;
-  box-sizing: content-box;
-  padding: 0;
-  margin: 0;
-  text-overflow: ellipsis;
-  vertical-align: top;
+export const baseInputElementClassName =
+  'lg-combobox-input w-full border-none cursor-[inherit] bg-[inherit] text-[inherit] box-content p-0 m-0 text-ellipsis align-top';
 
-  // Only add padding if there are chips
-  &:not(:first-child) {
-    padding-left: ${spacing[100]}px;
-  }
-
-  &:placeholder-shown {
-    min-width: 100%;
-  }
-  &:focus {
-    outline: none;
-  }
-`;
-
-export const inputElementThemeStyle: Record<Theme, string> = {
-  [Theme.Light]: css`
-    &::placeholder {
-      color: ${palette.gray.base};
-    }
-  `,
-  [Theme.Dark]: css`
-    &::placeholder {
-      color: ${palette.gray.dark1};
-    }
-  `,
+export const inputElementThemeClassName: Record<Theme, string> = {
+  [Theme.Light]: 'lg-combobox-input-light',
+  [Theme.Dark]: 'lg-combobox-input-dark',
 };
 
-export const inputElementDisabledThemeStyle: Record<Theme, string> = {
-  [Theme.Light]: css`
-    &::placeholder {
-      color: ${palette.gray.base};
-    }
-  `,
-  [Theme.Dark]: css`
-    &::placeholder {
-      color: ${palette.gray.dark1};
-    }
-  `,
+export const inputElementDisabledThemeClassName: Record<Theme, string> = {
+  [Theme.Light]: 'lg-combobox-input-disabled-light',
+  [Theme.Dark]: 'lg-combobox-input-disabled-dark',
 };
 
-export const inputElementSizeStyle = (size: Size) => css`
-  height: ${inputHeight(size)}px;
-  font-size: ${fontSize[size]}px;
-  line-height: ${lineHeight[size]}px;
-  min-width: ${fontSize[size]}px;
-`;
+export const inputElementSizeStyle = (size: Size): CSSProperties => ({
+  height: `${inputHeight(size)}px`,
+  fontSize: `${fontSize[size]}px`,
+  lineHeight: `${lineHeight[size]}px`,
+  minWidth: `${fontSize[size]}px`,
+  fontFamily: fontFamilies.default,
+});
 
-export const inputElementTransitionStyles = (isOpen: boolean) => css`
-  /*
-  * Immediate transition in, slow transition out. 
-  * '-in' transition is handled by \`scroll-behavior\` 
-  */
-  transition: width ease-in-out ${isOpen ? '0s' : '100ms'};
-`;
+export const inputElementTransitionStyle = (
+  isOpen: boolean,
+): CSSProperties => ({
+  transition: `width ease-in-out ${isOpen ? '0s' : '100ms'}`,
+});
 
-// Previously defined in inputWrapperStyle
 /** Should only be applied to a multiselect */
 export const multiselectInputElementStyle = (
   size: Size,
   inputValue?: string,
-) => {
+): CSSProperties => {
   const inputLength = inputValue?.length ?? 0;
-  return css`
-    width: ${inputLength * fontSize[size]}px;
-    max-width: 100%;
-  `;
+  return {
+    width: `${inputLength * fontSize[size]}px`,
+    maxWidth: '100%',
+  };
 };
 
-export const clearButtonStyle = css`
-  // Add a negative margin so the button takes up the same space as the regular icons
-  margin-block: calc(${caretIconSize / 2}px - 100%);
-  margin-inline: -6px;
-`;
+export const clearButtonStyle: CSSProperties = {
+  marginBlock: `calc(${caretIconSize / 2}px - 100%)`,
+  marginInline: '-6px',
+};
 
-export const iconStyle = css`
-  height: ${caretIconSize}px;
-  width: ${caretIconSize}px;
-`;
+export const iconStyle: CSSProperties = {
+  height: `${caretIconSize}px`,
+  width: `${caretIconSize}px`,
+};
 
-export const labelDescriptionContainerStyle = css`
-  margin-bottom: ${spacing[100]}px;
-  display: flex;
-  flex-direction: column;
-`;
+export const labelDescriptionContainerClassName = 'flex flex-col';
 
-export const labelDescriptionLargeStyles = css`
-  font-size: ${typeScales.large.fontSize}px;
-  line-height: ${typeScales.large.lineHeight}px;
-`;
+export const labelDescriptionContainerStyle: CSSProperties = {
+  marginBottom: `${spacing[100]}px`,
+};
 
-export const comboboxOverflowShadowStyles: Record<Theme, string> = {
-  [Theme.Light]: css`
-    ::after {
-      box-shadow: 0px 0px 7px 5px ${transparentize(0.85, palette.black)};
-    }
-  `,
-  [Theme.Dark]: css`
-    ::after {
-      width: 95%;
-      box-shadow: 0px -7px 12px 5px rgb(0 0 0 / 50%);
-    }
-  `,
+export const labelDescriptionLargeStyle: CSSProperties = {
+  fontSize: `${typeScales.large.fontSize}px`,
+  lineHeight: `${typeScales.large.lineHeight}px`,
 };
 
 export const getCaretIconFill = (theme: Theme) =>

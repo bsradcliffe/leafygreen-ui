@@ -44,8 +44,21 @@ describe('packages/leafygreen-provider/LeafyGreenProvider', () => {
 
   const testChild = getByTestId(childTestID);
 
-  test('only renders children in the DOM', () => {
-    expect(container.firstChild).toBe(testChild);
+  test('renders a data-theme wrapper with display:contents around children', () => {
+    const wrapper = container.firstChild as HTMLElement;
+    expect(wrapper).toHaveAttribute('data-theme', 'light');
+    expect(wrapper.style.display).toBe('contents');
+    expect(wrapper.firstChild).toBe(testChild);
+  });
+
+  test('emits data-theme="dark" when darkMode is true', () => {
+    const { container: darkContainer } = render(
+      <LeafyGreenProvider darkMode={true}>
+        <TestContextComponent />
+      </LeafyGreenProvider>,
+    );
+    const wrapper = darkContainer.firstChild as HTMLElement;
+    expect(wrapper).toHaveAttribute('data-theme', 'dark');
   });
 
   describe('Context rendering', () => {

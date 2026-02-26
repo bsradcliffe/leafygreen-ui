@@ -1,7 +1,6 @@
 import React from 'react';
 
-import { css, cx } from '@leafygreen-ui/emotion';
-
+import { cn } from '../cn';
 import { ProductLogoProps } from '../Logo.types';
 import { getAccessibleProps, getColor } from '../utils';
 
@@ -29,12 +28,7 @@ const RealmLogoMark = React.forwardRef(
         viewBox="0 0 18 18"
         width={size}
         height={size}
-        className={cx(
-          css`
-            flex-shrink: 0;
-          `,
-          className,
-        )}
+        className={cn('shrink-0', className)}
         ref={ref}
         {...rest}
       >
@@ -90,7 +84,7 @@ const RealmLogoMark = React.forwardRef(
         </defs>
 
         <path
-          className={getColor({
+          style={getColor({
             knockout,
             size,
             darkMode,
@@ -102,7 +96,7 @@ const RealmLogoMark = React.forwardRef(
         />
 
         <path
-          className={getColor({
+          style={getColor({
             knockout,
             size,
             darkMode,
@@ -113,7 +107,7 @@ const RealmLogoMark = React.forwardRef(
 			c1.8,4.6,7,6.9,11.6,5.1C14.3,16.6,16,15,17,13z"
         />
         <path
-          className={getColor({
+          style={getColor({
             knockout,
             size,
             darkMode,
@@ -125,7 +119,7 @@ const RealmLogoMark = React.forwardRef(
         />
 
         <path
-          className={getColor({
+          style={getColor({
             knockout,
             size,
             darkMode,

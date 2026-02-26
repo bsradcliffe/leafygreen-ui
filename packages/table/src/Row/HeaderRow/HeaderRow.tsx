@@ -1,12 +1,15 @@
 import React, { forwardRef, PropsWithChildren } from 'react';
 
-import { cx } from '@leafygreen-ui/emotion';
 import { useDarkMode } from '@leafygreen-ui/leafygreen-provider';
 
 import { useTableContext } from '../../TableContext';
 
 import { getBaseStyles } from './HeaderRow.styles';
 import { HeaderRowProps } from './HeaderRow.types';
+
+function cn(...classes: Array<string | false | undefined | null>): string {
+  return classes.filter(Boolean).join(' ');
+}
 
 const HeaderRow = forwardRef<HTMLTableRowElement, HeaderRowProps>(
   (
@@ -19,7 +22,7 @@ const HeaderRow = forwardRef<HTMLTableRowElement, HeaderRowProps>(
     return (
       <tr
         ref={fwdRef}
-        className={cx(getBaseStyles(theme), className)}
+        className={cn(getBaseStyles(theme), className)}
         data-lgid={lgIds.headerRow}
         data-testid={lgIds.headerRow}
         {...rest}

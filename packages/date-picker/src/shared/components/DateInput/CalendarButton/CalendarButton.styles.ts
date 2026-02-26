@@ -1,3 +1,2 @@
-import { css } from '@leafygreen-ui/emotion';
-
-export const iconButtonStyles = css``;
+/** No additional styles needed for CalendarButton icon */
+export const iconButtonStyles = '';

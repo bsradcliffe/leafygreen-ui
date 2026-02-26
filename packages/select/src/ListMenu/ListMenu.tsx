@@ -1,7 +1,6 @@
 import React, { useCallback, useContext } from 'react';
 import isUndefined from 'lodash/isUndefined';
 
-import { css, cx } from '@leafygreen-ui/emotion';
 import { useAvailableSpace } from '@leafygreen-ui/hooks';
 import { useDarkMode } from '@leafygreen-ui/leafygreen-provider';
 import { Align, Justify, Popover } from '@leafygreen-ui/popover';
@@ -21,6 +20,10 @@ import {
 } from './ListMenu.styles';
 import { ListMenuProps } from './ListMenu.types';
 
+function cn(...classes: Array<string | false | undefined | null>): string {
+  return classes.filter(Boolean).join(' ');
+}
+
 /**
  * @internal
  */
@@ -33,6 +36,8 @@ const ListMenu = React.forwardRef<HTMLUListElement, ListMenuProps>(
       className,
       labelId,
       dropdownWidthBasis,
+      style: externalStyle,
+      ...rest
     }: ListMenuProps,
     forwardedRef,
   ) {
@@ -56,6 +61,20 @@ const ListMenu = React.forwardRef<HTMLUListElement, ListMenuProps>(
       [ref],
     );
 
+    const menuStyles = getMenuStyles(theme, size);
+
+    /**
+     * Mobile media query CSS for the list menu font size.
+     * Cannot be expressed with inline styles, so injected via <style>.
+     */
+    const mobileCSS = `
+      ${MobileMediaQuery} {
+        .lg-select-list-menu-mobile {
+          font-size: ${mobileSizeSet.option.text}px;
+        }
+      }
+    `;
+
     return (
       <Popover
         active={open && !disabled}
@@ -63,11 +82,14 @@ const ListMenu = React.forwardRef<HTMLUListElement, ListMenuProps>(
         align={Align.Bottom}
         justify={Justify.Start}
         adjustOnMutation
-        className={cx(popoverClassName, className, {
-          [autoWidthStyles]: dropdownWidthBasis === DropdownWidthBasis.Option,
-        })}
+        className={cn(
+          popoverClassName,
+          className,
+          dropdownWidthBasis === DropdownWidthBasis.Option && autoWidthStyles,
+        )}
         refEl={referenceElement}
       >
+        <style>{mobileCSS}</style>
         {/* Keyboard events handled in Select component through event listener hook */}
         {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events */}
         <ul
@@ -78,16 +100,16 @@ const ListMenu = React.forwardRef<HTMLUListElement, ListMenuProps>(
           ref={ref}
           tabIndex={-1}
           onClick={onClick}
-          className={cx(
+          className={cn(
             baseMenuStyle,
-            getMenuStyles(theme, size),
-            css`
-              max-height: ${maxHeightValue};
-              ${MobileMediaQuery} {
-                font-size: ${mobileSizeSet.option.text}px;
-              }
-            `,
+            menuStyles.className,
+            'lg-select-list-menu-mobile',
           )}
+          style={{
+            ...menuStyles.style,
+            maxHeight: maxHeightValue,
+            ...externalStyle,
+          }}
           id={id}
         >
           {children}

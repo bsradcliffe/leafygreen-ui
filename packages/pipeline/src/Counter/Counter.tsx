@@ -1,7 +1,5 @@
 import React, { forwardRef, ReactElement, Ref, useContext } from 'react';
 
-import { cx } from '@leafygreen-ui/emotion';
-
 import PipelineContext from '../PipelineContext';
 import { SegmentL, SegmentM, SegmentS, SegmentXs } from '../svgs';
 import { CounterProps, Size } from '../types';
@@ -15,6 +13,10 @@ import {
   svgLayer1Styles,
   svgLayer2Styles,
 } from './Counter.styles';
+
+function cn(...classes: Array<string | false | undefined | null>): string {
+  return classes.filter(Boolean).join(' ');
+}
 
 const segments: Record<Size, React.ComponentType<any>> = {
   [Size.XSmall]: SegmentXs,
@@ -46,7 +48,7 @@ export const Counter = forwardRef(
       <div
         {...rest}
         data-testid="pipeline-counter"
-        className={cx(
+        className={cn(
           counterBaseStyles,
           counterSizeStyles[size],
           counterThemeStyles[theme],

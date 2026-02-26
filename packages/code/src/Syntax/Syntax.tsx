@@ -3,7 +3,6 @@ import { HLJSOptions, HLJSPlugin } from 'highlight.js';
 import hljs from 'highlight.js/lib/core'; // Skip highlight's auto-registering
 import hljsDefineGraphQL from 'highlightjs-graphql';
 
-import { css, cx } from '@leafygreen-ui/emotion';
 import {
   useBaseFontSize,
   useDarkMode,
@@ -19,6 +18,10 @@ import renderingPlugin, {
 import { SyntaxContext } from '../Syntax/SyntaxContext';
 import { Language } from '../types';
 import { SyntaxProps } from '..';
+
+function cn(...classes: Array<string | false | undefined | null>): string {
+  return classes.filter(Boolean).join(' ');
+}
 
 type FilteredSupportedLanguagesEnum = Omit<
   typeof SupportedLanguages,
@@ -63,11 +66,6 @@ function initializeSyntaxHighlighting() {
   hljs.addPlugin(renderingPlugin as HLJSPlugin);
 }
 
-const codeStyles = css`
-  color: inherit;
-  font-family: ${fontFamilies.code};
-`;
-
 /**
  * @internal
  */
@@ -110,10 +108,6 @@ function Syntax({
   const baseFontSize = useBaseFontSize();
   // TODO: remove 14 check when useBaseFontSize is updated
   const typeScale = baseFontSize === 14 ? typeScales.code1 : typeScales.code2;
-  const codeFontStyles = css`
-    font-size: ${typeScale.fontSize}px;
-    line-height: ${typeScale.lineHeight}px;
-  `;
 
   return (
     <SyntaxContext.Provider
@@ -127,19 +121,19 @@ function Syntax({
     >
       <code
         {...rest}
-        className={cx(
+        className={cn(
           `lg-highlight-hljs-${theme}`,
-          codeStyles,
-          codeFontStyles,
           language,
           className,
         )}
+        style={{
+          color: 'inherit',
+          fontFamily: fontFamilies.code,
+          fontSize: `${typeScale.fontSize}px`,
+          lineHeight: `${typeScale.lineHeight}px`,
+        }}
       >
-        <table
-          className={css`
-            border-spacing: 0;
-          `}
-        >
+        <table style={{ borderSpacing: 0 }}>
           <tbody>{content}</tbody>
         </table>
       </code>

@@ -1,4 +1,5 @@
-import { css } from '@leafygreen-ui/emotion';
+import React from 'react';
+
 import { Theme } from '@leafygreen-ui/lib';
 import { palette } from '@leafygreen-ui/palette';
 import {
@@ -11,86 +12,59 @@ import {
 import { characterWidth, charsPerSegment } from '../../../constants';
 import { DateSegment } from '../../../types';
 
-export const baseStyles = css`
-  font-family: ${fontFamilies.default};
-  font-size: ${BaseFontSize.Body1}px;
-  font-variant: tabular-nums;
-  text-align: center;
-  border: none;
-  border-radius: 0;
-  padding: 0;
+export const baseClassName = 'text-center border-none rounded-none p-0 focus:outline-none';
 
-  &::-webkit-outer-spin-button,
-  &::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-  -moz-appearance: textfield; /* Firefox */
-
-  &:focus {
-    outline: none;
-  }
-`;
-
-export const segmentThemeStyles: Record<Theme, string> = {
-  [Theme.Light]: css`
-    background-color: transparent;
-    color: ${palette.black};
-
-    &::placeholder {
-      color: ${palette.gray.light1};
-    }
-
-    &:focus {
-      background-color: ${palette.blue.light3};
-    }
-  `,
-  [Theme.Dark]: css`
-    background-color: transparent;
-    color: ${palette.gray.light2};
-
-    &::placeholder {
-      color: ${palette.gray.dark1};
-    }
-
-    &:focus {
-      background-color: ${palette.blue.dark3};
-    }
-  `,
+export const baseInlineStyle: React.CSSProperties = {
+  fontFamily: fontFamilies.default,
+  fontSize: `${BaseFontSize.Body1}px`,
+  fontVariant: 'tabular-nums',
+  // Hide spinner buttons
+  WebkitAppearance: 'none',
+  MozAppearance: 'textfield' as string,
+  margin: 0,
 };
 
-export const fontSizeStyles: Record<BaseFontSize, string> = {
-  [BaseFontSize.Body1]: css`
-    --base-font-size: ${BaseFontSize.Body1}px;
-  `,
-  [BaseFontSize.Body2]: css`
-    --base-font-size: ${BaseFontSize.Body2}px;
-  `,
+export const segmentThemeStyles: Record<Theme, React.CSSProperties> = {
+  [Theme.Light]: {
+    backgroundColor: 'transparent',
+    color: palette.black,
+  },
+  [Theme.Dark]: {
+    backgroundColor: 'transparent',
+    color: palette.gray.light2,
+  },
 };
 
-export const segmentSizeStyles: Record<Size, string> = {
-  [Size.XSmall]: css`
-    font-size: ${typeScales.body1.fontSize}px;
-  `,
-  [Size.Small]: css`
-    font-size: ${typeScales.body1.fontSize}px;
-  `,
-  [Size.Default]: css`
-    font-size: var(--base-font-size, ${typeScales.body1.fontSize}px);
-  `,
-  [Size.Large]: css`
-    font-size: ${18}px; // Intentionally off-token
-  `,
+export const segmentThemePlaceholderColor: Record<Theme, string> = {
+  [Theme.Light]: palette.gray.light1,
+  [Theme.Dark]: palette.gray.dark1,
 };
 
-export const segmentWidthStyles: Record<DateSegment, string> = {
-  day: css`
-    width: ${charsPerSegment.day * characterWidth.D}ch;
-  `,
-  month: css`
-    width: ${charsPerSegment.month * characterWidth.M}ch;
-  `,
-  year: css`
-    width: ${charsPerSegment.year * characterWidth.Y}ch;
-  `,
+export const segmentThemeFocusBg: Record<Theme, string> = {
+  [Theme.Light]: palette.blue.light3,
+  [Theme.Dark]: palette.blue.dark3,
+};
+
+export const fontSizeVars: Record<BaseFontSize, React.CSSProperties> = {
+  [BaseFontSize.Body1]: {
+    // @ts-expect-error -- CSS custom property
+    '--base-font-size': `${BaseFontSize.Body1}px`,
+  },
+  [BaseFontSize.Body2]: {
+    // @ts-expect-error -- CSS custom property
+    '--base-font-size': `${BaseFontSize.Body2}px`,
+  },
+};
+
+export const segmentSizeFontSize: Record<Size, string> = {
+  [Size.XSmall]: `${typeScales.body1.fontSize}px`,
+  [Size.Small]: `${typeScales.body1.fontSize}px`,
+  [Size.Default]: `var(--base-font-size, ${typeScales.body1.fontSize}px)`,
+  [Size.Large]: '18px', // Intentionally off-token
+};
+
+export const segmentWidths: Record<DateSegment, string> = {
+  day: `${charsPerSegment.day * characterWidth.D}ch`,
+  month: `${charsPerSegment.month * characterWidth.M}ch`,
+  year: `${charsPerSegment.year * characterWidth.Y}ch`,
 };

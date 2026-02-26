@@ -1,11 +1,11 @@
 import React from 'react';
 
-import { cx } from '@leafygreen-ui/emotion';
 import CheckmarkWithCircleIcon from '@leafygreen-ui/icon/dist/CheckmarkWithCircle';
 import ImportantWithCircleIcon from '@leafygreen-ui/icon/dist/ImportantWithCircle';
 import InfoWithCircleIcon from '@leafygreen-ui/icon/dist/InfoWithCircle';
 import WarningIcon from '@leafygreen-ui/icon/dist/Warning';
 
+import { cn } from '../cn';
 import { Variant } from '../shared.types';
 
 import {
@@ -44,7 +44,7 @@ const BannerIcon = ({
   } else {
     return (
       <Icon
-        className={cx(
+        className={cn(
           baseStyles,
           themeStyles[theme][variant],
           bannerIconPositionStyles[baseFontSize],

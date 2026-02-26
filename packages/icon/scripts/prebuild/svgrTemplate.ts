@@ -30,13 +30,8 @@ export function svgrTemplate(
 
   const jsxAttributes = typeScriptTpl.ast`
     <Glyph
-      className={cx(
-        {
-          [fillStyle]: fill != null,
-        },
-        noFlexShrink,
-        className,
-      )}
+      className={cn('shrink-0', className)}
+      style={fill != null ? { color: fill } : undefined}
       height={typeof size === 'number' ? size : sizeMap[size]}
       width={typeof size === 'number' ? size : sizeMap[size]}
       role={role}
@@ -82,11 +77,11 @@ export function svgrTemplate(
 
   return typeScriptTpl(`
     %%imports%%
-    import { css, cx } from '@leafygreen-ui/emotion';
     import { useIdAllocator } from '@leafygreen-ui/hooks';
+    import { cn } from '../cn';
     import { generateAccessibleProps, sizeMap } from '../glyphCommon';
     import { LGGlyph } from '../types';
-  
+
     export interface ${componentName}Props extends LGGlyph.ComponentProps {}
 
     const ${componentName} = ({
@@ -100,13 +95,6 @@ export function svgrTemplate(
       ...props
     }: ${componentName}Props) => {
       const titleId = useIdAllocator({ prefix: 'icon-title' });
-      const fillStyle = css\`
-        color: \${fill};
-      \`;
-
-      const noFlexShrink = css\`
-        flex-shrink: 0;
-      \`;
 
       const accessibleProps = generateAccessibleProps(role, '${componentName}', { title, titleId, ['aria-label']: ariaLabel, ['aria-labelledby']: ariaLabelledby })
 

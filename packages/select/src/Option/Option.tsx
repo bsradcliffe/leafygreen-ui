@@ -1,17 +1,19 @@
 import React, { useCallback, useEffect, useRef } from 'react';
 
-import { css, cx } from '@leafygreen-ui/emotion';
 import { usePrevious } from '@leafygreen-ui/hooks';
 import { isComponentGlyph } from '@leafygreen-ui/icon';
 import CheckmarkIcon from '@leafygreen-ui/icon/dist/Checkmark';
 import { InputOption, InputOptionContent } from '@leafygreen-ui/input-option';
 import { useDarkMode } from '@leafygreen-ui/leafygreen-provider';
-import { fontWeights } from '@leafygreen-ui/tokens';
 
 import { colorSets } from '../styleSets';
 
 import { InternalProps, OptionProps } from './Option.types';
 import { OptionClassName } from './Options.styles';
+
+function cn(...classes: Array<string | false | undefined | null>): string {
+  return classes.filter(Boolean).join(' ');
+}
 
 export function InternalOption({
   children,
@@ -80,20 +82,11 @@ export function InternalOption({
 
   const glyphProp = glyph && isComponentGlyph(glyph) ? glyph : undefined;
 
+  /** Determine the icon color based on selection/disabled state */
+  const iconColor = disabled ? colorSet.icon.disabled : colorSet.icon.selected;
+
   const checkmark = selected ? (
-    <CheckmarkIcon
-      key="checkmark"
-      className={cx(
-        css`
-          color: ${colorSet.icon.selected};
-        `,
-        {
-          [css`
-            color: ${colorSet.icon.disabled};
-          `]: disabled,
-        },
-      )}
-    />
+    <CheckmarkIcon key="checkmark" style={{ color: iconColor }} />
   ) : undefined;
 
   const leftGlyph = hasGlyphs ? glyphProp : checkmark;
@@ -107,7 +100,7 @@ export function InternalOption({
       role="option"
       tabIndex={-1}
       ref={ref}
-      className={cx(OptionClassName, className)}
+      className={cn(OptionClassName, className)}
       onClick={onClick}
       onFocus={onFocus}
       onKeyDown={undefined}
@@ -119,13 +112,7 @@ export function InternalOption({
         rightGlyph={rightGlyph}
         description={description}
       >
-        <span
-          className={cx({
-            [css`
-              font-weight: ${fontWeights.semiBold};
-            `]: selected,
-          })}
-        >
+        <span className={cn(selected && 'font-semibold')}>
           {children}
         </span>
       </InputOptionContent>

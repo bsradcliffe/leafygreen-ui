@@ -8,7 +8,6 @@ import { StoryFn, StoryObj } from '@storybook/react';
 import { Badge } from '@leafygreen-ui/badge';
 import { Button } from '@leafygreen-ui/button';
 import { Checkbox } from '@leafygreen-ui/checkbox';
-import { css, cx } from '@leafygreen-ui/emotion';
 import { Icon } from '@leafygreen-ui/icon';
 import { IconButton } from '@leafygreen-ui/icon-button';
 import { Pagination, PaginationProps } from '@leafygreen-ui/pagination';
@@ -205,12 +204,7 @@ export const LiveExample: StoryFn<StoryTableProps> = args => {
                 <HeaderCell
                   key={header.id}
                   header={header}
-                  className={cx({
-                    [css`
-                      // since the table is not fixed, the width is not respected. This prevents the width from getting any smaller.
-                      min-width: 120px;
-                    `]: index === 5,
-                  })}
+                  className={index === 5 ? 'min-w-[120px]' : undefined}
                 >
                   {flexRender(
                     header.column.columnDef.header,
@@ -342,12 +336,7 @@ export const HundredsOfRows: StoryFn<StoryTableProps> = args => {
                 <HeaderCell
                   key={header.id}
                   header={header}
-                  className={cx({
-                    [css`
-                      // since the table is not fixed, the width is not respected. This prevents the width from getting any smaller.
-                      min-width: 120px;
-                    `]: index === 5,
-                  })}
+                  className={index === 5 ? 'min-w-[120px]' : undefined}
                 >
                   {flexRender(
                     header.column.columnDef.header,
@@ -586,12 +575,7 @@ export const WithButtons: StoryFn<StoryTableProps> = args => {
                 <HeaderCell
                   key={header.id}
                   header={header}
-                  className={cx({
-                    [css`
-                      // since the table is not fixed, the width is not respected. This prevents the width from getting any smaller.
-                      min-width: 120px;
-                    `]: index === 5,
-                  })}
+                  className={index === 5 ? 'min-w-[120px]' : undefined}
                 >
                   {flexRender(
                     header.column.columnDef.header,

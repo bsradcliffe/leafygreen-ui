@@ -1,19 +1,21 @@
-import { css, cx } from '@leafygreen-ui/emotion';
 import { Theme } from '@leafygreen-ui/lib';
 
 import { getSkeletonBaseStyles, themeStyles } from '../Skeleton';
 
+function cn(...classes: Array<string | false | undefined | null>): string {
+  return classes.filter(Boolean).join(' ');
+}
+
+/**
+ * Returns combined class string for the icon skeleton.
+ * Size-specific dimensions are applied via inline styles since they depend on a runtime value.
+ */
 export const getIconSkeletonBaseStyles = (
-  size: number,
   theme: Theme,
   enableAnimations = false,
 ) =>
-  cx(
+  cn(
     getSkeletonBaseStyles({ enableAnimations }),
     themeStyles[theme],
-    css`
-      height: ${size}px;
-      width: ${size}px;
-      border-radius: 50%;
-    `,
+    'rounded-full',
   );

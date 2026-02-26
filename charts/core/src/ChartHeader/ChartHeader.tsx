@@ -1,9 +1,10 @@
 import React from 'react';
 
-import { cx } from '@leafygreen-ui/emotion';
 import { useDarkMode } from '@leafygreen-ui/leafygreen-provider';
 import { BaseFontSize } from '@leafygreen-ui/tokens';
 import { Body } from '@leafygreen-ui/typography';
+
+import { cn } from '../cn';
 
 import { getContainerStyles, titleStyles } from './ChartHeader.styles';
 import { ChartHeaderProps } from './ChartHeader.types';
@@ -19,7 +20,7 @@ export function ChartHeader({
   const { theme } = useDarkMode();
   return (
     <div
-      className={cx(getContainerStyles(theme, showDivider), className)}
+      className={cn(getContainerStyles(theme, showDivider), className)}
       {...rest}
     >
       <div className={titleStyles}>

@@ -12,10 +12,8 @@ import { expect, userEvent, within } from '@storybook/test';
 import { Button } from '@leafygreen-ui/button';
 import { Code, Panel } from '@leafygreen-ui/code';
 import { Copyable } from '@leafygreen-ui/copyable';
-import { css } from '@leafygreen-ui/emotion';
 import { Option, OptionGroup, RenderMode, Select } from '@leafygreen-ui/select';
 import { ToastProvider, useToast } from '@leafygreen-ui/toast';
-import { spacing } from '@leafygreen-ui/tokens';
 import { Body, H3, Subtitle } from '@leafygreen-ui/typography';
 
 import Modal, { CloseIconColor, ModalProps, ModalSize } from '.';
@@ -23,18 +21,9 @@ import Modal, { CloseIconColor, ModalProps, ModalSize } from '.';
 const SEED = 0;
 faker.seed(SEED);
 
-const MODAL_MIN_HEIGHT = 1000;
+const pageStyles = 'h-screen min-h-[1000px]';
 
-const pageStyles = css`
-  height: 100vh;
-  min-height: ${MODAL_MIN_HEIGHT}px;
-`;
-
-const childrenContainerStyles = css`
-  display: flex;
-  flex-direction: column;
-  gap: ${spacing[300]}px;
-`;
+const childrenContainerStyles = 'flex flex-col gap-[12px]';
 
 const meta: StoryMetaType<typeof Modal> = {
   title: 'Sections/Modals/Modal',
@@ -143,16 +132,9 @@ export const DarkMode: StoryObj<ModalProps> = {
 export const Scroll: StoryObj<ModalProps> = {
   render: Template,
   args: {
-    className: css`
-      height: 500px;
-    `,
+    className: 'h-[500px]',
     children: (
-      <div
-        className={css`
-          height: 200vh;
-          ${childrenContainerStyles}
-        `}
-      >
+      <div className={`h-[200vh] ${childrenContainerStyles}`}>
         <Subtitle>Modal Content goes here.</Subtitle>
         {faker.lorem
           .paragraphs(24, '\n')

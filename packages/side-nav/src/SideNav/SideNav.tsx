@@ -2,7 +2,6 @@ import React, { ForwardedRef, forwardRef, useRef, useState } from 'react';
 import { Transition } from 'react-transition-group';
 
 import { validateAriaLabelProps } from '@leafygreen-ui/a11y';
-import { css, cx } from '@leafygreen-ui/emotion';
 import { useEventListener, useIdAllocator } from '@leafygreen-ui/hooks';
 import LeafyGreenProvider, {
   useDarkMode,
@@ -11,6 +10,7 @@ import LeafyGreenProvider, {
 import { keyMap } from '@leafygreen-ui/lib';
 import { useUpdatedBaseFontSize } from '@leafygreen-ui/typography';
 
+import { cn } from '../cn';
 import { CollapseToggle } from '../CollapseToggle';
 
 import {
@@ -148,15 +148,13 @@ const SideNav = forwardRef(
             <LeafyGreenProvider darkMode={darkMode}>
               <div
                 data-testid="side-nav-container"
-                className={cx(
+                className={cn(
                   sideNavClassName,
                   outerContainerStyle,
-                  css`
-                    width: ${width}px;
-                  `,
                   { [outerContainerCollapsedStyle]: collapsed },
                   className,
                 )}
+                style={{ width: `${width}px` }}
                 ref={forwardedRef}
               >
                 <div
@@ -165,12 +163,9 @@ const SideNav = forwardRef(
                 >
                   <nav
                     id={navId}
-                    className={cx(
+                    className={cn(
                       navBaseStyles,
                       navThemeStyles[theme],
-                      css`
-                        width: ${width}px;
-                      `,
                       {
                         [collapsedNavStyles]: ['entering', 'entered'].includes(
                           state,
@@ -178,6 +173,7 @@ const SideNav = forwardRef(
                         [hoverNavStyles]: (hover || focusExpand) && collapsed,
                       },
                     )}
+                    style={{ width: `${width}px` }}
                     onFocus={() => setFocus(true)}
                     onBlur={() => setFocus(false)}
                     onMouseEnter={() => setHover(true)}
@@ -189,26 +185,24 @@ const SideNav = forwardRef(
                      * elements appearing and disappearing
                      */}
                     <div
-                      className={cx(
+                      className={cn(
                         listWrapperStyle,
                         expandedStateStyles[state],
                       )}
                     >
                       <ul
-                        className={cx(
+                        className={cn(
                           ulStyleOverrides,
                           listStyles,
-                          css`
-                            width: ${width}px;
-                          `,
                         )}
+                        style={{ width: `${width}px` }}
                       >
                         {children}
                       </ul>
                     </div>
 
                     <div
-                      className={cx(
+                      className={cn(
                         listWrapperStyle,
                         collapsedStateStyles[state],
                       )}
@@ -216,7 +210,7 @@ const SideNav = forwardRef(
                       <ul
                         // We hide the duplicate items from screen readers.
                         aria-hidden
-                        className={cx(ulStyleOverrides, listStyles)}
+                        className={cn(ulStyleOverrides, listStyles)}
                         ref={setPortalContainer}
                       />
                     </div>

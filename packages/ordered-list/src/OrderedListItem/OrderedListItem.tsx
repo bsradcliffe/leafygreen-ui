@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { useDescendant } from '@leafygreen-ui/descendants';
-import { cx } from '@leafygreen-ui/emotion';
 import { useDarkMode } from '@leafygreen-ui/leafygreen-provider';
 import { Body, Description } from '@leafygreen-ui/typography';
 
@@ -10,12 +9,16 @@ import { OrderedListContext } from '../OrderedListContext/OrderedListContext';
 import {
   baseStyles,
   contentStyles,
-  getThemedStateStyles,
   markerStyles,
   stepIconClassName,
+  themedStateStyles,
   titleStyles,
 } from './OrderedListItem.styles';
 import { OrderedListItemProps } from './OrderedListItem.types';
+
+function cn(...classes: Array<string | false | undefined | null>): string {
+  return classes.filter(Boolean).join(' ');
+}
 
 const OrderedListItem = React.forwardRef(
   (
@@ -26,9 +29,9 @@ const OrderedListItem = React.forwardRef(
     const { theme } = useDarkMode();
 
     return (
-      <li ref={ref} className={cx(baseStyles, className)} {...rest}>
+      <li ref={ref} className={cn(baseStyles, className)} {...rest}>
         <div className={stepIconClassName}>
-          <div className={cx(markerStyles, getThemedStateStyles(theme))}>
+          <div className={cn(markerStyles, themedStateStyles[theme])}>
             {index + 1}
           </div>
         </div>

@@ -1,17 +1,12 @@
 import React from 'react';
 
-import { cx } from '@leafygreen-ui/emotion';
 import { useDarkMode } from '@leafygreen-ui/leafygreen-provider';
 
 import { StepIcon } from '../StepIcon';
 import { StepLabel } from '../StepLabel';
 import { StepStates } from '../types';
 
-import {
-  baseStyles,
-  completedLineStyles,
-  lineStyles,
-} from './InternalStep.styles';
+import { getInternalStepStyles } from './InternalStep.styles';
 import { InternalStepProps } from '.';
 
 export const InternalStep = ({
@@ -31,14 +26,14 @@ export const InternalStep = ({
 
   return (
     <div
-      className={cx(
-        baseStyles,
-        {
-          [lineStyles(iconSize, darkMode)]: shouldDisplayLine,
-          [completedLineStyles[theme]]: isCompleted && shouldDisplayLine,
-        },
+      className={getInternalStepStyles({
+        shouldDisplayLine,
+        isCompleted,
+        iconSize,
+        darkMode,
+        theme,
         className,
-      )}
+      })}
       aria-label={ariaLabel}
       aria-current={isCurrent && 'step'}
       {...rest}

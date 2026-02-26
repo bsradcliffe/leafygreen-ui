@@ -1,4 +1,5 @@
-import { css } from '@leafygreen-ui/emotion';
+import { CSSProperties } from 'react';
+
 import { palette } from '@leafygreen-ui/palette';
 
 export const getAccessibleProps = ({
@@ -34,7 +35,7 @@ export const getColor = ({
   size: number;
   flat: string;
   gradient: string;
-}) => {
+}): CSSProperties => {
   let fill;
 
   if (!knockout) {
@@ -51,7 +52,5 @@ export const getColor = ({
     }
   }
 
-  return css`
-    fill: ${fill};
-  `;
+  return { fill };
 };

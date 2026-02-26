@@ -7,7 +7,6 @@ import {
 import { StoryFn } from '@storybook/react';
 
 import { Button } from '@leafygreen-ui/button';
-import { css } from '@leafygreen-ui/emotion';
 import { CloseIconColor } from '@leafygreen-ui/modal';
 import { Link } from '@leafygreen-ui/typography';
 
@@ -31,9 +30,7 @@ const meta: StoryMetaType<typeof MarketingModal> = {
     children:
       'This is some description text, and it is extra long so it fills up this modal. Another thing about the modals here.',
     closeIconColor: CloseIconColor.Default,
-    className: css`
-      z-index: 1;
-    `,
+    className: 'z-[1]',
     disclaimer: 'This is a test disclaimer.',
   },
   argTypes: {
@@ -151,9 +148,7 @@ const Template: StoryFn<MarketingModalStoryProps> = ({
   const handleClose = () => setOpen(false);
   return (
     <div
-      className={css`
-        height: 100vh;
-      `}
+      style={{ height: '100vh' }}
     >
       <MarketingModal
         {...args}

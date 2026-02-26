@@ -7,7 +7,6 @@ import {
 import type { StoryFn, StoryObj } from '@storybook/react';
 import { expect, waitFor } from '@storybook/test';
 
-import { css } from '@leafygreen-ui/emotion';
 import LeafyGreenProvider from '@leafygreen-ui/leafygreen-provider';
 import { BaseFontSize } from '@leafygreen-ui/tokens';
 
@@ -41,10 +40,7 @@ const meta: StoryMetaType<typeof CodeEditor> = {
         }
       >
         <div
-          className={css`
-            width: 100vw;
-            padding: 0;
-          `}
+          className="w-screen p-0"
         >
           <Story />
         </div>

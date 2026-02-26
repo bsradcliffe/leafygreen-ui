@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { cx } from '@leafygreen-ui/emotion';
 import ArrowLeftIcon from '@leafygreen-ui/icon/dist/ArrowLeft';
 import { useDarkMode } from '@leafygreen-ui/leafygreen-provider';
 import {
@@ -8,6 +7,7 @@ import {
   useInferredPolymorphic,
 } from '@leafygreen-ui/polymorphic';
 
+import { cn } from '../../utils/cn';
 import { useUpdatedBaseFontSize } from '../../utils/useUpdatedBaseFontSize';
 import {
   anchorClassName,
@@ -37,7 +37,7 @@ const BackLink = InferredPolymorphic<BaseBackLinkProps, 'span'>(
 
     return (
       <Component
-        className={cx(
+        className={cn(
           anchorClassName,
           linkStyles,
           linkScaleStyles(baseFontSize),

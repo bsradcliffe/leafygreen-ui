@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { cx } from '@leafygreen-ui/emotion';
 import { useDarkMode } from '@leafygreen-ui/leafygreen-provider';
+
+import { cn } from '../cn';
 import LeafyGreenProvider from '@leafygreen-ui/leafygreen-provider';
 
 import {
@@ -41,7 +42,7 @@ function Pagination<T extends number>({
   return (
     <LeafyGreenProvider darkMode={darkMode}>
       <div
-        className={cx(baseStyles, className)}
+        className={cn(baseStyles, className)}
         data-testid={lgIds.root}
         data-lgid={lgIds.root}
         {...rest}

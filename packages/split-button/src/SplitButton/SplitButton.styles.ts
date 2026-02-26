@@ -1,20 +1,19 @@
-import { css } from '@leafygreen-ui/emotion';
 import { Theme } from '@leafygreen-ui/lib';
 import { palette } from '@leafygreen-ui/palette';
 
 import { Variant } from './SplitButton.types';
 
-export const buttonContainerStyles = css`
-  position: relative;
-  display: flex;
-  z-index: 0; // Establish new stacking context
-`;
+export const buttonContainerStyles = [
+  'relative',
+  'flex',
+  'z-0', // Establish new stacking context
+].join(' ');
 
-export const buttonBaseStyles = css`
-  border-top-right-radius: 0px;
-  border-bottom-right-radius: 0px;
-  z-index: 1;
-`;
+export const buttonBaseStyles = [
+  'rounded-tr-none',
+  'rounded-br-none',
+  'z-[1]',
+].join(' ');
 
 export const buttonBorderColor: Record<Theme, Record<Variant, string>> = {
   [Theme.Light]: {
@@ -29,12 +28,13 @@ export const buttonBorderColor: Record<Theme, Record<Variant, string>> = {
   },
 };
 
-export const buttonThemeStyles = (theme: Theme, variant: Variant) => css`
-  &,
-  &:hover,
-  &:focus,
-  &:focus-visible,
-  &:active {
-    border-right-color: ${buttonBorderColor[theme][variant]};
-  }
-`;
+export const buttonThemeStyles = (theme: Theme, variant: Variant) => {
+  const borderColor = buttonBorderColor[theme][variant];
+  return [
+    `border-r-[${borderColor}]`,
+    `hover:border-r-[${borderColor}]`,
+    `focus:border-r-[${borderColor}]`,
+    `focus-visible:border-r-[${borderColor}]`,
+    `active:border-r-[${borderColor}]`,
+  ].join(' ');
+};

@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { VisuallyHidden } from '@leafygreen-ui/a11y';
-import { cx } from '@leafygreen-ui/emotion';
 import LeafyGreenProvider, {
   useDarkMode,
 } from '@leafygreen-ui/leafygreen-provider';
@@ -20,6 +19,10 @@ import {
 } from './TableSkeleton.styles';
 import { TableSkeletonProps } from '.';
 
+function cn(...classes: Array<string | false | undefined | null>): string {
+  return classes.filter(Boolean).join(' ');
+}
+
 export function TableSkeleton({
   darkMode: darkModeProp,
   baseFontSize: baseFontSizeProp = BaseFontSize.Body1,
@@ -34,13 +37,13 @@ export function TableSkeleton({
   const baseFontSize = useUpdatedBaseFontSize(baseFontSizeProp);
   return (
     <LeafyGreenProvider darkMode={darkMode}>
-      <table {...rest} className={cx(baseStyles, className)} aria-busy>
+      <table {...rest} className={cn(baseStyles, className)} aria-busy>
         <thead className={tableHeadStyles[theme]}>
           <tr>
             {[...Array(numCols)].map((_, i) => {
               const hasLabel = columnLabels && columnLabels[i];
               return (
-                <th key={i} className={cx(cellStyles, headerCellStyles)}>
+                <th key={i} className={cn(cellStyles, headerCellStyles)}>
                   {hasLabel ? (
                     <Body
                       baseFontSize={baseFontSize}
@@ -70,7 +73,7 @@ export function TableSkeleton({
                   <Skeleton
                     enableAnimations={enableAnimations}
                     size="small"
-                    className={cx({ [firstRowStyles]: i === 0 })}
+                    className={cn(i === 0 && firstRowStyles)}
                   />
                 </td>
               ))}

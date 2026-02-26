@@ -3,7 +3,6 @@
 import React, { useEffect, useState } from 'react';
 import { StoryMetaType, StoryType } from '@lg-tools/storybook-utils';
 
-import { css } from '@leafygreen-ui/emotion';
 import LeafyGreenProvider from '@leafygreen-ui/leafygreen-provider';
 
 import { ComboboxContext } from '../ComboboxContext';
@@ -31,16 +30,11 @@ const meta: StoryMetaType<typeof ComboboxMenu> = {
             <ComboboxContext.Provider
               value={{ ...defaultContext, isOpen: open }}
             >
+              <style>{`td:has(.combobox-menu-placeholder) { vertical-align: top; }`}</style>
               <div
                 ref={divRef}
-                className={css`
-                  height: 0;
-                  color: transparent;
-
-                  td:has(&) {
-                    vertical-align: top;
-                  }
-                `}
+                className="combobox-menu-placeholder"
+                style={{ height: 0, color: 'transparent' }}
               >
                 SearchInput Placeholder
               </div>

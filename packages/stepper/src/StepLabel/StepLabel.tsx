@@ -1,14 +1,14 @@
 import React from 'react';
 import { PropsWithChildren } from 'react';
 
-import { cx } from '@leafygreen-ui/emotion';
 import { useDarkMode } from '@leafygreen-ui/leafygreen-provider';
 import { Body } from '@leafygreen-ui/typography';
 
+import { cn } from '../cn';
 import { stepLabelClassName } from '../constants';
 import { StepStates } from '../types';
 
-import { getThemedStateColorStyles, multipleStyles } from './StepLabel.styles';
+import { getStepLabelStyles } from './StepLabel.styles';
 import { StepLabelProps } from './StepLabel.types';
 
 export const StepLabel = ({
@@ -20,13 +20,8 @@ export const StepLabel = ({
 
   return (
     <Body
-      className={cx(
-        getThemedStateColorStyles(theme, state),
-        {
-          [multipleStyles]:
-            state === StepStates.CompletedMultiple ||
-            state === StepStates.UpcomingMultiple,
-        },
+      className={cn(
+        getStepLabelStyles({ theme, state }),
         stepLabelClassName,
       )}
       weight={isCurrent ? 'medium' : 'regular'}

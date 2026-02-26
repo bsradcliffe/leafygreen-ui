@@ -1,15 +1,16 @@
-import { css, cx } from '@leafygreen-ui/emotion';
 import { Theme } from '@leafygreen-ui/lib';
 import { addOverflowShadow, Side, spacing } from '@leafygreen-ui/tokens';
 
-const baseWrapperStyles = css`
-  max-height: 100%;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  position: relative;
-  overflow: hidden;
-`;
+import { cn } from '../cn';
+
+const baseWrapperStyles = [
+  'max-h-full',
+  'w-full',
+  'flex',
+  'justify-center',
+  'relative',
+  'overflow-hidden',
+].join(' ');
 
 export const getWrapperStyles = ({
   className,
@@ -22,7 +23,7 @@ export const getWrapperStyles = ({
   hasTopShadow: boolean;
   theme: Theme;
 }) =>
-  cx(
+  cn(
     baseWrapperStyles,
     {
       [addOverflowShadow({ side: Side.Top, theme, isInside: true })]:
@@ -33,19 +34,18 @@ export const getWrapperStyles = ({
     className,
   );
 
-export const scrollContainerStyles = css`
-  width: 100%;
-  height: 100%;
-  overflow-y: scroll;
-  scroll-behavior: smooth;
-  position: relative;
-  padding: 0 ${spacing[400]}px;
-  display: flex;
-  flex-direction: column;
-  gap: ${spacing[400]}px;
-`;
+export const scrollContainerStyles = [
+  'w-full',
+  'h-full',
+  'overflow-y-scroll',
+  'scroll-smooth',
+  'relative',
+  `px-[${spacing[400]}px]`,
+  'py-0',
+  'flex',
+  'flex-col',
+  `gap-[${spacing[400]}px]`,
+].join(' ');
 
 // Ensures the intercept element is visible and considered by the browser
-export const interceptStyles = css`
-  min-height: 1px;
-`;
+export const interceptStyles = 'min-h-px';

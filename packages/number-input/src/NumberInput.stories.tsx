@@ -6,8 +6,6 @@ import {
 } from '@lg-tools/storybook-utils';
 import { StoryFn } from '@storybook/react';
 
-import { css } from '@leafygreen-ui/emotion';
-
 import { Size, State, UnitOption } from './NumberInput/NumberInput.types';
 import { NumberInput, NumberInputProps } from '.';
 
@@ -145,12 +143,8 @@ const Template: StoryFn<StoryNumberInputProps> = (
       onSelectChange={handleSelectChange}
       onChange={handleChange}
       onBlur={handleBlur}
-      inputClassName={css`
-        width: 100px;
-      `}
-      selectClassName={css`
-        max-width: 100px;
-      `}
+      inputClassName="w-[100px]"
+      selectClassName="max-w-[100px]"
     />
   );
 };
